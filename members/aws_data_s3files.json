@@ -1,0 +1,3371 @@
+{
+  "schema_source": "smithy",
+  "mode": "data_source",
+  "auth": {
+    "Type": "",
+    "Params": null
+  },
+  "base_url": "https://aws.example.invalid",
+  "retry": {
+    "MaxAttempts": 0,
+    "InitialBackoff": "",
+    "MaxBackoff": "",
+    "Jitter": null,
+    "RespectRetryAfter": null,
+    "RateLimitResetHeader": ""
+  },
+  "timeouts": {
+    "Create": "",
+    "Read": "",
+    "Update": "",
+    "Delete": "",
+    "Default": ""
+  },
+  "wire_name": "aws",
+  "raw_spec": {
+    "smithy": "2.0",
+    "shapes": {
+      "com.amazonaws.s3files#AccessPointArn": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "max": 256
+          },
+          "smithy.api#pattern": "^arn:aws[-a-z]*:s3files:[0-9a-z-:]+:file-system/fs-[0-9a-f]{17,40}/access-point/fsap-[0-9a-f]{17,40}$"
+        }
+      },
+      "com.amazonaws.s3files#AccessPointId": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "max": 256
+          },
+          "smithy.api#pattern": "^(arn:aws[-a-z]*:s3files:[0-9a-z-:]+:file-system/fs-[0-9a-f]{17,40}/access-point/fsap-[0-9a-f]{17,40}|fsap-[0-9a-f]{17,40})$"
+        }
+      },
+      "com.amazonaws.s3files#AccessPoints": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.s3files#ListAccessPointsDescription"
+        }
+      },
+      "com.amazonaws.s3files#AvailabilityZoneId": {
+        "type": "string"
+      },
+      "com.amazonaws.s3files#AwsAccountId": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "max": 12
+          },
+          "smithy.api#pattern": "^(\\d{12})|(\\d{4}-{4}-\\d{4})$"
+        }
+      },
+      "com.amazonaws.s3files#BucketArn": {
+        "type": "string",
+        "traits": {
+          "smithy.api#pattern": "^(arn:aws[a-zA-Z0-9-]*:s3:::.+)$"
+        }
+      },
+      "com.amazonaws.s3files#ClientToken": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 64
+          },
+          "smithy.api#pattern": "^(.+)$"
+        }
+      },
+      "com.amazonaws.s3files#ConflictException": {
+        "type": "structure",
+        "members": {
+          "errorCode": {
+            "target": "com.amazonaws.s3files#ErrorCode",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe error code associated with the exception.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "message": {
+            "target": "smithy.api#String"
+          },
+          "resourceId": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier of the resource that caused the conflict.\u003c/p\u003e"
+            }
+          },
+          "resourceType": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe type of the resource that caused the conflict.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe request conflicts with the current state of the resource. This can occur when trying to create a resource that already exists or delete a resource that is in use.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 409
+        }
+      },
+      "com.amazonaws.s3files#CreateAccessPoint": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.s3files#CreateAccessPointRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.s3files#CreateAccessPointResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.s3files#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.s3files#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.s3files#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.s3files#ServiceQuotaExceededException"
+          },
+          {
+            "target": "com.amazonaws.s3files#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eCreates an S3 File System Access Point for application-specific access with POSIX user identity and root directory enforcement. Access points provide a way to manage access to shared datasets in multi-tenant scenarios.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "PUT",
+            "uri": "/access-points"
+          },
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.s3files#CreateAccessPointRequest": {
+        "type": "structure",
+        "members": {
+          "clientToken": {
+            "target": "com.amazonaws.s3files#ClientToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA unique, case-sensitive identifier to ensure that the operation completes no more than one time. If this token matches a previous request, Amazon Web Services ignores the request, but does not return an error.\u003c/p\u003e",
+              "smithy.api#idempotencyToken": {}
+            }
+          },
+          "fileSystemId": {
+            "target": "com.amazonaws.s3files#FileSystemId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID or Amazon Resource Name (ARN) of the S3 File System.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "posixUser": {
+            "target": "com.amazonaws.s3files#PosixUser",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe POSIX identity with uid, gid, and secondary group IDs for user enforcement when accessing the file system through this access point.\u003c/p\u003e"
+            }
+          },
+          "rootDirectory": {
+            "target": "com.amazonaws.s3files#RootDirectory",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe root directory path for the access point, with optional creation permissions for newly created directories.\u003c/p\u003e"
+            }
+          },
+          "tags": {
+            "target": "com.amazonaws.s3files#TagList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn array of key-value pairs to apply to the access point for resource tagging.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.s3files#CreateAccessPointResponse": {
+        "type": "structure",
+        "members": {
+          "accessPointArn": {
+            "target": "com.amazonaws.s3files#AccessPointArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the access point.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "accessPointId": {
+            "target": "com.amazonaws.s3files#AccessPointId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID of the access point.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "clientToken": {
+            "target": "com.amazonaws.s3files#ClientToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe client token that was provided in the request.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "fileSystemId": {
+            "target": "com.amazonaws.s3files#FileSystemId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID of the S3 File System.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "name": {
+            "target": "com.amazonaws.s3files#TagValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the access point.\u003c/p\u003e"
+            }
+          },
+          "ownerId": {
+            "target": "com.amazonaws.s3files#AwsAccountId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Web Services account ID of the access point owner.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "posixUser": {
+            "target": "com.amazonaws.s3files#PosixUser",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe POSIX identity configured for this access point.\u003c/p\u003e"
+            }
+          },
+          "rootDirectory": {
+            "target": "com.amazonaws.s3files#RootDirectory",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe root directory configuration for this access point.\u003c/p\u003e"
+            }
+          },
+          "status": {
+            "target": "com.amazonaws.s3files#LifeCycleState",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe current status of the access point.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "tags": {
+            "target": "com.amazonaws.s3files#TagList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe tags associated with the access point.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.s3files#CreateFileSystem": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.s3files#CreateFileSystemRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.s3files#CreateFileSystemResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.s3files#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.s3files#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.s3files#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.s3files#ServiceQuotaExceededException"
+          },
+          {
+            "target": "com.amazonaws.s3files#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eCreates an S3 File System resource scoped to a bucket or prefix within a bucket, enabling file system access to S3 data. To create a file system, you need an S3 bucket and an IAM role that grants the service permission to access the bucket.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 201,
+            "method": "PUT",
+            "uri": "/file-systems"
+          },
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.s3files#CreateFileSystemRequest": {
+        "type": "structure",
+        "members": {
+          "acceptBucketWarning": {
+            "target": "smithy.api#Boolean",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSet to true to acknowledge and accept any warnings about the bucket configuration. If not specified, the operation may fail if there are bucket configuration warnings.\u003c/p\u003e"
+            }
+          },
+          "bucket": {
+            "target": "com.amazonaws.s3files#BucketArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the S3 bucket that will be accessible through the file system. The bucket must exist and be in the same Amazon Web Services Region as the file system.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "clientToken": {
+            "target": "com.amazonaws.s3files#CreationToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA unique, case-sensitive identifier that you provide to ensure idempotent creation. Up to 64 ASCII characters are allowed. If you don't specify a client token, the Amazon Web Services SDK automatically generates one.\u003c/p\u003e",
+              "smithy.api#idempotencyToken": {}
+            }
+          },
+          "kmsKeyId": {
+            "target": "com.amazonaws.s3files#KmsKeyId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ARN, key ID, or alias of the KMS key to use for encryption. If not specified, the service uses a service-owned key for encryption. You can specify a KMS key using the following formats: key ID, ARN, key alias, or key alias ARN. If you use \u003ccode\u003eKmsKeyId\u003c/code\u003e, the file system will be encrypted.\u003c/p\u003e"
+            }
+          },
+          "prefix": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn optional prefix within the S3 bucket to scope the file system access. If specified, the file system provides access only to objects with keys that begin with this prefix. If not specified, the file system provides access to the entire bucket.\u003c/p\u003e",
+              "smithy.api#length": {
+                "min": 0,
+                "max": 1024
+              },
+              "smithy.api#pattern": "^(|.*/)$"
+            }
+          },
+          "roleArn": {
+            "target": "com.amazonaws.s3files#RoleArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ARN of the IAM role that grants the S3 Files service permission to read and write data between the file system and the S3 bucket. This role must have the necessary permissions to access the specified bucket and prefix.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "tags": {
+            "target": "com.amazonaws.s3files#TagList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn array of key-value pairs to apply as tags to the file system resource. Each tag is a user-defined key-value pair. You can use tags to categorize and manage your file systems. Each key must be unique for the resource.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.s3files#CreateFileSystemResponse": {
+        "type": "structure",
+        "members": {
+          "bucket": {
+            "target": "com.amazonaws.s3files#BucketArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the S3 bucket associated with the file system.\u003c/p\u003e"
+            }
+          },
+          "clientToken": {
+            "target": "com.amazonaws.s3files#ClientToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe client token used for idempotency.\u003c/p\u003e"
+            }
+          },
+          "creationTime": {
+            "target": "smithy.api#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe time when the file system was created, in seconds since 1970-01-01T00:00:00Z (Unix epoch time).\u003c/p\u003e"
+            }
+          },
+          "fileSystemArn": {
+            "target": "com.amazonaws.s3files#FileSystemArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ARN for the S3 file system, in the format \u003ccode\u003earn:aws:s3files:region:account-id:file-system/file-system-id\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "fileSystemId": {
+            "target": "com.amazonaws.s3files#FileSystemId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID of the file system, assigned by S3 Files. This ID is used to reference the file system in subsequent API calls.\u003c/p\u003e"
+            }
+          },
+          "kmsKeyId": {
+            "target": "com.amazonaws.s3files#KmsKeyId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ARN or alias of the KMS key used for encryption.\u003c/p\u003e"
+            }
+          },
+          "name": {
+            "target": "com.amazonaws.s3files#TagValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the file system, derived from the \u003ccode\u003eName\u003c/code\u003e tag if present.\u003c/p\u003e"
+            }
+          },
+          "ownerId": {
+            "target": "com.amazonaws.s3files#AwsAccountId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Web Services account ID of the file system owner.\u003c/p\u003e"
+            }
+          },
+          "prefix": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#addedDefault": {},
+              "smithy.api#default": "",
+              "smithy.api#documentation": "\u003cp\u003eThe prefix within the S3 bucket that scopes the file system access.\u003c/p\u003e"
+            }
+          },
+          "roleArn": {
+            "target": "com.amazonaws.s3files#RoleArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ARN of the IAM role used for S3 access.\u003c/p\u003e"
+            }
+          },
+          "status": {
+            "target": "com.amazonaws.s3files#LifeCycleState",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe lifecycle state of the file system. Valid values are: \u003ccode\u003eAVAILABLE\u003c/code\u003e (the file system is available for use), \u003ccode\u003eCREATING\u003c/code\u003e (the file system is being created), \u003ccode\u003eDELETING\u003c/code\u003e (the file system is being deleted), \u003ccode\u003eDELETED\u003c/code\u003e (the file system has been deleted), \u003ccode\u003eERROR\u003c/code\u003e (the file system is in an error state), or \u003ccode\u003eUPDATING\u003c/code\u003e (the file system is being updated).\u003c/p\u003e"
+            }
+          },
+          "statusMessage": {
+            "target": "com.amazonaws.s3files#StatusMessage",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAdditional information about the file system status. This field provides more details when the status is \u003ccode\u003eERROR\u003c/code\u003e, or during state transitions.\u003c/p\u003e"
+            }
+          },
+          "tags": {
+            "target": "com.amazonaws.s3files#TagList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe tags associated with the file system.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.s3files#CreateMountTarget": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.s3files#CreateMountTargetRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.s3files#CreateMountTargetResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.s3files#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.s3files#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.s3files#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.s3files#ServiceQuotaExceededException"
+          },
+          {
+            "target": "com.amazonaws.s3files#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eCreates a mount target resource as an endpoint for mounting the S3 File System from compute resources in a specific Availability Zone and VPC. Mount targets provide network access to the file system.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "PUT",
+            "uri": "/mount-targets"
+          },
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.s3files#CreateMountTargetRequest": {
+        "type": "structure",
+        "members": {
+          "fileSystemId": {
+            "target": "com.amazonaws.s3files#FileSystemId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID or Amazon Resource Name (ARN) of the S3 File System to create the mount target for.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "ipAddressType": {
+            "target": "com.amazonaws.s3files#IpAddressType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe IP address type for the mount target. If not specified, \u003ccode\u003eIPV4_ONLY\u003c/code\u003e is used. The IP address type must match the IP configuration of the specified subnet.\u003c/p\u003e"
+            }
+          },
+          "ipv4Address": {
+            "target": "com.amazonaws.s3files#Ipv4Address",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA specific IPv4 address to assign to the mount target. If not specified and the IP address type supports IPv4, an address is automatically assigned from the subnet's available IPv4 address range. The address must be within the subnet's CIDR block and not already in use.\u003c/p\u003e"
+            }
+          },
+          "ipv6Address": {
+            "target": "com.amazonaws.s3files#Ipv6Address",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA specific IPv6 address to assign to the mount target. If not specified and the IP address type supports IPv6, an address is automatically assigned from the subnet's available IPv6 address range. The address must be within the subnet's IPv6 CIDR block and not already in use.\u003c/p\u003e"
+            }
+          },
+          "securityGroups": {
+            "target": "com.amazonaws.s3files#SecurityGroups",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn array of VPC security group IDs to associate with the mount target's network interface. These security groups control network access to the mount target. If not specified, the default security group for the subnet's VPC is used. All security groups must belong to the same VPC as the subnet.\u003c/p\u003e"
+            }
+          },
+          "subnetId": {
+            "target": "com.amazonaws.s3files#SubnetId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID of the subnet where the mount target will be created. The subnet must be in the same Amazon Web Services Region as the file system. For file systems with regional availability, you can create mount targets in any subnet within the Region. The subnet determines the Availability Zone where the mount target will be located.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.s3files#CreateMountTargetResponse": {
+        "type": "structure",
+        "members": {
+          "availabilityZoneId": {
+            "target": "com.amazonaws.s3files#AvailabilityZoneId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique and consistent identifier of the Availability Zone where the mount target is located. For example, \u003ccode\u003euse1-az1\u003c/code\u003e is an Availability Zone ID for the \u003ccode\u003eus-east-1\u003c/code\u003e Amazon Web Services Region, and it has the same location in every Amazon Web Services account.\u003c/p\u003e"
+            }
+          },
+          "fileSystemId": {
+            "target": "com.amazonaws.s3files#FileSystemId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID of the S3 File System associated with the mount target.\u003c/p\u003e"
+            }
+          },
+          "ipv4Address": {
+            "target": "com.amazonaws.s3files#Ipv4Address",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe IPv4 address assigned to the mount target.\u003c/p\u003e"
+            }
+          },
+          "ipv6Address": {
+            "target": "com.amazonaws.s3files#Ipv6Address",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe IPv6 address assigned to the mount target.\u003c/p\u003e"
+            }
+          },
+          "mountTargetId": {
+            "target": "com.amazonaws.s3files#MountTargetId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID of the mount target, assigned by S3 Files. This ID is used to reference the mount target in subsequent API calls.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "networkInterfaceId": {
+            "target": "com.amazonaws.s3files#NetworkInterfaceId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID of the network interface that S3 Files created when it created the mount target. This network interface is managed by the service.\u003c/p\u003e"
+            }
+          },
+          "ownerId": {
+            "target": "com.amazonaws.s3files#AwsAccountId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Web Services account ID of the mount target owner.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "securityGroups": {
+            "target": "com.amazonaws.s3files#SecurityGroups",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe security groups associated with the mount target's network interface.\u003c/p\u003e"
+            }
+          },
+          "status": {
+            "target": "com.amazonaws.s3files#LifeCycleState",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe lifecycle state of the mount target. Valid values are: \u003ccode\u003eAVAILABLE\u003c/code\u003e (the mount target is available for use), \u003ccode\u003eCREATING\u003c/code\u003e (the mount target is being created), \u003ccode\u003eDELETING\u003c/code\u003e (the mount target is being deleted), \u003ccode\u003eDELETED\u003c/code\u003e (the mount target has been deleted), or \u003ccode\u003eERROR\u003c/code\u003e (the mount target is in an error state), or \u003ccode\u003eUPDATING\u003c/code\u003e (the mount target is being updated).\u003c/p\u003e"
+            }
+          },
+          "statusMessage": {
+            "target": "com.amazonaws.s3files#StatusMessage",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAdditional information about the mount target status. This field provides more details when the status is \u003ccode\u003eERROR\u003c/code\u003e, or during state transitions.\u003c/p\u003e"
+            }
+          },
+          "subnetId": {
+            "target": "com.amazonaws.s3files#SubnetId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID of the subnet where the mount target is located.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "vpcId": {
+            "target": "com.amazonaws.s3files#VpcId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID of the VPC where the mount target is located.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.s3files#CreationPermissions": {
+        "type": "structure",
+        "members": {
+          "ownerGid": {
+            "target": "com.amazonaws.s3files#OwnerGid",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe POSIX group ID to assign to newly created directories.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "ownerUid": {
+            "target": "com.amazonaws.s3files#OwnerUid",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe POSIX user ID to assign to newly created directories.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "permissions": {
+            "target": "com.amazonaws.s3files#Permissions",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe octal permissions to assign to newly created directories.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eSpecifies the permissions to set on newly created directories within the file system.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.s3files#CreationToken": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 64
+          },
+          "smithy.api#pattern": "^(.+)$"
+        }
+      },
+      "com.amazonaws.s3files#DeleteAccessPoint": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.s3files#DeleteAccessPointRequest"
+        },
+        "output": {
+          "target": "smithy.api#Unit"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.s3files#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.s3files#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.s3files#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.s3files#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eDeletes an S3 File System Access Point. This operation is irreversible.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 204,
+            "method": "DELETE",
+            "uri": "/access-points/{accessPointId}"
+          },
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.s3files#DeleteAccessPointRequest": {
+        "type": "structure",
+        "members": {
+          "accessPointId": {
+            "target": "com.amazonaws.s3files#AccessPointId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID or Amazon Resource Name (ARN) of the access point to delete.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.s3files#DeleteFileSystem": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.s3files#DeleteFileSystemRequest"
+        },
+        "output": {
+          "target": "smithy.api#Unit"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.s3files#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.s3files#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.s3files#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.s3files#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eDeletes an S3 File System. You can optionally force deletion of a file system that has pending export data.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 204,
+            "method": "DELETE",
+            "uri": "/file-systems/{fileSystemId}"
+          },
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.s3files#DeleteFileSystemPolicy": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.s3files#DeleteFileSystemPolicyRequest"
+        },
+        "output": {
+          "target": "smithy.api#Unit"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.s3files#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.s3files#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.s3files#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eDeletes the IAM resource policy of an S3 File System.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 204,
+            "method": "DELETE",
+            "uri": "/file-systems/{fileSystemId}/policy"
+          },
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.s3files#DeleteFileSystemPolicyRequest": {
+        "type": "structure",
+        "members": {
+          "fileSystemId": {
+            "target": "com.amazonaws.s3files#FileSystemId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID or Amazon Resource Name (ARN) of the S3 File System whose resource policy to delete.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.s3files#DeleteFileSystemRequest": {
+        "type": "structure",
+        "members": {
+          "fileSystemId": {
+            "target": "com.amazonaws.s3files#FileSystemId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID or Amazon Resource Name (ARN) of the S3 File System to delete.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "forceDelete": {
+            "target": "smithy.api#Boolean",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIf true, allows deletion of a file system that contains data pending export to S3. If false (the default), the deletion will fail if there is data that has not yet been exported to the S3 bucket. Use this parameter with caution as it may result in data loss.\u003c/p\u003e",
+              "smithy.api#httpQuery": "forceDelete"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.s3files#DeleteMountTarget": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.s3files#DeleteMountTargetRequest"
+        },
+        "output": {
+          "target": "smithy.api#Unit"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.s3files#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.s3files#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.s3files#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.s3files#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eDeletes the specified mount target. This operation is irreversible.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 204,
+            "method": "DELETE",
+            "uri": "/mount-targets/{mountTargetId}"
+          },
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.s3files#DeleteMountTargetRequest": {
+        "type": "structure",
+        "members": {
+          "mountTargetId": {
+            "target": "com.amazonaws.s3files#MountTargetId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID of the mount target to delete.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.s3files#ErrorCode": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1
+          }
+        }
+      },
+      "com.amazonaws.s3files#ExpirationDataRule": {
+        "type": "structure",
+        "members": {
+          "daysAfterLastAccess": {
+            "target": "smithy.api#Integer",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe number of days after last access before cached data expires from the file system.\u003c/p\u003e",
+              "smithy.api#jsonName": "daysAfterLastAccess",
+              "smithy.api#range": {
+                "min": 1,
+                "max": 365
+              },
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eSpecifies a rule that controls when cached data expires from the file system based on last access time.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.s3files#ExpirationDataRuleList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.s3files#ExpirationDataRule"
+        }
+      },
+      "com.amazonaws.s3files#FileSystemArn": {
+        "type": "string",
+        "traits": {
+          "smithy.api#pattern": "^(arn:aws[-a-z]*:s3files:[0-9a-z-:]+:file-system/fs-[0-9a-f]{17,40})$"
+        }
+      },
+      "com.amazonaws.s3files#FileSystemId": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "max": 128
+          },
+          "smithy.api#pattern": "^(arn:aws[-a-z]*:s3files:[0-9a-z-:]+:file-system/fs-[0-9a-f]{17,40}|fs-[0-9a-f]{17,40})$"
+        }
+      },
+      "com.amazonaws.s3files#FileSystems": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.s3files#ListFileSystemsDescription"
+        }
+      },
+      "com.amazonaws.s3files#GetAccessPoint": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.s3files#GetAccessPointRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.s3files#GetAccessPointResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.s3files#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.s3files#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.s3files#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eReturns resource information for an S3 File System Access Point.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "GET",
+            "uri": "/access-points/{accessPointId}"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.s3files#GetAccessPointRequest": {
+        "type": "structure",
+        "members": {
+          "accessPointId": {
+            "target": "com.amazonaws.s3files#AccessPointId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID or Amazon Resource Name (ARN) of the access point to retrieve information for.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.s3files#GetAccessPointResponse": {
+        "type": "structure",
+        "members": {
+          "accessPointArn": {
+            "target": "com.amazonaws.s3files#AccessPointArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ARN of the access point.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "accessPointId": {
+            "target": "com.amazonaws.s3files#AccessPointId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID of the access point.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "clientToken": {
+            "target": "com.amazonaws.s3files#ClientToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe client token used for idempotency when the access point was created.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "fileSystemId": {
+            "target": "com.amazonaws.s3files#FileSystemId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID of the S3 File System.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "name": {
+            "target": "com.amazonaws.s3files#TagValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the access point.\u003c/p\u003e"
+            }
+          },
+          "ownerId": {
+            "target": "com.amazonaws.s3files#AwsAccountId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Web Services account ID of the access point owner.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "posixUser": {
+            "target": "com.amazonaws.s3files#PosixUser",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe POSIX identity configured for this access point.\u003c/p\u003e"
+            }
+          },
+          "rootDirectory": {
+            "target": "com.amazonaws.s3files#RootDirectory",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe root directory configuration for this access point.\u003c/p\u003e"
+            }
+          },
+          "status": {
+            "target": "com.amazonaws.s3files#LifeCycleState",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe current status of the access point.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "tags": {
+            "target": "com.amazonaws.s3files#TagList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe tags associated with the access point.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.s3files#GetFileSystem": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.s3files#GetFileSystemRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.s3files#GetFileSystemResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.s3files#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.s3files#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.s3files#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eReturns resource information for the specified S3 File System including status, configuration, and metadata.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "GET",
+            "uri": "/file-systems/{fileSystemId}"
+          },
+          "smithy.api#readonly": {},
+          "smithy.test#smokeTests": [
+            {
+              "id": "GetFileSystemFailure",
+              "params": {
+                "fileSystemId": "fs-00000000000000000"
+              },
+              "expect": {
+                "failure": {
+                  "errorId": "com.amazonaws.s3files#ResourceNotFoundException"
+                }
+              },
+              "vendorParamsShape": "aws.test#AwsVendorParams",
+              "vendorParams": {
+                "region": "us-east-1"
+              }
+            }
+          ]
+        }
+      },
+      "com.amazonaws.s3files#GetFileSystemPolicy": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.s3files#GetFileSystemPolicyRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.s3files#GetFileSystemPolicyResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.s3files#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.s3files#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.s3files#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eReturns the IAM resource policy of an S3 File System.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "GET",
+            "uri": "/file-systems/{fileSystemId}/policy"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.s3files#GetFileSystemPolicyRequest": {
+        "type": "structure",
+        "members": {
+          "fileSystemId": {
+            "target": "com.amazonaws.s3files#FileSystemId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID or Amazon Resource Name (ARN) of the S3 File System whose resource policy to retrieve.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.s3files#GetFileSystemPolicyResponse": {
+        "type": "structure",
+        "members": {
+          "fileSystemId": {
+            "target": "com.amazonaws.s3files#FileSystemId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID of the file system.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "policy": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe JSON-formatted resource policy for the file system.\u003c/p\u003e",
+              "smithy.api#jsonName": "policy",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.s3files#GetFileSystemRequest": {
+        "type": "structure",
+        "members": {
+          "fileSystemId": {
+            "target": "com.amazonaws.s3files#FileSystemId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID or Amazon Resource Name (ARN) of the S3 File System to retrieve information for.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.s3files#GetFileSystemResponse": {
+        "type": "structure",
+        "members": {
+          "bucket": {
+            "target": "com.amazonaws.s3files#BucketArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the S3 bucket.\u003c/p\u003e"
+            }
+          },
+          "clientToken": {
+            "target": "com.amazonaws.s3files#ClientToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe client token used for idempotency when the file system was created.\u003c/p\u003e"
+            }
+          },
+          "creationTime": {
+            "target": "smithy.api#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe time when the file system was created.\u003c/p\u003e"
+            }
+          },
+          "fileSystemArn": {
+            "target": "com.amazonaws.s3files#FileSystemArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the file system.\u003c/p\u003e"
+            }
+          },
+          "fileSystemId": {
+            "target": "com.amazonaws.s3files#FileSystemId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID of the file system.\u003c/p\u003e"
+            }
+          },
+          "kmsKeyId": {
+            "target": "com.amazonaws.s3files#KmsKeyId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the Amazon Web Services KMS key used for encryption.\u003c/p\u003e"
+            }
+          },
+          "name": {
+            "target": "com.amazonaws.s3files#TagValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the file system.\u003c/p\u003e"
+            }
+          },
+          "ownerId": {
+            "target": "com.amazonaws.s3files#AwsAccountId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Web Services account ID of the file system owner.\u003c/p\u003e"
+            }
+          },
+          "prefix": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#addedDefault": {},
+              "smithy.api#default": "",
+              "smithy.api#documentation": "\u003cp\u003eThe prefix in the S3 bucket that the file system provides access to.\u003c/p\u003e"
+            }
+          },
+          "roleArn": {
+            "target": "com.amazonaws.s3files#RoleArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the IAM role used for S3 access.\u003c/p\u003e"
+            }
+          },
+          "status": {
+            "target": "com.amazonaws.s3files#LifeCycleState",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe current status of the file system.\u003c/p\u003e"
+            }
+          },
+          "statusMessage": {
+            "target": "com.amazonaws.s3files#StatusMessage",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAdditional information about the file system status.\u003c/p\u003e"
+            }
+          },
+          "tags": {
+            "target": "com.amazonaws.s3files#TagList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe tags associated with the file system.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.s3files#GetMountTarget": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.s3files#GetMountTargetRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.s3files#GetMountTargetResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.s3files#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.s3files#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.s3files#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eReturns detailed resource information for the specified mount target including network configuration.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "GET",
+            "uri": "/mount-targets/{mountTargetId}"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.s3files#GetMountTargetRequest": {
+        "type": "structure",
+        "members": {
+          "mountTargetId": {
+            "target": "com.amazonaws.s3files#MountTargetId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID of the mount target to retrieve information for.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.s3files#GetMountTargetResponse": {
+        "type": "structure",
+        "members": {
+          "availabilityZoneId": {
+            "target": "com.amazonaws.s3files#AvailabilityZoneId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Availability Zone ID where the mount target is located.\u003c/p\u003e"
+            }
+          },
+          "fileSystemId": {
+            "target": "com.amazonaws.s3files#FileSystemId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID of the file system.\u003c/p\u003e"
+            }
+          },
+          "ipv4Address": {
+            "target": "com.amazonaws.s3files#Ipv4Address",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe IPv4 address of the mount target.\u003c/p\u003e"
+            }
+          },
+          "ipv6Address": {
+            "target": "com.amazonaws.s3files#Ipv6Address",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe IPv6 address of the mount target.\u003c/p\u003e"
+            }
+          },
+          "mountTargetId": {
+            "target": "com.amazonaws.s3files#MountTargetId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID of the mount target.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "networkInterfaceId": {
+            "target": "com.amazonaws.s3files#NetworkInterfaceId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID of the network interface associated with the mount target.\u003c/p\u003e"
+            }
+          },
+          "ownerId": {
+            "target": "com.amazonaws.s3files#AwsAccountId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Web Services account ID of the mount target owner.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "securityGroups": {
+            "target": "com.amazonaws.s3files#SecurityGroups",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe security groups associated with the mount target.\u003c/p\u003e"
+            }
+          },
+          "status": {
+            "target": "com.amazonaws.s3files#LifeCycleState",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe current status of the mount target.\u003c/p\u003e"
+            }
+          },
+          "statusMessage": {
+            "target": "com.amazonaws.s3files#StatusMessage",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAdditional information about the mount target status.\u003c/p\u003e"
+            }
+          },
+          "subnetId": {
+            "target": "com.amazonaws.s3files#SubnetId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID of the subnet where the mount target is located.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "vpcId": {
+            "target": "com.amazonaws.s3files#VpcId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID of the VPC where the mount target is located.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.s3files#GetSynchronizationConfiguration": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.s3files#GetSynchronizationConfigurationRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.s3files#GetSynchronizationConfigurationResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.s3files#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.s3files#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.s3files#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eReturns the synchronization configuration for the specified S3 File System, including import data rules and expiration data rules.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "GET",
+            "uri": "/file-systems/{fileSystemId}/synchronization-configuration"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.s3files#GetSynchronizationConfigurationRequest": {
+        "type": "structure",
+        "members": {
+          "fileSystemId": {
+            "target": "com.amazonaws.s3files#FileSystemId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID or Amazon Resource Name (ARN) of the S3 File System to retrieve the synchronization configuration for.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.s3files#GetSynchronizationConfigurationResponse": {
+        "type": "structure",
+        "members": {
+          "expirationDataRules": {
+            "target": "com.amazonaws.s3files#ExpirationDataRuleList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn array of expiration data rules that control when cached data expires from the file system.\u003c/p\u003e",
+              "smithy.api#jsonName": "expirationDataRules",
+              "smithy.api#length": {
+                "min": 1,
+                "max": 1
+              },
+              "smithy.api#required": {}
+            }
+          },
+          "importDataRules": {
+            "target": "com.amazonaws.s3files#ImportDataRuleList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn array of import data rules that control how data is imported from S3 into the file system.\u003c/p\u003e",
+              "smithy.api#jsonName": "importDataRules",
+              "smithy.api#length": {
+                "min": 1,
+                "max": 10
+              },
+              "smithy.api#required": {}
+            }
+          },
+          "latestVersionNumber": {
+            "target": "smithy.api#Integer",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe version number of the synchronization configuration. Use this value with \u003ccode\u003ePutSynchronizationConfiguration\u003c/code\u003e to ensure optimistic concurrency control.\u003c/p\u003e",
+              "smithy.api#jsonName": "latestVersionNumber"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.s3files#Gid": {
+        "type": "long",
+        "traits": {
+          "smithy.api#range": {
+            "min": 0,
+            "max": 4294967295
+          }
+        }
+      },
+      "com.amazonaws.s3files#ImportDataRule": {
+        "type": "structure",
+        "members": {
+          "prefix": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe S3 key prefix that scopes this import rule. Only objects with keys beginning with this prefix are subject to the rule.\u003c/p\u003e",
+              "smithy.api#jsonName": "prefix",
+              "smithy.api#pattern": "^(|.*/)$",
+              "smithy.api#required": {}
+            }
+          },
+          "sizeLessThan": {
+            "target": "smithy.api#Long",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe upper size limit in bytes for this import rule. Only objects with a size strictly less than this value will have data imported into the file system.\u003c/p\u003e",
+              "smithy.api#jsonName": "sizeLessThan",
+              "smithy.api#range": {
+                "min": 0,
+                "max": 52673613135872
+              },
+              "smithy.api#required": {}
+            }
+          },
+          "trigger": {
+            "target": "com.amazonaws.s3files#ImportTrigger",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe event that triggers data import. Valid values are \u003ccode\u003eON_DIRECTORY_FIRST_ACCESS\u003c/code\u003e (import when a directory is first accessed) and \u003ccode\u003eON_FILE_ACCESS\u003c/code\u003e (import when a file is accessed).\u003c/p\u003e",
+              "smithy.api#jsonName": "trigger",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eSpecifies a rule that controls how data is imported from S3 into the file system.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.s3files#ImportDataRuleList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.s3files#ImportDataRule"
+        }
+      },
+      "com.amazonaws.s3files#ImportTrigger": {
+        "type": "enum",
+        "members": {
+          "ON_DIRECTORY_FIRST_ACCESS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ON_DIRECTORY_FIRST_ACCESS"
+            }
+          },
+          "ON_FILE_ACCESS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ON_FILE_ACCESS"
+            }
+          }
+        }
+      },
+      "com.amazonaws.s3files#InternalServerException": {
+        "type": "structure",
+        "members": {
+          "errorCode": {
+            "target": "com.amazonaws.s3files#ErrorCode",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe error code associated with the exception.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "message": {
+            "target": "smithy.api#String"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eAn internal server error occurred. Retry your request.\u003c/p\u003e",
+          "smithy.api#error": "server",
+          "smithy.api#httpError": 500
+        }
+      },
+      "com.amazonaws.s3files#IpAddressType": {
+        "type": "enum",
+        "members": {
+          "DUAL_STACK": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "DUAL_STACK"
+            }
+          },
+          "IPV4_ONLY": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "IPV4_ONLY"
+            }
+          },
+          "IPV6_ONLY": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "IPV6_ONLY"
+            }
+          }
+        }
+      },
+      "com.amazonaws.s3files#Ipv4Address": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 7,
+            "max": 15
+          },
+          "smithy.api#pattern": "^[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}$"
+        }
+      },
+      "com.amazonaws.s3files#Ipv6Address": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 3,
+            "max": 39
+          }
+        }
+      },
+      "com.amazonaws.s3files#KmsKeyId": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "max": 2048
+          },
+          "smithy.api#pattern": "^([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}|mrk-[0-9a-f]{32}|alias/[a-zA-Z0-9/_-]+|(arn:aws[-a-z]*:kms:[a-z0-9-]+:\\d{12}:((key/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})|(key/mrk-[0-9a-f]{32})|(alias/[a-zA-Z0-9/_-]+))))$"
+        }
+      },
+      "com.amazonaws.s3files#LifeCycleState": {
+        "type": "enum",
+        "members": {
+          "available": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "available",
+              "smithy.api#suppress": [
+                "EnumShape"
+              ]
+            }
+          },
+          "creating": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "creating",
+              "smithy.api#suppress": [
+                "EnumShape"
+              ]
+            }
+          },
+          "deleted": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "deleted",
+              "smithy.api#suppress": [
+                "EnumShape"
+              ]
+            }
+          },
+          "deleting": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "deleting",
+              "smithy.api#suppress": [
+                "EnumShape"
+              ]
+            }
+          },
+          "error": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "error",
+              "smithy.api#suppress": [
+                "EnumShape"
+              ]
+            }
+          },
+          "updating": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "updating",
+              "smithy.api#suppress": [
+                "EnumShape"
+              ]
+            }
+          }
+        }
+      },
+      "com.amazonaws.s3files#ListAccessPoints": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.s3files#ListAccessPointsRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.s3files#ListAccessPointsResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.s3files#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.s3files#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.s3files#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eReturns resource information for all S3 File System Access Points associated with the specified S3 File System.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "GET",
+            "uri": "/access-points"
+          },
+          "smithy.api#paginated": {
+            "inputToken": "nextToken",
+            "outputToken": "nextToken",
+            "pageSize": "maxResults",
+            "items": "accessPoints"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.s3files#ListAccessPointsDescription": {
+        "type": "structure",
+        "members": {
+          "accessPointArn": {
+            "target": "com.amazonaws.s3files#AccessPointArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the access point.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "accessPointId": {
+            "target": "com.amazonaws.s3files#AccessPointId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID of the access point.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "fileSystemId": {
+            "target": "com.amazonaws.s3files#FileSystemId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID of the S3 File System.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "name": {
+            "target": "com.amazonaws.s3files#TagValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the access point.\u003c/p\u003e"
+            }
+          },
+          "ownerId": {
+            "target": "com.amazonaws.s3files#AwsAccountId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Web Services account ID of the access point owner.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "posixUser": {
+            "target": "com.amazonaws.s3files#PosixUser",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe POSIX identity configured for this access point.\u003c/p\u003e"
+            }
+          },
+          "rootDirectory": {
+            "target": "com.amazonaws.s3files#RootDirectory",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe root directory configuration for this access point.\u003c/p\u003e"
+            }
+          },
+          "status": {
+            "target": "com.amazonaws.s3files#LifeCycleState",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe current status of the access point.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eContains information about an S3 File System Access Point returned in list operations.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.s3files#ListAccessPointsRequest": {
+        "type": "structure",
+        "members": {
+          "fileSystemId": {
+            "target": "com.amazonaws.s3files#FileSystemId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID or Amazon Resource Name (ARN) of the S3 File System to list access points for.\u003c/p\u003e",
+              "smithy.api#httpQuery": "fileSystemId",
+              "smithy.api#required": {}
+            }
+          },
+          "maxResults": {
+            "target": "smithy.api#Integer",
+            "traits": {
+              "smithy.api#default": 100,
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of access points to return in a single response.\u003c/p\u003e",
+              "smithy.api#httpQuery": "maxResults",
+              "smithy.api#range": {
+                "min": 1,
+                "max": 1000
+              }
+            }
+          },
+          "nextToken": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA pagination token returned from a previous call to continue listing access points.\u003c/p\u003e",
+              "smithy.api#httpQuery": "nextToken"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.s3files#ListAccessPointsResponse": {
+        "type": "structure",
+        "members": {
+          "accessPoints": {
+            "target": "com.amazonaws.s3files#AccessPoints",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn array of access point descriptions.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "nextToken": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA pagination token to use in a subsequent request if more results are available.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.s3files#ListFileSystems": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.s3files#ListFileSystemsRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.s3files#ListFileSystemsResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.s3files#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.s3files#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eReturns a list of all S3 File Systems owned by the account with optional filtering by bucket.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "GET",
+            "uri": "/file-systems"
+          },
+          "smithy.api#paginated": {
+            "inputToken": "nextToken",
+            "outputToken": "nextToken",
+            "pageSize": "maxResults",
+            "items": "fileSystems"
+          },
+          "smithy.api#readonly": {},
+          "smithy.test#smokeTests": [
+            {
+              "id": "ListFileSystemsSuccess",
+              "params": {},
+              "expect": {
+                "success": {}
+              },
+              "vendorParamsShape": "aws.test#AwsVendorParams",
+              "vendorParams": {
+                "region": "us-east-1"
+              }
+            }
+          ]
+        }
+      },
+      "com.amazonaws.s3files#ListFileSystemsDescription": {
+        "type": "structure",
+        "members": {
+          "bucket": {
+            "target": "com.amazonaws.s3files#BucketArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the S3 bucket.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "creationTime": {
+            "target": "smithy.api#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe time when the file system was created.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "fileSystemArn": {
+            "target": "com.amazonaws.s3files#FileSystemArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the file system.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "fileSystemId": {
+            "target": "com.amazonaws.s3files#FileSystemId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID of the file system.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "name": {
+            "target": "com.amazonaws.s3files#TagValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the file system.\u003c/p\u003e"
+            }
+          },
+          "ownerId": {
+            "target": "com.amazonaws.s3files#AwsAccountId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Web Services account ID of the file system owner.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "roleArn": {
+            "target": "com.amazonaws.s3files#RoleArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the IAM role used for S3 access.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "status": {
+            "target": "com.amazonaws.s3files#LifeCycleState",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe current status of the file system.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "statusMessage": {
+            "target": "com.amazonaws.s3files#StatusMessage",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAdditional information about the file system status.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eContains information about an S3 File System returned in list operations.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.s3files#ListFileSystemsRequest": {
+        "type": "structure",
+        "members": {
+          "bucket": {
+            "target": "com.amazonaws.s3files#BucketArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eOptional filter to list only file systems associated with the specified S3 bucket Amazon Resource Name (ARN). If provided, only file systems that provide access to this bucket will be returned in the response.\u003c/p\u003e",
+              "smithy.api#httpQuery": "bucket"
+            }
+          },
+          "maxResults": {
+            "target": "smithy.api#Integer",
+            "traits": {
+              "smithy.api#default": 100,
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of file systems to return in a single response. If not specified, up to 100 file systems are returned.\u003c/p\u003e",
+              "smithy.api#httpQuery": "maxResults",
+              "smithy.api#range": {
+                "min": 1,
+                "max": 100
+              }
+            }
+          },
+          "nextToken": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA pagination token returned from a previous call to continue listing file systems.\u003c/p\u003e",
+              "smithy.api#httpQuery": "nextToken"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.s3files#ListFileSystemsResponse": {
+        "type": "structure",
+        "members": {
+          "fileSystems": {
+            "target": "com.amazonaws.s3files#FileSystems",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn array of file system descriptions.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "nextToken": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA pagination token to use in a subsequent request if more results are available.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.s3files#ListMountTargets": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.s3files#ListMountTargetsRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.s3files#ListMountTargetsResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.s3files#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.s3files#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.s3files#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eReturns resource information for all mount targets with optional filtering by file system, access point, and VPC.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "GET",
+            "uri": "/mount-targets"
+          },
+          "smithy.api#paginated": {
+            "inputToken": "nextToken",
+            "outputToken": "nextToken",
+            "pageSize": "maxResults",
+            "items": "mountTargets"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.s3files#ListMountTargetsDescription": {
+        "type": "structure",
+        "members": {
+          "availabilityZoneId": {
+            "target": "com.amazonaws.s3files#AvailabilityZoneId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Availability Zone ID where the mount target is located.\u003c/p\u003e"
+            }
+          },
+          "fileSystemId": {
+            "target": "com.amazonaws.s3files#FileSystemId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID of the S3 File System.\u003c/p\u003e"
+            }
+          },
+          "ipv4Address": {
+            "target": "com.amazonaws.s3files#Ipv4Address",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe IPv4 address of the mount target.\u003c/p\u003e"
+            }
+          },
+          "ipv6Address": {
+            "target": "com.amazonaws.s3files#Ipv6Address",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe IPv6 address of the mount target.\u003c/p\u003e"
+            }
+          },
+          "mountTargetId": {
+            "target": "com.amazonaws.s3files#MountTargetId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID of the mount target.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "networkInterfaceId": {
+            "target": "com.amazonaws.s3files#NetworkInterfaceId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID of the network interface associated with the mount target.\u003c/p\u003e"
+            }
+          },
+          "ownerId": {
+            "target": "com.amazonaws.s3files#AwsAccountId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Web Services account ID of the mount target owner.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "status": {
+            "target": "com.amazonaws.s3files#LifeCycleState",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe current status of the mount target.\u003c/p\u003e"
+            }
+          },
+          "statusMessage": {
+            "target": "com.amazonaws.s3files#StatusMessage",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAdditional information about the mount target status.\u003c/p\u003e"
+            }
+          },
+          "subnetId": {
+            "target": "com.amazonaws.s3files#SubnetId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID of the subnet where the mount target is located.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "vpcId": {
+            "target": "com.amazonaws.s3files#VpcId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID of the VPC where the mount target is located.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eContains information about a mount target returned in list operations.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.s3files#ListMountTargetsRequest": {
+        "type": "structure",
+        "members": {
+          "accessPointId": {
+            "target": "com.amazonaws.s3files#AccessPointId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eOptional filter to list only mount targets associated with the specified access point ID or Amazon Resource Name (ARN).\u003c/p\u003e",
+              "smithy.api#httpQuery": "accessPointId"
+            }
+          },
+          "fileSystemId": {
+            "target": "com.amazonaws.s3files#FileSystemId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eOptional filter to list only mount targets associated with the specified S3 File System ID or Amazon Resource Name (ARN). If provided, only mount targets for this file system will be returned in the response.\u003c/p\u003e",
+              "smithy.api#httpQuery": "fileSystemId"
+            }
+          },
+          "maxResults": {
+            "target": "smithy.api#Integer",
+            "traits": {
+              "smithy.api#default": 100,
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of mount targets to return in a single response.\u003c/p\u003e",
+              "smithy.api#httpQuery": "maxResults",
+              "smithy.api#range": {
+                "min": 1,
+                "max": 100
+              }
+            }
+          },
+          "nextToken": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA pagination token returned from a previous call to continue listing mount targets.\u003c/p\u003e",
+              "smithy.api#httpQuery": "nextToken"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.s3files#ListMountTargetsResponse": {
+        "type": "structure",
+        "members": {
+          "mountTargets": {
+            "target": "com.amazonaws.s3files#MountTargets",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn array of mount target descriptions.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "nextToken": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA pagination token to use in a subsequent request if more results are available.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.s3files#ListTagsForResource": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.s3files#ListTagsForResourceRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.s3files#ListTagsForResourceResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.s3files#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.s3files#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.s3files#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eLists all tags for S3 Files resources.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "GET",
+            "uri": "/resource-tags/{resourceId}"
+          },
+          "smithy.api#paginated": {
+            "inputToken": "nextToken",
+            "outputToken": "nextToken",
+            "pageSize": "maxResults",
+            "items": "tags"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.s3files#ListTagsForResourceRequest": {
+        "type": "structure",
+        "members": {
+          "maxResults": {
+            "target": "smithy.api#Integer",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of tags to return in a single response.\u003c/p\u003e",
+              "smithy.api#httpQuery": "MaxResults",
+              "smithy.api#range": {
+                "min": 1,
+                "max": 50
+              }
+            }
+          },
+          "nextToken": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA pagination token returned from a previous call to continue listing tags.\u003c/p\u003e",
+              "smithy.api#httpQuery": "NextToken"
+            }
+          },
+          "resourceId": {
+            "target": "com.amazonaws.s3files#ResourceId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID or Amazon Resource Name (ARN) of the resource to list tags for.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.s3files#ListTagsForResourceResponse": {
+        "type": "structure",
+        "members": {
+          "nextToken": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA pagination token to use in a subsequent request if more results are available.\u003c/p\u003e"
+            }
+          },
+          "tags": {
+            "target": "com.amazonaws.s3files#TagList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn array of tags associated with the resource.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.s3files#MountTargetId": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 22,
+            "max": 45
+          },
+          "smithy.api#pattern": "^fsmt-[0-9a-f]{17,40}$"
+        }
+      },
+      "com.amazonaws.s3files#MountTargets": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.s3files#ListMountTargetsDescription"
+        }
+      },
+      "com.amazonaws.s3files#NetworkInterfaceId": {
+        "type": "string"
+      },
+      "com.amazonaws.s3files#OwnerGid": {
+        "type": "long",
+        "traits": {
+          "smithy.api#range": {
+            "min": 0,
+            "max": 4294967295
+          }
+        }
+      },
+      "com.amazonaws.s3files#OwnerUid": {
+        "type": "long",
+        "traits": {
+          "smithy.api#range": {
+            "min": 0,
+            "max": 4294967295
+          }
+        }
+      },
+      "com.amazonaws.s3files#Path": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 100
+          },
+          "smithy.api#pattern": "^(\\/|(\\/(?!\\.)+[^$#\u003c\u003e;;`|\u0026?{}^*/\\n]+){1,4})$"
+        }
+      },
+      "com.amazonaws.s3files#Permissions": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 3,
+            "max": 4
+          },
+          "smithy.api#pattern": "^[0-7]{3,4}$"
+        }
+      },
+      "com.amazonaws.s3files#PosixUser": {
+        "type": "structure",
+        "members": {
+          "gid": {
+            "target": "com.amazonaws.s3files#Gid",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe POSIX group ID.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "secondaryGids": {
+            "target": "com.amazonaws.s3files#SecondaryGids",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn array of secondary POSIX group IDs.\u003c/p\u003e"
+            }
+          },
+          "uid": {
+            "target": "com.amazonaws.s3files#Uid",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe POSIX user ID.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eSpecifies the POSIX identity with uid, gid, and secondary group IDs for user enforcement.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.s3files#PutFileSystemPolicy": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.s3files#PutFileSystemPolicyRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.s3files#PutFileSystemPolicyResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.s3files#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.s3files#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.s3files#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eCreates or replaces the IAM resource policy for an S3 File System to control access permissions.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "PUT",
+            "uri": "/file-systems/{fileSystemId}/policy"
+          },
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.s3files#PutFileSystemPolicyRequest": {
+        "type": "structure",
+        "members": {
+          "fileSystemId": {
+            "target": "com.amazonaws.s3files#FileSystemId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID or Amazon Resource Name (ARN) of the S3 File System to apply the resource policy to.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "policy": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe JSON-formatted resource policy to apply to the file system. The policy defines the permissions for accessing the file system. The policy must be a valid JSON document that follows IAM policy syntax.\u003c/p\u003e",
+              "smithy.api#jsonName": "policy",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.s3files#PutFileSystemPolicyResponse": {
+        "type": "structure",
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.s3files#PutSynchronizationConfiguration": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.s3files#PutSynchronizationConfigurationRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.s3files#PutSynchronizationConfigurationResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.s3files#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.s3files#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.s3files#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.s3files#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eCreates or updates the synchronization configuration for the specified S3 File System, including import data rules and expiration data rules.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "PUT",
+            "uri": "/file-systems/{fileSystemId}/synchronization-configuration"
+          },
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.s3files#PutSynchronizationConfigurationRequest": {
+        "type": "structure",
+        "members": {
+          "expirationDataRules": {
+            "target": "com.amazonaws.s3files#ExpirationDataRuleList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn array of expiration data rules that control when cached data expires from the file system.\u003c/p\u003e",
+              "smithy.api#jsonName": "expirationDataRules",
+              "smithy.api#length": {
+                "min": 1,
+                "max": 1
+              },
+              "smithy.api#required": {}
+            }
+          },
+          "fileSystemId": {
+            "target": "com.amazonaws.s3files#FileSystemId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID or Amazon Resource Name (ARN) of the S3 File System to configure synchronization for.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "importDataRules": {
+            "target": "com.amazonaws.s3files#ImportDataRuleList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn array of import data rules that control how data is imported from S3 into the file system.\u003c/p\u003e",
+              "smithy.api#jsonName": "importDataRules",
+              "smithy.api#length": {
+                "min": 1,
+                "max": 10
+              },
+              "smithy.api#required": {}
+            }
+          },
+          "latestVersionNumber": {
+            "target": "smithy.api#Integer",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe version number of the current synchronization configuration. Omit this value when creating a synchronization configuration for the first time. For subsequent updates, provide this value for optimistic concurrency control. If the version number does not match the current configuration, the request fails with a \u003ccode\u003eConflictException\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#jsonName": "latestVersionNumber"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.s3files#PutSynchronizationConfigurationResponse": {
+        "type": "structure",
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.s3files#ResourceId": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "max": 256
+          },
+          "smithy.api#pattern": "^(arn:aws[-a-z]*:s3files:[0-9a-z-:]+:file-system/fs-[0-9a-f]{17,40}(/access-point/fsap-[0-9a-f]{17,40})?|fs(ap)?-[0-9a-f]{17,40})$"
+        }
+      },
+      "com.amazonaws.s3files#ResourceNotFoundException": {
+        "type": "structure",
+        "members": {
+          "errorCode": {
+            "target": "com.amazonaws.s3files#ErrorCode",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe error code associated with the exception.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "message": {
+            "target": "smithy.api#String"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe specified resource was not found. Verify that the resource exists and that you have permission to access it.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 404
+        }
+      },
+      "com.amazonaws.s3files#RoleArn": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "max": 2048
+          },
+          "smithy.api#pattern": "^arn:(aws[a-zA-Z-]*)?:iam::\\d{12}:role/?[a-zA-Z_0-9+=,.@\\-_/]+$"
+        }
+      },
+      "com.amazonaws.s3files#RootDirectory": {
+        "type": "structure",
+        "members": {
+          "creationPermissions": {
+            "target": "com.amazonaws.s3files#CreationPermissions",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe permissions to set on newly created directories.\u003c/p\u003e"
+            }
+          },
+          "path": {
+            "target": "com.amazonaws.s3files#Path",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe path to use as the root directory for the access point.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eSpecifies the root directory path and optional creation permissions for newly created directories.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.s3files#S3Files": {
+        "type": "service",
+        "errors": [
+          {
+            "target": "com.amazonaws.s3files#ThrottlingException"
+          }
+        ],
+        "version": "2025-05-05",
+        "operations": [
+          {
+            "target": "com.amazonaws.s3files#CreateAccessPoint"
+          },
+          {
+            "target": "com.amazonaws.s3files#CreateFileSystem"
+          },
+          {
+            "target": "com.amazonaws.s3files#CreateMountTarget"
+          },
+          {
+            "target": "com.amazonaws.s3files#DeleteAccessPoint"
+          },
+          {
+            "target": "com.amazonaws.s3files#DeleteFileSystem"
+          },
+          {
+            "target": "com.amazonaws.s3files#DeleteFileSystemPolicy"
+          },
+          {
+            "target": "com.amazonaws.s3files#DeleteMountTarget"
+          },
+          {
+            "target": "com.amazonaws.s3files#GetAccessPoint"
+          },
+          {
+            "target": "com.amazonaws.s3files#GetFileSystem"
+          },
+          {
+            "target": "com.amazonaws.s3files#GetFileSystemPolicy"
+          },
+          {
+            "target": "com.amazonaws.s3files#GetMountTarget"
+          },
+          {
+            "target": "com.amazonaws.s3files#GetSynchronizationConfiguration"
+          },
+          {
+            "target": "com.amazonaws.s3files#ListAccessPoints"
+          },
+          {
+            "target": "com.amazonaws.s3files#ListFileSystems"
+          },
+          {
+            "target": "com.amazonaws.s3files#ListMountTargets"
+          },
+          {
+            "target": "com.amazonaws.s3files#ListTagsForResource"
+          },
+          {
+            "target": "com.amazonaws.s3files#PutFileSystemPolicy"
+          },
+          {
+            "target": "com.amazonaws.s3files#PutSynchronizationConfiguration"
+          },
+          {
+            "target": "com.amazonaws.s3files#TagResource"
+          },
+          {
+            "target": "com.amazonaws.s3files#UntagResource"
+          },
+          {
+            "target": "com.amazonaws.s3files#UpdateMountTarget"
+          }
+        ],
+        "traits": {
+          "aws.api#service": {
+            "sdkId": "S3Files",
+            "endpointPrefix": "s3files",
+            "arnNamespace": "s3files"
+          },
+          "aws.auth#sigv4": {
+            "name": "s3files"
+          },
+          "aws.endpoints#dualStackOnlyEndpoints": {},
+          "aws.endpoints#standardRegionalEndpoints": {},
+          "aws.protocols#restJson1": {},
+          "smithy.api#documentation": "\u003cp\u003eS3 Files makes S3 buckets accessible as high-performance file systems powered by EFS. This service enables file system interface access to S3 data with sub-millisecond latencies through mount targets, supporting AI/ML workloads, media processing, and hybrid storage workflows that require both file system and object storage access to the same data.\u003c/p\u003e",
+          "smithy.api#title": "Amazon S3 Files",
+          "smithy.api#xmlNamespace": {
+            "uri": "s3files"
+          },
+          "smithy.rules#endpointBdd": {
+            "version": "1.1",
+            "parameters": {
+              "UseFIPS": {
+                "builtIn": "AWS::UseFIPS",
+                "required": true,
+                "default": false,
+                "documentation": "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
+                "type": "boolean"
+              },
+              "Endpoint": {
+                "builtIn": "SDK::Endpoint",
+                "required": false,
+                "documentation": "Override the endpoint used to send this request",
+                "type": "string"
+              },
+              "Region": {
+                "builtIn": "AWS::Region",
+                "required": false,
+                "documentation": "The AWS region used to dispatch the request.",
+                "type": "string"
+              }
+            },
+            "conditions": [
+              {
+                "fn": "isSet",
+                "argv": [
+                  {
+                    "ref": "Endpoint"
+                  }
+                ]
+              },
+              {
+                "fn": "isSet",
+                "argv": [
+                  {
+                    "ref": "Region"
+                  }
+                ]
+              },
+              {
+                "fn": "aws.partition",
+                "argv": [
+                  {
+                    "ref": "Region"
+                  }
+                ],
+                "assign": "PartitionResult"
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "ref": "UseFIPS"
+                  },
+                  true
+                ]
+              }
+            ],
+            "results": [
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: FIPS and custom endpoint are not supported",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": {
+                    "ref": "Endpoint"
+                  },
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://s3files-fips.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://s3files.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: Missing Region",
+                "type": "error"
+              }
+            ],
+            "root": 2,
+            "nodeCount": 6,
+            "nodes": "/////wAAAAH/////AAAAAAAAAAYAAAADAAAAAQAAAAQF9eEFAAAAAgAAAAUF9eEFAAAAAwX14QMF9eEEAAAAAwX14QEF9eEC"
+          },
+          "smithy.rules#endpointRuleSet": {
+            "version": "1.0",
+            "parameters": {
+              "UseFIPS": {
+                "builtIn": "AWS::UseFIPS",
+                "required": true,
+                "default": false,
+                "documentation": "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
+                "type": "boolean"
+              },
+              "Endpoint": {
+                "builtIn": "SDK::Endpoint",
+                "required": false,
+                "documentation": "Override the endpoint used to send this request",
+                "type": "string"
+              },
+              "Region": {
+                "builtIn": "AWS::Region",
+                "required": false,
+                "documentation": "The AWS region used to dispatch the request.",
+                "type": "string"
+              }
+            },
+            "rules": [
+              {
+                "conditions": [
+                  {
+                    "fn": "isSet",
+                    "argv": [
+                      {
+                        "ref": "Endpoint"
+                      }
+                    ]
+                  }
+                ],
+                "rules": [
+                  {
+                    "conditions": [
+                      {
+                        "fn": "booleanEquals",
+                        "argv": [
+                          {
+                            "ref": "UseFIPS"
+                          },
+                          true
+                        ]
+                      }
+                    ],
+                    "error": "Invalid Configuration: FIPS and custom endpoint are not supported",
+                    "type": "error"
+                  },
+                  {
+                    "conditions": [],
+                    "endpoint": {
+                      "url": {
+                        "ref": "Endpoint"
+                      },
+                      "properties": {},
+                      "headers": {}
+                    },
+                    "type": "endpoint"
+                  }
+                ],
+                "type": "tree"
+              },
+              {
+                "conditions": [],
+                "rules": [
+                  {
+                    "conditions": [
+                      {
+                        "fn": "isSet",
+                        "argv": [
+                          {
+                            "ref": "Region"
+                          }
+                        ]
+                      }
+                    ],
+                    "rules": [
+                      {
+                        "conditions": [
+                          {
+                            "fn": "aws.partition",
+                            "argv": [
+                              {
+                                "ref": "Region"
+                              }
+                            ],
+                            "assign": "PartitionResult"
+                          }
+                        ],
+                        "rules": [
+                          {
+                            "conditions": [
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  {
+                                    "ref": "UseFIPS"
+                                  },
+                                  true
+                                ]
+                              }
+                            ],
+                            "endpoint": {
+                              "url": "https://s3files-fips.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                              "properties": {},
+                              "headers": {}
+                            },
+                            "type": "endpoint"
+                          },
+                          {
+                            "conditions": [],
+                            "endpoint": {
+                              "url": "https://s3files.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                              "properties": {},
+                              "headers": {}
+                            },
+                            "type": "endpoint"
+                          }
+                        ],
+                        "type": "tree"
+                      }
+                    ],
+                    "type": "tree"
+                  },
+                  {
+                    "conditions": [],
+                    "error": "Invalid Configuration: Missing Region",
+                    "type": "error"
+                  }
+                ],
+                "type": "tree"
+              }
+            ]
+          },
+          "smithy.rules#endpointTests": {
+            "testCases": [
+              {
+                "documentation": "For custom endpoint with region not set and fips disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://example.com"
+                  }
+                },
+                "params": {
+                  "Endpoint": "https://example.com",
+                  "UseFIPS": false
+                }
+              },
+              {
+                "documentation": "For custom endpoint with fips enabled",
+                "expect": {
+                  "error": "Invalid Configuration: FIPS and custom endpoint are not supported"
+                },
+                "params": {
+                  "Endpoint": "https://example.com",
+                  "UseFIPS": true
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://s3files-fips.us-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": true
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://s3files.us-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false
+                }
+              },
+              {
+                "documentation": "For region cn-northwest-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://s3files-fips.cn-northwest-1.api.amazonwebservices.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-northwest-1",
+                  "UseFIPS": true
+                }
+              },
+              {
+                "documentation": "For region cn-northwest-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://s3files.cn-northwest-1.api.amazonwebservices.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-northwest-1",
+                  "UseFIPS": false
+                }
+              },
+              {
+                "documentation": "For region us-gov-west-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://s3files-fips.us-gov-west-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-west-1",
+                  "UseFIPS": true
+                }
+              },
+              {
+                "documentation": "For region us-gov-west-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://s3files.us-gov-west-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-west-1",
+                  "UseFIPS": false
+                }
+              },
+              {
+                "documentation": "Missing region",
+                "expect": {
+                  "error": "Invalid Configuration: Missing Region"
+                }
+              }
+            ],
+            "version": "1.0"
+          }
+        }
+      },
+      "com.amazonaws.s3files#SecondaryGids": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.s3files#Gid"
+        }
+      },
+      "com.amazonaws.s3files#SecurityGroup": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 11,
+            "max": 43
+          },
+          "smithy.api#pattern": "^(sg-[0-9a-f]{8,40})$"
+        }
+      },
+      "com.amazonaws.s3files#SecurityGroups": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.s3files#SecurityGroup"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "max": 100
+          }
+        }
+      },
+      "com.amazonaws.s3files#ServiceQuotaExceededException": {
+        "type": "structure",
+        "members": {
+          "errorCode": {
+            "target": "com.amazonaws.s3files#ErrorCode",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe error code associated with the exception.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "message": {
+            "target": "smithy.api#String"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe request would exceed a service quota. Review your service quotas and either delete resources or request a quota increase.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 402
+        }
+      },
+      "com.amazonaws.s3files#StatusMessage": {
+        "type": "string"
+      },
+      "com.amazonaws.s3files#SubnetId": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 15,
+            "max": 47
+          },
+          "smithy.api#pattern": "^subnet-[0-9a-f]{8,40}$"
+        }
+      },
+      "com.amazonaws.s3files#Tag": {
+        "type": "structure",
+        "members": {
+          "key": {
+            "target": "com.amazonaws.s3files#TagKey",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe tag key. The key can't start with \u003ccode\u003eaws:\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "value": {
+            "target": "com.amazonaws.s3files#TagValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe tag value.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA key-value pair for resource tagging.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.s3files#TagKey": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 128
+          },
+          "smithy.api#pattern": "^([\\p{L}\\p{Z}\\p{N}_.:/=+\\-@]+)$"
+        }
+      },
+      "com.amazonaws.s3files#TagKeys": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.s3files#TagKey"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 50
+          }
+        }
+      },
+      "com.amazonaws.s3files#TagList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.s3files#Tag"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 50
+          }
+        }
+      },
+      "com.amazonaws.s3files#TagResource": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.s3files#TagResourceRequest"
+        },
+        "output": {
+          "target": "smithy.api#Unit"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.s3files#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.s3files#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.s3files#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eCreates tags for S3 Files resources using standard Amazon Web Services tagging APIs.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "POST",
+            "uri": "/resource-tags/{resourceId}"
+          }
+        }
+      },
+      "com.amazonaws.s3files#TagResourceRequest": {
+        "type": "structure",
+        "members": {
+          "resourceId": {
+            "target": "com.amazonaws.s3files#ResourceId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID or Amazon Resource Name (ARN) of the resource to add tags to.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "tags": {
+            "target": "com.amazonaws.s3files#TagList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn array of key-value pairs to add as tags to the resource.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.s3files#TagValue": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "max": 256
+          },
+          "smithy.api#pattern": "^([\\p{L}\\p{Z}\\p{N}_.:/=+\\-@]*)$"
+        }
+      },
+      "com.amazonaws.s3files#ThrottlingException": {
+        "type": "structure",
+        "members": {
+          "errorCode": {
+            "target": "com.amazonaws.s3files#ErrorCode",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe error code associated with the exception.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "message": {
+            "target": "smithy.api#String"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe request was throttled. Retry your request using exponential backoff.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 429
+        }
+      },
+      "com.amazonaws.s3files#Uid": {
+        "type": "long",
+        "traits": {
+          "smithy.api#range": {
+            "min": 0,
+            "max": 4294967295
+          }
+        }
+      },
+      "com.amazonaws.s3files#UntagResource": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.s3files#UntagResourceRequest"
+        },
+        "output": {
+          "target": "smithy.api#Unit"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.s3files#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.s3files#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.s3files#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eRemoves tags from S3 Files resources.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "DELETE",
+            "uri": "/resource-tags/{resourceId}"
+          },
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.s3files#UntagResourceRequest": {
+        "type": "structure",
+        "members": {
+          "resourceId": {
+            "target": "com.amazonaws.s3files#ResourceId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID or Amazon Resource Name (ARN) of the resource to remove tags from.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "tagKeys": {
+            "target": "com.amazonaws.s3files#TagKeys",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn array of tag keys to remove from the resource.\u003c/p\u003e",
+              "smithy.api#httpQuery": "tagKeys",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.s3files#UpdateMountTarget": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.s3files#UpdateMountTargetRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.s3files#UpdateMountTargetResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.s3files#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.s3files#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.s3files#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eUpdates the mount target resource, specifically security group configurations.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "PUT",
+            "uri": "/mount-targets/{mountTargetId}"
+          },
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.s3files#UpdateMountTargetRequest": {
+        "type": "structure",
+        "members": {
+          "mountTargetId": {
+            "target": "com.amazonaws.s3files#MountTargetId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID of the mount target to update.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "securityGroups": {
+            "target": "com.amazonaws.s3files#SecurityGroups",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn array of VPC security group IDs to associate with the mount target's network interface. This replaces the existing security groups. All security groups must belong to the same VPC as the mount target's subnet.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.s3files#UpdateMountTargetResponse": {
+        "type": "structure",
+        "members": {
+          "availabilityZoneId": {
+            "target": "com.amazonaws.s3files#AvailabilityZoneId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Availability Zone ID where the mount target is located.\u003c/p\u003e"
+            }
+          },
+          "fileSystemId": {
+            "target": "com.amazonaws.s3files#FileSystemId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID of the S3 File System.\u003c/p\u003e"
+            }
+          },
+          "ipv4Address": {
+            "target": "com.amazonaws.s3files#Ipv4Address",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe IPv4 address of the mount target.\u003c/p\u003e"
+            }
+          },
+          "ipv6Address": {
+            "target": "com.amazonaws.s3files#Ipv6Address",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe IPv6 address of the mount target.\u003c/p\u003e"
+            }
+          },
+          "mountTargetId": {
+            "target": "com.amazonaws.s3files#MountTargetId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID of the mount target.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "networkInterfaceId": {
+            "target": "com.amazonaws.s3files#NetworkInterfaceId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID of the network interface associated with the mount target.\u003c/p\u003e"
+            }
+          },
+          "ownerId": {
+            "target": "com.amazonaws.s3files#AwsAccountId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Web Services account ID of the mount target owner.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "securityGroups": {
+            "target": "com.amazonaws.s3files#SecurityGroups",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe security groups associated with the mount target.\u003c/p\u003e"
+            }
+          },
+          "status": {
+            "target": "com.amazonaws.s3files#LifeCycleState",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe current status of the mount target.\u003c/p\u003e"
+            }
+          },
+          "statusMessage": {
+            "target": "com.amazonaws.s3files#StatusMessage",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAdditional information about the mount target status.\u003c/p\u003e"
+            }
+          },
+          "subnetId": {
+            "target": "com.amazonaws.s3files#SubnetId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID of the subnet where the mount target is located.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "vpcId": {
+            "target": "com.amazonaws.s3files#VpcId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID of the VPC where the mount target is located.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.s3files#ValidationException": {
+        "type": "structure",
+        "members": {
+          "errorCode": {
+            "target": "com.amazonaws.s3files#ErrorCode",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe error code associated with the exception.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "message": {
+            "target": "smithy.api#String"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe input parameters are not valid. Check the parameter values and try again.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.s3files#VpcId": {
+        "type": "string"
+      }
+    }
+  }
+}

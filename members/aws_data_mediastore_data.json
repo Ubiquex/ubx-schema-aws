@@ -1,0 +1,1687 @@
+{
+  "schema_source": "smithy",
+  "mode": "data_source",
+  "auth": {
+    "Type": "",
+    "Params": null
+  },
+  "base_url": "https://aws.example.invalid",
+  "retry": {
+    "MaxAttempts": 0,
+    "InitialBackoff": "",
+    "MaxBackoff": "",
+    "Jitter": null,
+    "RespectRetryAfter": null,
+    "RateLimitResetHeader": ""
+  },
+  "timeouts": {
+    "Create": "",
+    "Read": "",
+    "Update": "",
+    "Delete": "",
+    "Default": ""
+  },
+  "wire_name": "aws",
+  "raw_spec": {
+    "smithy": "2.0",
+    "metadata": {
+      "suppressions": [
+        {
+          "id": "HttpMethodSemantics",
+          "namespace": "*"
+        },
+        {
+          "id": "HttpResponseCodeSemantics",
+          "namespace": "*"
+        },
+        {
+          "id": "PaginatedTrait",
+          "namespace": "*"
+        },
+        {
+          "id": "HttpHeaderTrait",
+          "namespace": "*"
+        },
+        {
+          "id": "HttpUriConflict",
+          "namespace": "*"
+        },
+        {
+          "id": "Service",
+          "namespace": "*"
+        }
+      ]
+    },
+    "shapes": {
+      "com.amazonaws.mediastoredata#ContainerNotFoundException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.mediastoredata#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe specified container was not found for the specified account.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 404
+        }
+      },
+      "com.amazonaws.mediastoredata#ContentRangePattern": {
+        "type": "string",
+        "traits": {
+          "smithy.api#pattern": "^bytes=\\d+\\-\\d+/\\d+$"
+        }
+      },
+      "com.amazonaws.mediastoredata#ContentType": {
+        "type": "string",
+        "traits": {
+          "smithy.api#pattern": "^[\\w\\-\\/\\.\\+]{1,255}$"
+        }
+      },
+      "com.amazonaws.mediastoredata#DeleteObject": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.mediastoredata#DeleteObjectRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.mediastoredata#DeleteObjectResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.mediastoredata#ContainerNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.mediastoredata#InternalServerError"
+          },
+          {
+            "target": "com.amazonaws.mediastoredata#ObjectNotFoundException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eDeletes an object at the specified path.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "DELETE",
+            "uri": "/{Path+}",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.mediastoredata#DeleteObjectRequest": {
+        "type": "structure",
+        "members": {
+          "Path": {
+            "target": "com.amazonaws.mediastoredata#PathNaming",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe path (including the file name) where the object is stored in the container.\n         Format: \u003cfolder name\u003e/\u003cfolder name\u003e/\u003cfile name\u003e\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.mediastoredata#DeleteObjectResponse": {
+        "type": "structure",
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.mediastoredata#DescribeObject": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.mediastoredata#DescribeObjectRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.mediastoredata#DescribeObjectResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.mediastoredata#ContainerNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.mediastoredata#InternalServerError"
+          },
+          {
+            "target": "com.amazonaws.mediastoredata#ObjectNotFoundException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eGets the headers for an object at the specified path.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "HEAD",
+            "uri": "/{Path+}",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.mediastoredata#DescribeObjectRequest": {
+        "type": "structure",
+        "members": {
+          "Path": {
+            "target": "com.amazonaws.mediastoredata#PathNaming",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe path (including the file name) where the object is stored in the container.\n         Format: \u003cfolder name\u003e/\u003cfolder name\u003e/\u003cfile name\u003e\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.mediastoredata#DescribeObjectResponse": {
+        "type": "structure",
+        "members": {
+          "CacheControl": {
+            "target": "com.amazonaws.mediastoredata#StringPrimitive",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn optional \u003ccode\u003eCacheControl\u003c/code\u003e header that allows the caller to control the\n         object's cache behavior. Headers can be passed in as specified in the HTTP at \u003ca href=\"https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.9\"\u003ehttps://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.9\u003c/a\u003e.\u003c/p\u003e\n         \u003cp\u003eHeaders with a custom user-defined value are also accepted.\u003c/p\u003e",
+              "smithy.api#httpHeader": "Cache-Control"
+            }
+          },
+          "ContentLength": {
+            "target": "com.amazonaws.mediastoredata#NonNegativeLong",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe length of the object in bytes.\u003c/p\u003e",
+              "smithy.api#httpHeader": "Content-Length"
+            }
+          },
+          "ContentType": {
+            "target": "com.amazonaws.mediastoredata#ContentType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe content type of the object.\u003c/p\u003e",
+              "smithy.api#httpHeader": "Content-Type"
+            }
+          },
+          "ETag": {
+            "target": "com.amazonaws.mediastoredata#ETag",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ETag that represents a unique instance of the object.\u003c/p\u003e",
+              "smithy.api#httpHeader": "ETag"
+            }
+          },
+          "LastModified": {
+            "target": "com.amazonaws.mediastoredata#TimeStamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe date and time that the object was last modified.\u003c/p\u003e",
+              "smithy.api#httpHeader": "Last-Modified"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.mediastoredata#ETag": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 64
+          },
+          "smithy.api#pattern": "^[0-9A-Fa-f]+$"
+        }
+      },
+      "com.amazonaws.mediastoredata#ErrorMessage": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 255
+          },
+          "smithy.api#pattern": "^[ \\w:\\.\\?-]+$"
+        }
+      },
+      "com.amazonaws.mediastoredata#GetObject": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.mediastoredata#GetObjectRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.mediastoredata#GetObjectResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.mediastoredata#ContainerNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.mediastoredata#InternalServerError"
+          },
+          {
+            "target": "com.amazonaws.mediastoredata#ObjectNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.mediastoredata#RequestedRangeNotSatisfiableException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eDownloads the object at the specified path. If the object\u2019s upload availability is set to \u003ccode\u003estreaming\u003c/code\u003e, AWS Elemental MediaStore downloads the object even if it\u2019s still uploading the object.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "GET",
+            "uri": "/{Path+}",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.mediastoredata#GetObjectRequest": {
+        "type": "structure",
+        "members": {
+          "Path": {
+            "target": "com.amazonaws.mediastoredata#PathNaming",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe path (including the file name) where the object is stored in the container.\n         Format: \u003cfolder name\u003e/\u003cfolder name\u003e/\u003cfile name\u003e\u003c/p\u003e\n         \u003cp\u003eFor example, to upload the file \u003ccode\u003emlaw.avi\u003c/code\u003e to the folder path\n            \u003ccode\u003epremium\\canada\u003c/code\u003e in the container \u003ccode\u003emovies\u003c/code\u003e, enter the path\n            \u003ccode\u003epremium/canada/mlaw.avi\u003c/code\u003e.\u003c/p\u003e\n         \u003cp\u003eDo not include the container name in this path.\u003c/p\u003e\n         \u003cp\u003eIf the path includes any folders that don't exist yet, the service creates them. For\n         example, suppose you have an existing \u003ccode\u003epremium/usa\u003c/code\u003e subfolder. If you specify\n            \u003ccode\u003epremium/canada\u003c/code\u003e, the service creates a \u003ccode\u003ecanada\u003c/code\u003e subfolder in the\n            \u003ccode\u003epremium\u003c/code\u003e folder. You then have two subfolders, \u003ccode\u003eusa\u003c/code\u003e and\n            \u003ccode\u003ecanada\u003c/code\u003e, in the \u003ccode\u003epremium\u003c/code\u003e folder. \u003c/p\u003e\n         \u003cp\u003eThere is no correlation between the path to the source and the path (folders) in the\n         container in AWS Elemental MediaStore.\u003c/p\u003e\n         \u003cp\u003eFor more information about folders and how they exist in a container, see the \u003ca href=\"http://docs.aws.amazon.com/mediastore/latest/ug/\"\u003eAWS Elemental MediaStore User\n            Guide\u003c/a\u003e.\u003c/p\u003e\n         \u003cp\u003eThe file name is the name that is assigned to the file that you upload. The file can\n         have the same name inside and outside of AWS Elemental MediaStore, or it can have the same\n         name. The file name can include or omit an extension. \u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "Range": {
+            "target": "com.amazonaws.mediastoredata#RangePattern",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe range bytes of an object to retrieve. For more information about the\n          \u003ccode\u003eRange\u003c/code\u003e header, see \u003ca href=\"http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.35\"\u003ehttp://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.35\u003c/a\u003e. AWS Elemental MediaStore ignores this header for partially uploaded objects that have streaming upload availability.\u003c/p\u003e",
+              "smithy.api#httpHeader": "Range"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.mediastoredata#GetObjectResponse": {
+        "type": "structure",
+        "members": {
+          "Body": {
+            "target": "com.amazonaws.mediastoredata#PayloadBlob",
+            "traits": {
+              "smithy.api#default": "",
+              "smithy.api#documentation": "\u003cp\u003eThe bytes of the object. \u003c/p\u003e",
+              "smithy.api#httpPayload": {}
+            }
+          },
+          "CacheControl": {
+            "target": "com.amazonaws.mediastoredata#StringPrimitive",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn optional \u003ccode\u003eCacheControl\u003c/code\u003e header that allows the caller to control the\n         object's cache behavior. Headers can be passed in as specified in the HTTP spec at \u003ca href=\"https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.9\"\u003ehttps://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.9\u003c/a\u003e.\u003c/p\u003e\n         \u003cp\u003eHeaders with a custom user-defined value are also accepted.\u003c/p\u003e",
+              "smithy.api#httpHeader": "Cache-Control"
+            }
+          },
+          "ContentLength": {
+            "target": "com.amazonaws.mediastoredata#NonNegativeLong",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe length of the object in bytes.\u003c/p\u003e",
+              "smithy.api#httpHeader": "Content-Length"
+            }
+          },
+          "ContentRange": {
+            "target": "com.amazonaws.mediastoredata#ContentRangePattern",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe range of bytes to retrieve.\u003c/p\u003e",
+              "smithy.api#httpHeader": "Content-Range"
+            }
+          },
+          "ContentType": {
+            "target": "com.amazonaws.mediastoredata#ContentType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe content type of the object.\u003c/p\u003e",
+              "smithy.api#httpHeader": "Content-Type"
+            }
+          },
+          "ETag": {
+            "target": "com.amazonaws.mediastoredata#ETag",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ETag that represents a unique instance of the object.\u003c/p\u003e",
+              "smithy.api#httpHeader": "ETag"
+            }
+          },
+          "LastModified": {
+            "target": "com.amazonaws.mediastoredata#TimeStamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe date and time that the object was last modified.\u003c/p\u003e",
+              "smithy.api#httpHeader": "Last-Modified"
+            }
+          },
+          "StatusCode": {
+            "target": "com.amazonaws.mediastoredata#statusCode",
+            "traits": {
+              "smithy.api#default": 0,
+              "smithy.api#documentation": "\u003cp\u003eThe HTML status code of the request. Status codes ranging from 200 to 299 indicate\n         success. All other status codes indicate the type of error that occurred.\u003c/p\u003e",
+              "smithy.api#httpResponseCode": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.mediastoredata#InternalServerError": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.mediastoredata#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe service is temporarily unavailable.\u003c/p\u003e",
+          "smithy.api#error": "server"
+        }
+      },
+      "com.amazonaws.mediastoredata#Item": {
+        "type": "structure",
+        "members": {
+          "ContentLength": {
+            "target": "com.amazonaws.mediastoredata#NonNegativeLong",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe length of the item in bytes.\u003c/p\u003e"
+            }
+          },
+          "ContentType": {
+            "target": "com.amazonaws.mediastoredata#ContentType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe content type of the item.\u003c/p\u003e"
+            }
+          },
+          "ETag": {
+            "target": "com.amazonaws.mediastoredata#ETag",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ETag that represents a unique instance of the item.\u003c/p\u003e"
+            }
+          },
+          "LastModified": {
+            "target": "com.amazonaws.mediastoredata#TimeStamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe date and time that the item was last modified.\u003c/p\u003e"
+            }
+          },
+          "Name": {
+            "target": "com.amazonaws.mediastoredata#ItemName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the item.\u003c/p\u003e"
+            }
+          },
+          "Type": {
+            "target": "com.amazonaws.mediastoredata#ItemType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe item type (folder or object).\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA metadata entry for a folder or object.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.mediastoredata#ItemList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.mediastoredata#Item"
+        }
+      },
+      "com.amazonaws.mediastoredata#ItemName": {
+        "type": "string",
+        "traits": {
+          "smithy.api#pattern": "^[A-Za-z0-9_\\.\\-\\~]+$"
+        }
+      },
+      "com.amazonaws.mediastoredata#ItemType": {
+        "type": "enum",
+        "members": {
+          "FOLDER": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "FOLDER"
+            }
+          },
+          "OBJECT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "OBJECT"
+            }
+          }
+        }
+      },
+      "com.amazonaws.mediastoredata#ListItems": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.mediastoredata#ListItemsRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.mediastoredata#ListItemsResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.mediastoredata#ContainerNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.mediastoredata#InternalServerError"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eProvides a list of metadata entries about folders and objects in the specified\n         folder.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "GET",
+            "uri": "/",
+            "code": 200
+          },
+          "smithy.api#paginated": {
+            "inputToken": "NextToken",
+            "outputToken": "NextToken",
+            "pageSize": "MaxResults"
+          }
+        }
+      },
+      "com.amazonaws.mediastoredata#ListItemsRequest": {
+        "type": "structure",
+        "members": {
+          "MaxResults": {
+            "target": "com.amazonaws.mediastoredata#ListLimit",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of results to return per API request. For example, you submit a\n            \u003ccode\u003eListItems\u003c/code\u003e request with \u003ccode\u003eMaxResults\u003c/code\u003e set at 500. Although 2,000\n         items match your request, the service returns no more than the first 500 items. (The\n         service also returns a \u003ccode\u003eNextToken\u003c/code\u003e value that you can use to fetch the next\n         batch of results.) The service might return fewer results than the \u003ccode\u003eMaxResults\u003c/code\u003e\n         value.\u003c/p\u003e\n         \u003cp\u003eIf \u003ccode\u003eMaxResults\u003c/code\u003e is not included in the request, the service defaults to\n         pagination with a maximum of 1,000 results per page.\u003c/p\u003e",
+              "smithy.api#httpQuery": "MaxResults"
+            }
+          },
+          "NextToken": {
+            "target": "com.amazonaws.mediastoredata#PaginationToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe token that identifies which batch of results that you want to see. For example,\n         you submit a \u003ccode\u003eListItems\u003c/code\u003e request with \u003ccode\u003eMaxResults\u003c/code\u003e set at 500. The\n         service returns the first batch of results (up to 500) and a \u003ccode\u003eNextToken\u003c/code\u003e value.\n         To see the next batch of results, you can submit the \u003ccode\u003eListItems\u003c/code\u003e request a\n         second time and specify the \u003ccode\u003eNextToken\u003c/code\u003e value.\u003c/p\u003e\n         \u003cp\u003eTokens expire after 15 minutes.\u003c/p\u003e",
+              "smithy.api#httpQuery": "NextToken"
+            }
+          },
+          "Path": {
+            "target": "com.amazonaws.mediastoredata#ListPathNaming",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe path in the container from which to retrieve items. Format: \u003cfolder\n         name\u003e/\u003cfolder name\u003e/\u003cfile name\u003e\u003c/p\u003e",
+              "smithy.api#httpQuery": "Path"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.mediastoredata#ListItemsResponse": {
+        "type": "structure",
+        "members": {
+          "Items": {
+            "target": "com.amazonaws.mediastoredata#ItemList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe metadata entries for the folders and objects at the requested path.\u003c/p\u003e"
+            }
+          },
+          "NextToken": {
+            "target": "com.amazonaws.mediastoredata#PaginationToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe token that can be used in a request to view the next set of results. For example,\n         you submit a \u003ccode\u003eListItems\u003c/code\u003e request that matches 2,000 items with\n            \u003ccode\u003eMaxResults\u003c/code\u003e set at 500. The service returns the first batch of results (up\n         to 500) and a \u003ccode\u003eNextToken\u003c/code\u003e value that can be used to fetch the next batch of\n         results.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.mediastoredata#ListLimit": {
+        "type": "integer",
+        "traits": {
+          "smithy.api#range": {
+            "min": 1,
+            "max": 1000
+          }
+        }
+      },
+      "com.amazonaws.mediastoredata#ListPathNaming": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 900
+          },
+          "smithy.api#pattern": "^/?(?:[A-Za-z0-9_\\.\\-\\~]+/){0,10}(?:[A-Za-z0-9_\\.\\-\\~]+)?/?$"
+        }
+      },
+      "com.amazonaws.mediastoredata#MediaStoreObject_20170901": {
+        "type": "service",
+        "version": "2017-09-01",
+        "operations": [
+          {
+            "target": "com.amazonaws.mediastoredata#DeleteObject"
+          },
+          {
+            "target": "com.amazonaws.mediastoredata#DescribeObject"
+          },
+          {
+            "target": "com.amazonaws.mediastoredata#GetObject"
+          },
+          {
+            "target": "com.amazonaws.mediastoredata#ListItems"
+          },
+          {
+            "target": "com.amazonaws.mediastoredata#PutObject"
+          }
+        ],
+        "traits": {
+          "aws.api#service": {
+            "sdkId": "MediaStore Data",
+            "arnNamespace": "mediastore",
+            "cloudFormationName": "MediaStoreData",
+            "cloudTrailEventSource": "mediastoredata.amazonaws.com",
+            "endpointPrefix": "data.mediastore"
+          },
+          "aws.auth#sigv4": {
+            "name": "mediastore"
+          },
+          "aws.protocols#restJson1": {},
+          "smithy.api#documentation": "\u003cp\u003eAn AWS Elemental MediaStore asset is an object, similar to an object in the Amazon S3\n         service. Objects are the fundamental entities that are stored in AWS Elemental\n         MediaStore.\u003c/p\u003e",
+          "smithy.api#title": "AWS Elemental MediaStore Data Plane",
+          "smithy.api#xmlNamespace": {
+            "uri": "https://object.mediastore.amazonaws.com/doc/2017-09-01"
+          },
+          "smithy.rules#endpointBdd": {
+            "version": "1.1",
+            "parameters": {
+              "Region": {
+                "builtIn": "AWS::Region",
+                "required": false,
+                "documentation": "The AWS region used to dispatch the request.",
+                "type": "string"
+              },
+              "UseDualStack": {
+                "builtIn": "AWS::UseDualStack",
+                "required": true,
+                "default": false,
+                "documentation": "When true, use the dual-stack endpoint. If the configured endpoint does not support dual-stack, dispatching the request MAY return an error.",
+                "type": "boolean"
+              },
+              "UseFIPS": {
+                "builtIn": "AWS::UseFIPS",
+                "required": true,
+                "default": false,
+                "documentation": "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
+                "type": "boolean"
+              },
+              "Endpoint": {
+                "builtIn": "SDK::Endpoint",
+                "required": false,
+                "documentation": "Override the endpoint used to send this request",
+                "type": "string"
+              }
+            },
+            "conditions": [
+              {
+                "fn": "isSet",
+                "argv": [
+                  {
+                    "ref": "Endpoint"
+                  }
+                ]
+              },
+              {
+                "fn": "isSet",
+                "argv": [
+                  {
+                    "ref": "Region"
+                  }
+                ]
+              },
+              {
+                "fn": "aws.partition",
+                "argv": [
+                  {
+                    "ref": "Region"
+                  }
+                ],
+                "assign": "PartitionResult"
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "ref": "UseFIPS"
+                  },
+                  true
+                ]
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "ref": "UseDualStack"
+                  },
+                  true
+                ]
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "fn": "getAttr",
+                    "argv": [
+                      {
+                        "ref": "PartitionResult"
+                      },
+                      "supportsDualStack"
+                    ]
+                  },
+                  true
+                ]
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "fn": "getAttr",
+                    "argv": [
+                      {
+                        "ref": "PartitionResult"
+                      },
+                      "supportsFIPS"
+                    ]
+                  },
+                  true
+                ]
+              }
+            ],
+            "results": [
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: FIPS and custom endpoint are not supported",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: Dualstack and custom endpoint are not supported",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": {
+                    "ref": "Endpoint"
+                  },
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://data.mediastore-fips.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "FIPS and DualStack are enabled, but this partition does not support one or both",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://data.mediastore-fips.{Region}.{PartitionResult#dnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "FIPS is enabled but this partition does not support FIPS",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://data.mediastore.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "DualStack is enabled but this partition does not support DualStack",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://data.mediastore.{Region}.{PartitionResult#dnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: Missing Region",
+                "type": "error"
+              }
+            ],
+            "root": 2,
+            "nodeCount": 13,
+            "nodes": "/////wAAAAH/////AAAAAAAAAAwAAAADAAAAAQAAAAQF9eELAAAAAgAAAAUF9eELAAAAAwAAAAgAAAAGAAAABAAAAAcF9eEKAAAABQX14QgF9eEJAAAABAAAAAoAAAAJAAAABgX14QYF9eEHAAAABQAAAAsF9eEFAAAABgX14QQF9eEFAAAAAwX14QEAAAANAAAABAX14QIF9eED"
+          },
+          "smithy.rules#endpointRuleSet": {
+            "version": "1.0",
+            "parameters": {
+              "Region": {
+                "builtIn": "AWS::Region",
+                "required": false,
+                "documentation": "The AWS region used to dispatch the request.",
+                "type": "string"
+              },
+              "UseDualStack": {
+                "builtIn": "AWS::UseDualStack",
+                "required": true,
+                "default": false,
+                "documentation": "When true, use the dual-stack endpoint. If the configured endpoint does not support dual-stack, dispatching the request MAY return an error.",
+                "type": "boolean"
+              },
+              "UseFIPS": {
+                "builtIn": "AWS::UseFIPS",
+                "required": true,
+                "default": false,
+                "documentation": "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
+                "type": "boolean"
+              },
+              "Endpoint": {
+                "builtIn": "SDK::Endpoint",
+                "required": false,
+                "documentation": "Override the endpoint used to send this request",
+                "type": "string"
+              }
+            },
+            "rules": [
+              {
+                "conditions": [
+                  {
+                    "fn": "isSet",
+                    "argv": [
+                      {
+                        "ref": "Endpoint"
+                      }
+                    ]
+                  }
+                ],
+                "rules": [
+                  {
+                    "conditions": [
+                      {
+                        "fn": "booleanEquals",
+                        "argv": [
+                          {
+                            "ref": "UseFIPS"
+                          },
+                          true
+                        ]
+                      }
+                    ],
+                    "error": "Invalid Configuration: FIPS and custom endpoint are not supported",
+                    "type": "error"
+                  },
+                  {
+                    "conditions": [
+                      {
+                        "fn": "booleanEquals",
+                        "argv": [
+                          {
+                            "ref": "UseDualStack"
+                          },
+                          true
+                        ]
+                      }
+                    ],
+                    "error": "Invalid Configuration: Dualstack and custom endpoint are not supported",
+                    "type": "error"
+                  },
+                  {
+                    "conditions": [],
+                    "endpoint": {
+                      "url": {
+                        "ref": "Endpoint"
+                      },
+                      "properties": {},
+                      "headers": {}
+                    },
+                    "type": "endpoint"
+                  }
+                ],
+                "type": "tree"
+              },
+              {
+                "conditions": [
+                  {
+                    "fn": "isSet",
+                    "argv": [
+                      {
+                        "ref": "Region"
+                      }
+                    ]
+                  }
+                ],
+                "rules": [
+                  {
+                    "conditions": [
+                      {
+                        "fn": "aws.partition",
+                        "argv": [
+                          {
+                            "ref": "Region"
+                          }
+                        ],
+                        "assign": "PartitionResult"
+                      }
+                    ],
+                    "rules": [
+                      {
+                        "conditions": [
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseFIPS"
+                              },
+                              true
+                            ]
+                          },
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseDualStack"
+                              },
+                              true
+                            ]
+                          }
+                        ],
+                        "rules": [
+                          {
+                            "conditions": [
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  true,
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsFIPS"
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  true,
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsDualStack"
+                                    ]
+                                  }
+                                ]
+                              }
+                            ],
+                            "rules": [
+                              {
+                                "conditions": [],
+                                "endpoint": {
+                                  "url": "https://data.mediastore-fips.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                                  "properties": {},
+                                  "headers": {}
+                                },
+                                "type": "endpoint"
+                              }
+                            ],
+                            "type": "tree"
+                          },
+                          {
+                            "conditions": [],
+                            "error": "FIPS and DualStack are enabled, but this partition does not support one or both",
+                            "type": "error"
+                          }
+                        ],
+                        "type": "tree"
+                      },
+                      {
+                        "conditions": [
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseFIPS"
+                              },
+                              true
+                            ]
+                          }
+                        ],
+                        "rules": [
+                          {
+                            "conditions": [
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsFIPS"
+                                    ]
+                                  },
+                                  true
+                                ]
+                              }
+                            ],
+                            "rules": [
+                              {
+                                "conditions": [],
+                                "endpoint": {
+                                  "url": "https://data.mediastore-fips.{Region}.{PartitionResult#dnsSuffix}",
+                                  "properties": {},
+                                  "headers": {}
+                                },
+                                "type": "endpoint"
+                              }
+                            ],
+                            "type": "tree"
+                          },
+                          {
+                            "conditions": [],
+                            "error": "FIPS is enabled but this partition does not support FIPS",
+                            "type": "error"
+                          }
+                        ],
+                        "type": "tree"
+                      },
+                      {
+                        "conditions": [
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseDualStack"
+                              },
+                              true
+                            ]
+                          }
+                        ],
+                        "rules": [
+                          {
+                            "conditions": [
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  true,
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsDualStack"
+                                    ]
+                                  }
+                                ]
+                              }
+                            ],
+                            "rules": [
+                              {
+                                "conditions": [],
+                                "endpoint": {
+                                  "url": "https://data.mediastore.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                                  "properties": {},
+                                  "headers": {}
+                                },
+                                "type": "endpoint"
+                              }
+                            ],
+                            "type": "tree"
+                          },
+                          {
+                            "conditions": [],
+                            "error": "DualStack is enabled but this partition does not support DualStack",
+                            "type": "error"
+                          }
+                        ],
+                        "type": "tree"
+                      },
+                      {
+                        "conditions": [],
+                        "endpoint": {
+                          "url": "https://data.mediastore.{Region}.{PartitionResult#dnsSuffix}",
+                          "properties": {},
+                          "headers": {}
+                        },
+                        "type": "endpoint"
+                      }
+                    ],
+                    "type": "tree"
+                  }
+                ],
+                "type": "tree"
+              },
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: Missing Region",
+                "type": "error"
+              }
+            ]
+          },
+          "smithy.rules#endpointTests": {
+            "testCases": [
+              {
+                "documentation": "For region ap-northeast-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://data.mediastore.ap-northeast-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ap-northeast-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region ap-northeast-2 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://data.mediastore.ap-northeast-2.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ap-northeast-2",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region ap-southeast-2 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://data.mediastore.ap-southeast-2.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ap-southeast-2",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region eu-central-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://data.mediastore.eu-central-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "eu-central-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region eu-north-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://data.mediastore.eu-north-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "eu-north-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region eu-west-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://data.mediastore.eu-west-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "eu-west-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region eu-west-2 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://data.mediastore.eu-west-2.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "eu-west-2",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://data.mediastore.us-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-west-2 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://data.mediastore.us-west-2.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-west-2",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://data.mediastore-fips.us-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://data.mediastore-fips.us-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://data.mediastore.us-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://data.mediastore-fips.cn-north-1.api.amazonwebservices.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": true,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://data.mediastore-fips.cn-north-1.amazonaws.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://data.mediastore.cn-north-1.api.amazonwebservices.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://data.mediastore.cn-north-1.amazonaws.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://data.mediastore-fips.us-gov-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://data.mediastore-fips.us-gov-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://data.mediastore.us-gov-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://data.mediastore.us-gov-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-iso-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://data.mediastore-fips.us-iso-east-1.c2s.ic.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-iso-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-iso-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://data.mediastore.us-iso-east-1.c2s.ic.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-iso-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-isob-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://data.mediastore-fips.us-isob-east-1.sc2s.sgov.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-isob-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-isob-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://data.mediastore.us-isob-east-1.sc2s.sgov.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-isob-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For custom endpoint with region set and fips disabled and dualstack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://example.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "For custom endpoint with region not set and fips disabled and dualstack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://example.com"
+                  }
+                },
+                "params": {
+                  "UseFIPS": false,
+                  "UseDualStack": false,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "For custom endpoint with fips enabled and dualstack disabled",
+                "expect": {
+                  "error": "Invalid Configuration: FIPS and custom endpoint are not supported"
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "For custom endpoint with fips disabled and dualstack enabled",
+                "expect": {
+                  "error": "Invalid Configuration: Dualstack and custom endpoint are not supported"
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "Missing region",
+                "expect": {
+                  "error": "Invalid Configuration: Missing Region"
+                }
+              }
+            ],
+            "version": "1.0"
+          }
+        }
+      },
+      "com.amazonaws.mediastoredata#NonNegativeLong": {
+        "type": "long",
+        "traits": {
+          "smithy.api#range": {
+            "min": 0
+          }
+        }
+      },
+      "com.amazonaws.mediastoredata#ObjectNotFoundException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.mediastoredata#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eCould not perform an operation on an object that does not exist.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 404
+        }
+      },
+      "com.amazonaws.mediastoredata#PaginationToken": {
+        "type": "string"
+      },
+      "com.amazonaws.mediastoredata#PathNaming": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 900
+          },
+          "smithy.api#pattern": "^(?:[A-Za-z0-9_\\.\\-\\~]+/){0,10}[A-Za-z0-9_\\.\\-\\~]+$"
+        }
+      },
+      "com.amazonaws.mediastoredata#PayloadBlob": {
+        "type": "blob",
+        "traits": {
+          "smithy.api#streaming": {}
+        }
+      },
+      "com.amazonaws.mediastoredata#PutObject": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.mediastoredata#PutObjectRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.mediastoredata#PutObjectResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.mediastoredata#ContainerNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.mediastoredata#InternalServerError"
+          }
+        ],
+        "traits": {
+          "aws.auth#unsignedPayload": {},
+          "smithy.api#auth": [
+            "aws.auth#sigv4"
+          ],
+          "smithy.api#documentation": "\u003cp\u003eUploads an object to the specified path. Object sizes are limited to 25 MB for standard upload availability and 10 MB for streaming upload availability.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "PUT",
+            "uri": "/{Path+}",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.mediastoredata#PutObjectRequest": {
+        "type": "structure",
+        "members": {
+          "Body": {
+            "target": "com.amazonaws.mediastoredata#PayloadBlob",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe bytes to be stored. \u003c/p\u003e",
+              "smithy.api#httpPayload": {},
+              "smithy.api#required": {}
+            }
+          },
+          "CacheControl": {
+            "target": "com.amazonaws.mediastoredata#StringPrimitive",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn optional \u003ccode\u003eCacheControl\u003c/code\u003e header that allows the caller to control the\n         object's cache behavior. Headers can be passed in as specified in the HTTP at \u003ca href=\"https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.9\"\u003ehttps://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.9\u003c/a\u003e.\u003c/p\u003e\n         \u003cp\u003eHeaders with a custom user-defined value are also accepted.\u003c/p\u003e",
+              "smithy.api#httpHeader": "Cache-Control"
+            }
+          },
+          "ContentType": {
+            "target": "com.amazonaws.mediastoredata#ContentType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe content type of the object.\u003c/p\u003e",
+              "smithy.api#httpHeader": "Content-Type"
+            }
+          },
+          "Path": {
+            "target": "com.amazonaws.mediastoredata#PathNaming",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe path (including the file name) where the object is stored in the container.\n         Format: \u003cfolder name\u003e/\u003cfolder name\u003e/\u003cfile name\u003e\u003c/p\u003e\n         \u003cp\u003eFor example, to upload the file \u003ccode\u003emlaw.avi\u003c/code\u003e to the folder path\n            \u003ccode\u003epremium\\canada\u003c/code\u003e in the container \u003ccode\u003emovies\u003c/code\u003e, enter the path\n            \u003ccode\u003epremium/canada/mlaw.avi\u003c/code\u003e.\u003c/p\u003e\n         \u003cp\u003eDo not include the container name in this path.\u003c/p\u003e\n         \u003cp\u003eIf the path includes any folders that don't exist yet, the service creates them. For\n         example, suppose you have an existing \u003ccode\u003epremium/usa\u003c/code\u003e subfolder. If you specify\n            \u003ccode\u003epremium/canada\u003c/code\u003e, the service creates a \u003ccode\u003ecanada\u003c/code\u003e subfolder in the\n            \u003ccode\u003epremium\u003c/code\u003e folder. You then have two subfolders, \u003ccode\u003eusa\u003c/code\u003e and\n            \u003ccode\u003ecanada\u003c/code\u003e, in the \u003ccode\u003epremium\u003c/code\u003e folder. \u003c/p\u003e\n         \u003cp\u003eThere is no correlation between the path to the source and the path (folders) in the\n         container in AWS Elemental MediaStore.\u003c/p\u003e\n         \u003cp\u003eFor more information about folders and how they exist in a container, see the \u003ca href=\"http://docs.aws.amazon.com/mediastore/latest/ug/\"\u003eAWS Elemental MediaStore User\n            Guide\u003c/a\u003e.\u003c/p\u003e\n         \u003cp\u003eThe file name is the name that is assigned to the file that you upload. The file can\n         have the same name inside and outside of AWS Elemental MediaStore, or it can have the same\n         name. The file name can include or omit an extension. \u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "StorageClass": {
+            "target": "com.amazonaws.mediastoredata#StorageClass",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIndicates the storage class of a \u003ccode\u003ePut\u003c/code\u003e request. Defaults to\n         high-performance temporal storage class, and objects are persisted into durable storage\n         shortly after being received.\u003c/p\u003e",
+              "smithy.api#httpHeader": "x-amz-storage-class"
+            }
+          },
+          "UploadAvailability": {
+            "target": "com.amazonaws.mediastoredata#UploadAvailability",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIndicates the availability of an object while it is still uploading. If the value is set to \u003ccode\u003estreaming\u003c/code\u003e, the object is available for\n            downloading after some initial buffering but before the object is uploaded completely. If the value is set to \u003ccode\u003estandard\u003c/code\u003e, the object is\n            available for downloading only when it is uploaded completely. The default value for this header is \u003ccode\u003estandard\u003c/code\u003e.\u003c/p\u003e\n        \u003cp\u003eTo use this header, you must also set the HTTP \u003ccode\u003eTransfer-Encoding\u003c/code\u003e header to \u003ccode\u003echunked\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#httpHeader": "x-amz-upload-availability"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.mediastoredata#PutObjectResponse": {
+        "type": "structure",
+        "members": {
+          "ContentSHA256": {
+            "target": "com.amazonaws.mediastoredata#SHA256Hash",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe SHA256 digest of the object that is persisted.\u003c/p\u003e"
+            }
+          },
+          "ETag": {
+            "target": "com.amazonaws.mediastoredata#ETag",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eUnique identifier of the object in the container.\u003c/p\u003e"
+            }
+          },
+          "StorageClass": {
+            "target": "com.amazonaws.mediastoredata#StorageClass",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe storage class where the object was persisted. The class should be\n         \u201cTemporal\u201d.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.mediastoredata#RangePattern": {
+        "type": "string",
+        "traits": {
+          "smithy.api#pattern": "^bytes=(?:\\d+\\-\\d*|\\d*\\-\\d+)$"
+        }
+      },
+      "com.amazonaws.mediastoredata#RequestedRangeNotSatisfiableException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.mediastoredata#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe requested content range is not valid.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 416
+        }
+      },
+      "com.amazonaws.mediastoredata#SHA256Hash": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 64,
+            "max": 64
+          },
+          "smithy.api#pattern": "^[0-9A-Fa-f]{64}$"
+        }
+      },
+      "com.amazonaws.mediastoredata#StorageClass": {
+        "type": "enum",
+        "members": {
+          "TEMPORAL": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "TEMPORAL"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 16
+          }
+        }
+      },
+      "com.amazonaws.mediastoredata#StringPrimitive": {
+        "type": "string"
+      },
+      "com.amazonaws.mediastoredata#TimeStamp": {
+        "type": "timestamp"
+      },
+      "com.amazonaws.mediastoredata#UploadAvailability": {
+        "type": "enum",
+        "members": {
+          "STANDARD": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "STANDARD"
+            }
+          },
+          "STREAMING": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "STREAMING"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 16
+          }
+        }
+      },
+      "com.amazonaws.mediastoredata#statusCode": {
+        "type": "integer",
+        "traits": {
+          "smithy.api#default": 0
+        }
+      }
+    }
+  }
+}

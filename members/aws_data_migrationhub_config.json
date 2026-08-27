@@ -1,0 +1,1356 @@
+{
+  "schema_source": "smithy",
+  "mode": "data_source",
+  "auth": {
+    "Type": "",
+    "Params": null
+  },
+  "base_url": "https://aws.example.invalid",
+  "retry": {
+    "MaxAttempts": 0,
+    "InitialBackoff": "",
+    "MaxBackoff": "",
+    "Jitter": null,
+    "RespectRetryAfter": null,
+    "RateLimitResetHeader": ""
+  },
+  "timeouts": {
+    "Create": "",
+    "Read": "",
+    "Update": "",
+    "Delete": "",
+    "Default": ""
+  },
+  "wire_name": "aws",
+  "raw_spec": {
+    "smithy": "2.0",
+    "metadata": {
+      "suppressions": [
+        {
+          "id": "HttpMethodSemantics",
+          "namespace": "*"
+        },
+        {
+          "id": "HttpResponseCodeSemantics",
+          "namespace": "*"
+        },
+        {
+          "id": "PaginatedTrait",
+          "namespace": "*"
+        },
+        {
+          "id": "HttpHeaderTrait",
+          "namespace": "*"
+        },
+        {
+          "id": "HttpUriConflict",
+          "namespace": "*"
+        },
+        {
+          "id": "Service",
+          "namespace": "*"
+        }
+      ]
+    },
+    "shapes": {
+      "com.amazonaws.migrationhubconfig#AWSMigrationHubMultiAccountService": {
+        "type": "service",
+        "version": "2019-06-30",
+        "operations": [
+          {
+            "target": "com.amazonaws.migrationhubconfig#CreateHomeRegionControl"
+          },
+          {
+            "target": "com.amazonaws.migrationhubconfig#DeleteHomeRegionControl"
+          },
+          {
+            "target": "com.amazonaws.migrationhubconfig#DescribeHomeRegionControls"
+          },
+          {
+            "target": "com.amazonaws.migrationhubconfig#GetHomeRegion"
+          }
+        ],
+        "traits": {
+          "aws.api#service": {
+            "sdkId": "MigrationHub Config",
+            "arnNamespace": "mgh",
+            "cloudFormationName": "MigrationHubConfig",
+            "cloudTrailEventSource": "migrationhubconfig.amazonaws.com",
+            "endpointPrefix": "migrationhub-config"
+          },
+          "aws.auth#sigv4": {
+            "name": "mgh"
+          },
+          "aws.protocols#awsJson1_1": {},
+          "smithy.api#documentation": "\u003cp\u003eThe AWS Migration Hub home region APIs are available specifically for working with your\n      Migration Hub home region. You can use these APIs to determine a home region, as well as to\n      create and work with controls that describe the home region.\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003eYou must make API calls for write actions (create, notify, associate, disassociate,\n          import, or put) while in your home region, or a \u003ccode\u003eHomeRegionNotSetException\u003c/code\u003e\n          error is returned.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eAPI calls for read actions (list, describe, stop, and delete) are permitted outside of\n          your home region.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eIf you call a write API outside the home region, an \u003ccode\u003eInvalidInputException\u003c/code\u003e\n          is returned.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eYou can call \u003ccode\u003eGetHomeRegion\u003c/code\u003e action to obtain the account's Migration Hub\n          home region.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e\n         \u003cp\u003eFor specific API usage, see the sections that follow in this AWS Migration Hub Home Region\n      API reference. \u003c/p\u003e",
+          "smithy.api#title": "AWS Migration Hub Config",
+          "smithy.rules#endpointBdd": {
+            "version": "1.1",
+            "parameters": {
+              "Region": {
+                "builtIn": "AWS::Region",
+                "required": false,
+                "documentation": "The AWS region used to dispatch the request.",
+                "type": "string"
+              },
+              "UseDualStack": {
+                "builtIn": "AWS::UseDualStack",
+                "required": true,
+                "default": false,
+                "documentation": "When true, use the dual-stack endpoint. If the configured endpoint does not support dual-stack, dispatching the request MAY return an error.",
+                "type": "boolean"
+              },
+              "UseFIPS": {
+                "builtIn": "AWS::UseFIPS",
+                "required": true,
+                "default": false,
+                "documentation": "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
+                "type": "boolean"
+              },
+              "Endpoint": {
+                "builtIn": "SDK::Endpoint",
+                "required": false,
+                "documentation": "Override the endpoint used to send this request",
+                "type": "string"
+              }
+            },
+            "conditions": [
+              {
+                "fn": "isSet",
+                "argv": [
+                  {
+                    "ref": "Endpoint"
+                  }
+                ]
+              },
+              {
+                "fn": "isSet",
+                "argv": [
+                  {
+                    "ref": "Region"
+                  }
+                ]
+              },
+              {
+                "fn": "aws.partition",
+                "argv": [
+                  {
+                    "ref": "Region"
+                  }
+                ],
+                "assign": "PartitionResult"
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "ref": "UseFIPS"
+                  },
+                  true
+                ]
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "ref": "UseDualStack"
+                  },
+                  true
+                ]
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "fn": "getAttr",
+                    "argv": [
+                      {
+                        "ref": "PartitionResult"
+                      },
+                      "supportsDualStack"
+                    ]
+                  },
+                  true
+                ]
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "fn": "getAttr",
+                    "argv": [
+                      {
+                        "ref": "PartitionResult"
+                      },
+                      "supportsFIPS"
+                    ]
+                  },
+                  true
+                ]
+              }
+            ],
+            "results": [
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: FIPS and custom endpoint are not supported",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: Dualstack and custom endpoint are not supported",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": {
+                    "ref": "Endpoint"
+                  },
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://migrationhub-config-fips.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "FIPS and DualStack are enabled, but this partition does not support one or both",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://migrationhub-config-fips.{Region}.{PartitionResult#dnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "FIPS is enabled but this partition does not support FIPS",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://migrationhub-config.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "DualStack is enabled but this partition does not support DualStack",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://migrationhub-config.{Region}.{PartitionResult#dnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: Missing Region",
+                "type": "error"
+              }
+            ],
+            "root": 2,
+            "nodeCount": 13,
+            "nodes": "/////wAAAAH/////AAAAAAAAAAwAAAADAAAAAQAAAAQF9eELAAAAAgAAAAUF9eELAAAAAwAAAAgAAAAGAAAABAAAAAcF9eEKAAAABQX14QgF9eEJAAAABAAAAAoAAAAJAAAABgX14QYF9eEHAAAABQAAAAsF9eEFAAAABgX14QQF9eEFAAAAAwX14QEAAAANAAAABAX14QIF9eED"
+          },
+          "smithy.rules#endpointRuleSet": {
+            "version": "1.0",
+            "parameters": {
+              "Region": {
+                "builtIn": "AWS::Region",
+                "required": false,
+                "documentation": "The AWS region used to dispatch the request.",
+                "type": "string"
+              },
+              "UseDualStack": {
+                "builtIn": "AWS::UseDualStack",
+                "required": true,
+                "default": false,
+                "documentation": "When true, use the dual-stack endpoint. If the configured endpoint does not support dual-stack, dispatching the request MAY return an error.",
+                "type": "boolean"
+              },
+              "UseFIPS": {
+                "builtIn": "AWS::UseFIPS",
+                "required": true,
+                "default": false,
+                "documentation": "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
+                "type": "boolean"
+              },
+              "Endpoint": {
+                "builtIn": "SDK::Endpoint",
+                "required": false,
+                "documentation": "Override the endpoint used to send this request",
+                "type": "string"
+              }
+            },
+            "rules": [
+              {
+                "conditions": [
+                  {
+                    "fn": "isSet",
+                    "argv": [
+                      {
+                        "ref": "Endpoint"
+                      }
+                    ]
+                  }
+                ],
+                "rules": [
+                  {
+                    "conditions": [
+                      {
+                        "fn": "booleanEquals",
+                        "argv": [
+                          {
+                            "ref": "UseFIPS"
+                          },
+                          true
+                        ]
+                      }
+                    ],
+                    "error": "Invalid Configuration: FIPS and custom endpoint are not supported",
+                    "type": "error"
+                  },
+                  {
+                    "conditions": [
+                      {
+                        "fn": "booleanEquals",
+                        "argv": [
+                          {
+                            "ref": "UseDualStack"
+                          },
+                          true
+                        ]
+                      }
+                    ],
+                    "error": "Invalid Configuration: Dualstack and custom endpoint are not supported",
+                    "type": "error"
+                  },
+                  {
+                    "conditions": [],
+                    "endpoint": {
+                      "url": {
+                        "ref": "Endpoint"
+                      },
+                      "properties": {},
+                      "headers": {}
+                    },
+                    "type": "endpoint"
+                  }
+                ],
+                "type": "tree"
+              },
+              {
+                "conditions": [
+                  {
+                    "fn": "isSet",
+                    "argv": [
+                      {
+                        "ref": "Region"
+                      }
+                    ]
+                  }
+                ],
+                "rules": [
+                  {
+                    "conditions": [
+                      {
+                        "fn": "aws.partition",
+                        "argv": [
+                          {
+                            "ref": "Region"
+                          }
+                        ],
+                        "assign": "PartitionResult"
+                      }
+                    ],
+                    "rules": [
+                      {
+                        "conditions": [
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseFIPS"
+                              },
+                              true
+                            ]
+                          },
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseDualStack"
+                              },
+                              true
+                            ]
+                          }
+                        ],
+                        "rules": [
+                          {
+                            "conditions": [
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  true,
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsFIPS"
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  true,
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsDualStack"
+                                    ]
+                                  }
+                                ]
+                              }
+                            ],
+                            "rules": [
+                              {
+                                "conditions": [],
+                                "endpoint": {
+                                  "url": "https://migrationhub-config-fips.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                                  "properties": {},
+                                  "headers": {}
+                                },
+                                "type": "endpoint"
+                              }
+                            ],
+                            "type": "tree"
+                          },
+                          {
+                            "conditions": [],
+                            "error": "FIPS and DualStack are enabled, but this partition does not support one or both",
+                            "type": "error"
+                          }
+                        ],
+                        "type": "tree"
+                      },
+                      {
+                        "conditions": [
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseFIPS"
+                              },
+                              true
+                            ]
+                          }
+                        ],
+                        "rules": [
+                          {
+                            "conditions": [
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsFIPS"
+                                    ]
+                                  },
+                                  true
+                                ]
+                              }
+                            ],
+                            "rules": [
+                              {
+                                "conditions": [],
+                                "endpoint": {
+                                  "url": "https://migrationhub-config-fips.{Region}.{PartitionResult#dnsSuffix}",
+                                  "properties": {},
+                                  "headers": {}
+                                },
+                                "type": "endpoint"
+                              }
+                            ],
+                            "type": "tree"
+                          },
+                          {
+                            "conditions": [],
+                            "error": "FIPS is enabled but this partition does not support FIPS",
+                            "type": "error"
+                          }
+                        ],
+                        "type": "tree"
+                      },
+                      {
+                        "conditions": [
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseDualStack"
+                              },
+                              true
+                            ]
+                          }
+                        ],
+                        "rules": [
+                          {
+                            "conditions": [
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  true,
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsDualStack"
+                                    ]
+                                  }
+                                ]
+                              }
+                            ],
+                            "rules": [
+                              {
+                                "conditions": [],
+                                "endpoint": {
+                                  "url": "https://migrationhub-config.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                                  "properties": {},
+                                  "headers": {}
+                                },
+                                "type": "endpoint"
+                              }
+                            ],
+                            "type": "tree"
+                          },
+                          {
+                            "conditions": [],
+                            "error": "DualStack is enabled but this partition does not support DualStack",
+                            "type": "error"
+                          }
+                        ],
+                        "type": "tree"
+                      },
+                      {
+                        "conditions": [],
+                        "endpoint": {
+                          "url": "https://migrationhub-config.{Region}.{PartitionResult#dnsSuffix}",
+                          "properties": {},
+                          "headers": {}
+                        },
+                        "type": "endpoint"
+                      }
+                    ],
+                    "type": "tree"
+                  }
+                ],
+                "type": "tree"
+              },
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: Missing Region",
+                "type": "error"
+              }
+            ]
+          },
+          "smithy.rules#endpointTests": {
+            "testCases": [
+              {
+                "documentation": "For region us-east-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://migrationhub-config-fips.us-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://migrationhub-config-fips.us-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://migrationhub-config.us-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://migrationhub-config.us-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://migrationhub-config-fips.cn-north-1.api.amazonwebservices.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": true,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://migrationhub-config-fips.cn-north-1.amazonaws.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://migrationhub-config.cn-north-1.api.amazonwebservices.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://migrationhub-config.cn-north-1.amazonaws.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://migrationhub-config-fips.us-gov-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://migrationhub-config-fips.us-gov-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://migrationhub-config.us-gov-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://migrationhub-config.us-gov-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-iso-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://migrationhub-config-fips.us-iso-east-1.c2s.ic.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-iso-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-iso-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://migrationhub-config.us-iso-east-1.c2s.ic.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-iso-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-isob-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://migrationhub-config-fips.us-isob-east-1.sc2s.sgov.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-isob-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-isob-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://migrationhub-config.us-isob-east-1.sc2s.sgov.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-isob-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For custom endpoint with region set and fips disabled and dualstack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://example.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "For custom endpoint with region not set and fips disabled and dualstack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://example.com"
+                  }
+                },
+                "params": {
+                  "UseFIPS": false,
+                  "UseDualStack": false,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "For custom endpoint with fips enabled and dualstack disabled",
+                "expect": {
+                  "error": "Invalid Configuration: FIPS and custom endpoint are not supported"
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "For custom endpoint with fips disabled and dualstack enabled",
+                "expect": {
+                  "error": "Invalid Configuration: Dualstack and custom endpoint are not supported"
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "Missing region",
+                "expect": {
+                  "error": "Invalid Configuration: Missing Region"
+                }
+              }
+            ],
+            "version": "1.0"
+          }
+        }
+      },
+      "com.amazonaws.migrationhubconfig#AccessDeniedException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.migrationhubconfig#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eYou do not have sufficient access to perform this action.\u003c/p\u003e",
+          "smithy.api#error": "client"
+        }
+      },
+      "com.amazonaws.migrationhubconfig#ControlId": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 50
+          },
+          "smithy.api#pattern": "^hrc-[a-z0-9]{12}$"
+        }
+      },
+      "com.amazonaws.migrationhubconfig#CreateHomeRegionControl": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.migrationhubconfig#CreateHomeRegionControlRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.migrationhubconfig#CreateHomeRegionControlResult"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.migrationhubconfig#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.migrationhubconfig#DryRunOperation"
+          },
+          {
+            "target": "com.amazonaws.migrationhubconfig#InternalServerError"
+          },
+          {
+            "target": "com.amazonaws.migrationhubconfig#InvalidInputException"
+          },
+          {
+            "target": "com.amazonaws.migrationhubconfig#ServiceUnavailableException"
+          },
+          {
+            "target": "com.amazonaws.migrationhubconfig#ThrottlingException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThis API sets up the home region for the calling account only.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.migrationhubconfig#CreateHomeRegionControlRequest": {
+        "type": "structure",
+        "members": {
+          "DryRun": {
+            "target": "com.amazonaws.migrationhubconfig#DryRun",
+            "traits": {
+              "smithy.api#default": false,
+              "smithy.api#documentation": "\u003cp\u003eOptional Boolean flag to indicate whether any effect should take place. It tests whether\n      the caller has permission to make the call.\u003c/p\u003e"
+            }
+          },
+          "HomeRegion": {
+            "target": "com.amazonaws.migrationhubconfig#HomeRegion",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the home region of the calling account.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Target": {
+            "target": "com.amazonaws.migrationhubconfig#Target",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe account for which this command sets up a home region control. The \u003ccode\u003eTarget\u003c/code\u003e\n      is always of type \u003ccode\u003eACCOUNT\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.migrationhubconfig#CreateHomeRegionControlResult": {
+        "type": "structure",
+        "members": {
+          "HomeRegionControl": {
+            "target": "com.amazonaws.migrationhubconfig#HomeRegionControl",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThis object is the \u003ccode\u003eHomeRegionControl\u003c/code\u003e object that's returned by a successful\n      call to \u003ccode\u003eCreateHomeRegionControl\u003c/code\u003e.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.migrationhubconfig#DeleteHomeRegionControl": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.migrationhubconfig#DeleteHomeRegionControlRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.migrationhubconfig#DeleteHomeRegionControlResult"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.migrationhubconfig#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.migrationhubconfig#InternalServerError"
+          },
+          {
+            "target": "com.amazonaws.migrationhubconfig#InvalidInputException"
+          },
+          {
+            "target": "com.amazonaws.migrationhubconfig#ServiceUnavailableException"
+          },
+          {
+            "target": "com.amazonaws.migrationhubconfig#ThrottlingException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThis operation deletes the home region configuration for the calling account. The operation does not delete discovery or migration tracking data in the home region.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.migrationhubconfig#DeleteHomeRegionControlRequest": {
+        "type": "structure",
+        "members": {
+          "ControlId": {
+            "target": "com.amazonaws.migrationhubconfig#ControlId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA unique identifier that's generated for each home region control. It's always a string\n      that begins with \"hrc-\" followed by 12 lowercase letters and numbers.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.migrationhubconfig#DeleteHomeRegionControlResult": {
+        "type": "structure",
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.migrationhubconfig#DescribeHomeRegionControls": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.migrationhubconfig#DescribeHomeRegionControlsRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.migrationhubconfig#DescribeHomeRegionControlsResult"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.migrationhubconfig#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.migrationhubconfig#InternalServerError"
+          },
+          {
+            "target": "com.amazonaws.migrationhubconfig#InvalidInputException"
+          },
+          {
+            "target": "com.amazonaws.migrationhubconfig#ServiceUnavailableException"
+          },
+          {
+            "target": "com.amazonaws.migrationhubconfig#ThrottlingException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThis API permits filtering on the \u003ccode\u003eControlId\u003c/code\u003e and \u003ccode\u003eHomeRegion\u003c/code\u003e\n      fields.\u003c/p\u003e",
+          "smithy.api#paginated": {
+            "inputToken": "NextToken",
+            "outputToken": "NextToken",
+            "pageSize": "MaxResults"
+          }
+        }
+      },
+      "com.amazonaws.migrationhubconfig#DescribeHomeRegionControlsMaxResults": {
+        "type": "integer",
+        "traits": {
+          "smithy.api#range": {
+            "min": 1,
+            "max": 100
+          }
+        }
+      },
+      "com.amazonaws.migrationhubconfig#DescribeHomeRegionControlsRequest": {
+        "type": "structure",
+        "members": {
+          "ControlId": {
+            "target": "com.amazonaws.migrationhubconfig#ControlId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe \u003ccode\u003eControlID\u003c/code\u003e is a unique identifier string of your\n        \u003ccode\u003eHomeRegionControl\u003c/code\u003e object.\u003c/p\u003e"
+            }
+          },
+          "HomeRegion": {
+            "target": "com.amazonaws.migrationhubconfig#HomeRegion",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the home region you'd like to view.\u003c/p\u003e"
+            }
+          },
+          "MaxResults": {
+            "target": "com.amazonaws.migrationhubconfig#DescribeHomeRegionControlsMaxResults",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of filtering results to display per page. \u003c/p\u003e"
+            }
+          },
+          "NextToken": {
+            "target": "com.amazonaws.migrationhubconfig#Token",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIf a \u003ccode\u003eNextToken\u003c/code\u003e was returned by a previous call, more results are available.\n      To retrieve the next page of results, make the call again using the returned token in\n        \u003ccode\u003eNextToken\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "Target": {
+            "target": "com.amazonaws.migrationhubconfig#Target",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe target parameter specifies the identifier to which the home region is applied, which\n      is always of type \u003ccode\u003eACCOUNT\u003c/code\u003e. It applies the home region to the current\n        \u003ccode\u003eACCOUNT\u003c/code\u003e.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.migrationhubconfig#DescribeHomeRegionControlsResult": {
+        "type": "structure",
+        "members": {
+          "HomeRegionControls": {
+            "target": "com.amazonaws.migrationhubconfig#HomeRegionControls",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn array that contains your \u003ccode\u003eHomeRegionControl\u003c/code\u003e objects.\u003c/p\u003e"
+            }
+          },
+          "NextToken": {
+            "target": "com.amazonaws.migrationhubconfig#Token",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIf a \u003ccode\u003eNextToken\u003c/code\u003e was returned by a previous call, more results are available.\n      To retrieve the next page of results, make the call again using the returned token in\n        \u003ccode\u003eNextToken\u003c/code\u003e.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.migrationhubconfig#DryRun": {
+        "type": "boolean",
+        "traits": {
+          "smithy.api#default": false
+        }
+      },
+      "com.amazonaws.migrationhubconfig#DryRunOperation": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.migrationhubconfig#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eException raised to indicate that authorization of an action was successful, when the\n        \u003ccode\u003eDryRun\u003c/code\u003e flag is set to true.\u003c/p\u003e",
+          "smithy.api#error": "client"
+        }
+      },
+      "com.amazonaws.migrationhubconfig#ErrorMessage": {
+        "type": "string"
+      },
+      "com.amazonaws.migrationhubconfig#GetHomeRegion": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.migrationhubconfig#GetHomeRegionRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.migrationhubconfig#GetHomeRegionResult"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.migrationhubconfig#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.migrationhubconfig#InternalServerError"
+          },
+          {
+            "target": "com.amazonaws.migrationhubconfig#InvalidInputException"
+          },
+          {
+            "target": "com.amazonaws.migrationhubconfig#ServiceUnavailableException"
+          },
+          {
+            "target": "com.amazonaws.migrationhubconfig#ThrottlingException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eReturns the calling account\u2019s home region, if configured. This API is used by other AWS\n      services to determine the regional endpoint for calling AWS Application Discovery Service and\n      Migration Hub. You must call \u003ccode\u003eGetHomeRegion\u003c/code\u003e at least once before you call any\n      other AWS Application Discovery Service and AWS Migration Hub APIs, to obtain the account's\n      Migration Hub home region.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.migrationhubconfig#GetHomeRegionRequest": {
+        "type": "structure",
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.migrationhubconfig#GetHomeRegionResult": {
+        "type": "structure",
+        "members": {
+          "HomeRegion": {
+            "target": "com.amazonaws.migrationhubconfig#HomeRegion",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the home region of the calling account.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.migrationhubconfig#HomeRegion": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 50
+          },
+          "smithy.api#pattern": "^([a-z]+)-([a-z]+)-([0-9]+)$"
+        }
+      },
+      "com.amazonaws.migrationhubconfig#HomeRegionControl": {
+        "type": "structure",
+        "members": {
+          "ControlId": {
+            "target": "com.amazonaws.migrationhubconfig#ControlId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA unique identifier that's generated for each home region control. It's always a string\n      that begins with \"hrc-\" followed by 12 lowercase letters and numbers.\u003c/p\u003e"
+            }
+          },
+          "HomeRegion": {
+            "target": "com.amazonaws.migrationhubconfig#HomeRegion",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe AWS Region that's been set as home region. For example, \"us-west-2\" or \"eu-central-1\"\n      are valid home regions.\u003c/p\u003e"
+            }
+          },
+          "RequestedTime": {
+            "target": "com.amazonaws.migrationhubconfig#RequestedTime",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA timestamp representing the time when the customer called\n        \u003ccode\u003eCreateHomeregionControl\u003c/code\u003e and set the home region for the account.\u003c/p\u003e"
+            }
+          },
+          "Target": {
+            "target": "com.amazonaws.migrationhubconfig#Target",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe target parameter specifies the identifier to which the home region is applied, which\n      is always an \u003ccode\u003eACCOUNT\u003c/code\u003e. It applies the home region to the current\n        \u003ccode\u003eACCOUNT\u003c/code\u003e.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA home region control is an object that specifies the home region for an account, with\n      some additional information. It contains a target (always of type \u003ccode\u003eACCOUNT\u003c/code\u003e), an\n      ID, and a time at which the home region was set.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.migrationhubconfig#HomeRegionControls": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.migrationhubconfig#HomeRegionControl"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 100
+          }
+        }
+      },
+      "com.amazonaws.migrationhubconfig#InternalServerError": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.migrationhubconfig#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eException raised when an internal, configuration, or dependency error is\n      encountered.\u003c/p\u003e",
+          "smithy.api#error": "server"
+        }
+      },
+      "com.amazonaws.migrationhubconfig#InvalidInputException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.migrationhubconfig#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eException raised when the provided input violates a policy constraint or is entered in the\n      wrong format or data type.\u003c/p\u003e",
+          "smithy.api#error": "client"
+        }
+      },
+      "com.amazonaws.migrationhubconfig#RequestedTime": {
+        "type": "timestamp"
+      },
+      "com.amazonaws.migrationhubconfig#RetryAfterSeconds": {
+        "type": "integer",
+        "traits": {
+          "smithy.api#default": 0
+        }
+      },
+      "com.amazonaws.migrationhubconfig#ServiceUnavailableException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.migrationhubconfig#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eException raised when a request fails due to temporary unavailability of the\n      service.\u003c/p\u003e",
+          "smithy.api#error": "server"
+        }
+      },
+      "com.amazonaws.migrationhubconfig#Target": {
+        "type": "structure",
+        "members": {
+          "Id": {
+            "target": "com.amazonaws.migrationhubconfig#TargetId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe \u003ccode\u003eTargetID\u003c/code\u003e is a 12-character identifier of the \u003ccode\u003eACCOUNT\u003c/code\u003e for\n      which the control was created. (This must be the current account.) \u003c/p\u003e"
+            }
+          },
+          "Type": {
+            "target": "com.amazonaws.migrationhubconfig#TargetType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe target type is always an \u003ccode\u003eACCOUNT\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe target parameter specifies the identifier to which the home region is applied, which\n      is always an \u003ccode\u003eACCOUNT\u003c/code\u003e. It applies the home region to the current\n        \u003ccode\u003eACCOUNT\u003c/code\u003e.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.migrationhubconfig#TargetId": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 12,
+            "max": 12
+          },
+          "smithy.api#pattern": "^\\d{12}$"
+        }
+      },
+      "com.amazonaws.migrationhubconfig#TargetType": {
+        "type": "enum",
+        "members": {
+          "ACCOUNT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ACCOUNT"
+            }
+          }
+        }
+      },
+      "com.amazonaws.migrationhubconfig#ThrottlingException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.migrationhubconfig#ErrorMessage",
+            "traits": {
+              "smithy.api#required": {}
+            }
+          },
+          "RetryAfterSeconds": {
+            "target": "com.amazonaws.migrationhubconfig#RetryAfterSeconds",
+            "traits": {
+              "smithy.api#default": 0,
+              "smithy.api#documentation": "\u003cp\u003eThe number of seconds the caller should wait before retrying.\u003c/p\u003e",
+              "smithy.api#httpHeader": "Retry-After"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe request was denied due to request throttling.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 429
+        }
+      },
+      "com.amazonaws.migrationhubconfig#Token": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 2048
+          },
+          "smithy.api#pattern": "^[a-zA-Z0-9\\/\\+\\=]{0,2048}$"
+        }
+      }
+    }
+  }
+}

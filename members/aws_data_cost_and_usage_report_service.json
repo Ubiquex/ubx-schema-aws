@@ -1,0 +1,2025 @@
+{
+  "schema_source": "smithy",
+  "mode": "data_source",
+  "auth": {
+    "Type": "",
+    "Params": null
+  },
+  "base_url": "https://aws.example.invalid",
+  "retry": {
+    "MaxAttempts": 0,
+    "InitialBackoff": "",
+    "MaxBackoff": "",
+    "Jitter": null,
+    "RespectRetryAfter": null,
+    "RateLimitResetHeader": ""
+  },
+  "timeouts": {
+    "Create": "",
+    "Read": "",
+    "Update": "",
+    "Delete": "",
+    "Default": ""
+  },
+  "wire_name": "aws",
+  "raw_spec": {
+    "smithy": "2.0",
+    "metadata": {
+      "suppressions": [
+        {
+          "id": "HttpMethodSemantics",
+          "namespace": "*"
+        },
+        {
+          "id": "HttpResponseCodeSemantics",
+          "namespace": "*"
+        },
+        {
+          "id": "PaginatedTrait",
+          "namespace": "*"
+        },
+        {
+          "id": "HttpHeaderTrait",
+          "namespace": "*"
+        },
+        {
+          "id": "HttpUriConflict",
+          "namespace": "*"
+        },
+        {
+          "id": "Service",
+          "namespace": "*"
+        }
+      ]
+    },
+    "shapes": {
+      "com.amazonaws.costandusagereportservice#AWSOrigamiServiceGatewayService": {
+        "type": "service",
+        "version": "2017-01-06",
+        "operations": [
+          {
+            "target": "com.amazonaws.costandusagereportservice#DeleteReportDefinition"
+          },
+          {
+            "target": "com.amazonaws.costandusagereportservice#DescribeReportDefinitions"
+          },
+          {
+            "target": "com.amazonaws.costandusagereportservice#ListTagsForResource"
+          },
+          {
+            "target": "com.amazonaws.costandusagereportservice#ModifyReportDefinition"
+          },
+          {
+            "target": "com.amazonaws.costandusagereportservice#PutReportDefinition"
+          },
+          {
+            "target": "com.amazonaws.costandusagereportservice#TagResource"
+          },
+          {
+            "target": "com.amazonaws.costandusagereportservice#UntagResource"
+          }
+        ],
+        "traits": {
+          "aws.api#service": {
+            "sdkId": "Cost and Usage Report Service",
+            "arnNamespace": "cur",
+            "cloudFormationName": "CostandUsageReportService",
+            "cloudTrailEventSource": "costandusagereportservice.amazonaws.com",
+            "docId": "cur-2017-01-06",
+            "endpointPrefix": "cur"
+          },
+          "aws.auth#sigv4": {
+            "name": "cur"
+          },
+          "aws.protocols#awsJson1_1": {},
+          "smithy.api#documentation": "\u003cp\u003eYou can use the Amazon Web Services Cost and Usage Report API to programmatically create, query, and delete \n      Amazon Web Services Cost and Usage Report definitions.\u003c/p\u003e\n         \u003cp\u003eAmazon Web Services Cost and Usage Report track the monthly Amazon Web Services costs and usage \n      associated with your Amazon Web Services account.\n    \n        The report contains line items for each unique combination of Amazon Web Services product,\n        usage type, and operation that your Amazon Web Services account uses. \n        \n        You can configure the Amazon Web Services Cost and Usage Report to show only the data that you want, using the\n      Amazon Web Services Cost and Usage Report API.\u003c/p\u003e\n         \u003cp\u003eService Endpoint\u003c/p\u003e\n         \u003cp\u003eThe Amazon Web Services Cost and Usage Report API provides the following endpoint:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003ecur.us-east-1.amazonaws.com\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e",
+          "smithy.api#title": "AWS Cost and Usage Report Service",
+          "smithy.rules#endpointBdd": {
+            "version": "1.1",
+            "parameters": {
+              "Region": {
+                "builtIn": "AWS::Region",
+                "required": false,
+                "documentation": "The AWS region used to dispatch the request.",
+                "type": "string"
+              },
+              "UseDualStack": {
+                "builtIn": "AWS::UseDualStack",
+                "required": true,
+                "default": false,
+                "documentation": "When true, use the dual-stack endpoint. If the configured endpoint does not support dual-stack, dispatching the request MAY return an error.",
+                "type": "boolean"
+              },
+              "UseFIPS": {
+                "builtIn": "AWS::UseFIPS",
+                "required": true,
+                "default": false,
+                "documentation": "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
+                "type": "boolean"
+              },
+              "Endpoint": {
+                "builtIn": "SDK::Endpoint",
+                "required": false,
+                "documentation": "Override the endpoint used to send this request",
+                "type": "string"
+              }
+            },
+            "conditions": [
+              {
+                "fn": "isSet",
+                "argv": [
+                  {
+                    "ref": "Endpoint"
+                  }
+                ]
+              },
+              {
+                "fn": "isSet",
+                "argv": [
+                  {
+                    "ref": "Region"
+                  }
+                ]
+              },
+              {
+                "fn": "aws.partition",
+                "argv": [
+                  {
+                    "ref": "Region"
+                  }
+                ],
+                "assign": "PartitionResult"
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "ref": "UseFIPS"
+                  },
+                  true
+                ]
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "ref": "UseDualStack"
+                  },
+                  true
+                ]
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "fn": "getAttr",
+                    "argv": [
+                      {
+                        "ref": "PartitionResult"
+                      },
+                      "supportsDualStack"
+                    ]
+                  },
+                  true
+                ]
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "fn": "getAttr",
+                    "argv": [
+                      {
+                        "ref": "PartitionResult"
+                      },
+                      "supportsFIPS"
+                    ]
+                  },
+                  true
+                ]
+              }
+            ],
+            "results": [
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: FIPS and custom endpoint are not supported",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: Dualstack and custom endpoint are not supported",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": {
+                    "ref": "Endpoint"
+                  },
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://cur-fips.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "FIPS and DualStack are enabled, but this partition does not support one or both",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://cur-fips.{Region}.{PartitionResult#dnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "FIPS is enabled but this partition does not support FIPS",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://cur.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "DualStack is enabled but this partition does not support DualStack",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://cur.{Region}.{PartitionResult#dnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: Missing Region",
+                "type": "error"
+              }
+            ],
+            "root": 2,
+            "nodeCount": 13,
+            "nodes": "/////wAAAAH/////AAAAAAAAAAwAAAADAAAAAQAAAAQF9eELAAAAAgAAAAUF9eELAAAAAwAAAAgAAAAGAAAABAAAAAcF9eEKAAAABQX14QgF9eEJAAAABAAAAAoAAAAJAAAABgX14QYF9eEHAAAABQAAAAsF9eEFAAAABgX14QQF9eEFAAAAAwX14QEAAAANAAAABAX14QIF9eED"
+          },
+          "smithy.rules#endpointRuleSet": {
+            "version": "1.0",
+            "parameters": {
+              "Region": {
+                "builtIn": "AWS::Region",
+                "required": false,
+                "documentation": "The AWS region used to dispatch the request.",
+                "type": "string"
+              },
+              "UseDualStack": {
+                "builtIn": "AWS::UseDualStack",
+                "required": true,
+                "default": false,
+                "documentation": "When true, use the dual-stack endpoint. If the configured endpoint does not support dual-stack, dispatching the request MAY return an error.",
+                "type": "boolean"
+              },
+              "UseFIPS": {
+                "builtIn": "AWS::UseFIPS",
+                "required": true,
+                "default": false,
+                "documentation": "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
+                "type": "boolean"
+              },
+              "Endpoint": {
+                "builtIn": "SDK::Endpoint",
+                "required": false,
+                "documentation": "Override the endpoint used to send this request",
+                "type": "string"
+              }
+            },
+            "rules": [
+              {
+                "conditions": [
+                  {
+                    "fn": "isSet",
+                    "argv": [
+                      {
+                        "ref": "Endpoint"
+                      }
+                    ]
+                  }
+                ],
+                "rules": [
+                  {
+                    "conditions": [
+                      {
+                        "fn": "booleanEquals",
+                        "argv": [
+                          {
+                            "ref": "UseFIPS"
+                          },
+                          true
+                        ]
+                      }
+                    ],
+                    "error": "Invalid Configuration: FIPS and custom endpoint are not supported",
+                    "type": "error"
+                  },
+                  {
+                    "conditions": [
+                      {
+                        "fn": "booleanEquals",
+                        "argv": [
+                          {
+                            "ref": "UseDualStack"
+                          },
+                          true
+                        ]
+                      }
+                    ],
+                    "error": "Invalid Configuration: Dualstack and custom endpoint are not supported",
+                    "type": "error"
+                  },
+                  {
+                    "conditions": [],
+                    "endpoint": {
+                      "url": {
+                        "ref": "Endpoint"
+                      },
+                      "properties": {},
+                      "headers": {}
+                    },
+                    "type": "endpoint"
+                  }
+                ],
+                "type": "tree"
+              },
+              {
+                "conditions": [
+                  {
+                    "fn": "isSet",
+                    "argv": [
+                      {
+                        "ref": "Region"
+                      }
+                    ]
+                  }
+                ],
+                "rules": [
+                  {
+                    "conditions": [
+                      {
+                        "fn": "aws.partition",
+                        "argv": [
+                          {
+                            "ref": "Region"
+                          }
+                        ],
+                        "assign": "PartitionResult"
+                      }
+                    ],
+                    "rules": [
+                      {
+                        "conditions": [
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseFIPS"
+                              },
+                              true
+                            ]
+                          },
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseDualStack"
+                              },
+                              true
+                            ]
+                          }
+                        ],
+                        "rules": [
+                          {
+                            "conditions": [
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  true,
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsFIPS"
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  true,
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsDualStack"
+                                    ]
+                                  }
+                                ]
+                              }
+                            ],
+                            "rules": [
+                              {
+                                "conditions": [],
+                                "endpoint": {
+                                  "url": "https://cur-fips.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                                  "properties": {},
+                                  "headers": {}
+                                },
+                                "type": "endpoint"
+                              }
+                            ],
+                            "type": "tree"
+                          },
+                          {
+                            "conditions": [],
+                            "error": "FIPS and DualStack are enabled, but this partition does not support one or both",
+                            "type": "error"
+                          }
+                        ],
+                        "type": "tree"
+                      },
+                      {
+                        "conditions": [
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseFIPS"
+                              },
+                              true
+                            ]
+                          }
+                        ],
+                        "rules": [
+                          {
+                            "conditions": [
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsFIPS"
+                                    ]
+                                  },
+                                  true
+                                ]
+                              }
+                            ],
+                            "rules": [
+                              {
+                                "conditions": [],
+                                "endpoint": {
+                                  "url": "https://cur-fips.{Region}.{PartitionResult#dnsSuffix}",
+                                  "properties": {},
+                                  "headers": {}
+                                },
+                                "type": "endpoint"
+                              }
+                            ],
+                            "type": "tree"
+                          },
+                          {
+                            "conditions": [],
+                            "error": "FIPS is enabled but this partition does not support FIPS",
+                            "type": "error"
+                          }
+                        ],
+                        "type": "tree"
+                      },
+                      {
+                        "conditions": [
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseDualStack"
+                              },
+                              true
+                            ]
+                          }
+                        ],
+                        "rules": [
+                          {
+                            "conditions": [
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  true,
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsDualStack"
+                                    ]
+                                  }
+                                ]
+                              }
+                            ],
+                            "rules": [
+                              {
+                                "conditions": [],
+                                "endpoint": {
+                                  "url": "https://cur.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                                  "properties": {},
+                                  "headers": {}
+                                },
+                                "type": "endpoint"
+                              }
+                            ],
+                            "type": "tree"
+                          },
+                          {
+                            "conditions": [],
+                            "error": "DualStack is enabled but this partition does not support DualStack",
+                            "type": "error"
+                          }
+                        ],
+                        "type": "tree"
+                      },
+                      {
+                        "conditions": [],
+                        "endpoint": {
+                          "url": "https://cur.{Region}.{PartitionResult#dnsSuffix}",
+                          "properties": {},
+                          "headers": {}
+                        },
+                        "type": "endpoint"
+                      }
+                    ],
+                    "type": "tree"
+                  }
+                ],
+                "type": "tree"
+              },
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: Missing Region",
+                "type": "error"
+              }
+            ]
+          },
+          "smithy.rules#endpointTests": {
+            "testCases": [
+              {
+                "documentation": "For region us-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://cur.us-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://cur-fips.us-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://cur-fips.us-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://cur.us-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region cn-northwest-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://cur.cn-northwest-1.amazonaws.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-northwest-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://cur-fips.cn-north-1.api.amazonwebservices.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": true,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://cur-fips.cn-north-1.amazonaws.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://cur.cn-north-1.api.amazonwebservices.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://cur.cn-north-1.amazonaws.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://cur-fips.us-gov-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://cur-fips.us-gov-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://cur.us-gov-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://cur.us-gov-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-iso-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://cur-fips.us-iso-east-1.c2s.ic.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-iso-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-iso-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://cur.us-iso-east-1.c2s.ic.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-iso-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-isob-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://cur-fips.us-isob-east-1.sc2s.sgov.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-isob-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-isob-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://cur.us-isob-east-1.sc2s.sgov.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-isob-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For custom endpoint with region set and fips disabled and dualstack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://example.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "For custom endpoint with region not set and fips disabled and dualstack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://example.com"
+                  }
+                },
+                "params": {
+                  "UseFIPS": false,
+                  "UseDualStack": false,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "For custom endpoint with fips enabled and dualstack disabled",
+                "expect": {
+                  "error": "Invalid Configuration: FIPS and custom endpoint are not supported"
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "For custom endpoint with fips disabled and dualstack enabled",
+                "expect": {
+                  "error": "Invalid Configuration: Dualstack and custom endpoint are not supported"
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "Missing region",
+                "expect": {
+                  "error": "Invalid Configuration: Missing Region"
+                }
+              }
+            ],
+            "version": "1.0"
+          }
+        }
+      },
+      "com.amazonaws.costandusagereportservice#AWSRegion": {
+        "type": "enum",
+        "members": {
+          "BAHRAIN": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "me-south-1"
+            }
+          },
+          "BEIJING": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "cn-north-1"
+            }
+          },
+          "CANADA_CENTRAL": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ca-central-1"
+            }
+          },
+          "CAPE_TOWN": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "af-south-1"
+            }
+          },
+          "FRANKFURT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "eu-central-1"
+            }
+          },
+          "HONG_KONG": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ap-east-1"
+            }
+          },
+          "HYDERABAD": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ap-south-2"
+            }
+          },
+          "IRELAND": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "eu-west-1"
+            }
+          },
+          "JAKARTA": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ap-southeast-3"
+            }
+          },
+          "LONDON": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "eu-west-2"
+            }
+          },
+          "MILANO": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "eu-south-1"
+            }
+          },
+          "MUMBAI": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ap-south-1"
+            }
+          },
+          "NINGXIA": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "cn-northwest-1"
+            }
+          },
+          "NORTHERN_CALIFORNIA": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "us-west-1"
+            }
+          },
+          "OHIO": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "us-east-2"
+            }
+          },
+          "OREGON": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "us-west-2"
+            }
+          },
+          "OSAKA": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ap-northeast-3"
+            }
+          },
+          "PARIS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "eu-west-3"
+            }
+          },
+          "SAO_PAULO": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "sa-east-1"
+            }
+          },
+          "SEOUL": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ap-northeast-2"
+            }
+          },
+          "SINGAPORE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ap-southeast-1"
+            }
+          },
+          "SPAIN": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "eu-south-2"
+            }
+          },
+          "STOCKHOLM": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "eu-north-1"
+            }
+          },
+          "SYDNEY": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ap-southeast-2"
+            }
+          },
+          "TOKYO": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ap-northeast-1"
+            }
+          },
+          "UAE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "me-central-1"
+            }
+          },
+          "US_STANDARD": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "us-east-1"
+            }
+          },
+          "ZURICH": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "eu-central-2"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe region of the S3 bucket that Amazon Web Services delivers the report into.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.costandusagereportservice#AdditionalArtifact": {
+        "type": "enum",
+        "members": {
+          "ATHENA": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ATHENA"
+            }
+          },
+          "QUICKSIGHT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "QUICKSIGHT"
+            }
+          },
+          "REDSHIFT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "REDSHIFT"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe types of manifest that you want Amazon Web Services to create for this report.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.costandusagereportservice#AdditionalArtifactList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.costandusagereportservice#AdditionalArtifact"
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA list of additional artifacts.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.costandusagereportservice#BillingViewArn": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 128
+          },
+          "smithy.api#pattern": "^(arn:aws(-cn)?:billing::[0-9]{12}:billingview/)?[a-zA-Z0-9_\\+=\\.\\-@].{1,30}$"
+        }
+      },
+      "com.amazonaws.costandusagereportservice#CompressionFormat": {
+        "type": "enum",
+        "members": {
+          "GZIP": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "GZIP"
+            }
+          },
+          "Parquet": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Parquet"
+            }
+          },
+          "ZIP": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ZIP"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe compression format that Amazon Web Services uses for the report.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.costandusagereportservice#DeleteReportDefinition": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.costandusagereportservice#DeleteReportDefinitionRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.costandusagereportservice#DeleteReportDefinitionResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.costandusagereportservice#InternalErrorException"
+          },
+          {
+            "target": "com.amazonaws.costandusagereportservice#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eDeletes the specified report. Any tags associated with the report are also\n      deleted.\u003c/p\u003e",
+          "smithy.api#examples": [
+            {
+              "title": "To delete the AWS Cost and Usage report named ExampleReport.",
+              "documentation": "The following example deletes the AWS Cost and Usage report named ExampleReport.",
+              "input": {
+                "ReportName": "ExampleReport"
+              }
+            }
+          ]
+        }
+      },
+      "com.amazonaws.costandusagereportservice#DeleteReportDefinitionRequest": {
+        "type": "structure",
+        "members": {
+          "ReportName": {
+            "target": "com.amazonaws.costandusagereportservice#ReportName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the report that you want to delete. The name must be unique, is case sensitive, and can't include spaces.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eDeletes the specified report.\u003c/p\u003e",
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.costandusagereportservice#DeleteReportDefinitionResponse": {
+        "type": "structure",
+        "members": {
+          "ResponseMessage": {
+            "target": "com.amazonaws.costandusagereportservice#DeleteResponseMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eIf the action is successful, the service sends back an HTTP 200 response.\u003c/p\u003e",
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.costandusagereportservice#DeleteResponseMessage": {
+        "type": "string",
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eWhether the deletion was successful or not.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.costandusagereportservice#DescribeReportDefinitions": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.costandusagereportservice#DescribeReportDefinitionsRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.costandusagereportservice#DescribeReportDefinitionsResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.costandusagereportservice#InternalErrorException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eLists the Amazon Web Services Cost and Usage Report available to this account.\u003c/p\u003e",
+          "smithy.api#examples": [
+            {
+              "title": "To list the AWS Cost and Usage reports for the account.",
+              "documentation": "The following example lists the AWS Cost and Usage reports for the account.",
+              "input": {
+                "MaxResults": 5
+              },
+              "output": {
+                "ReportDefinitions": [
+                  {
+                    "AdditionalArtifacts": [
+                      "QUICKSIGHT"
+                    ],
+                    "AdditionalSchemaElements": [
+                      "RESOURCES"
+                    ],
+                    "Compression": "GZIP",
+                    "Format": "textORcsv",
+                    "ReportName": "ExampleReport",
+                    "S3Bucket": "example-s3-bucket",
+                    "S3Prefix": "exampleprefix",
+                    "S3Region": "us-east-1",
+                    "TimeUnit": "HOURLY"
+                  },
+                  {
+                    "AdditionalArtifacts": [
+                      "QUICKSIGHT"
+                    ],
+                    "AdditionalSchemaElements": [
+                      "RESOURCES"
+                    ],
+                    "Compression": "GZIP",
+                    "Format": "textORcsv",
+                    "ReportName": "ExampleReport2",
+                    "S3Bucket": "example-s3-bucket",
+                    "S3Prefix": "exampleprefix",
+                    "S3Region": "us-east-1",
+                    "TimeUnit": "HOURLY"
+                  }
+                ]
+              }
+            }
+          ],
+          "smithy.api#paginated": {
+            "inputToken": "NextToken",
+            "outputToken": "NextToken",
+            "pageSize": "MaxResults"
+          },
+          "smithy.test#smokeTests": [
+            {
+              "id": "DescribeReportDefinitionsSuccess",
+              "params": {},
+              "vendorParams": {
+                "region": "us-east-1"
+              },
+              "vendorParamsShape": "aws.test#AwsVendorParams",
+              "expect": {
+                "success": {}
+              }
+            }
+          ]
+        }
+      },
+      "com.amazonaws.costandusagereportservice#DescribeReportDefinitionsRequest": {
+        "type": "structure",
+        "members": {
+          "MaxResults": {
+            "target": "com.amazonaws.costandusagereportservice#MaxResults"
+          },
+          "NextToken": {
+            "target": "com.amazonaws.costandusagereportservice#GenericString"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eRequests a Amazon Web Services Cost and Usage Report list owned by the account.\u003c/p\u003e",
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.costandusagereportservice#DescribeReportDefinitionsResponse": {
+        "type": "structure",
+        "members": {
+          "NextToken": {
+            "target": "com.amazonaws.costandusagereportservice#GenericString"
+          },
+          "ReportDefinitions": {
+            "target": "com.amazonaws.costandusagereportservice#ReportDefinitionList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn Amazon Web Services Cost and Usage Report list owned by the account.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eIf the action is successful, the service sends back an HTTP 200 response.\u003c/p\u003e",
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.costandusagereportservice#DuplicateReportNameException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.costandusagereportservice#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA report with the specified name already exists in the account. Specify a different report name.\u003c/p\u003e",
+          "smithy.api#error": "client"
+        }
+      },
+      "com.amazonaws.costandusagereportservice#ErrorMessage": {
+        "type": "string",
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA message to show the detail of the exception.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.costandusagereportservice#GenericString": {
+        "type": "string",
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA generic string.\u003c/p\u003e",
+          "smithy.api#length": {
+            "min": 0,
+            "max": 256
+          },
+          "smithy.api#pattern": "^[A-Za-z0-9_\\.\\-=]*$"
+        }
+      },
+      "com.amazonaws.costandusagereportservice#InternalErrorException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.costandusagereportservice#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eAn error on the server occurred during the processing of your request. Try again later.\u003c/p\u003e",
+          "smithy.api#error": "server"
+        }
+      },
+      "com.amazonaws.costandusagereportservice#LastDelivery": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 16,
+            "max": 20
+          },
+          "smithy.api#pattern": "^[0-9]{8}[T][0-9]{6}([Z]|[+-][0-9]{4})$"
+        }
+      },
+      "com.amazonaws.costandusagereportservice#LastStatus": {
+        "type": "enum",
+        "members": {
+          "ERROR_NO_BUCKET": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ERROR_NO_BUCKET"
+            }
+          },
+          "ERROR_PERMISSIONS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ERROR_PERMISSIONS"
+            }
+          },
+          "SUCCESS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "SUCCESS"
+            }
+          }
+        }
+      },
+      "com.amazonaws.costandusagereportservice#ListTagsForResource": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.costandusagereportservice#ListTagsForResourceRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.costandusagereportservice#ListTagsForResourceResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.costandusagereportservice#InternalErrorException"
+          },
+          {
+            "target": "com.amazonaws.costandusagereportservice#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.costandusagereportservice#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eLists the tags associated with the specified report definition.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.costandusagereportservice#ListTagsForResourceRequest": {
+        "type": "structure",
+        "members": {
+          "ReportName": {
+            "target": "com.amazonaws.costandusagereportservice#ReportName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe report name of the report definition that tags are to be returned for.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.costandusagereportservice#ListTagsForResourceResponse": {
+        "type": "structure",
+        "members": {
+          "Tags": {
+            "target": "com.amazonaws.costandusagereportservice#TagList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe tags assigned to the report definition resource.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.costandusagereportservice#MaxResults": {
+        "type": "integer",
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe maximum number of results that Amazon Web Services returns for the operation.\u003c/p\u003e",
+          "smithy.api#range": {
+            "min": 5,
+            "max": 5
+          }
+        }
+      },
+      "com.amazonaws.costandusagereportservice#ModifyReportDefinition": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.costandusagereportservice#ModifyReportDefinitionRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.costandusagereportservice#ModifyReportDefinitionResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.costandusagereportservice#InternalErrorException"
+          },
+          {
+            "target": "com.amazonaws.costandusagereportservice#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eAllows you to programmatically update your report preferences.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.costandusagereportservice#ModifyReportDefinitionRequest": {
+        "type": "structure",
+        "members": {
+          "ReportDefinition": {
+            "target": "com.amazonaws.costandusagereportservice#ReportDefinition",
+            "traits": {
+              "smithy.api#required": {}
+            }
+          },
+          "ReportName": {
+            "target": "com.amazonaws.costandusagereportservice#ReportName",
+            "traits": {
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.costandusagereportservice#ModifyReportDefinitionResponse": {
+        "type": "structure",
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.costandusagereportservice#PutReportDefinition": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.costandusagereportservice#PutReportDefinitionRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.costandusagereportservice#PutReportDefinitionResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.costandusagereportservice#DuplicateReportNameException"
+          },
+          {
+            "target": "com.amazonaws.costandusagereportservice#InternalErrorException"
+          },
+          {
+            "target": "com.amazonaws.costandusagereportservice#ReportLimitReachedException"
+          },
+          {
+            "target": "com.amazonaws.costandusagereportservice#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.costandusagereportservice#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eCreates a new report using the description that you provide.\u003c/p\u003e",
+          "smithy.api#examples": [
+            {
+              "title": "To create a report named ExampleReport.",
+              "documentation": "The following example creates a AWS Cost and Usage report named ExampleReport.",
+              "input": {
+                "ReportDefinition": {
+                  "ReportName": "ExampleReport",
+                  "TimeUnit": "DAILY",
+                  "Format": "textORcsv",
+                  "Compression": "ZIP",
+                  "AdditionalSchemaElements": [
+                    "RESOURCES"
+                  ],
+                  "S3Bucket": "example-s3-bucket",
+                  "S3Prefix": "exampleprefix",
+                  "S3Region": "us-east-1",
+                  "AdditionalArtifacts": [
+                    "REDSHIFT",
+                    "QUICKSIGHT"
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      },
+      "com.amazonaws.costandusagereportservice#PutReportDefinitionRequest": {
+        "type": "structure",
+        "members": {
+          "ReportDefinition": {
+            "target": "com.amazonaws.costandusagereportservice#ReportDefinition",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eRepresents the output of the PutReportDefinition operation. The content consists of the detailed \n      metadata and data file information. \u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Tags": {
+            "target": "com.amazonaws.costandusagereportservice#TagList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe tags to be assigned to the report definition resource.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eCreates a Cost and Usage Report.\u003c/p\u003e",
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.costandusagereportservice#PutReportDefinitionResponse": {
+        "type": "structure",
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eIf the action is successful, the service sends back an HTTP 200 response with an empty HTTP body.\u003c/p\u003e",
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.costandusagereportservice#RefreshClosedReports": {
+        "type": "boolean"
+      },
+      "com.amazonaws.costandusagereportservice#ReportDefinition": {
+        "type": "structure",
+        "members": {
+          "AdditionalArtifacts": {
+            "target": "com.amazonaws.costandusagereportservice#AdditionalArtifactList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of manifests that you want Amazon Web Services to create for this report.\u003c/p\u003e"
+            }
+          },
+          "AdditionalSchemaElements": {
+            "target": "com.amazonaws.costandusagereportservice#SchemaElementList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of strings that indicate additional content that Amazon Web Services includes in the report, such as individual resource IDs. \u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "BillingViewArn": {
+            "target": "com.amazonaws.costandusagereportservice#BillingViewArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003e\n      The Amazon resource name of the billing view. The \u003ccode\u003eBillingViewArn\u003c/code\u003e is needed to create Amazon Web Services Cost and Usage Report for each billing group maintained in the Amazon Web Services Billing Conductor service. The \u003ccode\u003eBillingViewArn\u003c/code\u003e for a billing group can be constructed as: \u003ccode\u003earn:aws:billing::payer-account-id:billingview/billing-group-primary-account-id\u003c/code\u003e\n         \u003c/p\u003e"
+            }
+          },
+          "Compression": {
+            "target": "com.amazonaws.costandusagereportservice#CompressionFormat",
+            "traits": {
+              "smithy.api#required": {}
+            }
+          },
+          "Format": {
+            "target": "com.amazonaws.costandusagereportservice#ReportFormat",
+            "traits": {
+              "smithy.api#required": {}
+            }
+          },
+          "RefreshClosedReports": {
+            "target": "com.amazonaws.costandusagereportservice#RefreshClosedReports",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eWhether you want Amazon Web Services to update your reports after they have been finalized if Amazon Web Services detects charges related to \n      previous months. These charges can include refunds, credits, or support fees.\u003c/p\u003e"
+            }
+          },
+          "ReportName": {
+            "target": "com.amazonaws.costandusagereportservice#ReportName",
+            "traits": {
+              "smithy.api#required": {}
+            }
+          },
+          "ReportStatus": {
+            "target": "com.amazonaws.costandusagereportservice#ReportStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe status of the report.\u003c/p\u003e"
+            }
+          },
+          "ReportVersioning": {
+            "target": "com.amazonaws.costandusagereportservice#ReportVersioning",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eWhether you want Amazon Web Services to overwrite the previous version of each report or \n         to deliver the report in addition to the previous versions.\u003c/p\u003e"
+            }
+          },
+          "S3Bucket": {
+            "target": "com.amazonaws.costandusagereportservice#S3Bucket",
+            "traits": {
+              "smithy.api#required": {}
+            }
+          },
+          "S3Prefix": {
+            "target": "com.amazonaws.costandusagereportservice#S3Prefix",
+            "traits": {
+              "smithy.api#required": {}
+            }
+          },
+          "S3Region": {
+            "target": "com.amazonaws.costandusagereportservice#AWSRegion",
+            "traits": {
+              "smithy.api#required": {}
+            }
+          },
+          "TimeUnit": {
+            "target": "com.amazonaws.costandusagereportservice#TimeUnit",
+            "traits": {
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe definition of Amazon Web Services Cost and Usage Report. You can specify the report name, \n         time unit, report format, compression format, S3 bucket, additional artifacts, and schema \n         elements in the definition.\n    \u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.costandusagereportservice#ReportDefinitionList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.costandusagereportservice#ReportDefinition"
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA list of report definitions.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.costandusagereportservice#ReportFormat": {
+        "type": "enum",
+        "members": {
+          "CSV": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "textORcsv"
+            }
+          },
+          "Parquet": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Parquet"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe format that Amazon Web Services saves the report in.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.costandusagereportservice#ReportLimitReachedException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.costandusagereportservice#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThis account already has five reports defined. To define a new report, you must delete an existing report.\u003c/p\u003e",
+          "smithy.api#error": "client"
+        }
+      },
+      "com.amazonaws.costandusagereportservice#ReportName": {
+        "type": "string",
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe name of the report that you want to create. The name must be unique,\n        is case sensitive, and can't include spaces. \u003c/p\u003e",
+          "smithy.api#length": {
+            "min": 0,
+            "max": 256
+          },
+          "smithy.api#pattern": "^[0-9A-Za-z!\\-_.*\\'()]+$"
+        }
+      },
+      "com.amazonaws.costandusagereportservice#ReportStatus": {
+        "type": "structure",
+        "members": {
+          "lastDelivery": {
+            "target": "com.amazonaws.costandusagereportservice#LastDelivery",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA timestamp that gives the date of a report delivery.\u003c/p\u003e"
+            }
+          },
+          "lastStatus": {
+            "target": "com.amazonaws.costandusagereportservice#LastStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn enum that gives the status of a report delivery.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA two element dictionary with a \u003ccode\u003elastDelivery\u003c/code\u003e and \u003ccode\u003elastStatus\u003c/code\u003e key\n      whose values describe the date and status of the last delivered report for a particular report\n      definition.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.costandusagereportservice#ReportVersioning": {
+        "type": "enum",
+        "members": {
+          "CREATE_NEW_REPORT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "CREATE_NEW_REPORT"
+            }
+          },
+          "OVERWRITE_REPORT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "OVERWRITE_REPORT"
+            }
+          }
+        }
+      },
+      "com.amazonaws.costandusagereportservice#ResourceNotFoundException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.costandusagereportservice#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe specified report (\u003ccode\u003eReportName\u003c/code\u003e) in the request doesn't exist.\u003c/p\u003e",
+          "smithy.api#error": "client"
+        }
+      },
+      "com.amazonaws.costandusagereportservice#S3Bucket": {
+        "type": "string",
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe S3 bucket where Amazon Web Services delivers the report.\u003c/p\u003e",
+          "smithy.api#length": {
+            "min": 0,
+            "max": 256
+          },
+          "smithy.api#pattern": "^[A-Za-z0-9_\\.\\-]+$"
+        }
+      },
+      "com.amazonaws.costandusagereportservice#S3Prefix": {
+        "type": "string",
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe prefix that Amazon Web Services adds to the report name when Amazon Web Services delivers the report. Your prefix\n        can't include spaces.\u003c/p\u003e",
+          "smithy.api#length": {
+            "min": 0,
+            "max": 256
+          },
+          "smithy.api#pattern": "^[0-9A-Za-z!\\-_.*\\'()/]*$"
+        }
+      },
+      "com.amazonaws.costandusagereportservice#SchemaElement": {
+        "type": "enum",
+        "members": {
+          "MANUAL_DISCOUNT_COMPATIBILITY": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "MANUAL_DISCOUNT_COMPATIBILITY"
+            }
+          },
+          "RESOURCES": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "RESOURCES"
+            }
+          },
+          "SPLIT_COST_ALLOCATION_DATA": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "SPLIT_COST_ALLOCATION_DATA"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eWhether or not Amazon Web Services includes resource IDs in the report. \u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.costandusagereportservice#SchemaElementList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.costandusagereportservice#SchemaElement"
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA list of strings that indicate the content that is included in the report, such as service or usage type.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.costandusagereportservice#Tag": {
+        "type": "structure",
+        "members": {
+          "Key": {
+            "target": "com.amazonaws.costandusagereportservice#TagKey",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe key of the tag. Tag keys are case sensitive. Each report definition can only have up\n      to one tag with the same key. If you try to add an existing tag with the same key, the\n      existing tag value will be updated to the new value.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Value": {
+            "target": "com.amazonaws.costandusagereportservice#TagValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe value of the tag. Tag values are case-sensitive. This can be an empty string.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eDescribes a tag. A tag is a key-value pair. You can add up to 50 tags to a report\n      definition.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.costandusagereportservice#TagKey": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 128
+          },
+          "smithy.api#pattern": ".*"
+        }
+      },
+      "com.amazonaws.costandusagereportservice#TagKeyList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.costandusagereportservice#TagKey"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 200
+          }
+        }
+      },
+      "com.amazonaws.costandusagereportservice#TagList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.costandusagereportservice#Tag"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 200
+          }
+        }
+      },
+      "com.amazonaws.costandusagereportservice#TagResource": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.costandusagereportservice#TagResourceRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.costandusagereportservice#TagResourceResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.costandusagereportservice#InternalErrorException"
+          },
+          {
+            "target": "com.amazonaws.costandusagereportservice#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.costandusagereportservice#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eAssociates a set of tags with a report definition.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.costandusagereportservice#TagResourceRequest": {
+        "type": "structure",
+        "members": {
+          "ReportName": {
+            "target": "com.amazonaws.costandusagereportservice#ReportName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe report name of the report definition that tags are to be associated with.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Tags": {
+            "target": "com.amazonaws.costandusagereportservice#TagList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe tags to be assigned to the report definition resource.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.costandusagereportservice#TagResourceResponse": {
+        "type": "structure",
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.costandusagereportservice#TagValue": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 256
+          },
+          "smithy.api#pattern": ".*"
+        }
+      },
+      "com.amazonaws.costandusagereportservice#TimeUnit": {
+        "type": "enum",
+        "members": {
+          "DAILY": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "DAILY"
+            }
+          },
+          "HOURLY": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "HOURLY"
+            }
+          },
+          "MONTHLY": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "MONTHLY"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe length of time covered by the report. \u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.costandusagereportservice#UntagResource": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.costandusagereportservice#UntagResourceRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.costandusagereportservice#UntagResourceResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.costandusagereportservice#InternalErrorException"
+          },
+          {
+            "target": "com.amazonaws.costandusagereportservice#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.costandusagereportservice#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eDisassociates a set of tags from a report definition.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.costandusagereportservice#UntagResourceRequest": {
+        "type": "structure",
+        "members": {
+          "ReportName": {
+            "target": "com.amazonaws.costandusagereportservice#ReportName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe report name of the report definition that tags are to be disassociated\n      from.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "TagKeys": {
+            "target": "com.amazonaws.costandusagereportservice#TagKeyList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe tags to be disassociated from the report definition resource.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.costandusagereportservice#UntagResourceResponse": {
+        "type": "structure",
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.costandusagereportservice#ValidationException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.costandusagereportservice#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe input fails to satisfy the constraints specified by an Amazon Web Services service.\u003c/p\u003e",
+          "smithy.api#error": "client"
+        }
+      }
+    }
+  }
+}

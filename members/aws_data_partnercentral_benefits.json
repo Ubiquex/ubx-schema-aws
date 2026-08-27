@@ -1,0 +1,4635 @@
+{
+  "schema_source": "smithy",
+  "mode": "data_source",
+  "auth": {
+    "Type": "",
+    "Params": null
+  },
+  "base_url": "https://aws.example.invalid",
+  "retry": {
+    "MaxAttempts": 0,
+    "InitialBackoff": "",
+    "MaxBackoff": "",
+    "Jitter": null,
+    "RespectRetryAfter": null,
+    "RateLimitResetHeader": ""
+  },
+  "timeouts": {
+    "Create": "",
+    "Read": "",
+    "Update": "",
+    "Delete": "",
+    "Default": ""
+  },
+  "wire_name": "aws",
+  "raw_spec": {
+    "smithy": "2.0",
+    "shapes": {
+      "com.amazonaws.partnercentralbenefits#AccessDeniedException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA message describing the access denial.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThrown when the caller does not have sufficient permissions to perform the requested operation.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 403
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#AccessDetails": {
+        "type": "structure",
+        "members": {
+          "Description": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA description of the access privileges or permissions granted by this benefit.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eContains information about access-based benefit fulfillment, such as service permissions or feature access.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#AmendBenefitApplication": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.partnercentralbenefits#AmendBenefitApplicationInput"
+        },
+        "output": {
+          "target": "com.amazonaws.partnercentralbenefits#AmendBenefitApplicationOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.partnercentralbenefits#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#conditionKeys": [
+            "partnercentral:Catalog",
+            "partnercentral:FulfillmentTypes",
+            "partnercentral:Programs",
+            "aws:ResourceTag/${TagKey}"
+          ],
+          "smithy.api#documentation": "\u003cp\u003eModifies an existing benefit application by applying amendments to specific fields while maintaining revision control.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "POST",
+            "uri": "/AmendBenefitApplication"
+          }
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#AmendBenefitApplicationInput": {
+        "type": "structure",
+        "members": {
+          "AmendmentReason": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA descriptive reason explaining why the benefit application is being amended.\u003c/p\u003e",
+              "smithy.api#length": {
+                "max": 1000
+              },
+              "smithy.api#required": {}
+            }
+          },
+          "Amendments": {
+            "target": "com.amazonaws.partnercentralbenefits#AmendmentList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of specific field amendments to apply to the benefit application.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Catalog": {
+            "target": "com.amazonaws.partnercentralbenefits#CatalogName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe catalog identifier that specifies which benefit catalog the application belongs to.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "ClientToken": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA unique, case-sensitive identifier to ensure idempotent processing of the amendment request.\u003c/p\u003e",
+              "smithy.api#length": {
+                "min": 1,
+                "max": 64
+              },
+              "smithy.api#pattern": "^[a-zA-Z0-9-]{1,64}$",
+              "smithy.api#required": {}
+            }
+          },
+          "Identifier": {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitApplicationIdentifier",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the benefit application to be amended.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Revision": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe current revision number of the benefit application to ensure optimistic concurrency control.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#AmendBenefitApplicationOutput": {
+        "type": "structure",
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#Amendment": {
+        "type": "structure",
+        "members": {
+          "FieldPath": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe JSON path or field identifier specifying which field in the benefit application to modify.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "NewValue": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe new value to set for the specified field in the benefit application.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eRepresents a specific change to be made to a benefit application field.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#AmendmentList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.partnercentralbenefits#Amendment"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#Arn": {
+        "type": "string",
+        "traits": {
+          "smithy.api#pattern": "^arn:aws:([a-zA-Z0-9\\-])+:([a-z]{2}(-gov)?-[a-z]+-\\d{1})?:(\\d{12})?:(.+)$"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#Arns": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.partnercentralbenefits#Arn"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#AssociateBenefitApplicationResource": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.partnercentralbenefits#AssociateBenefitApplicationResourceInput"
+        },
+        "output": {
+          "target": "com.amazonaws.partnercentralbenefits#AssociateBenefitApplicationResourceOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.partnercentralbenefits#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#conditionKeys": [
+            "partnercentral:Catalog",
+            "partnercentral:FulfillmentTypes",
+            "partnercentral:Programs",
+            "aws:ResourceTag/${TagKey}"
+          ],
+          "smithy.api#documentation": "\u003cp\u003eLinks an AWS resource to an existing benefit application for tracking and management purposes.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "POST",
+            "uri": "/AssociateBenefitApplicationResource"
+          }
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#AssociateBenefitApplicationResourceInput": {
+        "type": "structure",
+        "members": {
+          "BenefitApplicationIdentifier": {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitApplicationIdentifier",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the benefit application to associate the resource with.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Catalog": {
+            "target": "com.amazonaws.partnercentralbenefits#CatalogName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe catalog identifier that specifies which benefit catalog the application belongs to.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "ResourceArn": {
+            "target": "com.amazonaws.partnercentralbenefits#Arn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the AWS resource to associate with the benefit application.\u003c/p\u003e",
+              "smithy.api#length": {
+                "min": 0,
+                "max": 1600
+              },
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#AssociateBenefitApplicationResourceOutput": {
+        "type": "structure",
+        "members": {
+          "Arn": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the benefit application after the resource association.\u003c/p\u003e"
+            }
+          },
+          "Id": {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitApplicationId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the benefit application after the resource association.\u003c/p\u003e"
+            }
+          },
+          "Revision": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe updated revision number of the benefit application after the resource association.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#AssociatedResource": {
+        "type": "structure",
+        "members": {
+          "ResourceArn": {
+            "target": "com.amazonaws.partnercentralbenefits#Arn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) that uniquely identifies the AWS resource.\u003c/p\u003e"
+            }
+          },
+          "ResourceIdentifier": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#deprecated": {
+                "message": "This field is no longer used",
+                "since": "Oct 08 2025"
+              },
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the AWS resource within its service.\u003c/p\u003e"
+            }
+          },
+          "ResourceType": {
+            "target": "com.amazonaws.partnercentralbenefits#ResourceType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe type of AWS resource (e.g., EC2 instance, S3 bucket, Lambda function).\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eRepresents an AWS resource that is associated with a benefit application for tracking and management.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#AssociatedResources": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.partnercentralbenefits#AssociatedResource"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#Attributes": {
+        "type": "map",
+        "key": {
+          "target": "smithy.api#String"
+        },
+        "value": {
+          "target": "smithy.api#String"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#Benefit": {
+        "type": "resource",
+        "traits": {
+          "aws.api#arn": {
+            "template": "catalog/{CatalogName}/benefit/ben-{BenefitId}",
+            "noAccount": true
+          },
+          "aws.iam#conditionKeys": [
+            "partnercentral:Catalog",
+            "partnercentral:Programs",
+            "partnercentral:FulfillmentTypes"
+          ],
+          "aws.iam#disableConditionKeyInference": {}
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#BenefitAllocation": {
+        "type": "resource",
+        "traits": {
+          "aws.api#arn": {
+            "template": "catalog/{CatalogName}/benefit-allocation/benalloc-{BenefitAllocationId}"
+          },
+          "aws.iam#conditionKeys": [
+            "partnercentral:Catalog",
+            "partnercentral:FulfillmentTypes"
+          ],
+          "aws.iam#disableConditionKeyInference": {}
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#BenefitAllocationArn": {
+        "type": "string",
+        "traits": {
+          "smithy.api#pattern": "^(arn:.+benalloc-[0-9a-z]{14})$"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#BenefitAllocationId": {
+        "type": "string",
+        "traits": {
+          "smithy.api#pattern": "^benalloc-[0-9a-z]{14}$"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#BenefitAllocationIdentifier": {
+        "type": "string",
+        "traits": {
+          "smithy.api#pattern": "^(arn:.+|benalloc-[0-9a-z]{14})$"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#BenefitAllocationName": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 255
+          }
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#BenefitAllocationStatus": {
+        "type": "enum",
+        "members": {
+          "ACTIVE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ACTIVE"
+            }
+          },
+          "FULFILLED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "FULFILLED"
+            }
+          },
+          "INACTIVE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "INACTIVE"
+            }
+          }
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#BenefitAllocationStatusList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.partnercentralbenefits#BenefitAllocationStatus"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#BenefitAllocationSummaries": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.partnercentralbenefits#BenefitAllocationSummary"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#BenefitAllocationSummary": {
+        "type": "structure",
+        "members": {
+          "ApplicableBenefitIds": {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitIds",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifiers of the benefits applicable for this allocation.\u003c/p\u003e"
+            }
+          },
+          "Arn": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the benefit allocation.\u003c/p\u003e"
+            }
+          },
+          "BenefitApplicationId": {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitApplicationId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier of the benefit application that resulted in this allocation.\u003c/p\u003e"
+            }
+          },
+          "BenefitId": {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier of the benefit that this allocation is based on.\u003c/p\u003e"
+            }
+          },
+          "Catalog": {
+            "target": "com.amazonaws.partnercentralbenefits#CatalogName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe catalog identifier that the benefit allocation belongs to.\u003c/p\u003e"
+            }
+          },
+          "CreatedAt": {
+            "target": "com.amazonaws.partnercentralbenefits#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe timestamp when the benefit allocation was created.\u003c/p\u003e"
+            }
+          },
+          "ExpiresAt": {
+            "target": "com.amazonaws.partnercentralbenefits#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe timestamp when the benefit allocation expires.\u003c/p\u003e"
+            }
+          },
+          "FulfillmentTypes": {
+            "target": "com.amazonaws.partnercentralbenefits#FulfillmentTypes",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe fulfillment types used for this benefit allocation.\u003c/p\u003e"
+            }
+          },
+          "Id": {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitAllocationId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the benefit allocation.\u003c/p\u003e"
+            }
+          },
+          "Name": {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitAllocationName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe human-readable name of the benefit allocation.\u003c/p\u003e"
+            }
+          },
+          "Status": {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitAllocationStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe current status of the benefit allocation.\u003c/p\u003e"
+            }
+          },
+          "StatusReason": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAdditional information explaining the current status of the benefit allocation.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA summary view of a benefit allocation containing key information for list operations.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#BenefitApplication": {
+        "type": "resource",
+        "traits": {
+          "aws.api#arn": {
+            "template": "catalog/{CatalogName}/benefit-application/benappl-{BenefitApplicationId}"
+          },
+          "aws.iam#conditionKeys": [
+            "partnercentral:Catalog"
+          ],
+          "aws.iam#disableConditionKeyInference": {}
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#BenefitApplicationDescription": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 1000
+          }
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#BenefitApplicationId": {
+        "type": "string",
+        "traits": {
+          "smithy.api#pattern": "^benappl-[0-9a-z]{14}$"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#BenefitApplicationIdentifier": {
+        "type": "string",
+        "traits": {
+          "smithy.api#pattern": "^(arn:.+|benappl-[0-9a-z]{14})$"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#BenefitApplicationIdentifierList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.partnercentralbenefits#BenefitApplicationIdentifier"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#BenefitApplicationName": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 255
+          }
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#BenefitApplicationStage": {
+        "type": "string"
+      },
+      "com.amazonaws.partnercentralbenefits#BenefitApplicationStatus": {
+        "type": "enum",
+        "members": {
+          "ACTION_REQUIRED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ACTION_REQUIRED"
+            }
+          },
+          "APPROVED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "APPROVED"
+            }
+          },
+          "CANCELED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "CANCELED"
+            }
+          },
+          "IN_REVIEW": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "IN_REVIEW"
+            }
+          },
+          "PENDING_SUBMISSION": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "PENDING_SUBMISSION"
+            }
+          },
+          "REJECTED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "REJECTED"
+            }
+          }
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#BenefitApplicationSummaries": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.partnercentralbenefits#BenefitApplicationSummary"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#BenefitApplicationSummary": {
+        "type": "structure",
+        "members": {
+          "Arn": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the benefit application.\u003c/p\u003e"
+            }
+          },
+          "AssociatedResources": {
+            "target": "com.amazonaws.partnercentralbenefits#Arns",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAWS resources that are associated with this benefit application.\u003c/p\u003e"
+            }
+          },
+          "BenefitApplicationDetails": {
+            "target": "com.amazonaws.partnercentralbenefits#Attributes",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAdditional attributes and metadata associated with the benefit application.\u003c/p\u003e"
+            }
+          },
+          "BenefitId": {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier of the benefit being requested in this application.\u003c/p\u003e"
+            }
+          },
+          "Catalog": {
+            "target": "com.amazonaws.partnercentralbenefits#CatalogName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe catalog identifier that the benefit application belongs to.\u003c/p\u003e"
+            }
+          },
+          "CreatedAt": {
+            "target": "com.amazonaws.partnercentralbenefits#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe timestamp when the benefit application was created.\u003c/p\u003e"
+            }
+          },
+          "FulfillmentTypes": {
+            "target": "com.amazonaws.partnercentralbenefits#FulfillmentTypes",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe fulfillment types requested for this benefit application.\u003c/p\u003e"
+            }
+          },
+          "Id": {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitApplicationId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the benefit application.\u003c/p\u003e"
+            }
+          },
+          "Name": {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitApplicationName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe human-readable name of the benefit application.\u003c/p\u003e"
+            }
+          },
+          "Programs": {
+            "target": "com.amazonaws.partnercentralbenefits#Programs",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe AWS partner programs associated with this benefit application.\u003c/p\u003e"
+            }
+          },
+          "Stage": {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitApplicationStage",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe current stage in the benefit application processing workflow..\u003c/p\u003e"
+            }
+          },
+          "Status": {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitApplicationStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe current processing status of the benefit application.\u003c/p\u003e"
+            }
+          },
+          "UpdatedAt": {
+            "target": "com.amazonaws.partnercentralbenefits#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe timestamp when the benefit application was last updated.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA summary view of a benefit application containing key information for list operations.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#BenefitId": {
+        "type": "string",
+        "traits": {
+          "smithy.api#pattern": "^(arn:.+|ben-[0-9a-z]{14})$"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#BenefitIdentifiers": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.partnercentralbenefits#BenefitId"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#BenefitIds": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.partnercentralbenefits#BenefitId"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#BenefitStatus": {
+        "type": "enum",
+        "members": {
+          "ACTIVE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ACTIVE"
+            }
+          },
+          "INACTIVE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "INACTIVE"
+            }
+          }
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#BenefitStatuses": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.partnercentralbenefits#BenefitStatus"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#BenefitSummaries": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.partnercentralbenefits#BenefitSummary"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#BenefitSummary": {
+        "type": "structure",
+        "members": {
+          "Arn": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the benefit.\u003c/p\u003e"
+            }
+          },
+          "Catalog": {
+            "target": "com.amazonaws.partnercentralbenefits#CatalogName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe catalog identifier that the benefit belongs to.\u003c/p\u003e"
+            }
+          },
+          "Description": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA brief description of the benefit and its purpose.\u003c/p\u003e",
+              "smithy.api#length": {
+                "max": 1000
+              }
+            }
+          },
+          "FulfillmentTypes": {
+            "target": "com.amazonaws.partnercentralbenefits#FulfillmentTypes",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe available fulfillment types for this benefit.\u003c/p\u003e"
+            }
+          },
+          "Id": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the benefit.\u003c/p\u003e",
+              "smithy.api#pattern": "^ben-[0-9a-z]{14}$"
+            }
+          },
+          "Name": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe human-readable name of the benefit.\u003c/p\u003e",
+              "smithy.api#length": {
+                "min": 1,
+                "max": 100
+              }
+            }
+          },
+          "Programs": {
+            "target": "com.amazonaws.partnercentralbenefits#Programs",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe AWS partner programs that this benefit is associated with.\u003c/p\u003e"
+            }
+          },
+          "Status": {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe current status of the benefit.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA summary view of a benefit containing key information for list operations.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#CancelBenefitApplication": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.partnercentralbenefits#CancelBenefitApplicationInput"
+        },
+        "output": {
+          "target": "com.amazonaws.partnercentralbenefits#CancelBenefitApplicationOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.partnercentralbenefits#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#conditionKeys": [
+            "partnercentral:Catalog",
+            "partnercentral:FulfillmentTypes",
+            "partnercentral:Programs",
+            "aws:ResourceTag/${TagKey}"
+          ],
+          "smithy.api#documentation": "\u003cp\u003eCancels a benefit application that is currently in progress, preventing further processing.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "POST",
+            "uri": "/CancelBenefitApplication"
+          }
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#CancelBenefitApplicationInput": {
+        "type": "structure",
+        "members": {
+          "Catalog": {
+            "target": "com.amazonaws.partnercentralbenefits#CatalogName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe catalog identifier that specifies which benefit catalog the application belongs to.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "ClientToken": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA unique, case-sensitive identifier to ensure idempotent processing of the cancellation request.\u003c/p\u003e",
+              "smithy.api#length": {
+                "min": 1,
+                "max": 64
+              },
+              "smithy.api#pattern": "^[a-zA-Z0-9-]{1,64}$",
+              "smithy.api#required": {}
+            }
+          },
+          "Identifier": {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitApplicationIdentifier",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the benefit application to cancel.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Reason": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA descriptive reason explaining why the benefit application is being cancelled.\u003c/p\u003e",
+              "smithy.api#length": {
+                "max": 1000
+              },
+              "smithy.api#pattern": "^[\\s\\S]{1,1000}$"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#CancelBenefitApplicationOutput": {
+        "type": "structure",
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#CatalogName": {
+        "type": "string",
+        "traits": {
+          "smithy.api#pattern": "^[A-Za-z0-9_-]+$"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#ConflictException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA message describing the conflict.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThrown when the request conflicts with the current state of the resource, such as attempting to modify a resource that has been changed by another process.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 409
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#ConsumableDetails": {
+        "type": "structure",
+        "members": {
+          "AllocatedAmount": {
+            "target": "com.amazonaws.partnercentralbenefits#MonetaryValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe total amount of the consumable benefit that has been allocated.\u003c/p\u003e"
+            }
+          },
+          "IssuanceDetails": {
+            "target": "com.amazonaws.partnercentralbenefits#IssuanceDetail",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eDetailed information about how the consumable benefit was issued and distributed.\u003c/p\u003e"
+            }
+          },
+          "RemainingAmount": {
+            "target": "com.amazonaws.partnercentralbenefits#MonetaryValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe remaining amount of the consumable benefit that is still available for use.\u003c/p\u003e"
+            }
+          },
+          "UtilizedAmount": {
+            "target": "com.amazonaws.partnercentralbenefits#MonetaryValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe amount of the consumable benefit that has already been used.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eContains information about consumable benefit fulfillment, such as usage quotas or service limits.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#Contact": {
+        "type": "structure",
+        "members": {
+          "BusinessTitle": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe business title or role of the contact person within the organization.\u003c/p\u003e",
+              "smithy.api#length": {
+                "min": 0,
+                "max": 80
+              }
+            }
+          },
+          "Email": {
+            "target": "com.amazonaws.partnercentralbenefits#ContactEmail",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe email address of the contact person.\u003c/p\u003e"
+            }
+          },
+          "FirstName": {
+            "target": "com.amazonaws.partnercentralbenefits#ContactFirstName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe first name of the contact person.\u003c/p\u003e"
+            }
+          },
+          "LastName": {
+            "target": "com.amazonaws.partnercentralbenefits#ContactLastName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe last name of the contact person.\u003c/p\u003e"
+            }
+          },
+          "Phone": {
+            "target": "com.amazonaws.partnercentralbenefits#ContactPhone",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe phone number of the contact person.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eRepresents contact information for a partner representative.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#ContactEmail": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 80
+          },
+          "smithy.api#pattern": "^[a-z0-9!#$%\u0026'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%\u0026'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$",
+          "smithy.api#sensitive": {}
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#ContactFirstName": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 80
+          },
+          "smithy.api#sensitive": {}
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#ContactLastName": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 80
+          },
+          "smithy.api#sensitive": {}
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#ContactPhone": {
+        "type": "string",
+        "traits": {
+          "smithy.api#sensitive": {}
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#Contacts": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.partnercentralbenefits#Contact"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#CreateBenefitApplication": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.partnercentralbenefits#CreateBenefitApplicationInput"
+        },
+        "output": {
+          "target": "com.amazonaws.partnercentralbenefits#CreateBenefitApplicationOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.partnercentralbenefits#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#conditionKeys": [
+            "partnercentral:Catalog",
+            "partnercentral:FulfillmentTypes",
+            "partnercentral:Programs",
+            "aws:RequestTag/${TagKey}",
+            "aws:TagKeys"
+          ],
+          "smithy.api#documentation": "\u003cp\u003eCreates a new benefit application for a partner to request access to AWS benefits and programs.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "POST",
+            "uri": "/CreateBenefitApplication"
+          },
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#CreateBenefitApplicationInput": {
+        "type": "structure",
+        "members": {
+          "AssociatedResources": {
+            "target": "com.amazonaws.partnercentralbenefits#Arns",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAWS resources that are associated with this benefit application.\u003c/p\u003e",
+              "smithy.api#length": {
+                "max": 10
+              }
+            }
+          },
+          "BenefitApplicationDetails": {
+            "target": "smithy.api#Document",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eDetailed information and requirements specific to the benefit being requested.\u003c/p\u003e"
+            }
+          },
+          "BenefitIdentifier": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the benefit being requested in this application.\u003c/p\u003e",
+              "smithy.api#pattern": "^(arn:.+|ben-[0-9a-z]{14})$",
+              "smithy.api#required": {}
+            }
+          },
+          "Catalog": {
+            "target": "com.amazonaws.partnercentralbenefits#CatalogName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe catalog identifier that specifies which benefit catalog to create the application in.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "ClientToken": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA unique, case-sensitive identifier to ensure idempotent processing of the creation request.\u003c/p\u003e",
+              "smithy.api#length": {
+                "min": 1,
+                "max": 64
+              },
+              "smithy.api#pattern": "^[!-~]{1,64}$",
+              "smithy.api#required": {}
+            }
+          },
+          "Description": {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitApplicationDescription",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA detailed description of the benefit application and its intended use.\u003c/p\u003e"
+            }
+          },
+          "FileDetails": {
+            "target": "com.amazonaws.partnercentralbenefits#FileInputDetails",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSupporting documents and files attached to the benefit application.\u003c/p\u003e",
+              "smithy.api#length": {
+                "max": 30
+              }
+            }
+          },
+          "FulfillmentTypes": {
+            "target": "com.amazonaws.partnercentralbenefits#FulfillmentTypes",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe types of fulfillment requested for this benefit application (e.g., credits, access, disbursement).\u003c/p\u003e"
+            }
+          },
+          "Name": {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitApplicationName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA human-readable name for the benefit application.\u003c/p\u003e"
+            }
+          },
+          "PartnerContacts": {
+            "target": "com.amazonaws.partnercentralbenefits#Contacts",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eContact information for partner representatives responsible for this benefit application.\u003c/p\u003e",
+              "smithy.api#length": {
+                "max": 1
+              }
+            }
+          },
+          "Tags": {
+            "target": "com.amazonaws.partnercentralbenefits#Tags",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eKey-value pairs to categorize and organize the benefit application.\u003c/p\u003e",
+              "smithy.api#length": {
+                "max": 200
+              }
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#CreateBenefitApplicationOutput": {
+        "type": "structure",
+        "members": {
+          "Arn": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the newly created benefit application.\u003c/p\u003e"
+            }
+          },
+          "Id": {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitApplicationId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier assigned to the newly created benefit application.\u003c/p\u003e"
+            }
+          },
+          "Revision": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe initial revision number of the newly created benefit application.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#CreditCode": {
+        "type": "structure",
+        "members": {
+          "AwsAccountId": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe AWS account ID that the credit code is associated with or can be applied to.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "AwsCreditCode": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe actual credit code string that can be redeemed in the AWS billing console.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "ExpiresAt": {
+            "target": "com.amazonaws.partnercentralbenefits#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe timestamp when the credit code expires and can no longer be redeemed.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "IssuedAt": {
+            "target": "com.amazonaws.partnercentralbenefits#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe timestamp when the credit code was issued.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Status": {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitAllocationStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe current status of the credit code (e.g., active, redeemed, expired).\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Value": {
+            "target": "com.amazonaws.partnercentralbenefits#MonetaryValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe monetary value of the credit code.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eRepresents an AWS credit code that can be applied to an AWS account for billing purposes.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#CreditCodes": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.partnercentralbenefits#CreditCode"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#CreditDetails": {
+        "type": "structure",
+        "members": {
+          "AllocatedAmount": {
+            "target": "com.amazonaws.partnercentralbenefits#MonetaryValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe total amount of credits that have been allocated for this benefit.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Codes": {
+            "target": "com.amazonaws.partnercentralbenefits#CreditCodes",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of credit codes that have been generated for this benefit allocation.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "IssuedAmount": {
+            "target": "com.amazonaws.partnercentralbenefits#MonetaryValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe amount of credits that have actually been issued and are available for use.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eContains information about credit-based benefit fulfillment, including AWS promotional credits.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#CurrencyCode": {
+        "type": "enum",
+        "members": {
+          "AED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "AED"
+            }
+          },
+          "AMD": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "AMD"
+            }
+          },
+          "ARS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ARS"
+            }
+          },
+          "AUD": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "AUD"
+            }
+          },
+          "AWG": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "AWG"
+            }
+          },
+          "AZN": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "AZN"
+            }
+          },
+          "BBD": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "BBD"
+            }
+          },
+          "BDT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "BDT"
+            }
+          },
+          "BGN": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "BGN"
+            }
+          },
+          "BMD": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "BMD"
+            }
+          },
+          "BND": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "BND"
+            }
+          },
+          "BOB": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "BOB"
+            }
+          },
+          "BRL": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "BRL"
+            }
+          },
+          "BSD": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "BSD"
+            }
+          },
+          "BYR": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "BYR"
+            }
+          },
+          "BZD": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "BZD"
+            }
+          },
+          "CAD": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "CAD"
+            }
+          },
+          "CHF": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "CHF"
+            }
+          },
+          "CLP": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "CLP"
+            }
+          },
+          "CNY": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "CNY"
+            }
+          },
+          "COP": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "COP"
+            }
+          },
+          "CRC": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "CRC"
+            }
+          },
+          "CZK": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "CZK"
+            }
+          },
+          "DKK": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "DKK"
+            }
+          },
+          "DOP": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "DOP"
+            }
+          },
+          "EEK": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "EEK"
+            }
+          },
+          "EGP": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "EGP"
+            }
+          },
+          "EUR": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "EUR"
+            }
+          },
+          "GBP": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "GBP"
+            }
+          },
+          "GEL": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "GEL"
+            }
+          },
+          "GHS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "GHS"
+            }
+          },
+          "GTQ": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "GTQ"
+            }
+          },
+          "GYD": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "GYD"
+            }
+          },
+          "HKD": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "HKD"
+            }
+          },
+          "HNL": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "HNL"
+            }
+          },
+          "HRK": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "HRK"
+            }
+          },
+          "HTG": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "HTG"
+            }
+          },
+          "HUF": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "HUF"
+            }
+          },
+          "IDR": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "IDR"
+            }
+          },
+          "ILS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ILS"
+            }
+          },
+          "INR": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "INR"
+            }
+          },
+          "ISK": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ISK"
+            }
+          },
+          "JMD": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "JMD"
+            }
+          },
+          "JPY": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "JPY"
+            }
+          },
+          "KES": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "KES"
+            }
+          },
+          "KHR": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "KHR"
+            }
+          },
+          "KRW": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "KRW"
+            }
+          },
+          "KYD": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "KYD"
+            }
+          },
+          "KZT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "KZT"
+            }
+          },
+          "LBP": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "LBP"
+            }
+          },
+          "LKR": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "LKR"
+            }
+          },
+          "LTL": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "LTL"
+            }
+          },
+          "LVL": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "LVL"
+            }
+          },
+          "MAD": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "MAD"
+            }
+          },
+          "MNT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "MNT"
+            }
+          },
+          "MOP": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "MOP"
+            }
+          },
+          "MUR": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "MUR"
+            }
+          },
+          "MVR": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "MVR"
+            }
+          },
+          "MXN": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "MXN"
+            }
+          },
+          "MYR": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "MYR"
+            }
+          },
+          "NAD": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "NAD"
+            }
+          },
+          "NGN": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "NGN"
+            }
+          },
+          "NIO": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "NIO"
+            }
+          },
+          "NOK": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "NOK"
+            }
+          },
+          "NZD": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "NZD"
+            }
+          },
+          "PAB": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "PAB"
+            }
+          },
+          "PEN": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "PEN"
+            }
+          },
+          "PHP": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "PHP"
+            }
+          },
+          "PKR": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "PKR"
+            }
+          },
+          "PLN": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "PLN"
+            }
+          },
+          "PYG": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "PYG"
+            }
+          },
+          "QAR": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "QAR"
+            }
+          },
+          "RON": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "RON"
+            }
+          },
+          "RUB": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "RUB"
+            }
+          },
+          "SAR": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "SAR"
+            }
+          },
+          "SEK": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "SEK"
+            }
+          },
+          "SGD": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "SGD"
+            }
+          },
+          "SIT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "SIT"
+            }
+          },
+          "SKK": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "SKK"
+            }
+          },
+          "THB": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "THB"
+            }
+          },
+          "TND": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "TND"
+            }
+          },
+          "TRY": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "TRY"
+            }
+          },
+          "TTD": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "TTD"
+            }
+          },
+          "TWD": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "TWD"
+            }
+          },
+          "TZS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "TZS"
+            }
+          },
+          "UAH": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "UAH"
+            }
+          },
+          "USD": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "USD"
+            }
+          },
+          "UYU": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "UYU"
+            }
+          },
+          "UZS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "UZS"
+            }
+          },
+          "VND": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "VND"
+            }
+          },
+          "XAF": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "XAF"
+            }
+          },
+          "XCD": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "XCD"
+            }
+          },
+          "XOF": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "XOF"
+            }
+          },
+          "XPF": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "XPF"
+            }
+          },
+          "ZAR": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ZAR"
+            }
+          }
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#DisassociateBenefitApplicationResource": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.partnercentralbenefits#DisassociateBenefitApplicationResourceInput"
+        },
+        "output": {
+          "target": "com.amazonaws.partnercentralbenefits#DisassociateBenefitApplicationResourceOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.partnercentralbenefits#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#conditionKeys": [
+            "partnercentral:Catalog",
+            "partnercentral:FulfillmentTypes",
+            "partnercentral:Programs",
+            "aws:ResourceTag/${TagKey}"
+          ],
+          "smithy.api#documentation": "\u003cp\u003eRemoves the association between an AWS resource and a benefit application.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "POST",
+            "uri": "/DisassociateBenefitApplicationResource"
+          }
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#DisassociateBenefitApplicationResourceInput": {
+        "type": "structure",
+        "members": {
+          "BenefitApplicationIdentifier": {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitApplicationIdentifier",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the benefit application to disassociate the resource from.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Catalog": {
+            "target": "com.amazonaws.partnercentralbenefits#CatalogName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe catalog identifier that specifies which benefit catalog the application belongs to.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "ResourceArn": {
+            "target": "com.amazonaws.partnercentralbenefits#Arn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the AWS resource to disassociate from the benefit application.\u003c/p\u003e",
+              "smithy.api#length": {
+                "min": 0,
+                "max": 1600
+              },
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#DisassociateBenefitApplicationResourceOutput": {
+        "type": "structure",
+        "members": {
+          "Arn": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the benefit application after the resource disassociation.\u003c/p\u003e"
+            }
+          },
+          "Id": {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitApplicationId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the benefit application after the resource disassociation.\u003c/p\u003e"
+            }
+          },
+          "Revision": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe updated revision number of the benefit application after the resource disassociation.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#DisbursementDetails": {
+        "type": "structure",
+        "members": {
+          "DisbursedAmount": {
+            "target": "com.amazonaws.partnercentralbenefits#MonetaryValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe total amount that has been disbursed for this benefit allocation.\u003c/p\u003e"
+            }
+          },
+          "IssuanceDetails": {
+            "target": "com.amazonaws.partnercentralbenefits#IssuanceDetail",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eDetailed information about how the disbursement was issued and processed.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eContains information about disbursement-based benefit fulfillment, such as direct payments or reimbursements.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#FileDetail": {
+        "type": "structure",
+        "members": {
+          "BusinessUseCase": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe business purpose or use case that this file supports in the benefit application.\u003c/p\u003e"
+            }
+          },
+          "CreatedAt": {
+            "target": "com.amazonaws.partnercentralbenefits#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe timestamp when the file was uploaded.\u003c/p\u003e"
+            }
+          },
+          "CreatedBy": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier of the user who uploaded the file.\u003c/p\u003e",
+              "smithy.api#length": {
+                "min": 1,
+                "max": 255
+              }
+            }
+          },
+          "FileName": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe original name of the uploaded file.\u003c/p\u003e",
+              "smithy.api#length": {
+                "min": 1,
+                "max": 255
+              }
+            }
+          },
+          "FileStatus": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe current processing status of the file (e.g., uploaded, processing, approved, rejected).\u003c/p\u003e",
+              "smithy.api#length": {
+                "min": 1,
+                "max": 50
+              }
+            }
+          },
+          "FileStatusReason": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe reason for that particulat file status.\u003c/p\u003e"
+            }
+          },
+          "FileType": {
+            "target": "com.amazonaws.partnercentralbenefits#FileType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe type or category of the file (e.g., document, image, spreadsheet).\u003c/p\u003e"
+            }
+          },
+          "FileURI": {
+            "target": "com.amazonaws.partnercentralbenefits#FileURI",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe URI or location where the file is stored.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eRepresents detailed information about a file attached to a benefit application.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#FileDetails": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.partnercentralbenefits#FileDetail"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#FileInput": {
+        "type": "structure",
+        "members": {
+          "BusinessUseCase": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe business purpose or use case that this file supports in the benefit application.\u003c/p\u003e"
+            }
+          },
+          "FileURI": {
+            "target": "com.amazonaws.partnercentralbenefits#FileURI",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe URI or location where the file should be stored or has been uploaded.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eRepresents input information for uploading a file to a benefit application.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#FileInputDetails": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.partnercentralbenefits#FileInput"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#FileType": {
+        "type": "enum",
+        "members": {
+          "CSV": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "text/csv"
+            }
+          },
+          "DOC": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "application/msword"
+            }
+          },
+          "DOCX": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            }
+          },
+          "JPG": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "image/jpeg"
+            }
+          },
+          "PDF": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "application/pdf"
+            }
+          },
+          "PNG": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "image/png"
+            }
+          },
+          "PPTX": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+            }
+          },
+          "SVG": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "image/svg+xml"
+            }
+          },
+          "XLSX": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            }
+          }
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#FileURI": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 2000
+          },
+          "smithy.api#pattern": "^(s3://|https://).*"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#FulfillmentDetails": {
+        "type": "union",
+        "members": {
+          "AccessDetails": {
+            "target": "com.amazonaws.partnercentralbenefits#AccessDetails",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eDetails about access-based fulfillment, if applicable to this benefit allocation.\u003c/p\u003e"
+            }
+          },
+          "ConsumableDetails": {
+            "target": "com.amazonaws.partnercentralbenefits#ConsumableDetails",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eDetails about consumable-based fulfillment, if applicable to this benefit allocation.\u003c/p\u003e"
+            }
+          },
+          "CreditDetails": {
+            "target": "com.amazonaws.partnercentralbenefits#CreditDetails",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eDetails about credit-based fulfillment, if applicable to this benefit allocation.\u003c/p\u003e"
+            }
+          },
+          "DisbursementDetails": {
+            "target": "com.amazonaws.partnercentralbenefits#DisbursementDetails",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eDetails about disbursement-based fulfillment, if applicable to this benefit allocation.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eContains comprehensive information about how a benefit allocation is fulfilled across different fulfillment types.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#FulfillmentType": {
+        "type": "enum",
+        "members": {
+          "ACCESS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ACCESS"
+            }
+          },
+          "CASH": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "CASH"
+            }
+          },
+          "CREDITS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "CREDITS"
+            }
+          }
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#FulfillmentTypes": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.partnercentralbenefits#FulfillmentType"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#GetBenefit": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.partnercentralbenefits#GetBenefitInput"
+        },
+        "output": {
+          "target": "com.amazonaws.partnercentralbenefits#GetBenefitOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.partnercentralbenefits#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#conditionKeys": [
+            "partnercentral:Catalog",
+            "partnercentral:FulfillmentTypes",
+            "partnercentral:Programs",
+            "aws:ResourceTag/${TagKey}"
+          ],
+          "smithy.api#documentation": "\u003cp\u003eRetrieves detailed information about a specific benefit available in the partner catalog.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "POST",
+            "uri": "/GetBenefit"
+          }
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#GetBenefitAllocation": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.partnercentralbenefits#GetBenefitAllocationInput"
+        },
+        "output": {
+          "target": "com.amazonaws.partnercentralbenefits#GetBenefitAllocationOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.partnercentralbenefits#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#conditionKeys": [
+            "partnercentral:Catalog",
+            "partnercentral:FulfillmentTypes",
+            "aws:ResourceTag/${TagKey}"
+          ],
+          "smithy.api#documentation": "\u003cp\u003eRetrieves detailed information about a specific benefit allocation that has been granted to a partner.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "POST",
+            "uri": "/GetBenefitAllocation"
+          }
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#GetBenefitAllocationInput": {
+        "type": "structure",
+        "members": {
+          "Catalog": {
+            "target": "com.amazonaws.partnercentralbenefits#CatalogName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe catalog identifier that specifies which benefit catalog to query.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Identifier": {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitAllocationIdentifier",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the benefit allocation to retrieve.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#GetBenefitAllocationOutput": {
+        "type": "structure",
+        "members": {
+          "ApplicableBenefitIds": {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitIdentifiers",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of benefit identifiers that this allocation can be applied to.\u003c/p\u003e"
+            }
+          },
+          "Arn": {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitAllocationArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the benefit allocation.\u003c/p\u003e"
+            }
+          },
+          "BenefitApplicationId": {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitApplicationId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier of the benefit application that resulted in this allocation.\u003c/p\u003e"
+            }
+          },
+          "BenefitId": {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier of the benefit that this allocation is based on.\u003c/p\u003e"
+            }
+          },
+          "Catalog": {
+            "target": "com.amazonaws.partnercentralbenefits#CatalogName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe catalog identifier that the benefit allocation belongs to.\u003c/p\u003e"
+            }
+          },
+          "CreatedAt": {
+            "target": "com.amazonaws.partnercentralbenefits#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe timestamp when the benefit allocation was created.\u003c/p\u003e"
+            }
+          },
+          "Description": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA detailed description of the benefit allocation.\u003c/p\u003e"
+            }
+          },
+          "ExpiresAt": {
+            "target": "com.amazonaws.partnercentralbenefits#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe timestamp when the benefit allocation expires and is no longer usable.\u003c/p\u003e"
+            }
+          },
+          "FulfillmentDetail": {
+            "target": "com.amazonaws.partnercentralbenefits#FulfillmentDetails",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eDetailed information about how the benefit allocation is fulfilled.\u003c/p\u003e"
+            }
+          },
+          "FulfillmentType": {
+            "target": "com.amazonaws.partnercentralbenefits#FulfillmentType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe fulfillment type used for this benefit allocation.\u003c/p\u003e"
+            }
+          },
+          "Id": {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitAllocationId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the benefit allocation.\u003c/p\u003e"
+            }
+          },
+          "Name": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe human-readable name of the benefit allocation.\u003c/p\u003e"
+            }
+          },
+          "StartsAt": {
+            "target": "com.amazonaws.partnercentralbenefits#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe timestamp when the benefit allocation becomes active and usable.\u003c/p\u003e"
+            }
+          },
+          "Status": {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitAllocationStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe current status of the benefit allocation (e.g., active, expired, consumed).\u003c/p\u003e"
+            }
+          },
+          "StatusReason": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAdditional information explaining the current status of the benefit allocation.\u003c/p\u003e"
+            }
+          },
+          "UpdatedAt": {
+            "target": "com.amazonaws.partnercentralbenefits#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe timestamp when the benefit allocation was last updated.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#GetBenefitApplication": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.partnercentralbenefits#GetBenefitApplicationInput"
+        },
+        "output": {
+          "target": "com.amazonaws.partnercentralbenefits#GetBenefitApplicationOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.partnercentralbenefits#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#conditionKeys": [
+            "partnercentral:Catalog",
+            "partnercentral:FulfillmentTypes",
+            "partnercentral:Programs",
+            "aws:ResourceTag/${TagKey}"
+          ],
+          "smithy.api#documentation": "\u003cp\u003eRetrieves detailed information about a specific benefit application.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "POST",
+            "uri": "/GetBenefitApplication"
+          }
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#GetBenefitApplicationInput": {
+        "type": "structure",
+        "members": {
+          "Catalog": {
+            "target": "com.amazonaws.partnercentralbenefits#CatalogName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe catalog identifier that specifies which benefit catalog to query.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Identifier": {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitApplicationIdentifier",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the benefit application to retrieve.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#GetBenefitApplicationOutput": {
+        "type": "structure",
+        "members": {
+          "Arn": {
+            "target": "com.amazonaws.partnercentralbenefits#Arn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the benefit application.\u003c/p\u003e"
+            }
+          },
+          "AssociatedResources": {
+            "target": "com.amazonaws.partnercentralbenefits#Arns",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAWS resources that are associated with this benefit application.\u003c/p\u003e",
+              "smithy.api#length": {
+                "max": 10
+              }
+            }
+          },
+          "BenefitApplicationDetails": {
+            "target": "smithy.api#Document",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eDetailed information and requirements specific to the benefit being requested.\u003c/p\u003e"
+            }
+          },
+          "BenefitId": {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier of the benefit being requested in this application.\u003c/p\u003e"
+            }
+          },
+          "Catalog": {
+            "target": "com.amazonaws.partnercentralbenefits#CatalogName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe catalog identifier that the benefit application belongs to.\u003c/p\u003e"
+            }
+          },
+          "CreatedAt": {
+            "target": "com.amazonaws.partnercentralbenefits#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe timestamp when the benefit application was created.\u003c/p\u003e"
+            }
+          },
+          "Description": {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitApplicationDescription",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA detailed description of the benefit application.\u003c/p\u003e"
+            }
+          },
+          "FileDetails": {
+            "target": "com.amazonaws.partnercentralbenefits#FileDetails",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSupporting documents and files attached to the benefit application.\u003c/p\u003e",
+              "smithy.api#length": {
+                "max": 30
+              }
+            }
+          },
+          "FulfillmentTypes": {
+            "target": "com.amazonaws.partnercentralbenefits#FulfillmentTypes",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe fulfillment types requested for this benefit application.\u003c/p\u003e"
+            }
+          },
+          "Id": {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitApplicationId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the benefit application.\u003c/p\u003e"
+            }
+          },
+          "Name": {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitApplicationName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe human-readable name of the benefit application.\u003c/p\u003e"
+            }
+          },
+          "PartnerContacts": {
+            "target": "com.amazonaws.partnercentralbenefits#Contacts",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eContact information for partner representatives responsible for this benefit application.\u003c/p\u003e"
+            }
+          },
+          "Programs": {
+            "target": "com.amazonaws.partnercentralbenefits#Programs",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe AWS partner programs associated with this benefit application.\u003c/p\u003e"
+            }
+          },
+          "Revision": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe current revision number of the benefit application.\u003c/p\u003e"
+            }
+          },
+          "Stage": {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitApplicationStage",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe current stage in the benefit application processing workflow.\u003c/p\u003e"
+            }
+          },
+          "Status": {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitApplicationStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe current processing status of the benefit application.\u003c/p\u003e"
+            }
+          },
+          "StatusReason": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAdditional information explaining the current status of the benefit application.\u003c/p\u003e",
+              "smithy.api#length": {
+                "max": 1000
+              }
+            }
+          },
+          "StatusReasonCode": {
+            "target": "com.amazonaws.partnercentralbenefits#StatusReasonCode",
+            "traits": {
+              "smithy.api#deprecated": {
+                "message": "This field is no longer used",
+                "since": "Nov 08 2025"
+              },
+              "smithy.api#documentation": "\u003cp\u003eA standardized code representing the reason for the current status.\u003c/p\u003e"
+            }
+          },
+          "StatusReasonCodes": {
+            "target": "com.amazonaws.partnercentralbenefits#StatusReasonCodes",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe list of standardized codes representing the reason for the current status.\u003c/p\u003e"
+            }
+          },
+          "UpdatedAt": {
+            "target": "com.amazonaws.partnercentralbenefits#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe timestamp when the benefit application was last updated.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#GetBenefitInput": {
+        "type": "structure",
+        "members": {
+          "Catalog": {
+            "target": "com.amazonaws.partnercentralbenefits#CatalogName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe catalog identifier that specifies which benefit catalog to query.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Identifier": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the benefit to retrieve.\u003c/p\u003e",
+              "smithy.api#pattern": "^(arn:.+|ben-[0-9a-z]{14})$",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#GetBenefitOutput": {
+        "type": "structure",
+        "members": {
+          "Arn": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the benefit.\u003c/p\u003e"
+            }
+          },
+          "BenefitRequestSchema": {
+            "target": "smithy.api#Document",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe schema definition that describes the required fields for requesting this benefit.\u003c/p\u003e"
+            }
+          },
+          "Catalog": {
+            "target": "com.amazonaws.partnercentralbenefits#CatalogName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe catalog identifier that the benefit belongs to.\u003c/p\u003e"
+            }
+          },
+          "Description": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA detailed description of the benefit and its purpose.\u003c/p\u003e",
+              "smithy.api#length": {
+                "max": 1000
+              }
+            }
+          },
+          "FulfillmentTypes": {
+            "target": "com.amazonaws.partnercentralbenefits#FulfillmentTypes",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe available fulfillment types for this benefit (e.g., credits, access, disbursement).\u003c/p\u003e"
+            }
+          },
+          "Id": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the benefit.\u003c/p\u003e",
+              "smithy.api#pattern": "^ben-[0-9a-z]{14}$"
+            }
+          },
+          "Name": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe human-readable name of the benefit.\u003c/p\u003e",
+              "smithy.api#length": {
+                "min": 1,
+                "max": 100
+              }
+            }
+          },
+          "Programs": {
+            "target": "com.amazonaws.partnercentralbenefits#Programs",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe AWS partner programs that this benefit is associated with.\u003c/p\u003e"
+            }
+          },
+          "Status": {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe current status of the benefit (e.g., active, inactive, deprecated).\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#InternalServerException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA message describing the internal server error.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThrown when an unexpected error occurs on the server side during request processing.\u003c/p\u003e",
+          "smithy.api#error": "server",
+          "smithy.api#httpError": 500
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#IssuanceDetail": {
+        "type": "structure",
+        "members": {
+          "IssuanceAmount": {
+            "target": "com.amazonaws.partnercentralbenefits#MonetaryValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe monetary amount or value that was issued in this specific issuance.\u003c/p\u003e"
+            }
+          },
+          "IssuanceId": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier for this specific issuance.\u003c/p\u003e"
+            }
+          },
+          "IssuedAt": {
+            "target": "com.amazonaws.partnercentralbenefits#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe timestamp when this specific issuance was processed.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eRepresents detailed information about a specific issuance of benefit value.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#ListBenefitAllocations": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.partnercentralbenefits#ListBenefitAllocationsInput"
+        },
+        "output": {
+          "target": "com.amazonaws.partnercentralbenefits#ListBenefitAllocationsOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.partnercentralbenefits#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#conditionKeys": [
+            "partnercentral:Catalog",
+            "partnercentral:FulfillmentTypes"
+          ],
+          "smithy.api#documentation": "\u003cp\u003eRetrieves a paginated list of benefit allocations based on specified filter criteria.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "POST",
+            "uri": "/ListBenefitAllocations"
+          },
+          "smithy.api#paginated": {
+            "inputToken": "NextToken",
+            "outputToken": "NextToken",
+            "pageSize": "MaxResults",
+            "items": "BenefitAllocationSummaries"
+          }
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#ListBenefitAllocationsInput": {
+        "type": "structure",
+        "members": {
+          "BenefitApplicationIdentifiers": {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitApplicationIdentifierList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eFilter benefit allocations by specific benefit application identifiers.\u003c/p\u003e",
+              "smithy.api#length": {
+                "min": 0,
+                "max": 1
+              }
+            }
+          },
+          "BenefitIdentifiers": {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitIdentifiers",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eFilter benefit allocations by specific benefit identifiers.\u003c/p\u003e",
+              "smithy.api#length": {
+                "min": 0,
+                "max": 1
+              }
+            }
+          },
+          "Catalog": {
+            "target": "com.amazonaws.partnercentralbenefits#CatalogName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe catalog identifier to filter benefit allocations by catalog.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "FulfillmentTypes": {
+            "target": "com.amazonaws.partnercentralbenefits#FulfillmentTypes",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eFilter benefit allocations by specific fulfillment types.\u003c/p\u003e",
+              "smithy.api#length": {
+                "min": 0,
+                "max": 2
+              }
+            }
+          },
+          "MaxResults": {
+            "target": "smithy.api#Integer",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of benefit allocations to return in a single response.\u003c/p\u003e",
+              "smithy.api#range": {
+                "min": 1,
+                "max": 100
+              }
+            }
+          },
+          "NextToken": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA pagination token to retrieve the next set of results from a previous request.\u003c/p\u003e",
+              "smithy.api#length": {
+                "min": 1,
+                "max": 2048
+              },
+              "smithy.api#pattern": "^[\\s\\S]*$"
+            }
+          },
+          "Status": {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitAllocationStatusList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eFilter benefit allocations by their current status.\u003c/p\u003e",
+              "smithy.api#length": {
+                "min": 0,
+                "max": 1
+              }
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#ListBenefitAllocationsOutput": {
+        "type": "structure",
+        "members": {
+          "BenefitAllocationSummaries": {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitAllocationSummaries",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of benefit allocation summaries matching the specified criteria.\u003c/p\u003e"
+            }
+          },
+          "NextToken": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA pagination token to retrieve the next set of results, if more results are available.\u003c/p\u003e",
+              "smithy.api#length": {
+                "max": 2048
+              }
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#ListBenefitApplications": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.partnercentralbenefits#ListBenefitApplicationsInput"
+        },
+        "output": {
+          "target": "com.amazonaws.partnercentralbenefits#ListBenefitApplicationsOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.partnercentralbenefits#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#conditionKeys": [
+            "partnercentral:Catalog",
+            "partnercentral:FulfillmentTypes",
+            "partnercentral:Programs"
+          ],
+          "smithy.api#documentation": "\u003cp\u003eRetrieves a paginated list of benefit applications based on specified filter criteria.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "POST",
+            "uri": "/ListBenefitApplications"
+          },
+          "smithy.api#paginated": {
+            "inputToken": "NextToken",
+            "outputToken": "NextToken",
+            "pageSize": "MaxResults",
+            "items": "BenefitApplicationSummaries"
+          }
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#ListBenefitApplicationsInput": {
+        "type": "structure",
+        "members": {
+          "AssociatedResourceArns": {
+            "target": "com.amazonaws.partnercentralbenefits#Arns",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eFilter benefit applications by specific AWS resource ARNs.\u003c/p\u003e"
+            }
+          },
+          "AssociatedResources": {
+            "target": "com.amazonaws.partnercentralbenefits#AssociatedResources",
+            "traits": {
+              "smithy.api#deprecated": {
+                "message": "This field is no longer used.",
+                "since": "Oct 08 2025"
+              },
+              "smithy.api#documentation": "\u003cp\u003eFilter benefit applications by associated AWS resources.\u003c/p\u003e"
+            }
+          },
+          "BenefitIdentifiers": {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitIdentifiers",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eFilter benefit applications by specific benefit identifiers.\u003c/p\u003e",
+              "smithy.api#length": {
+                "min": 0,
+                "max": 1
+              }
+            }
+          },
+          "Catalog": {
+            "target": "com.amazonaws.partnercentralbenefits#CatalogName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe catalog identifier to filter benefit applications by catalog.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "FulfillmentTypes": {
+            "target": "com.amazonaws.partnercentralbenefits#FulfillmentTypes",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eFilter benefit applications by specific fulfillment types.\u003c/p\u003e",
+              "smithy.api#length": {
+                "min": 0,
+                "max": 2
+              }
+            }
+          },
+          "MaxResults": {
+            "target": "smithy.api#Integer",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of benefit applications to return in a single response.\u003c/p\u003e",
+              "smithy.api#range": {
+                "min": 1,
+                "max": 100
+              }
+            }
+          },
+          "NextToken": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA pagination token to retrieve the next set of results from a previous request.\u003c/p\u003e",
+              "smithy.api#length": {
+                "min": 1,
+                "max": 2048
+              },
+              "smithy.api#pattern": "^[\\s\\S]*$"
+            }
+          },
+          "Programs": {
+            "target": "com.amazonaws.partnercentralbenefits#Programs",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eFilter benefit applications by specific AWS partner programs.\u003c/p\u003e",
+              "smithy.api#length": {
+                "min": 0,
+                "max": 1
+              }
+            }
+          },
+          "Stages": {
+            "target": "com.amazonaws.partnercentralbenefits#Stages",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eFilter benefit applications by their current processing stage.\u003c/p\u003e",
+              "smithy.api#length": {
+                "min": 0,
+                "max": 1
+              }
+            }
+          },
+          "Status": {
+            "target": "com.amazonaws.partnercentralbenefits#Statuses",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eFilter benefit applications by their current processing status.\u003c/p\u003e",
+              "smithy.api#length": {
+                "min": 0,
+                "max": 1
+              }
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#ListBenefitApplicationsOutput": {
+        "type": "structure",
+        "members": {
+          "BenefitApplicationSummaries": {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitApplicationSummaries",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of benefit application summaries matching the specified criteria.\u003c/p\u003e"
+            }
+          },
+          "NextToken": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA pagination token to retrieve the next set of results, if more results are available.\u003c/p\u003e",
+              "smithy.api#length": {
+                "max": 2048
+              }
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#ListBenefits": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.partnercentralbenefits#ListBenefitsInput"
+        },
+        "output": {
+          "target": "com.amazonaws.partnercentralbenefits#ListBenefitsOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.partnercentralbenefits#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#conditionKeys": [
+            "partnercentral:FulfillmentTypes",
+            "partnercentral:Programs",
+            "partnercentral:Catalog"
+          ],
+          "smithy.api#documentation": "\u003cp\u003eRetrieves a paginated list of available benefits based on specified filter criteria.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "POST",
+            "uri": "/ListBenefits"
+          },
+          "smithy.api#paginated": {
+            "inputToken": "NextToken",
+            "outputToken": "NextToken",
+            "pageSize": "MaxResults",
+            "items": "BenefitSummaries"
+          },
+          "smithy.test#smokeTests": [
+            {
+              "id": "ListBenefitsSuccess",
+              "params": {
+                "Catalog": "AWS",
+                "MaxResults": 10
+              },
+              "vendorParamsShape": "aws.test#AwsVendorParams",
+              "vendorParams": {
+                "region": "us-east-1"
+              },
+              "expect": {
+                "success": {}
+              }
+            }
+          ]
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#ListBenefitsInput": {
+        "type": "structure",
+        "members": {
+          "Catalog": {
+            "target": "com.amazonaws.partnercentralbenefits#CatalogName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe catalog identifier to filter benefits by catalog.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "FulfillmentTypes": {
+            "target": "com.amazonaws.partnercentralbenefits#FulfillmentTypes",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eFilter benefits by specific fulfillment types.\u003c/p\u003e",
+              "smithy.api#length": {
+                "min": 0,
+                "max": 2
+              }
+            }
+          },
+          "MaxResults": {
+            "target": "smithy.api#Integer",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of benefits to return in a single response.\u003c/p\u003e",
+              "smithy.api#range": {
+                "min": 1,
+                "max": 100
+              }
+            }
+          },
+          "NextToken": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA pagination token to retrieve the next set of results from a previous request.\u003c/p\u003e",
+              "smithy.api#length": {
+                "min": 1,
+                "max": 2048
+              },
+              "smithy.api#pattern": "^[\\s\\S]*$"
+            }
+          },
+          "Programs": {
+            "target": "com.amazonaws.partnercentralbenefits#Programs",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eFilter benefits by specific AWS partner programs.\u003c/p\u003e",
+              "smithy.api#length": {
+                "min": 0,
+                "max": 1
+              }
+            }
+          },
+          "Status": {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitStatuses",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eFilter benefits by their current status.\u003c/p\u003e",
+              "smithy.api#length": {
+                "min": 0,
+                "max": 2
+              }
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#ListBenefitsOutput": {
+        "type": "structure",
+        "members": {
+          "BenefitSummaries": {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitSummaries",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of benefit summaries matching the specified criteria.\u003c/p\u003e"
+            }
+          },
+          "NextToken": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA pagination token to retrieve the next set of results, if more results are available.\u003c/p\u003e",
+              "smithy.api#length": {
+                "max": 2048
+              }
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#ListTagsForResource": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.partnercentralbenefits#ListTagsForResourceRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.partnercentralbenefits#ListTagsForResourceResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.partnercentralbenefits#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#conditionKeys": [
+            "partnercentral:Catalog",
+            "partnercentral:FulfillmentTypes",
+            "partnercentral:Programs",
+            "aws:ResourceTag/${TagKey}"
+          ],
+          "smithy.api#documentation": "\u003cp\u003eRetrieves all tags associated with a specific resource.\u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/ListTagsForResource",
+            "method": "POST",
+            "code": 200
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#ListTagsForResourceRequest": {
+        "type": "structure",
+        "members": {
+          "resourceArn": {
+            "target": "com.amazonaws.partnercentralbenefits#TaggableResourceArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the resource to list tags for.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#ListTagsForResourceResponse": {
+        "type": "structure",
+        "members": {
+          "tags": {
+            "target": "com.amazonaws.partnercentralbenefits#Tags",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of key-value pairs representing the tags associated with the resource.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#MonetaryValue": {
+        "type": "structure",
+        "members": {
+          "Amount": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe numeric amount of the monetary value.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "CurrencyCode": {
+            "target": "com.amazonaws.partnercentralbenefits#CurrencyCode",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ISO 4217 currency code (e.g., USD, EUR) for the monetary amount.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eRepresents a monetary amount with its associated currency.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#PartnerCentralBenefitsService": {
+        "type": "service",
+        "version": "2018-05-10",
+        "operations": [
+          {
+            "target": "com.amazonaws.partnercentralbenefits#AmendBenefitApplication"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#AssociateBenefitApplicationResource"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#CancelBenefitApplication"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#CreateBenefitApplication"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#DisassociateBenefitApplicationResource"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#GetBenefit"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#GetBenefitAllocation"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#GetBenefitApplication"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ListBenefitAllocations"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ListBenefitApplications"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ListBenefits"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ListTagsForResource"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#RecallBenefitApplication"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#SubmitBenefitApplication"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#TagResource"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#UntagResource"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#UpdateBenefitApplication"
+          }
+        ],
+        "resources": [
+          {
+            "target": "com.amazonaws.partnercentralbenefits#Benefit"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitAllocation"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitApplication"
+          }
+        ],
+        "traits": {
+          "aws.api#service": {
+            "sdkId": "PartnerCentral Benefits",
+            "endpointPrefix": "partnercentral-benefits",
+            "arnNamespace": "partnercentral",
+            "cloudTrailEventSource": "partnercentral-benefits.amazonaws.com"
+          },
+          "aws.auth#sigv4": {
+            "name": "partnercentral-benefits"
+          },
+          "aws.endpoints#dualStackOnlyEndpoints": {},
+          "aws.endpoints#standardRegionalEndpoints": {},
+          "aws.iam#defineConditionKeys": {
+            "partnercentral:Catalog": {
+              "type": "String",
+              "documentation": "Filters access by the Catalog. Accepted values: [AWS, Sandbox]",
+              "relativeDocumentation": "page.html#Catalog"
+            },
+            "partnercentral:Programs": {
+              "type": "ArrayOfString",
+              "documentation": "Filters access by tags assigned to a program",
+              "relativeDocumentation": "page.html#Programs"
+            },
+            "partnercentral:FulfillmentTypes": {
+              "type": "ArrayOfString",
+              "documentation": "Filters access by tags assigned to a specific fulfilmentType",
+              "relativeDocumentation": "page.html#FulfillmentTypes"
+            },
+            "aws:RequestTag/${TagKey}": {
+              "type": "String",
+              "documentation": "Filters access by the tags that are passed in the request",
+              "externalDocumentation": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_condition-keys.html#condition-keys-requesttag"
+            },
+            "aws:ResourceTag/${TagKey}": {
+              "type": "String",
+              "documentation": "Filters access by the tags associated with the resource",
+              "externalDocumentation": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_condition-keys.html#condition-keys-resourcetag"
+            },
+            "aws:TagKeys": {
+              "type": "ArrayOfString",
+              "documentation": "Filters access by the tag keys that are passed in the request",
+              "externalDocumentation": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_condition-keys.html#condition-keys-tagkeys"
+            }
+          },
+          "aws.iam#supportedPrincipalTypes": [
+            "Root",
+            "IAMUser",
+            "IAMRole",
+            "FederatedUser"
+          ],
+          "aws.protocols#awsJson1_0": {},
+          "smithy.api#documentation": "\u003cp\u003eAWS Partner Central Benefits Service provides APIs for managing partner benefits, applications, and allocations within the AWS Partner Network ecosystem.\u003c/p\u003e",
+          "smithy.api#title": "Partner Central Benefits API",
+          "smithy.rules#endpointBdd": {
+            "version": "1.1",
+            "parameters": {
+              "UseFIPS": {
+                "builtIn": "AWS::UseFIPS",
+                "required": true,
+                "default": false,
+                "documentation": "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
+                "type": "boolean"
+              },
+              "Endpoint": {
+                "builtIn": "SDK::Endpoint",
+                "required": false,
+                "documentation": "Override the endpoint used to send this request",
+                "type": "string"
+              },
+              "Region": {
+                "builtIn": "AWS::Region",
+                "required": false,
+                "documentation": "The AWS region used to dispatch the request.",
+                "type": "string"
+              }
+            },
+            "conditions": [
+              {
+                "fn": "isSet",
+                "argv": [
+                  {
+                    "ref": "Endpoint"
+                  }
+                ]
+              },
+              {
+                "fn": "isSet",
+                "argv": [
+                  {
+                    "ref": "Region"
+                  }
+                ]
+              },
+              {
+                "fn": "aws.partition",
+                "argv": [
+                  {
+                    "ref": "Region"
+                  }
+                ],
+                "assign": "PartitionResult"
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "ref": "UseFIPS"
+                  },
+                  true
+                ]
+              }
+            ],
+            "results": [
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: FIPS and custom endpoint are not supported",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": {
+                    "ref": "Endpoint"
+                  },
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://partnercentral-benefits-fips.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://partnercentral-benefits.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: Missing Region",
+                "type": "error"
+              }
+            ],
+            "root": 2,
+            "nodeCount": 6,
+            "nodes": "/////wAAAAH/////AAAAAAAAAAYAAAADAAAAAQAAAAQF9eEFAAAAAgAAAAUF9eEFAAAAAwX14QMF9eEEAAAAAwX14QEF9eEC"
+          },
+          "smithy.rules#endpointRuleSet": {
+            "version": "1.0",
+            "parameters": {
+              "UseFIPS": {
+                "builtIn": "AWS::UseFIPS",
+                "required": true,
+                "default": false,
+                "documentation": "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
+                "type": "boolean"
+              },
+              "Endpoint": {
+                "builtIn": "SDK::Endpoint",
+                "required": false,
+                "documentation": "Override the endpoint used to send this request",
+                "type": "string"
+              },
+              "Region": {
+                "builtIn": "AWS::Region",
+                "required": false,
+                "documentation": "The AWS region used to dispatch the request.",
+                "type": "string"
+              }
+            },
+            "rules": [
+              {
+                "conditions": [
+                  {
+                    "fn": "isSet",
+                    "argv": [
+                      {
+                        "ref": "Endpoint"
+                      }
+                    ]
+                  }
+                ],
+                "rules": [
+                  {
+                    "conditions": [
+                      {
+                        "fn": "booleanEquals",
+                        "argv": [
+                          {
+                            "ref": "UseFIPS"
+                          },
+                          true
+                        ]
+                      }
+                    ],
+                    "error": "Invalid Configuration: FIPS and custom endpoint are not supported",
+                    "type": "error"
+                  },
+                  {
+                    "conditions": [],
+                    "endpoint": {
+                      "url": {
+                        "ref": "Endpoint"
+                      },
+                      "properties": {},
+                      "headers": {}
+                    },
+                    "type": "endpoint"
+                  }
+                ],
+                "type": "tree"
+              },
+              {
+                "conditions": [],
+                "rules": [
+                  {
+                    "conditions": [
+                      {
+                        "fn": "isSet",
+                        "argv": [
+                          {
+                            "ref": "Region"
+                          }
+                        ]
+                      }
+                    ],
+                    "rules": [
+                      {
+                        "conditions": [
+                          {
+                            "fn": "aws.partition",
+                            "argv": [
+                              {
+                                "ref": "Region"
+                              }
+                            ],
+                            "assign": "PartitionResult"
+                          }
+                        ],
+                        "rules": [
+                          {
+                            "conditions": [
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  {
+                                    "ref": "UseFIPS"
+                                  },
+                                  true
+                                ]
+                              }
+                            ],
+                            "endpoint": {
+                              "url": "https://partnercentral-benefits-fips.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                              "properties": {},
+                              "headers": {}
+                            },
+                            "type": "endpoint"
+                          },
+                          {
+                            "conditions": [],
+                            "endpoint": {
+                              "url": "https://partnercentral-benefits.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                              "properties": {},
+                              "headers": {}
+                            },
+                            "type": "endpoint"
+                          }
+                        ],
+                        "type": "tree"
+                      }
+                    ],
+                    "type": "tree"
+                  },
+                  {
+                    "conditions": [],
+                    "error": "Invalid Configuration: Missing Region",
+                    "type": "error"
+                  }
+                ],
+                "type": "tree"
+              }
+            ]
+          },
+          "smithy.rules#endpointTests": {
+            "testCases": [
+              {
+                "documentation": "For custom endpoint with region not set and fips disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://example.com"
+                  }
+                },
+                "params": {
+                  "Endpoint": "https://example.com",
+                  "UseFIPS": false
+                }
+              },
+              {
+                "documentation": "For custom endpoint with fips enabled",
+                "expect": {
+                  "error": "Invalid Configuration: FIPS and custom endpoint are not supported"
+                },
+                "params": {
+                  "Endpoint": "https://example.com",
+                  "UseFIPS": true
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://partnercentral-benefits-fips.us-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": true
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://partnercentral-benefits.us-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false
+                }
+              },
+              {
+                "documentation": "For region cn-northwest-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://partnercentral-benefits-fips.cn-northwest-1.api.amazonwebservices.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-northwest-1",
+                  "UseFIPS": true
+                }
+              },
+              {
+                "documentation": "For region cn-northwest-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://partnercentral-benefits.cn-northwest-1.api.amazonwebservices.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-northwest-1",
+                  "UseFIPS": false
+                }
+              },
+              {
+                "documentation": "For region us-gov-west-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://partnercentral-benefits-fips.us-gov-west-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-west-1",
+                  "UseFIPS": true
+                }
+              },
+              {
+                "documentation": "For region us-gov-west-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://partnercentral-benefits.us-gov-west-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-west-1",
+                  "UseFIPS": false
+                }
+              },
+              {
+                "documentation": "Missing region",
+                "expect": {
+                  "error": "Invalid Configuration: Missing Region"
+                }
+              }
+            ],
+            "version": "1.0"
+          }
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#Program": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 255
+          },
+          "smithy.api#pattern": "^[A-Za-z0-9_-]+$"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#Programs": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.partnercentralbenefits#Program"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#RecallBenefitApplication": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.partnercentralbenefits#RecallBenefitApplicationInput"
+        },
+        "output": {
+          "target": "com.amazonaws.partnercentralbenefits#RecallBenefitApplicationOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.partnercentralbenefits#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#conditionKeys": [
+            "partnercentral:Catalog",
+            "partnercentral:FulfillmentTypes",
+            "partnercentral:Programs",
+            "aws:ResourceTag/${TagKey}"
+          ],
+          "smithy.api#documentation": "\u003cp\u003eRecalls a submitted benefit application, returning it to draft status for further modifications.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "POST",
+            "uri": "/RecallBenefitApplication"
+          }
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#RecallBenefitApplicationInput": {
+        "type": "structure",
+        "members": {
+          "Catalog": {
+            "target": "com.amazonaws.partnercentralbenefits#CatalogName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe catalog identifier that specifies which benefit catalog the application belongs to.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "ClientToken": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA unique, case-sensitive identifier to ensure idempotent processing of the recall request.\u003c/p\u003e"
+            }
+          },
+          "Identifier": {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitApplicationIdentifier",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the benefit application to recall.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Reason": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA descriptive reason explaining why the benefit application is being recalled.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#RecallBenefitApplicationOutput": {
+        "type": "structure",
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#ResourceNotFoundException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA message describing the resource not found error.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThrown when the requested resource cannot be found or does not exist.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 404
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#ResourceType": {
+        "type": "enum",
+        "members": {
+          "BENEFIT_ALLOCATION": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "BENEFIT_ALLOCATION"
+            }
+          },
+          "OPPORTUNITY": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "OPPORTUNITY"
+            }
+          }
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#ServiceQuotaExceededException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA message describing the service quota exceeded error.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "QuotaCode": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe code identifying the specific quota that would be exceeded.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "ResourceId": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier of the resource that would exceed the quota.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "ResourceType": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe type of the resource that would exceed the quota.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThrown when the request would exceed the service quotas or limits for the account.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 402,
+          "smithy.api#retryable": {}
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#Stages": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.partnercentralbenefits#BenefitApplicationStage"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#StatusReasonCode": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 255
+          }
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#StatusReasonCodes": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.partnercentralbenefits#StatusReasonCode"
+        },
+        "traits": {
+          "smithy.api#documentation": "List of StatusReasonCodes",
+          "smithy.api#length": {
+            "min": 0,
+            "max": 5
+          }
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#Statuses": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.partnercentralbenefits#BenefitApplicationStatus"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#SubmitBenefitApplication": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.partnercentralbenefits#SubmitBenefitApplicationInput"
+        },
+        "output": {
+          "target": "com.amazonaws.partnercentralbenefits#SubmitBenefitApplicationOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.partnercentralbenefits#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#conditionKeys": [
+            "partnercentral:Catalog",
+            "partnercentral:FulfillmentTypes",
+            "partnercentral:Programs",
+            "aws:ResourceTag/${TagKey}"
+          ],
+          "smithy.api#documentation": "\u003cp\u003eSubmits a benefit application for review and processing by AWS.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "POST",
+            "uri": "/SubmitBenefitApplication"
+          }
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#SubmitBenefitApplicationInput": {
+        "type": "structure",
+        "members": {
+          "Catalog": {
+            "target": "com.amazonaws.partnercentralbenefits#CatalogName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe catalog identifier that specifies which benefit catalog the application belongs to.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Identifier": {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitApplicationIdentifier",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the benefit application to submit.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#SubmitBenefitApplicationOutput": {
+        "type": "structure",
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#Tag": {
+        "type": "structure",
+        "members": {
+          "Key": {
+            "target": "com.amazonaws.partnercentralbenefits#TagKey",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe tag key, which acts as a category or label for the tag.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Value": {
+            "target": "com.amazonaws.partnercentralbenefits#TagValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe tag value, which provides additional information or context for the tag key.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eRepresents a key-value pair used for categorizing and organizing AWS resources.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#TagKey": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 128
+          },
+          "smithy.api#pattern": "^([\\p{L}\\p{Z}\\p{N}_.:/=+\\-@]*)$"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#TagKeyList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.partnercentralbenefits#TagKey"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 50
+          }
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#TagResource": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.partnercentralbenefits#TagResourceRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.partnercentralbenefits#TagResourceResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.partnercentralbenefits#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ServiceQuotaExceededException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#conditionKeys": [
+            "partnercentral:Catalog",
+            "partnercentral:FulfillmentTypes",
+            "partnercentral:Programs",
+            "aws:ResourceTag/${TagKey}",
+            "aws:RequestTag/${TagKey}",
+            "aws:TagKeys"
+          ],
+          "smithy.api#documentation": "\u003cp\u003eAdds or updates tags for a specified resource.\u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/TagResource",
+            "method": "POST",
+            "code": 200
+          },
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#TagResourceRequest": {
+        "type": "structure",
+        "members": {
+          "resourceArn": {
+            "target": "com.amazonaws.partnercentralbenefits#TaggableResourceArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the resource to add tags to.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "tags": {
+            "target": "com.amazonaws.partnercentralbenefits#Tags",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of key-value pairs to add as tags to the resource.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#TagResourceResponse": {
+        "type": "structure",
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#TagValue": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "max": 256
+          },
+          "smithy.api#pattern": "^([\\p{L}\\p{Z}\\p{N}_.:/=+\\-@]*)$"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#TaggableResourceArn": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 1000
+          },
+          "smithy.api#pattern": "^arn:[\\w+=/,.@-]+:partnercentral:[\\w+=/,.@-]*:[0-9]{12}:catalog/([a-zA-Z]+)/[\\w+=,.@-]+(/[\\w+=,.@-]+)*$"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#Tags": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.partnercentralbenefits#Tag"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#ThrottlingException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA message describing the throttling error.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThrown when the request rate exceeds the allowed limits and the request is being throttled.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 429
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#Timestamp": {
+        "type": "timestamp",
+        "traits": {
+          "smithy.api#timestampFormat": "date-time"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#UntagResource": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.partnercentralbenefits#UntagResourceRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.partnercentralbenefits#UntagResourceResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.partnercentralbenefits#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ServiceQuotaExceededException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#conditionKeys": [
+            "partnercentral:Catalog",
+            "partnercentral:FulfillmentTypes",
+            "partnercentral:Programs",
+            "aws:ResourceTag/${TagKey}"
+          ],
+          "smithy.api#documentation": "\u003cp\u003eRemoves specified tags from a resource.\u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/UntagResource",
+            "method": "POST",
+            "code": 200
+          },
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#UntagResourceRequest": {
+        "type": "structure",
+        "members": {
+          "resourceArn": {
+            "target": "com.amazonaws.partnercentralbenefits#TaggableResourceArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the resource to remove tags from.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "tagKeys": {
+            "target": "com.amazonaws.partnercentralbenefits#TagKeyList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of tag keys to remove from the resource.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#UntagResourceResponse": {
+        "type": "structure",
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#UpdateBenefitApplication": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.partnercentralbenefits#UpdateBenefitApplicationInput"
+        },
+        "output": {
+          "target": "com.amazonaws.partnercentralbenefits#UpdateBenefitApplicationOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.partnercentralbenefits#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.partnercentralbenefits#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#conditionKeys": [
+            "partnercentral:Catalog",
+            "partnercentral:FulfillmentTypes",
+            "partnercentral:Programs",
+            "aws:ResourceTag/${TagKey}"
+          ],
+          "smithy.api#documentation": "\u003cp\u003eUpdates an existing benefit application with new information while maintaining revision control.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "POST",
+            "uri": "/UpdateBenefitApplication"
+          }
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#UpdateBenefitApplicationInput": {
+        "type": "structure",
+        "members": {
+          "BenefitApplicationDetails": {
+            "target": "smithy.api#Document",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eUpdated detailed information and requirements specific to the benefit being requested.\u003c/p\u003e"
+            }
+          },
+          "Catalog": {
+            "target": "com.amazonaws.partnercentralbenefits#CatalogName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe catalog identifier that specifies which benefit catalog the application belongs to.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "ClientToken": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA unique, case-sensitive identifier to ensure idempotent processing of the update request.\u003c/p\u003e",
+              "smithy.api#length": {
+                "min": 1,
+                "max": 64
+              },
+              "smithy.api#pattern": "^[!-~]{1,64}$",
+              "smithy.api#required": {}
+            }
+          },
+          "Description": {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitApplicationDescription",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe updated detailed description of the benefit application.\u003c/p\u003e"
+            }
+          },
+          "FileDetails": {
+            "target": "com.amazonaws.partnercentralbenefits#FileInputDetails",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eUpdated supporting documents and files attached to the benefit application.\u003c/p\u003e",
+              "smithy.api#length": {
+                "max": 30
+              }
+            }
+          },
+          "Identifier": {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitApplicationIdentifier",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the benefit application to update.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Name": {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitApplicationName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe updated human-readable name for the benefit application.\u003c/p\u003e"
+            }
+          },
+          "PartnerContacts": {
+            "target": "com.amazonaws.partnercentralbenefits#Contacts",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eUpdated contact information for partner representatives responsible for this benefit application.\u003c/p\u003e",
+              "smithy.api#length": {
+                "max": 1
+              }
+            }
+          },
+          "Revision": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe current revision number of the benefit application to ensure optimistic concurrency control.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#UpdateBenefitApplicationOutput": {
+        "type": "structure",
+        "members": {
+          "Arn": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the updated benefit application.\u003c/p\u003e"
+            }
+          },
+          "Id": {
+            "target": "com.amazonaws.partnercentralbenefits#BenefitApplicationId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the updated benefit application.\u003c/p\u003e"
+            }
+          },
+          "Revision": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe new revision number of the benefit application after the update.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#ValidationException": {
+        "type": "structure",
+        "members": {
+          "FieldList": {
+            "target": "com.amazonaws.partnercentralbenefits#ValidationExceptionFieldList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of fields that failed validation.\u003c/p\u003e"
+            }
+          },
+          "Message": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA message describing the validation error.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Reason": {
+            "target": "com.amazonaws.partnercentralbenefits#ValidationExceptionReason",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe reason for the validation failure.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThrown when the request contains invalid parameters or fails input validation requirements.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#ValidationExceptionErrorCode": {
+        "type": "enum",
+        "members": {
+          "ACTION_NOT_PERMITTED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ACTION_NOT_PERMITTED"
+            }
+          },
+          "DUPLICATE_KEY_VALUE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "DUPLICATE_KEY_VALUE"
+            }
+          },
+          "INVALID_ENUM_VALUE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "INVALID_ENUM_VALUE"
+            }
+          },
+          "INVALID_RESOURCE_STATE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "INVALID_RESOURCE_STATE"
+            }
+          },
+          "INVALID_STRING_FORMAT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "INVALID_STRING_FORMAT"
+            }
+          },
+          "INVALID_VALUE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "INVALID_VALUE"
+            }
+          },
+          "NOT_ENOUGH_VALUES": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "NOT_ENOUGH_VALUES"
+            }
+          },
+          "REQUIRED_FIELD_MISSING": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "REQUIRED_FIELD_MISSING"
+            }
+          },
+          "TOO_MANY_VALUES": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "TOO_MANY_VALUES"
+            }
+          },
+          "VALUE_OUT_OF_RANGE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "VALUE_OUT_OF_RANGE"
+            }
+          }
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#ValidationExceptionField": {
+        "type": "structure",
+        "members": {
+          "Code": {
+            "target": "com.amazonaws.partnercentralbenefits#ValidationExceptionErrorCode",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn error code explaining why the field validation failed.\u003c/p\u003e"
+            }
+          },
+          "Message": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA detailed message explaining why the field validation failed.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Name": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the field that failed validation.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eRepresents a field-specific validation error with detailed information.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#ValidationExceptionFieldList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.partnercentralbenefits#ValidationExceptionField"
+        }
+      },
+      "com.amazonaws.partnercentralbenefits#ValidationExceptionReason": {
+        "type": "enum",
+        "members": {
+          "BUSINESS_VALIDATION_FAILED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "BUSINESS_VALIDATION_FAILED"
+            }
+          },
+          "CANNOT_PARSE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "cannotParse"
+            }
+          },
+          "FIELD_VALIDATION_FAILED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "fieldValidationFailed"
+            }
+          },
+          "OTHER": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "other"
+            }
+          },
+          "UNKNOWN_OPERATION": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "unknownOperation"
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,1844 @@
+{
+  "schema_source": "smithy",
+  "mode": "data_source",
+  "auth": {
+    "Type": "",
+    "Params": null
+  },
+  "base_url": "https://aws.example.invalid",
+  "retry": {
+    "MaxAttempts": 0,
+    "InitialBackoff": "",
+    "MaxBackoff": "",
+    "Jitter": null,
+    "RespectRetryAfter": null,
+    "RateLimitResetHeader": ""
+  },
+  "timeouts": {
+    "Create": "",
+    "Read": "",
+    "Update": "",
+    "Delete": "",
+    "Default": ""
+  },
+  "wire_name": "aws",
+  "raw_spec": {
+    "smithy": "2.0",
+    "shapes": {
+      "com.amazonaws.pricing#AWSPriceListService": {
+        "type": "service",
+        "version": "2017-10-15",
+        "operations": [
+          {
+            "target": "com.amazonaws.pricing#DescribeServices"
+          },
+          {
+            "target": "com.amazonaws.pricing#GetAttributeValues"
+          },
+          {
+            "target": "com.amazonaws.pricing#GetPriceListFileUrl"
+          },
+          {
+            "target": "com.amazonaws.pricing#GetProducts"
+          },
+          {
+            "target": "com.amazonaws.pricing#ListPriceLists"
+          }
+        ],
+        "traits": {
+          "aws.api#service": {
+            "sdkId": "Pricing",
+            "arnNamespace": "pricing",
+            "cloudFormationName": "Pricing",
+            "cloudTrailEventSource": "pricelist.amazonaws.com",
+            "endpointPrefix": "api.pricing"
+          },
+          "aws.auth#sigv4": {
+            "name": "pricing"
+          },
+          "aws.protocols#awsJson1_1": {},
+          "smithy.api#documentation": "\u003cp\u003eThe Amazon Web Services Price List API is a centralized and convenient way to programmatically query Amazon Web Services for services, products, and pricing information. The Amazon Web Services Price List uses standardized product attributes such as \u003ccode\u003eLocation\u003c/code\u003e, \u003ccode\u003eStorage Class\u003c/code\u003e, and \u003ccode\u003eOperating System\u003c/code\u003e, and provides prices at the SKU level. You can use the Amazon Web Services Price List to do the following:\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003eBuild cost control and scenario planning tools\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003eReconcile billing data\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003eForecast future spend for budgeting purposes\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003eProvide cost benefit analysis that compare your internal workloads with Amazon Web Services\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e \u003cp\u003eUse \u003ccode\u003eGetServices\u003c/code\u003e without a service code to retrieve the service codes for all Amazon Web Services services, then \u003ccode\u003eGetServices\u003c/code\u003e with a service code to retrieve the attribute names for that service. After you have the service code and attribute names, you can use \u003ccode\u003eGetAttributeValues\u003c/code\u003e to see what values are available for an attribute. With the service code and an attribute name and value, you can use \u003ccode\u003eGetProducts\u003c/code\u003e to find specific products that you're interested in, such as an \u003ccode\u003eAmazonEC2\u003c/code\u003e instance, with a \u003ccode\u003eProvisioned IOPS\u003c/code\u003e \u003ccode\u003evolumeType\u003c/code\u003e.\u003c/p\u003e \u003cp\u003eFor more information, see \u003ca href=\"https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/price-changes.html\"\u003eUsing the Amazon Web Services Price List API\u003c/a\u003e in the \u003ci\u003eBilling User Guide\u003c/i\u003e.\u003c/p\u003e",
+          "smithy.api#title": "AWS Price List Service",
+          "smithy.rules#endpointBdd": {
+            "version": "1.1",
+            "parameters": {
+              "Region": {
+                "builtIn": "AWS::Region",
+                "required": false,
+                "documentation": "The AWS region used to dispatch the request.",
+                "type": "string"
+              },
+              "UseDualStack": {
+                "builtIn": "AWS::UseDualStack",
+                "required": true,
+                "default": false,
+                "documentation": "When true, use the dual-stack endpoint. If the configured endpoint does not support dual-stack, dispatching the request MAY return an error.",
+                "type": "boolean"
+              },
+              "UseFIPS": {
+                "builtIn": "AWS::UseFIPS",
+                "required": true,
+                "default": false,
+                "documentation": "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
+                "type": "boolean"
+              },
+              "Endpoint": {
+                "builtIn": "SDK::Endpoint",
+                "required": false,
+                "documentation": "Override the endpoint used to send this request",
+                "type": "string"
+              }
+            },
+            "conditions": [
+              {
+                "fn": "isSet",
+                "argv": [
+                  {
+                    "ref": "Endpoint"
+                  }
+                ]
+              },
+              {
+                "fn": "isSet",
+                "argv": [
+                  {
+                    "ref": "Region"
+                  }
+                ]
+              },
+              {
+                "fn": "aws.partition",
+                "argv": [
+                  {
+                    "ref": "Region"
+                  }
+                ],
+                "assign": "PartitionResult"
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "ref": "UseFIPS"
+                  },
+                  true
+                ]
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "ref": "UseDualStack"
+                  },
+                  true
+                ]
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "fn": "getAttr",
+                    "argv": [
+                      {
+                        "ref": "PartitionResult"
+                      },
+                      "supportsDualStack"
+                    ]
+                  },
+                  true
+                ]
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "fn": "getAttr",
+                    "argv": [
+                      {
+                        "ref": "PartitionResult"
+                      },
+                      "supportsFIPS"
+                    ]
+                  },
+                  true
+                ]
+              },
+              {
+                "fn": "stringEquals",
+                "argv": [
+                  {
+                    "fn": "getAttr",
+                    "argv": [
+                      {
+                        "ref": "PartitionResult"
+                      },
+                      "name"
+                    ]
+                  },
+                  "aws"
+                ]
+              }
+            ],
+            "results": [
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: FIPS and custom endpoint are not supported",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: Dualstack and custom endpoint are not supported",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": {
+                    "ref": "Endpoint"
+                  },
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://api.pricing-fips.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "FIPS and DualStack are enabled, but this partition does not support one or both",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://api.pricing-fips.{Region}.{PartitionResult#dnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "FIPS is enabled but this partition does not support FIPS",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://api.pricing.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "DualStack is enabled but this partition does not support DualStack",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://api.pricing.{Region}.amazonaws.com",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://api.pricing.{Region}.{PartitionResult#dnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: Missing Region",
+                "type": "error"
+              }
+            ],
+            "root": 2,
+            "nodeCount": 14,
+            "nodes": "/////wAAAAH/////AAAAAAAAAA0AAAADAAAAAQAAAAQF9eEMAAAAAgAAAAUF9eEMAAAAAwAAAAkAAAAGAAAABAAAAAgAAAAHAAAABwX14QoF9eELAAAABQX14QgF9eEJAAAABAAAAAsAAAAKAAAABgX14QYF9eEHAAAABQAAAAwF9eEFAAAABgX14QQF9eEFAAAAAwX14QEAAAAOAAAABAX14QIF9eED"
+          },
+          "smithy.rules#endpointRuleSet": {
+            "version": "1.0",
+            "parameters": {
+              "Region": {
+                "builtIn": "AWS::Region",
+                "required": false,
+                "documentation": "The AWS region used to dispatch the request.",
+                "type": "string"
+              },
+              "UseDualStack": {
+                "builtIn": "AWS::UseDualStack",
+                "required": true,
+                "default": false,
+                "documentation": "When true, use the dual-stack endpoint. If the configured endpoint does not support dual-stack, dispatching the request MAY return an error.",
+                "type": "boolean"
+              },
+              "UseFIPS": {
+                "builtIn": "AWS::UseFIPS",
+                "required": true,
+                "default": false,
+                "documentation": "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
+                "type": "boolean"
+              },
+              "Endpoint": {
+                "builtIn": "SDK::Endpoint",
+                "required": false,
+                "documentation": "Override the endpoint used to send this request",
+                "type": "string"
+              }
+            },
+            "rules": [
+              {
+                "conditions": [
+                  {
+                    "fn": "isSet",
+                    "argv": [
+                      {
+                        "ref": "Endpoint"
+                      }
+                    ]
+                  }
+                ],
+                "rules": [
+                  {
+                    "conditions": [
+                      {
+                        "fn": "booleanEquals",
+                        "argv": [
+                          {
+                            "ref": "UseFIPS"
+                          },
+                          true
+                        ]
+                      }
+                    ],
+                    "error": "Invalid Configuration: FIPS and custom endpoint are not supported",
+                    "type": "error"
+                  },
+                  {
+                    "conditions": [
+                      {
+                        "fn": "booleanEquals",
+                        "argv": [
+                          {
+                            "ref": "UseDualStack"
+                          },
+                          true
+                        ]
+                      }
+                    ],
+                    "error": "Invalid Configuration: Dualstack and custom endpoint are not supported",
+                    "type": "error"
+                  },
+                  {
+                    "conditions": [],
+                    "endpoint": {
+                      "url": {
+                        "ref": "Endpoint"
+                      },
+                      "properties": {},
+                      "headers": {}
+                    },
+                    "type": "endpoint"
+                  }
+                ],
+                "type": "tree"
+              },
+              {
+                "conditions": [
+                  {
+                    "fn": "isSet",
+                    "argv": [
+                      {
+                        "ref": "Region"
+                      }
+                    ]
+                  }
+                ],
+                "rules": [
+                  {
+                    "conditions": [
+                      {
+                        "fn": "aws.partition",
+                        "argv": [
+                          {
+                            "ref": "Region"
+                          }
+                        ],
+                        "assign": "PartitionResult"
+                      }
+                    ],
+                    "rules": [
+                      {
+                        "conditions": [
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseFIPS"
+                              },
+                              true
+                            ]
+                          },
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseDualStack"
+                              },
+                              true
+                            ]
+                          }
+                        ],
+                        "rules": [
+                          {
+                            "conditions": [
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  true,
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsFIPS"
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  true,
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsDualStack"
+                                    ]
+                                  }
+                                ]
+                              }
+                            ],
+                            "rules": [
+                              {
+                                "conditions": [],
+                                "endpoint": {
+                                  "url": "https://api.pricing-fips.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                                  "properties": {},
+                                  "headers": {}
+                                },
+                                "type": "endpoint"
+                              }
+                            ],
+                            "type": "tree"
+                          },
+                          {
+                            "conditions": [],
+                            "error": "FIPS and DualStack are enabled, but this partition does not support one or both",
+                            "type": "error"
+                          }
+                        ],
+                        "type": "tree"
+                      },
+                      {
+                        "conditions": [
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseFIPS"
+                              },
+                              true
+                            ]
+                          }
+                        ],
+                        "rules": [
+                          {
+                            "conditions": [
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsFIPS"
+                                    ]
+                                  },
+                                  true
+                                ]
+                              }
+                            ],
+                            "rules": [
+                              {
+                                "conditions": [],
+                                "endpoint": {
+                                  "url": "https://api.pricing-fips.{Region}.{PartitionResult#dnsSuffix}",
+                                  "properties": {},
+                                  "headers": {}
+                                },
+                                "type": "endpoint"
+                              }
+                            ],
+                            "type": "tree"
+                          },
+                          {
+                            "conditions": [],
+                            "error": "FIPS is enabled but this partition does not support FIPS",
+                            "type": "error"
+                          }
+                        ],
+                        "type": "tree"
+                      },
+                      {
+                        "conditions": [
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseDualStack"
+                              },
+                              true
+                            ]
+                          }
+                        ],
+                        "rules": [
+                          {
+                            "conditions": [
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  true,
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsDualStack"
+                                    ]
+                                  }
+                                ]
+                              }
+                            ],
+                            "rules": [
+                              {
+                                "conditions": [],
+                                "endpoint": {
+                                  "url": "https://api.pricing.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                                  "properties": {},
+                                  "headers": {}
+                                },
+                                "type": "endpoint"
+                              }
+                            ],
+                            "type": "tree"
+                          },
+                          {
+                            "conditions": [],
+                            "error": "DualStack is enabled but this partition does not support DualStack",
+                            "type": "error"
+                          }
+                        ],
+                        "type": "tree"
+                      },
+                      {
+                        "conditions": [
+                          {
+                            "fn": "stringEquals",
+                            "argv": [
+                              "aws",
+                              {
+                                "fn": "getAttr",
+                                "argv": [
+                                  {
+                                    "ref": "PartitionResult"
+                                  },
+                                  "name"
+                                ]
+                              }
+                            ]
+                          }
+                        ],
+                        "endpoint": {
+                          "url": "https://api.pricing.{Region}.amazonaws.com",
+                          "properties": {},
+                          "headers": {}
+                        },
+                        "type": "endpoint"
+                      },
+                      {
+                        "conditions": [],
+                        "endpoint": {
+                          "url": "https://api.pricing.{Region}.{PartitionResult#dnsSuffix}",
+                          "properties": {},
+                          "headers": {}
+                        },
+                        "type": "endpoint"
+                      }
+                    ],
+                    "type": "tree"
+                  }
+                ],
+                "type": "tree"
+              },
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: Missing Region",
+                "type": "error"
+              }
+            ]
+          },
+          "smithy.rules#endpointTests": {
+            "testCases": [
+              {
+                "documentation": "For region ap-south-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://api.pricing.ap-south-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ap-south-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://api.pricing.us-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://api.pricing-fips.us-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://api.pricing-fips.us-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://api.pricing.us-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://api.pricing-fips.cn-north-1.api.amazonwebservices.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": true,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://api.pricing-fips.cn-north-1.amazonaws.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://api.pricing.cn-north-1.api.amazonwebservices.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://api.pricing.cn-north-1.amazonaws.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://api.pricing-fips.us-gov-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://api.pricing-fips.us-gov-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://api.pricing.us-gov-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://api.pricing.us-gov-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-iso-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://api.pricing-fips.us-iso-east-1.c2s.ic.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-iso-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-iso-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://api.pricing.us-iso-east-1.c2s.ic.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-iso-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-isob-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://api.pricing-fips.us-isob-east-1.sc2s.sgov.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-isob-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-isob-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://api.pricing.us-isob-east-1.sc2s.sgov.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-isob-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For custom endpoint with region set and fips disabled and dualstack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://example.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "For custom endpoint with region not set and fips disabled and dualstack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://example.com"
+                  }
+                },
+                "params": {
+                  "UseFIPS": false,
+                  "UseDualStack": false,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "For custom endpoint with fips enabled and dualstack disabled",
+                "expect": {
+                  "error": "Invalid Configuration: FIPS and custom endpoint are not supported"
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "For custom endpoint with fips disabled and dualstack enabled",
+                "expect": {
+                  "error": "Invalid Configuration: Dualstack and custom endpoint are not supported"
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "Missing region",
+                "expect": {
+                  "error": "Invalid Configuration: Missing Region"
+                }
+              }
+            ],
+            "version": "1.0"
+          }
+        }
+      },
+      "com.amazonaws.pricing#AccessDeniedException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.pricing#errorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eGeneral authentication failure. The request wasn't signed correctly.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 401
+        }
+      },
+      "com.amazonaws.pricing#AttributeNameList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.pricing#String"
+        }
+      },
+      "com.amazonaws.pricing#AttributeValue": {
+        "type": "structure",
+        "members": {
+          "Value": {
+            "target": "com.amazonaws.pricing#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe specific value of an \u003ccode\u003eattributeName\u003c/code\u003e.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe values of a given attribute, such as \u003ccode\u003eThroughput Optimized HDD\u003c/code\u003e or \u003ccode\u003eProvisioned IOPS\u003c/code\u003e for the \u003ccode\u003eAmazon EC2\u003c/code\u003e \u003ccode\u003evolumeType\u003c/code\u003e attribute.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.pricing#AttributeValueList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.pricing#AttributeValue"
+        }
+      },
+      "com.amazonaws.pricing#CurrencyCode": {
+        "type": "string",
+        "traits": {
+          "smithy.api#pattern": "^[A-Z]{3}$"
+        }
+      },
+      "com.amazonaws.pricing#DescribeServices": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.pricing#DescribeServicesRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.pricing#DescribeServicesResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.pricing#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.pricing#ExpiredNextTokenException"
+          },
+          {
+            "target": "com.amazonaws.pricing#InternalErrorException"
+          },
+          {
+            "target": "com.amazonaws.pricing#InvalidNextTokenException"
+          },
+          {
+            "target": "com.amazonaws.pricing#InvalidParameterException"
+          },
+          {
+            "target": "com.amazonaws.pricing#NotFoundException"
+          },
+          {
+            "target": "com.amazonaws.pricing#ThrottlingException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eReturns the metadata for one service or a list of the metadata for all services. Use this without a service code to get the service codes for all services. Use it with a service code, such as \u003ccode\u003eAmazonEC2\u003c/code\u003e, to get information specific to that service, such as the attribute names available for that service. For example, some of the attribute names available for EC2 are \u003ccode\u003evolumeType\u003c/code\u003e, \u003ccode\u003emaxIopsVolume\u003c/code\u003e, \u003ccode\u003eoperation\u003c/code\u003e, \u003ccode\u003elocationType\u003c/code\u003e, and \u003ccode\u003einstanceCapacity10xlarge\u003c/code\u003e.\u003c/p\u003e",
+          "smithy.api#examples": [
+            {
+              "title": "To retrieve a list of services and service codes",
+              "documentation": "Retrieves the service for the given Service Code.",
+              "input": {
+                "ServiceCode": "AmazonEC2",
+                "FormatVersion": "aws_v1",
+                "MaxResults": 1
+              },
+              "output": {
+                "FormatVersion": "aws_v1",
+                "NextToken": "abcdefg123",
+                "Services": [
+                  {
+                    "AttributeNames": [
+                      "volumeType",
+                      "maxIopsvolume",
+                      "instanceCapacity10xlarge",
+                      "locationType",
+                      "operation"
+                    ],
+                    "ServiceCode": "AmazonEC2"
+                  }
+                ]
+              }
+            }
+          ],
+          "smithy.api#paginated": {
+            "inputToken": "NextToken",
+            "outputToken": "NextToken",
+            "items": "Services",
+            "pageSize": "MaxResults"
+          }
+        }
+      },
+      "com.amazonaws.pricing#DescribeServicesMaxResults": {
+        "type": "integer",
+        "traits": {
+          "smithy.api#default": 100,
+          "smithy.api#range": {
+            "min": 1,
+            "max": 100
+          }
+        }
+      },
+      "com.amazonaws.pricing#DescribeServicesRequest": {
+        "type": "structure",
+        "members": {
+          "FormatVersion": {
+            "target": "com.amazonaws.pricing#FormatVersion",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe format version that you want the response to be in.\u003c/p\u003e \u003cp\u003eValid values are: \u003ccode\u003eaws_v1\u003c/code\u003e \u003c/p\u003e"
+            }
+          },
+          "MaxResults": {
+            "target": "com.amazonaws.pricing#DescribeServicesMaxResults",
+            "traits": {
+              "smithy.api#default": null,
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of results that you want returned in the response.\u003c/p\u003e"
+            }
+          },
+          "NextToken": {
+            "target": "com.amazonaws.pricing#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe pagination token that indicates the next set of results that you want to retrieve.\u003c/p\u003e"
+            }
+          },
+          "ServiceCode": {
+            "target": "com.amazonaws.pricing#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe code for the service whose information you want to retrieve, such as \u003ccode\u003eAmazonEC2\u003c/code\u003e. You can use the \u003ccode\u003eServiceCode\u003c/code\u003e to filter the results in a \u003ccode\u003eGetProducts\u003c/code\u003e call. To retrieve a list of all services, leave this blank.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.pricing#DescribeServicesResponse": {
+        "type": "structure",
+        "members": {
+          "FormatVersion": {
+            "target": "com.amazonaws.pricing#FormatVersion",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe format version of the response. For example, \u003ccode\u003eaws_v1\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "NextToken": {
+            "target": "com.amazonaws.pricing#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe pagination token for the next set of retrievable results.\u003c/p\u003e"
+            }
+          },
+          "Services": {
+            "target": "com.amazonaws.pricing#ServiceList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe service metadata for the service or services in the response.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.pricing#EffectiveDate": {
+        "type": "timestamp"
+      },
+      "com.amazonaws.pricing#ExpiredNextTokenException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.pricing#errorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe pagination token expired. Try again without a pagination token.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.pricing#Field": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 1024
+          }
+        }
+      },
+      "com.amazonaws.pricing#FileFormat": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 255
+          }
+        }
+      },
+      "com.amazonaws.pricing#FileFormats": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.pricing#FileFormat"
+        }
+      },
+      "com.amazonaws.pricing#Filter": {
+        "type": "structure",
+        "members": {
+          "Field": {
+            "target": "com.amazonaws.pricing#Field",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe product metadata field that you want to filter on. You can filter by just the service code to see all products for a specific service, filter by just the attribute name to see a specific attribute for multiple services, or use both a service code and an attribute name to retrieve only products that match both fields.\u003c/p\u003e \u003cp\u003eValid values include: \u003ccode\u003eServiceCode\u003c/code\u003e, and all attribute names\u003c/p\u003e \u003cp\u003eFor example, you can filter by the \u003ccode\u003eAmazonEC2\u003c/code\u003e service code and the \u003ccode\u003evolumeType\u003c/code\u003e attribute name to get the prices for only Amazon EC2 volumes.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Type": {
+            "target": "com.amazonaws.pricing#FilterType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe type of filter that you want to use.\u003c/p\u003e \u003cp\u003eValid values are:\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eTERM_MATCH\u003c/code\u003e: Returns only products that match both the given filter field and the given value.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eEQUALS\u003c/code\u003e: Returns products that have a field value exactly matching the provided value.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eCONTAINS\u003c/code\u003e: Returns products where the field value contains the provided value as a substring.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eANY_OF\u003c/code\u003e: Returns products where the field value is any of the provided values.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eNONE_OF\u003c/code\u003e: Returns products where the field value is not any of the provided values.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Value": {
+            "target": "com.amazonaws.pricing#Value",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe service code or attribute value that you want to filter by. If you're filtering by service code this is the actual service code, such as \u003ccode\u003eAmazonEC2\u003c/code\u003e. If you're filtering by attribute name, this is the attribute value that you want the returned products to match, such as a \u003ccode\u003eProvisioned IOPS\u003c/code\u003e volume.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe constraints that you want all returned products to match.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.pricing#FilterType": {
+        "type": "enum",
+        "members": {
+          "ANY_OF": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ANY_OF"
+            }
+          },
+          "CONTAINS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "CONTAINS"
+            }
+          },
+          "EQUALS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "EQUALS"
+            }
+          },
+          "NONE_OF": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "NONE_OF"
+            }
+          },
+          "TERM_MATCH": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "TERM_MATCH"
+            }
+          }
+        }
+      },
+      "com.amazonaws.pricing#Filters": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.pricing#Filter"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 50
+          }
+        }
+      },
+      "com.amazonaws.pricing#FormatVersion": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 32
+          }
+        }
+      },
+      "com.amazonaws.pricing#GetAttributeValues": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.pricing#GetAttributeValuesRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.pricing#GetAttributeValuesResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.pricing#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.pricing#ExpiredNextTokenException"
+          },
+          {
+            "target": "com.amazonaws.pricing#InternalErrorException"
+          },
+          {
+            "target": "com.amazonaws.pricing#InvalidNextTokenException"
+          },
+          {
+            "target": "com.amazonaws.pricing#InvalidParameterException"
+          },
+          {
+            "target": "com.amazonaws.pricing#NotFoundException"
+          },
+          {
+            "target": "com.amazonaws.pricing#ThrottlingException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eReturns a list of attribute values. Attributes are similar to the details in a Price List API offer file. For a list of available attributes, see \u003ca href=\"https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/reading-an-offer.html#pps-defs\"\u003eOffer File Definitions\u003c/a\u003e in the \u003ca href=\"https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/billing-what-is.html\"\u003eBilling and Cost Management User Guide\u003c/a\u003e.\u003c/p\u003e",
+          "smithy.api#examples": [
+            {
+              "title": "To retrieve a list of attribute values",
+              "documentation": "This operation returns a list of values available for the given attribute.",
+              "input": {
+                "ServiceCode": "AmazonEC2",
+                "AttributeName": "volumeType",
+                "MaxResults": 2
+              },
+              "output": {
+                "NextToken": "GpgauEXAMPLEezucl5LV0w==:7GzYJ0nw0DBTJ2J66EoTIIynE6O1uXwQtTRqioJzQadBnDVgHPzI1en4BUQnPCLpzeBk9RQQAWaFieA4+DapFAGLgk+Z/9/cTw9GldnPOHN98+FdmJP7wKU3QQpQ8MQr5KOeBkIsAqvAQYdL0DkL7tHwPtE5iCEByAmg9gcC/yBU1vAOsf7R3VaNN4M5jMDv3woSWqASSIlBVB6tgW78YL22KhssoItM/jWW+aP6Jqtq4mldxp/ct6DWAl+xLFwHU/CbketimPPXyqHF3/UXDw==",
+                "AttributeValues": [
+                  {
+                    "Value": "Throughput Optimized HDD"
+                  },
+                  {
+                    "Value": "Provisioned IOPS"
+                  }
+                ]
+              }
+            }
+          ],
+          "smithy.api#paginated": {
+            "inputToken": "NextToken",
+            "outputToken": "NextToken",
+            "items": "AttributeValues",
+            "pageSize": "MaxResults"
+          }
+        }
+      },
+      "com.amazonaws.pricing#GetAttributeValuesMaxResults": {
+        "type": "integer",
+        "traits": {
+          "smithy.api#default": 100,
+          "smithy.api#range": {
+            "min": 1,
+            "max": 10000
+          }
+        }
+      },
+      "com.amazonaws.pricing#GetAttributeValuesRequest": {
+        "type": "structure",
+        "members": {
+          "AttributeName": {
+            "target": "com.amazonaws.pricing#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the attribute that you want to retrieve the values for, such as \u003ccode\u003evolumeType\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "MaxResults": {
+            "target": "com.amazonaws.pricing#GetAttributeValuesMaxResults",
+            "traits": {
+              "smithy.api#default": null,
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of results to return in response.\u003c/p\u003e"
+            }
+          },
+          "NextToken": {
+            "target": "com.amazonaws.pricing#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe pagination token that indicates the next set of results that you want to retrieve.\u003c/p\u003e"
+            }
+          },
+          "ServiceCode": {
+            "target": "com.amazonaws.pricing#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe service code for the service whose attributes you want to retrieve. For example, if you want the retrieve an EC2 attribute, use \u003ccode\u003eAmazonEC2\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.pricing#GetAttributeValuesResponse": {
+        "type": "structure",
+        "members": {
+          "AttributeValues": {
+            "target": "com.amazonaws.pricing#AttributeValueList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe list of values for an attribute. For example, \u003ccode\u003eThroughput Optimized HDD\u003c/code\u003e and \u003ccode\u003eProvisioned IOPS\u003c/code\u003e are two available values for the \u003ccode\u003eAmazonEC2\u003c/code\u003e \u003ccode\u003evolumeType\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "NextToken": {
+            "target": "com.amazonaws.pricing#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe pagination token that indicates the next set of results to retrieve.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.pricing#GetPriceListFileUrl": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.pricing#GetPriceListFileUrlRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.pricing#GetPriceListFileUrlResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.pricing#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.pricing#InternalErrorException"
+          },
+          {
+            "target": "com.amazonaws.pricing#InvalidParameterException"
+          },
+          {
+            "target": "com.amazonaws.pricing#NotFoundException"
+          },
+          {
+            "target": "com.amazonaws.pricing#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.pricing#ThrottlingException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003e \u003ci\u003e \u003cb\u003eThis feature is in preview release and is subject to change. Your use of Amazon Web Services Price List API is subject to the Beta Service Participation terms of the \u003ca href=\"https://aws.amazon.com/service-terms/\"\u003eAmazon Web Services Service Terms\u003c/a\u003e (Section 1.10).\u003c/b\u003e \u003c/i\u003e \u003c/p\u003e \u003cp\u003eThis returns the URL that you can retrieve your Price List file from. This URL is based on the \u003ccode\u003ePriceListArn\u003c/code\u003e and \u003ccode\u003eFileFormat\u003c/code\u003e that you retrieve from the \u003ca href=\"https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_pricing_ListPriceLists.html\"\u003eListPriceLists\u003c/a\u003e response. \u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.pricing#GetPriceListFileUrlRequest": {
+        "type": "structure",
+        "members": {
+          "FileFormat": {
+            "target": "com.amazonaws.pricing#FileFormat",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe format that you want to retrieve your Price List files in. The \u003ccode\u003eFileFormat\u003c/code\u003e can be obtained from the \u003ca href=\"https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_pricing_ListPriceLists.html\"\u003eListPriceLists\u003c/a\u003e response. \u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "PriceListArn": {
+            "target": "com.amazonaws.pricing#PriceListArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier that maps to where your Price List files are located. \u003ccode\u003ePriceListArn\u003c/code\u003e can be obtained from the \u003ca href=\"https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_pricing_ListPriceLists.html\"\u003eListPriceLists\u003c/a\u003e response. \u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.pricing#GetPriceListFileUrlResponse": {
+        "type": "structure",
+        "members": {
+          "Url": {
+            "target": "com.amazonaws.pricing#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe URL to download your Price List file from. \u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.pricing#GetProducts": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.pricing#GetProductsRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.pricing#GetProductsResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.pricing#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.pricing#ExpiredNextTokenException"
+          },
+          {
+            "target": "com.amazonaws.pricing#InternalErrorException"
+          },
+          {
+            "target": "com.amazonaws.pricing#InvalidNextTokenException"
+          },
+          {
+            "target": "com.amazonaws.pricing#InvalidParameterException"
+          },
+          {
+            "target": "com.amazonaws.pricing#NotFoundException"
+          },
+          {
+            "target": "com.amazonaws.pricing#ThrottlingException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eReturns a list of all products that match the filter criteria.\u003c/p\u003e",
+          "smithy.api#paginated": {
+            "inputToken": "NextToken",
+            "outputToken": "NextToken",
+            "items": "PriceList",
+            "pageSize": "MaxResults"
+          }
+        }
+      },
+      "com.amazonaws.pricing#GetProductsMaxResults": {
+        "type": "integer",
+        "traits": {
+          "smithy.api#default": 100,
+          "smithy.api#range": {
+            "min": 1,
+            "max": 100
+          }
+        }
+      },
+      "com.amazonaws.pricing#GetProductsRequest": {
+        "type": "structure",
+        "members": {
+          "Filters": {
+            "target": "com.amazonaws.pricing#Filters",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe list of filters that limit the returned products. only products that match all filters are returned.\u003c/p\u003e"
+            }
+          },
+          "FormatVersion": {
+            "target": "com.amazonaws.pricing#FormatVersion",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe format version that you want the response to be in.\u003c/p\u003e \u003cp\u003eValid values are: \u003ccode\u003eaws_v1\u003c/code\u003e \u003c/p\u003e"
+            }
+          },
+          "MaxResults": {
+            "target": "com.amazonaws.pricing#GetProductsMaxResults",
+            "traits": {
+              "smithy.api#default": null,
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of results to return in the response.\u003c/p\u003e"
+            }
+          },
+          "NextToken": {
+            "target": "com.amazonaws.pricing#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe pagination token that indicates the next set of results that you want to retrieve.\u003c/p\u003e"
+            }
+          },
+          "ServiceCode": {
+            "target": "com.amazonaws.pricing#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe code for the service whose products you want to retrieve. \u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.pricing#GetProductsResponse": {
+        "type": "structure",
+        "members": {
+          "FormatVersion": {
+            "target": "com.amazonaws.pricing#FormatVersion",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe format version of the response. For example, aws_v1.\u003c/p\u003e"
+            }
+          },
+          "NextToken": {
+            "target": "com.amazonaws.pricing#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe pagination token that indicates the next set of results to retrieve.\u003c/p\u003e"
+            }
+          },
+          "PriceList": {
+            "target": "com.amazonaws.pricing#PriceListJsonItems",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe list of products that match your filters. The list contains both the product metadata and the price information.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.pricing#InternalErrorException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.pricing#errorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eAn error on the server occurred during the processing of your request. Try again later.\u003c/p\u003e",
+          "smithy.api#error": "server",
+          "smithy.api#httpError": 500,
+          "smithy.api#retryable": {}
+        }
+      },
+      "com.amazonaws.pricing#InvalidNextTokenException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.pricing#errorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe pagination token is invalid. Try again without a pagination token.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.pricing#InvalidParameterException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.pricing#errorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eOne or more parameters had an invalid value.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.pricing#ListPriceLists": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.pricing#ListPriceListsRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.pricing#ListPriceListsResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.pricing#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.pricing#ExpiredNextTokenException"
+          },
+          {
+            "target": "com.amazonaws.pricing#InternalErrorException"
+          },
+          {
+            "target": "com.amazonaws.pricing#InvalidNextTokenException"
+          },
+          {
+            "target": "com.amazonaws.pricing#InvalidParameterException"
+          },
+          {
+            "target": "com.amazonaws.pricing#NotFoundException"
+          },
+          {
+            "target": "com.amazonaws.pricing#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.pricing#ThrottlingException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003e \u003ci\u003e \u003cb\u003eThis feature is in preview release and is subject to change. Your use of Amazon Web Services Price List API is subject to the Beta Service Participation terms of the \u003ca href=\"https://aws.amazon.com/service-terms/\"\u003eAmazon Web Services Service Terms\u003c/a\u003e (Section 1.10).\u003c/b\u003e \u003c/i\u003e \u003c/p\u003e \u003cp\u003eThis returns a list of Price List references that the requester if authorized to view, given a \u003ccode\u003eServiceCode\u003c/code\u003e, \u003ccode\u003eCurrencyCode\u003c/code\u003e, and an \u003ccode\u003eEffectiveDate\u003c/code\u003e. Use without a \u003ccode\u003eRegionCode\u003c/code\u003e filter to list Price List references from all available Amazon Web Services Regions. Use with a \u003ccode\u003eRegionCode\u003c/code\u003e filter to get the Price List reference that's specific to a specific Amazon Web Services Region. You can use the \u003ccode\u003ePriceListArn\u003c/code\u003e from the response to get your preferred Price List files through the \u003ca href=\"https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_pricing_GetPriceListFileUrl.html\"\u003eGetPriceListFileUrl\u003c/a\u003e API.\u003c/p\u003e",
+          "smithy.api#paginated": {
+            "inputToken": "NextToken",
+            "outputToken": "NextToken",
+            "items": "PriceLists",
+            "pageSize": "MaxResults"
+          }
+        }
+      },
+      "com.amazonaws.pricing#ListPriceListsRequest": {
+        "type": "structure",
+        "members": {
+          "CurrencyCode": {
+            "target": "com.amazonaws.pricing#CurrencyCode",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe three alphabetical character ISO-4217 currency code that the Price List files are denominated in. \u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "EffectiveDate": {
+            "target": "com.amazonaws.pricing#EffectiveDate",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe date that the Price List file prices are effective from. \u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "MaxResults": {
+            "target": "com.amazonaws.pricing#MaxResults",
+            "traits": {
+              "smithy.api#default": null,
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of results to return in the response. \u003c/p\u003e"
+            }
+          },
+          "NextToken": {
+            "target": "com.amazonaws.pricing#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe pagination token that indicates the next set of results that you want to retrieve. \u003c/p\u003e"
+            }
+          },
+          "RegionCode": {
+            "target": "com.amazonaws.pricing#RegionCode",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThis is used to filter the Price List by Amazon Web Services Region. For example, to get the price list only for the \u003ccode\u003eUS East (N. Virginia)\u003c/code\u003e Region, use \u003ccode\u003eus-east-1\u003c/code\u003e. If nothing is specified, you retrieve price lists for all applicable Regions. The available \u003ccode\u003eRegionCode\u003c/code\u003e list can be retrieved from \u003ca href=\"https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_pricing_GetAttributeValues.html\"\u003eGetAttributeValues\u003c/a\u003e API.\u003c/p\u003e"
+            }
+          },
+          "ServiceCode": {
+            "target": "com.amazonaws.pricing#ServiceCode",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe service code or the Savings Plans service code for the attributes that you want to retrieve. For example, to get the list of applicable Amazon EC2 price lists, use \u003ccode\u003eAmazonEC2\u003c/code\u003e. For a full list of service codes containing On-Demand and Reserved Instance (RI) pricing, use the \u003ca href=\"https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_pricing_DescribeServices.html#awscostmanagement-pricing_DescribeServices-request-FormatVersion\"\u003eDescribeServices\u003c/a\u003e API.\u003c/p\u003e \u003cp\u003eTo retrieve the Reserved Instance and Compute Savings Plans price lists, use \u003ccode\u003eComputeSavingsPlans\u003c/code\u003e. \u003c/p\u003e \u003cp\u003eTo retrieve Machine Learning Savings Plans price lists, use \u003ccode\u003eMachineLearningSavingsPlans\u003c/code\u003e. \u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.pricing#ListPriceListsResponse": {
+        "type": "structure",
+        "members": {
+          "NextToken": {
+            "target": "com.amazonaws.pricing#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe pagination token that indicates the next set of results to retrieve. \u003c/p\u003e"
+            }
+          },
+          "PriceLists": {
+            "target": "com.amazonaws.pricing#PriceLists",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe type of price list references that match your request. \u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.pricing#MaxResults": {
+        "type": "integer",
+        "traits": {
+          "smithy.api#default": 100,
+          "smithy.api#range": {
+            "min": 1,
+            "max": 100
+          }
+        }
+      },
+      "com.amazonaws.pricing#NotFoundException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.pricing#errorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe requested resource can't be found.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.pricing#PriceList": {
+        "type": "structure",
+        "members": {
+          "CurrencyCode": {
+            "target": "com.amazonaws.pricing#CurrencyCode",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe three alphabetical character ISO-4217 currency code the Price List files are denominated in. \u003c/p\u003e"
+            }
+          },
+          "FileFormats": {
+            "target": "com.amazonaws.pricing#FileFormats",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe format you want to retrieve your Price List files. The \u003ccode\u003eFileFormat\u003c/code\u003e can be obtained from the \u003ca href=\"https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_pricing_ListPriceLists.html\"\u003e \u003ccode\u003eListPriceList\u003c/code\u003e \u003c/a\u003e response. \u003c/p\u003e"
+            }
+          },
+          "PriceListArn": {
+            "target": "com.amazonaws.pricing#PriceListArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier that maps to where your Price List files are located. \u003ccode\u003ePriceListArn\u003c/code\u003e can be obtained from the \u003ca href=\"https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_pricing_ListPriceLists.html\"\u003e \u003ccode\u003eListPriceList\u003c/code\u003e \u003c/a\u003e response. \u003c/p\u003e"
+            }
+          },
+          "RegionCode": {
+            "target": "com.amazonaws.pricing#RegionCode",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThis is used to filter the Price List by Amazon Web Services Region. For example, to get the price list only for the \u003ccode\u003eUS East (N. Virginia)\u003c/code\u003e Region, use \u003ccode\u003eus-east-1\u003c/code\u003e. If nothing is specified, you retrieve price lists for all applicable Regions. The available \u003ccode\u003eRegionCode\u003c/code\u003e list can be retrieved from \u003ca href=\"https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_pricing_GetAttributeValues.html\"\u003e \u003ccode\u003eGetAttributeValues\u003c/code\u003e \u003c/a\u003e API. \u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003e \u003ci\u003e \u003cb\u003eThis feature is in preview release and is subject to change. Your use of Amazon Web Services Price List API is subject to the Beta Service Participation terms of the \u003ca href=\"https://aws.amazon.com/service-terms/\"\u003eAmazon Web Services Service Terms\u003c/a\u003e (Section 1.10).\u003c/b\u003e \u003c/i\u003e \u003c/p\u003e \u003cp\u003eThis is the type of price list references that match your request. \u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.pricing#PriceListArn": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 18,
+            "max": 2048
+          },
+          "smithy.api#pattern": "^arn:[A-Za-z0-9][-.A-Za-z0-9]{0,62}:pricing:::price-list/[A-Za-z0-9+_/.-]{1,1023}$"
+        }
+      },
+      "com.amazonaws.pricing#PriceListJsonItems": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.pricing#SynthesizedJsonPriceListJsonItem"
+        }
+      },
+      "com.amazonaws.pricing#PriceLists": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.pricing#PriceList"
+        }
+      },
+      "com.amazonaws.pricing#RegionCode": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 255
+          }
+        }
+      },
+      "com.amazonaws.pricing#ResourceNotFoundException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.pricing#errorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe requested resource can't be found.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 404
+        }
+      },
+      "com.amazonaws.pricing#Service": {
+        "type": "structure",
+        "members": {
+          "AttributeNames": {
+            "target": "com.amazonaws.pricing#AttributeNameList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe attributes that are available for this service.\u003c/p\u003e"
+            }
+          },
+          "ServiceCode": {
+            "target": "com.amazonaws.pricing#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe code for the Amazon Web Services service.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe metadata for a service, such as the service code and available attribute names.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.pricing#ServiceCode": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 32
+          }
+        }
+      },
+      "com.amazonaws.pricing#ServiceList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.pricing#Service"
+        }
+      },
+      "com.amazonaws.pricing#String": {
+        "type": "string"
+      },
+      "com.amazonaws.pricing#SynthesizedJsonPriceListJsonItem": {
+        "type": "string",
+        "traits": {
+          "smithy.api#mediaType": "application/json"
+        }
+      },
+      "com.amazonaws.pricing#ThrottlingException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.pricing#errorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eYou've made too many requests exceeding service quotas. \u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 429,
+          "smithy.api#retryable": {
+            "throttling": true
+          }
+        }
+      },
+      "com.amazonaws.pricing#Value": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 1024
+          }
+        }
+      },
+      "com.amazonaws.pricing#errorMessage": {
+        "type": "string"
+      }
+    }
+  }
+}

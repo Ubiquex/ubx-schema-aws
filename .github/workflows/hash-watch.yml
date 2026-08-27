@@ -1,0 +1,3166 @@
+name: hash-watch
+
+# AWS's own real published identity is a MIXED-SOURCE group of 430
+# members -- 1 real CloudFormation resource member ("aws", the whole
+# CloudFormation registry in one zip fetch) plus 429 real Smithy
+# data-source members ("aws_data_<service>", one per real AWS service
+# model, github.com/aws/api-models-aws), the ONLY real group among this
+# org's six real providers whose own members span more than one real
+# schema source (UBI-193's own real finding, confirmed by checking every
+# real group's own member composition directly). ubx-provider-dynamic's
+# own --generate-snapshot-group regenerates every real member from its
+# own real config entry below (each source's own Generate<Source>Member,
+# dispatched per member's own schema_source, unchanged by mixing -- only
+# SERVING a mixed group needed new code, internal/mixedserver) and
+# assembles them into one real, versioned group container
+# (internal/snapshot's own AssembleGroup: the highest real change level
+# across every member, never hand-picked). --prev-snapshot points at
+# THIS checkout's own root, so a content change that doesn't affect any
+# member's own translated schema produces NoChange and no PR.
+#
+# Never auto-merges, matching every other repo in this org.
+
+on:
+  schedule:
+    - cron: "0 6 * * 1" # every Monday, 06:00 UTC
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  check-and-regenerate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out ubx-schema-aws
+        uses: actions/checkout@v4
+
+      - name: Check out ubx-provider-dynamic (to build it from source)
+        run: |
+          set -euo pipefail
+          git clone --depth=1 \
+            "https://github.com/Ubiquex/ubx-provider-dynamic.git" \
+            "${{ runner.temp }}/ubx-provider-dynamic-src"
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: ${{ runner.temp }}/ubx-provider-dynamic-src/go.mod
+
+      - name: Build ubx-provider-dynamic
+        run: |
+          set -euo pipefail
+          go build -C "${{ runner.temp }}/ubx-provider-dynamic-src" \
+            -o "${{ runner.temp }}/ubx-provider-dynamic" \
+            ./cmd/ubx-provider-dynamic
+
+      - name: Read the committed group version before regenerating
+        id: before
+        run: |
+          set -euo pipefail
+          current="$(python3 -c "import json; print(json.load(open('manifest.json'))['version'])")"
+          echo "current=$current" >> "$GITHUB_OUTPUT"
+          echo "Committed manifest.json is at version $current"
+
+      - name: Regenerate all real members and assemble the group
+        id: gen
+        run: |
+          set -euo pipefail
+          mkdir -p "${{ runner.temp }}/gen/.ubx"
+          cat > "${{ runner.temp }}/gen/.ubx/config" <<'EOF'
+          [dynamic_providers.aws]
+          schema_source = "cloudformation"
+          schema_url = "https://schema.cloudformation.us-east-1.amazonaws.com/CloudformationSchema.zip"
+          base_url = "https://cloudcontrolapi.us-east-1.amazonaws.com"
+          describe_exclude = [
+            "aws_quick_sight_dashboard",
+            "aws_quick_sight_analysis",
+            "aws_quick_sight_template",
+          ]
+          [dynamic_providers.aws.auth]
+          type = "aws_sigv4"
+          [dynamic_providers.aws.auth.params]
+          region = "us-east-1"
+          service = "cloudcontrolapi"
+          credential_source = "profile"
+
+          [dynamic_providers.aws_data_accessanalyzer]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/accessanalyzer/service/2019-11-01/accessanalyzer-2019-11-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_account]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/account/service/2021-02-01/account-2021-02-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_account_access]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/account-access/service/2018-05-10/account-access-2018-05-10.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_acm]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/acm/service/2015-12-08/acm-2015-12-08.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_acm_pca]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/acm-pca/service/2017-08-22/acm-pca-2017-08-22.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_agent_registry]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/agent-registry/service/2025-12-01/agent-registry-2025-12-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_agent_registry_control]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/agent-registry-control/service/2025-12-01/agent-registry-control-2025-12-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_aiops]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/aiops/service/2018-05-10/aiops-2018-05-10.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_amp]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/amp/service/2020-08-01/amp-2020-08-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_amplify]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/amplify/service/2017-07-25/amplify-2017-07-25.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_amplifybackend]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/amplifybackend/service/2020-08-11/amplifybackend-2020-08-11.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_amplifyuibuilder]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/amplifyuibuilder/service/2021-08-11/amplifyuibuilder-2021-08-11.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_api_gateway]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/api-gateway/service/2015-07-09/api-gateway-2015-07-09.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_apigatewaymanagementapi]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/apigatewaymanagementapi/service/2018-11-29/apigatewaymanagementapi-2018-11-29.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_apigatewayv2]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/apigatewayv2/service/2018-11-29/apigatewayv2-2018-11-29.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+          data_source_namespace = "apigatewayv2"  # UBI-186: real cross-service namespace collision, see config.Provider.DataSourceNamespace's own doc comment
+
+          [dynamic_providers.aws_data_app_mesh]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/app-mesh/service/2019-01-25/app-mesh-2019-01-25.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_appconfig]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/appconfig/service/2019-10-09/appconfig-2019-10-09.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_appconfigdata]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/appconfigdata/service/2021-11-11/appconfigdata-2021-11-11.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_appfabric]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/appfabric/service/2023-05-19/appfabric-2023-05-19.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_appflow]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/appflow/service/2020-08-23/appflow-2020-08-23.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_appintegrations]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/appintegrations/service/2020-07-29/appintegrations-2020-07-29.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_application_auto_scaling]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/application-auto-scaling/service/2016-02-06/application-auto-scaling-2016-02-06.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_application_discovery_service]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/application-discovery-service/service/2015-11-01/application-discovery-service-2015-11-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_application_insights]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/application-insights/service/2018-11-25/application-insights-2018-11-25.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_application_signals]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/application-signals/service/2024-04-15/application-signals-2024-04-15.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_applicationcostprofiler]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/applicationcostprofiler/service/2020-09-10/applicationcostprofiler-2020-09-10.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_apprunner]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/apprunner/service/2020-05-15/apprunner-2020-05-15.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_appstream]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/appstream/service/2016-12-01/appstream-2016-12-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_appsync]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/appsync/service/2017-07-25/appsync-2017-07-25.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_arc_region_switch]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/arc-region-switch/service/2022-07-26/arc-region-switch-2022-07-26.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_arc_zonal_shift]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/arc-zonal-shift/service/2022-10-30/arc-zonal-shift-2022-10-30.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_artifact]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/artifact/service/2018-05-10/artifact-2018-05-10.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_athena]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/athena/service/2017-05-18/athena-2017-05-18.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_auditmanager]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/auditmanager/service/2017-07-25/auditmanager-2017-07-25.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_auto_scaling]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/auto-scaling/service/2011-01-01/auto-scaling-2011-01-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_auto_scaling_plans]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/auto-scaling-plans/service/2018-01-06/auto-scaling-plans-2018-01-06.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_b2bi]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/b2bi/service/2022-06-23/b2bi-2022-06-23.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_backup]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/backup/service/2018-11-15/backup-2018-11-15.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_backup_gateway]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/backup-gateway/service/2021-01-01/backup-gateway-2021-01-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_backupsearch]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/backupsearch/service/2018-05-10/backupsearch-2018-05-10.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_batch]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/batch/service/2016-08-10/batch-2016-08-10.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_bcm_dashboards]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/bcm-dashboards/service/2025-08-18/bcm-dashboards-2025-08-18.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_bcm_data_exports]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/bcm-data-exports/service/2023-11-26/bcm-data-exports-2023-11-26.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_bcm_pricing_calculator]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/bcm-pricing-calculator/service/2024-06-19/bcm-pricing-calculator-2024-06-19.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_bcm_recommended_actions]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/bcm-recommended-actions/service/2024-11-14/bcm-recommended-actions-2024-11-14.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_bedrock]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/bedrock/service/2023-04-20/bedrock-2023-04-20.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_bedrock_agent]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/bedrock-agent/service/2023-06-05/bedrock-agent-2023-06-05.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_bedrock_agent_runtime]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/bedrock-agent-runtime/service/2023-07-26/bedrock-agent-runtime-2023-07-26.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_bedrock_agentcore]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/bedrock-agentcore/service/2024-02-28/bedrock-agentcore-2024-02-28.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_bedrock_agentcore_control]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/bedrock-agentcore-control/service/2023-06-05/bedrock-agentcore-control-2023-06-05.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_bedrock_data_automation]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/bedrock-data-automation/service/2023-07-26/bedrock-data-automation-2023-07-26.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_bedrock_data_automation_runtime]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/bedrock-data-automation-runtime/service/2024-06-13/bedrock-data-automation-runtime-2024-06-13.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_bedrock_runtime]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/bedrock-runtime/service/2023-09-30/bedrock-runtime-2023-09-30.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_billing]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/billing/service/2023-09-07/billing-2023-09-07.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_billingconductor]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/billingconductor/service/2021-07-30/billingconductor-2021-07-30.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_braket]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/braket/service/2019-09-01/braket-2019-09-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_budgets]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/budgets/service/2016-10-20/budgets-2016-10-20.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_chatbot]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/chatbot/service/2017-10-11/chatbot-2017-10-11.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_chime]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/chime/service/2018-05-01/chime-2018-05-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_chime_sdk_identity]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/chime-sdk-identity/service/2021-04-20/chime-sdk-identity-2021-04-20.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_chime_sdk_media_pipelines]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/chime-sdk-media-pipelines/service/2021-07-15/chime-sdk-media-pipelines-2021-07-15.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_chime_sdk_meetings]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/chime-sdk-meetings/service/2021-07-15/chime-sdk-meetings-2021-07-15.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_chime_sdk_messaging]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/chime-sdk-messaging/service/2021-05-15/chime-sdk-messaging-2021-05-15.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_chime_sdk_voice]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/chime-sdk-voice/service/2022-08-03/chime-sdk-voice-2022-08-03.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_cleanrooms]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/cleanrooms/service/2022-02-17/cleanrooms-2022-02-17.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_cleanroomsml]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/cleanroomsml/service/2023-09-06/cleanroomsml-2023-09-06.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_cloud9]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/cloud9/service/2017-09-23/cloud9-2017-09-23.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_cloudcontrol]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/cloudcontrol/service/2021-09-30/cloudcontrol-2021-09-30.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_clouddirectory]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/clouddirectory/service/2017-01-11/clouddirectory-2017-01-11.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_cloudformation]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/cloudformation/service/2010-05-15/cloudformation-2010-05-15.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_cloudfront]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/cloudfront/service/2020-05-31/cloudfront-2020-05-31.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_cloudfront_keyvaluestore]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/cloudfront-keyvaluestore/service/2022-07-26/cloudfront-keyvaluestore-2022-07-26.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_cloudhsm]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/cloudhsm/service/2014-05-30/cloudhsm-2014-05-30.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_cloudhsm_v2]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/cloudhsm-v2/service/2017-04-28/cloudhsm-v2-2017-04-28.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_cloudsearch]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/cloudsearch/service/2013-01-01/cloudsearch-2013-01-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_cloudsearch_domain]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/cloudsearch-domain/service/2013-01-01/cloudsearch-domain-2013-01-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_cloudtrail]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/cloudtrail/service/2013-11-01/cloudtrail-2013-11-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_cloudtrail_data]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/cloudtrail-data/service/2021-08-11/cloudtrail-data-2021-08-11.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_cloudwatch]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/cloudwatch/service/2010-08-01/cloudwatch-2010-08-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_cloudwatch_events]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/cloudwatch-events/service/2015-10-07/cloudwatch-events-2015-10-07.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_cloudwatch_logs]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/cloudwatch-logs/service/2014-03-28/cloudwatch-logs-2014-03-28.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_codeartifact]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/codeartifact/service/2018-09-22/codeartifact-2018-09-22.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_codebuild]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/codebuild/service/2016-10-06/codebuild-2016-10-06.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_codecatalyst]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/codecatalyst/service/2022-09-28/codecatalyst-2022-09-28.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_codecommit]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/codecommit/service/2015-04-13/codecommit-2015-04-13.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_codeconnections]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/codeconnections/service/2023-12-01/codeconnections-2023-12-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_codedeploy]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/codedeploy/service/2014-10-06/codedeploy-2014-10-06.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_codeguru_reviewer]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/codeguru-reviewer/service/2019-09-19/codeguru-reviewer-2019-09-19.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_codeguru_security]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/codeguru-security/service/2018-05-10/codeguru-security-2018-05-10.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_codeguruprofiler]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/codeguruprofiler/service/2019-07-18/codeguruprofiler-2019-07-18.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_codepipeline]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/codepipeline/service/2015-07-09/codepipeline-2015-07-09.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_codestar_connections]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/codestar-connections/service/2019-12-01/codestar-connections-2019-12-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_codestar_notifications]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/codestar-notifications/service/2019-10-15/codestar-notifications-2019-10-15.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_cognito_identity]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/cognito-identity/service/2014-06-30/cognito-identity-2014-06-30.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_cognito_identity_provider]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/cognito-identity-provider/service/2016-04-18/cognito-identity-provider-2016-04-18.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_cognito_sync]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/cognito-sync/service/2014-06-30/cognito-sync-2014-06-30.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_comprehend]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/comprehend/service/2017-11-27/comprehend-2017-11-27.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_comprehendmedical]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/comprehendmedical/service/2018-10-30/comprehendmedical-2018-10-30.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_compute_optimizer]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/compute-optimizer/service/2019-11-01/compute-optimizer-2019-11-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_compute_optimizer_automation]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/compute-optimizer-automation/service/2025-09-22/compute-optimizer-automation-2025-09-22.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_config_service]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/config-service/service/2014-11-12/config-service-2014-11-12.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_connect]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/connect/service/2017-08-08/connect-2017-08-08.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_connect_contact_lens]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/connect-contact-lens/service/2020-08-21/connect-contact-lens-2020-08-21.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_connectcampaigns]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/connectcampaigns/service/2021-01-30/connectcampaigns-2021-01-30.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_connectcampaignsv2]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/connectcampaignsv2/service/2024-04-23/connectcampaignsv2-2024-04-23.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+          data_source_namespace = "connectcampaignsv2"  # UBI-186: real cross-service namespace collision, see config.Provider.DataSourceNamespace's own doc comment
+
+          [dynamic_providers.aws_data_connectcases]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/connectcases/service/2022-10-03/connectcases-2022-10-03.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_connecthealth]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/connecthealth/service/2025-01-29/connecthealth-2025-01-29.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_connectparticipant]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/connectparticipant/service/2018-09-07/connectparticipant-2018-09-07.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_controlcatalog]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/controlcatalog/service/2018-05-10/controlcatalog-2018-05-10.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_controltower]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/controltower/service/2018-05-10/controltower-2018-05-10.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_cost_and_usage_report_service]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/cost-and-usage-report-service/service/2017-01-06/cost-and-usage-report-service-2017-01-06.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_cost_explorer]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/cost-explorer/service/2017-10-25/cost-explorer-2017-10-25.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_cost_optimization_hub]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/cost-optimization-hub/service/2022-07-26/cost-optimization-hub-2022-07-26.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_customer_profiles]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/customer-profiles/service/2020-08-15/customer-profiles-2020-08-15.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_data_pipeline]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/data-pipeline/service/2012-10-29/data-pipeline-2012-10-29.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_database_migration_service]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/database-migration-service/service/2016-01-01/database-migration-service-2016-01-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_databrew]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/databrew/service/2017-07-25/databrew-2017-07-25.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_dataexchange]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/dataexchange/service/2017-07-25/dataexchange-2017-07-25.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_datasync]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/datasync/service/2018-11-09/datasync-2018-11-09.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_datazone]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/datazone/service/2018-05-10/datazone-2018-05-10.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_dax]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/dax/service/2017-04-19/dax-2017-04-19.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_deadline]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/deadline/service/2023-10-12/deadline-2023-10-12.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_detective]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/detective/service/2018-10-26/detective-2018-10-26.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_device_farm]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/device-farm/service/2015-06-23/device-farm-2015-06-23.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_devops_agent]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/devops-agent/service/2026-01-01/devops-agent-2026-01-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_devops_guru]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/devops-guru/service/2020-12-01/devops-guru-2020-12-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_direct_connect]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/direct-connect/service/2012-10-25/direct-connect-2012-10-25.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_directory_service]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/directory-service/service/2015-04-16/directory-service-2015-04-16.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_directory_service_data]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/directory-service-data/service/2023-05-31/directory-service-data-2023-05-31.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_dlm]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/dlm/service/2018-01-12/dlm-2018-01-12.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_docdb]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/docdb/service/2014-10-31/docdb-2014-10-31.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+          data_source_namespace = "docdb"  # UBI-186: real cross-service namespace collision, see config.Provider.DataSourceNamespace's own doc comment
+
+          [dynamic_providers.aws_data_docdb_elastic]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/docdb-elastic/service/2022-11-28/docdb-elastic-2022-11-28.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_drs]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/drs/service/2020-02-26/drs-2020-02-26.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_dsql]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/dsql/service/2018-05-10/dsql-2018-05-10.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_dynamodb]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/dynamodb/service/2012-08-10/dynamodb-2012-08-10.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_dynamodb_streams]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/dynamodb-streams/service/2012-08-10/dynamodb-streams-2012-08-10.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_ebs]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/ebs/service/2019-11-02/ebs-2019-11-02.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_ec2]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/ec2/service/2016-11-15/ec2-2016-11-15.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_ec2_instance_connect]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/ec2-instance-connect/service/2018-04-02/ec2-instance-connect-2018-04-02.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_ecr]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/ecr/service/2015-09-21/ecr-2015-09-21.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_ecr_public]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/ecr-public/service/2020-10-30/ecr-public-2020-10-30.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_ecs]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/ecs/service/2014-11-13/ecs-2014-11-13.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_efs]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/efs/service/2015-02-01/efs-2015-02-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_eks]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/eks/service/2017-11-01/eks-2017-11-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_eks_auth]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/eks-auth/service/2023-11-26/eks-auth-2023-11-26.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_elastic_beanstalk]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/elastic-beanstalk/service/2010-12-01/elastic-beanstalk-2010-12-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_elastic_load_balancing]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/elastic-load-balancing/service/2012-06-01/elastic-load-balancing-2012-06-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_elastic_load_balancing_v2]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/elastic-load-balancing-v2/service/2015-12-01/elastic-load-balancing-v2-2015-12-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+          data_source_namespace = "elastic-load-balancing-v2"  # UBI-186: real cross-service namespace collision, see config.Provider.DataSourceNamespace's own doc comment
+
+          [dynamic_providers.aws_data_elasticache]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/elasticache/service/2015-02-02/elasticache-2015-02-02.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_elasticsearch_service]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/elasticsearch-service/service/2015-01-01/elasticsearch-service-2015-01-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_elementalinference]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/elementalinference/service/2018-11-14/elementalinference-2018-11-14.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_emr]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/emr/service/2009-03-31/emr-2009-03-31.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_emr_containers]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/emr-containers/service/2020-10-01/emr-containers-2020-10-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_emr_serverless]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/emr-serverless/service/2021-07-13/emr-serverless-2021-07-13.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_entityresolution]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/entityresolution/service/2018-05-10/entityresolution-2018-05-10.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_eventbridge]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/eventbridge/service/2015-10-07/eventbridge-2015-10-07.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+          data_source_namespace = "eventbridge"  # UBI-186: real cross-service namespace collision, see config.Provider.DataSourceNamespace's own doc comment
+
+          [dynamic_providers.aws_data_evs]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/evs/service/2023-07-27/evs-2023-07-27.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_finspace]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/finspace/service/2021-03-12/finspace-2021-03-12.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_finspace_data]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/finspace-data/service/2020-07-13/finspace-data-2020-07-13.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_firehose]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/firehose/service/2015-08-04/firehose-2015-08-04.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_fis]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/fis/service/2020-12-01/fis-2020-12-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_fms]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/fms/service/2018-01-01/fms-2018-01-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_forecast]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/forecast/service/2018-06-26/forecast-2018-06-26.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_forecastquery]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/forecastquery/service/2018-06-26/forecastquery-2018-06-26.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_frauddetector]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/frauddetector/service/2019-11-15/frauddetector-2019-11-15.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_freetier]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/freetier/service/2023-09-07/freetier-2023-09-07.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_fsx]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/fsx/service/2018-03-01/fsx-2018-03-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_gamelift]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/gamelift/service/2015-10-01/gamelift-2015-10-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_gameliftstreams]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/gameliftstreams/service/2018-05-10/gameliftstreams-2018-05-10.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_geo_maps]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/geo-maps/service/2020-11-19/geo-maps-2020-11-19.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_geo_places]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/geo-places/service/2020-11-19/geo-places-2020-11-19.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_geo_routes]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/geo-routes/service/2020-11-19/geo-routes-2020-11-19.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_glacier]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/glacier/service/2012-06-01/glacier-2012-06-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_global_accelerator]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/global-accelerator/service/2018-08-08/global-accelerator-2018-08-08.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_glue]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/glue/service/2017-03-31/glue-2017-03-31.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_grafana]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/grafana/service/2020-08-18/grafana-2020-08-18.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_greengrass]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/greengrass/service/2017-06-07/greengrass-2017-06-07.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_greengrassv2]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/greengrassv2/service/2020-11-30/greengrassv2-2020-11-30.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+          data_source_namespace = "greengrassv2"  # UBI-186: real cross-service namespace collision, see config.Provider.DataSourceNamespace's own doc comment
+
+          [dynamic_providers.aws_data_groundstation]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/groundstation/service/2019-05-23/groundstation-2019-05-23.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_guardduty]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/guardduty/service/2017-11-28/guardduty-2017-11-28.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_health]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/health/service/2016-08-04/health-2016-08-04.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_healthlake]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/healthlake/service/2017-07-01/healthlake-2017-07-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_iam]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/iam/service/2010-05-08/iam-2010-05-08.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_identitystore]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/identitystore/service/2020-06-15/identitystore-2020-06-15.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_imagebuilder]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/imagebuilder/service/2019-12-02/imagebuilder-2019-12-02.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_inspector]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/inspector/service/2016-02-16/inspector-2016-02-16.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_inspector_scan]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/inspector-scan/service/2023-08-08/inspector-scan-2023-08-08.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_inspector2]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/inspector2/service/2020-06-08/inspector2-2020-06-08.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_interconnect]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/interconnect/service/2022-07-26/interconnect-2022-07-26.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_internetmonitor]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/internetmonitor/service/2021-06-03/internetmonitor-2021-06-03.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_invoicing]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/invoicing/service/2024-12-01/invoicing-2024-12-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_iot]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/iot/service/2015-05-28/iot-2015-05-28.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_iot_data_plane]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/iot-data-plane/service/2015-05-28/iot-data-plane-2015-05-28.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_iot_jobs_data_plane]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/iot-jobs-data-plane/service/2017-09-29/iot-jobs-data-plane-2017-09-29.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_iot_managed_integrations]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/iot-managed-integrations/service/2025-03-03/iot-managed-integrations-2025-03-03.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_iot_wireless]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/iot-wireless/service/2020-11-22/iot-wireless-2020-11-22.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_iotdeviceadvisor]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/iotdeviceadvisor/service/2020-09-18/iotdeviceadvisor-2020-09-18.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_iotfleetwise]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/iotfleetwise/service/2021-06-17/iotfleetwise-2021-06-17.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_iotsecuretunneling]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/iotsecuretunneling/service/2018-10-05/iotsecuretunneling-2018-10-05.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_iotsitewise]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/iotsitewise/service/2019-12-02/iotsitewise-2019-12-02.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_iotthingsgraph]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/iotthingsgraph/service/2018-09-06/iotthingsgraph-2018-09-06.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_iottwinmaker]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/iottwinmaker/service/2021-11-29/iottwinmaker-2021-11-29.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_ivs]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/ivs/service/2020-07-14/ivs-2020-07-14.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_ivs_realtime]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/ivs-realtime/service/2020-07-14/ivs-realtime-2020-07-14.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_ivschat]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/ivschat/service/2020-07-14/ivschat-2020-07-14.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_kafka]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/kafka/service/2018-11-14/kafka-2018-11-14.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_kafkaconnect]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/kafkaconnect/service/2021-09-14/kafkaconnect-2021-09-14.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_kendra]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/kendra/service/2019-02-03/kendra-2019-02-03.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_kendra_ranking]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/kendra-ranking/service/2022-10-19/kendra-ranking-2022-10-19.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_keyspaces]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/keyspaces/service/2022-02-10/keyspaces-2022-02-10.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_keyspacesstreams]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/keyspacesstreams/service/2024-09-09/keyspacesstreams-2024-09-09.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_kinesis]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/kinesis/service/2013-12-02/kinesis-2013-12-02.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_kinesis_analytics]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/kinesis-analytics/service/2015-08-14/kinesis-analytics-2015-08-14.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_kinesis_analytics_v2]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/kinesis-analytics-v2/service/2018-05-23/kinesis-analytics-v2-2018-05-23.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+          data_source_namespace = "kinesis-analytics-v2"  # UBI-186: real cross-service namespace collision, see config.Provider.DataSourceNamespace's own doc comment
+
+          [dynamic_providers.aws_data_kinesis_video]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/kinesis-video/service/2017-09-30/kinesis-video-2017-09-30.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_kinesis_video_archived_media]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/kinesis-video-archived-media/service/2017-09-30/kinesis-video-archived-media-2017-09-30.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_kinesis_video_media]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/kinesis-video-media/service/2017-09-30/kinesis-video-media-2017-09-30.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_kinesis_video_signaling]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/kinesis-video-signaling/service/2019-12-04/kinesis-video-signaling-2019-12-04.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_kinesis_video_webrtc_storage]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/kinesis-video-webrtc-storage/service/2018-05-10/kinesis-video-webrtc-storage-2018-05-10.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_kms]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/kms/service/2014-11-01/kms-2014-11-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_lakeformation]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/lakeformation/service/2017-03-31/lakeformation-2017-03-31.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_lambda]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/lambda/service/2015-03-31/lambda-2015-03-31.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_lambda_core]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/lambda-core/service/2026-04-30/lambda-core-2026-04-30.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_lambda_microvms]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/lambda-microvms/service/2025-09-09/lambda-microvms-2025-09-09.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+          data_source_namespace = "lambda-microvms"  # UBI-186: real cross-service namespace collision, see config.Provider.DataSourceNamespace's own doc comment
+
+          [dynamic_providers.aws_data_launch_wizard]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/launch-wizard/service/2018-05-10/launch-wizard-2018-05-10.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_lex_model_building_service]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/lex-model-building-service/service/2017-04-19/lex-model-building-service-2017-04-19.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_lex_models_v2]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/lex-models-v2/service/2020-08-07/lex-models-v2-2020-08-07.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_lex_runtime_service]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/lex-runtime-service/service/2016-11-28/lex-runtime-service-2016-11-28.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_lex_runtime_v2]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/lex-runtime-v2/service/2020-08-07/lex-runtime-v2-2020-08-07.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_license_manager]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/license-manager/service/2018-08-01/license-manager-2018-08-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_license_manager_linux_subscriptions]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/license-manager-linux-subscriptions/service/2018-05-10/license-manager-linux-subscriptions-2018-05-10.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_license_manager_user_subscriptions]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/license-manager-user-subscriptions/service/2018-05-10/license-manager-user-subscriptions-2018-05-10.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_lightsail]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/lightsail/service/2016-11-28/lightsail-2016-11-28.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_location]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/location/service/2020-11-19/location-2020-11-19.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_lookoutequipment]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/lookoutequipment/service/2020-12-15/lookoutequipment-2020-12-15.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_m2]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/m2/service/2021-04-28/m2-2021-04-28.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_machine_learning]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/machine-learning/service/2014-12-12/machine-learning-2014-12-12.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_macie2]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/macie2/service/2020-01-01/macie2-2020-01-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_mailmanager]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/mailmanager/service/2023-10-17/mailmanager-2023-10-17.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_managedblockchain]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/managedblockchain/service/2018-09-24/managedblockchain-2018-09-24.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_managedblockchain_query]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/managedblockchain-query/service/2023-05-04/managedblockchain-query-2023-05-04.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_marketplace_agreement]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/marketplace-agreement/service/2020-03-01/marketplace-agreement-2020-03-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_marketplace_catalog]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/marketplace-catalog/service/2018-09-17/marketplace-catalog-2018-09-17.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_marketplace_commerce_analytics]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/marketplace-commerce-analytics/service/2015-07-01/marketplace-commerce-analytics-2015-07-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_marketplace_deployment]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/marketplace-deployment/service/2023-01-25/marketplace-deployment-2023-01-25.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_marketplace_discovery]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/marketplace-discovery/service/2026-02-05/marketplace-discovery-2026-02-05.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_marketplace_entitlement_service]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/marketplace-entitlement-service/service/2017-01-11/marketplace-entitlement-service-2017-01-11.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_marketplace_metering]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/marketplace-metering/service/2016-01-14/marketplace-metering-2016-01-14.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_marketplace_reporting]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/marketplace-reporting/service/2018-05-10/marketplace-reporting-2018-05-10.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_mediaconnect]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/mediaconnect/service/2018-11-14/mediaconnect-2018-11-14.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_mediaconvert]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/mediaconvert/service/2017-08-29/mediaconvert-2017-08-29.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_medialive]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/medialive/service/2017-10-14/medialive-2017-10-14.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_mediapackage]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/mediapackage/service/2017-10-12/mediapackage-2017-10-12.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_mediapackage_vod]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/mediapackage-vod/service/2018-11-07/mediapackage-vod-2018-11-07.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_mediapackagev2]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/mediapackagev2/service/2022-12-25/mediapackagev2-2022-12-25.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_mediastore]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/mediastore/service/2017-09-01/mediastore-2017-09-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_mediastore_data]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/mediastore-data/service/2017-09-01/mediastore-data-2017-09-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_mediatailor]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/mediatailor/service/2018-04-23/mediatailor-2018-04-23.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_medical_imaging]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/medical-imaging/service/2023-07-19/medical-imaging-2023-07-19.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_memorydb]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/memorydb/service/2021-01-01/memorydb-2021-01-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_mgn]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/mgn/service/2020-02-26/mgn-2020-02-26.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_migration_hub]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/migration-hub/service/2017-05-31/migration-hub-2017-05-31.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_migration_hub_refactor_spaces]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/migration-hub-refactor-spaces/service/2021-10-26/migration-hub-refactor-spaces-2021-10-26.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_migrationhub_config]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/migrationhub-config/service/2019-06-30/migrationhub-config-2019-06-30.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_migrationhuborchestrator]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/migrationhuborchestrator/service/2021-08-28/migrationhuborchestrator-2021-08-28.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_migrationhubstrategy]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/migrationhubstrategy/service/2020-02-19/migrationhubstrategy-2020-02-19.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_mpa]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/mpa/service/2022-07-26/mpa-2022-07-26.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_mq]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/mq/service/2017-11-27/mq-2017-11-27.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_mturk]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/mturk/service/2017-01-17/mturk-2017-01-17.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_mwaa]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/mwaa/service/2020-07-01/mwaa-2020-07-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_mwaa_serverless]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/mwaa-serverless/service/2024-07-26/mwaa-serverless-2024-07-26.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_neptune]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/neptune/service/2014-10-31/neptune-2014-10-31.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+          data_source_namespace = "neptune"  # UBI-186: real cross-service namespace collision, see config.Provider.DataSourceNamespace's own doc comment
+
+          [dynamic_providers.aws_data_neptune_graph]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/neptune-graph/service/2023-11-29/neptune-graph-2023-11-29.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_neptunedata]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/neptunedata/service/2023-08-01/neptunedata-2023-08-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_network_firewall]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/network-firewall/service/2020-11-12/network-firewall-2020-11-12.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_networkflowmonitor]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/networkflowmonitor/service/2023-04-19/networkflowmonitor-2023-04-19.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_networkmanager]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/networkmanager/service/2019-07-05/networkmanager-2019-07-05.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_networkmonitor]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/networkmonitor/service/2023-08-01/networkmonitor-2023-08-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_notifications]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/notifications/service/2018-05-10/notifications-2018-05-10.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_notificationscontacts]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/notificationscontacts/service/2018-05-10/notificationscontacts-2018-05-10.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_nova_act]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/nova-act/service/2025-08-22/nova-act-2025-08-22.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_oam]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/oam/service/2022-06-10/oam-2022-06-10.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_observabilityadmin]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/observabilityadmin/service/2018-05-10/observabilityadmin-2018-05-10.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_odb]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/odb/service/2024-08-20/odb-2024-08-20.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_omics]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/omics/service/2022-11-28/omics-2022-11-28.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_opensearch]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/opensearch/service/2021-01-01/opensearch-2021-01-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+          data_source_namespace = "opensearch"  # UBI-186: real cross-service namespace collision, see config.Provider.DataSourceNamespace's own doc comment
+
+          [dynamic_providers.aws_data_opensearchserverless]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/opensearchserverless/service/2021-11-01/opensearchserverless-2021-11-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_organizations]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/organizations/service/2016-11-28/organizations-2016-11-28.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_osis]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/osis/service/2022-01-01/osis-2022-01-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_outposts]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/outposts/service/2019-12-03/outposts-2019-12-03.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_partnercentral_account]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/partnercentral-account/service/2025-04-04/partnercentral-account-2025-04-04.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_partnercentral_benefits]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/partnercentral-benefits/service/2018-05-10/partnercentral-benefits-2018-05-10.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_partnercentral_channel]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/partnercentral-channel/service/2024-03-18/partnercentral-channel-2024-03-18.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_partnercentral_selling]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/partnercentral-selling/service/2022-07-26/partnercentral-selling-2022-07-26.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_payment_cryptography]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/payment-cryptography/service/2021-09-14/payment-cryptography-2021-09-14.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_payment_cryptography_data]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/payment-cryptography-data/service/2022-02-03/payment-cryptography-data-2022-02-03.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_pca_connector_ad]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/pca-connector-ad/service/2018-05-10/pca-connector-ad-2018-05-10.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_pca_connector_scep]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/pca-connector-scep/service/2018-05-10/pca-connector-scep-2018-05-10.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_pcs]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/pcs/service/2023-02-10/pcs-2023-02-10.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_personalize]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/personalize/service/2018-05-22/personalize-2018-05-22.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_personalize_events]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/personalize-events/service/2018-03-22/personalize-events-2018-03-22.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_personalize_runtime]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/personalize-runtime/service/2018-05-22/personalize-runtime-2018-05-22.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_pi]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/pi/service/2018-02-27/pi-2018-02-27.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_pinpoint]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/pinpoint/service/2016-12-01/pinpoint-2016-12-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_pinpoint_email]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/pinpoint-email/service/2018-07-26/pinpoint-email-2018-07-26.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+          data_source_namespace = "pinpoint-email"  # UBI-186: real cross-service namespace collision, see config.Provider.DataSourceNamespace's own doc comment
+
+          [dynamic_providers.aws_data_pinpoint_sms_voice]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/pinpoint-sms-voice/service/2018-09-05/pinpoint-sms-voice-2018-09-05.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_pinpoint_sms_voice_v2]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/pinpoint-sms-voice-v2/service/2022-03-31/pinpoint-sms-voice-v2-2022-03-31.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_pipes]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/pipes/service/2015-10-07/pipes-2015-10-07.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_polly]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/polly/service/2016-06-10/polly-2016-06-10.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_pricing]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/pricing/service/2017-10-15/pricing-2017-10-15.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_pricing_plan_manager]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/pricing-plan-manager/service/2025-08-05/pricing-plan-manager-2025-08-05.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_proton]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/proton/service/2020-07-20/proton-2020-07-20.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_qapps]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/qapps/service/2023-11-27/qapps-2023-11-27.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_qbusiness]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/qbusiness/service/2023-11-27/qbusiness-2023-11-27.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_qconnect]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/qconnect/service/2020-10-19/qconnect-2020-10-19.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+          data_source_namespace = "qconnect"  # UBI-186: real cross-service namespace collision, see config.Provider.DataSourceNamespace's own doc comment
+
+          [dynamic_providers.aws_data_quicksight]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/quicksight/service/2018-04-01/quicksight-2018-04-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_ram]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/ram/service/2018-01-04/ram-2018-01-04.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_rbin]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/rbin/service/2021-06-15/rbin-2021-06-15.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_rds]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/rds/service/2014-10-31/rds-2014-10-31.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_rds_data]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/rds-data/service/2018-08-01/rds-data-2018-08-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_redshift]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/redshift/service/2012-12-01/redshift-2012-12-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_redshift_data]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/redshift-data/service/2019-12-20/redshift-data-2019-12-20.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_redshift_serverless]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/redshift-serverless/service/2021-04-21/redshift-serverless-2021-04-21.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_rekognition]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/rekognition/service/2016-06-27/rekognition-2016-06-27.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_repostspace]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/repostspace/service/2022-05-13/repostspace-2022-05-13.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_resiliencehub]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/resiliencehub/service/2020-04-30/resiliencehub-2020-04-30.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_resiliencehubv2]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/resiliencehubv2/service/2026-02-17/resiliencehubv2-2026-02-17.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+          data_source_namespace = "resiliencehubv2"  # UBI-186: real cross-service namespace collision, see config.Provider.DataSourceNamespace's own doc comment
+
+          [dynamic_providers.aws_data_resource_explorer_2]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/resource-explorer-2/service/2022-07-28/resource-explorer-2-2022-07-28.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_resource_groups]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/resource-groups/service/2017-11-27/resource-groups-2017-11-27.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_resource_groups_tagging_api]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/resource-groups-tagging-api/service/2017-01-26/resource-groups-tagging-api-2017-01-26.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_rolesanywhere]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/rolesanywhere/service/2018-05-10/rolesanywhere-2018-05-10.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_route_53]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/route-53/service/2013-04-01/route-53-2013-04-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_route_53_domains]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/route-53-domains/service/2014-05-15/route-53-domains-2014-05-15.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_route53_recovery_cluster]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/route53-recovery-cluster/service/2019-12-02/route53-recovery-cluster-2019-12-02.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_route53_recovery_control_config]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/route53-recovery-control-config/service/2020-11-02/route53-recovery-control-config-2020-11-02.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_route53_recovery_readiness]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/route53-recovery-readiness/service/2019-12-02/route53-recovery-readiness-2019-12-02.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_route53globalresolver]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/route53globalresolver/service/2022-09-27/route53globalresolver-2022-09-27.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_route53profiles]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/route53profiles/service/2018-05-10/route53profiles-2018-05-10.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_route53resolver]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/route53resolver/service/2018-04-01/route53resolver-2018-04-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_rtbfabric]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/rtbfabric/service/2023-05-15/rtbfabric-2023-05-15.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_rum]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/rum/service/2018-05-10/rum-2018-05-10.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_s3]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/s3/service/2006-03-01/s3-2006-03-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_s3_control]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/s3-control/service/2018-08-20/s3-control-2018-08-20.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_s3files]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/s3files/service/2025-05-05/s3files-2025-05-05.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_s3outposts]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/s3outposts/service/2017-07-25/s3outposts-2017-07-25.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_s3tables]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/s3tables/service/2018-05-10/s3tables-2018-05-10.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_s3vectors]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/s3vectors/service/2025-07-15/s3vectors-2025-07-15.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_sagemaker]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/sagemaker/service/2017-07-24/sagemaker-2017-07-24.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_sagemaker_a2i_runtime]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/sagemaker-a2i-runtime/service/2019-11-07/sagemaker-a2i-runtime-2019-11-07.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_sagemaker_edge]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/sagemaker-edge/service/2020-09-23/sagemaker-edge-2020-09-23.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_sagemaker_featurestore_runtime]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/sagemaker-featurestore-runtime/service/2020-07-01/sagemaker-featurestore-runtime-2020-07-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_sagemaker_geospatial]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/sagemaker-geospatial/service/2020-05-27/sagemaker-geospatial-2020-05-27.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_sagemaker_metrics]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/sagemaker-metrics/service/2022-09-30/sagemaker-metrics-2022-09-30.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_sagemaker_runtime]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/sagemaker-runtime/service/2017-05-13/sagemaker-runtime-2017-05-13.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_sagemaker_runtime_http2]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/sagemaker-runtime-http2/service/2025-10-01/sagemaker-runtime-http2-2025-10-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_sagemakerjobruntime]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/sagemakerjobruntime/service/2026-02-01/sagemakerjobruntime-2026-02-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_savingsplans]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/savingsplans/service/2019-06-28/savingsplans-2019-06-28.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_scheduler]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/scheduler/service/2021-06-30/scheduler-2021-06-30.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_schemas]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/schemas/service/2019-12-02/schemas-2019-12-02.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_secrets_manager]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/secrets-manager/service/2017-10-17/secrets-manager-2017-10-17.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_security_ir]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/security-ir/service/2018-05-10/security-ir-2018-05-10.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_securityagent]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/securityagent/service/2025-09-06/securityagent-2025-09-06.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_securityhub]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/securityhub/service/2018-10-26/securityhub-2018-10-26.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_securitylake]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/securitylake/service/2018-05-10/securitylake-2018-05-10.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_serverlessapplicationrepository]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/serverlessapplicationrepository/service/2017-09-08/serverlessapplicationrepository-2017-09-08.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_service_catalog]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/service-catalog/service/2015-12-10/service-catalog-2015-12-10.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_service_catalog_appregistry]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/service-catalog-appregistry/service/2020-06-24/service-catalog-appregistry-2020-06-24.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_service_quotas]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/service-quotas/service/2019-06-24/service-quotas-2019-06-24.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_servicediscovery]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/servicediscovery/service/2017-03-14/servicediscovery-2017-03-14.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_ses]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/ses/service/2010-12-01/ses-2010-12-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_sesv2]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/sesv2/service/2019-09-27/sesv2-2019-09-27.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+          data_source_namespace = "sesv2"  # UBI-186: real cross-service namespace collision, see config.Provider.DataSourceNamespace's own doc comment
+
+          [dynamic_providers.aws_data_sfn]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/sfn/service/2016-11-23/sfn-2016-11-23.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_shield]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/shield/service/2016-06-02/shield-2016-06-02.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_signer]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/signer/service/2017-08-25/signer-2017-08-25.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_signer_data]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/signer-data/service/2017-08-25/signer-data-2017-08-25.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_signin]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/signin/service/2023-01-01/signin-2023-01-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_simpledbv2]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/simpledbv2/service/2025-09-26/simpledbv2-2025-09-26.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_snow_device_management]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/snow-device-management/service/2021-08-04/snow-device-management-2021-08-04.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_snowball]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/snowball/service/2016-06-30/snowball-2016-06-30.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_sns]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/sns/service/2010-03-31/sns-2010-03-31.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_socialmessaging]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/socialmessaging/service/2024-01-01/socialmessaging-2024-01-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_sqs]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/sqs/service/2012-11-05/sqs-2012-11-05.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_ssm]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/ssm/service/2014-11-06/ssm-2014-11-06.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_ssm_contacts]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/ssm-contacts/service/2021-05-03/ssm-contacts-2021-05-03.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_ssm_guiconnect]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/ssm-guiconnect/service/2021-05-01/ssm-guiconnect-2021-05-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_ssm_incidents]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/ssm-incidents/service/2018-05-10/ssm-incidents-2018-05-10.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_ssm_quicksetup]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/ssm-quicksetup/service/2018-05-10/ssm-quicksetup-2018-05-10.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_ssm_sap]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/ssm-sap/service/2018-05-10/ssm-sap-2018-05-10.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_sso]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/sso/service/2019-06-10/sso-2019-06-10.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_sso_admin]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/sso-admin/service/2020-07-20/sso-admin-2020-07-20.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_sso_oidc]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/sso-oidc/service/2019-06-10/sso-oidc-2019-06-10.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_storage_gateway]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/storage-gateway/service/2013-06-30/storage-gateway-2013-06-30.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_sts]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/sts/service/2011-06-15/sts-2011-06-15.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_supplychain]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/supplychain/service/2024-01-01/supplychain-2024-01-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_support]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/support/service/2013-04-15/support-2013-04-15.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_support_app]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/support-app/service/2021-08-20/support-app-2021-08-20.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_supportauthz]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/supportauthz/service/2026-06-30/supportauthz-2026-06-30.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_sustainability]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/sustainability/service/2018-05-10/sustainability-2018-05-10.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_swf]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/swf/service/2012-01-25/swf-2012-01-25.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_synthetics]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/synthetics/service/2017-10-11/synthetics-2017-10-11.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_taxsettings]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/taxsettings/service/2018-05-10/taxsettings-2018-05-10.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_textract]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/textract/service/2018-06-27/textract-2018-06-27.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_timestream_influxdb]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/timestream-influxdb/service/2023-01-27/timestream-influxdb-2023-01-27.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_timestream_query]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/timestream-query/service/2018-11-01/timestream-query-2018-11-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_timestream_write]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/timestream-write/service/2018-11-01/timestream-write-2018-11-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_tnb]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/tnb/service/2008-10-21/tnb-2008-10-21.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_transcribe]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/transcribe/service/2017-10-26/transcribe-2017-10-26.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_transcribe_streaming]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/transcribe-streaming/service/2017-10-26/transcribe-streaming-2017-10-26.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_transfer]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/transfer/service/2018-11-05/transfer-2018-11-05.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_translate]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/translate/service/2017-07-01/translate-2017-07-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_trustedadvisor]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/trustedadvisor/service/2022-09-15/trustedadvisor-2022-09-15.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_uxc]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/uxc/service/2024-07-01/uxc-2024-07-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_verifiedpermissions]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/verifiedpermissions/service/2021-12-01/verifiedpermissions-2021-12-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_voice_id]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/voice-id/service/2021-09-27/voice-id-2021-09-27.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_vpc_lattice]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/vpc-lattice/service/2022-11-30/vpc-lattice-2022-11-30.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_waf]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/waf/service/2015-08-24/waf-2015-08-24.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_waf_regional]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/waf-regional/service/2016-11-28/waf-regional-2016-11-28.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_wafv2]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/wafv2/service/2019-07-29/wafv2-2019-07-29.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_wellarchitected]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/wellarchitected/service/2020-03-31/wellarchitected-2020-03-31.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_wickr]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/wickr/service/2024-02-01/wickr-2024-02-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_wisdom]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/wisdom/service/2020-10-19/wisdom-2020-10-19.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_workdocs]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/workdocs/service/2016-05-01/workdocs-2016-05-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_workmail]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/workmail/service/2017-10-01/workmail-2017-10-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_workmailmessageflow]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/workmailmessageflow/service/2019-05-01/workmailmessageflow-2019-05-01.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_workspaces]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/workspaces/service/2015-04-08/workspaces-2015-04-08.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_workspaces_instances]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/workspaces-instances/service/2022-07-26/workspaces-instances-2022-07-26.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_workspaces_thin_client]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/workspaces-thin-client/service/2023-08-22/workspaces-thin-client-2023-08-22.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_workspaces_web]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/workspaces-web/service/2020-07-08/workspaces-web-2020-07-08.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+
+          [dynamic_providers.aws_data_xray]
+          schema_source = "smithy"
+          schema_url = "https://raw.githubusercontent.com/aws/api-models-aws/main/models/xray/service/2016-04-12/xray-2016-04-12.json"
+          base_url = "https://aws.example.invalid"
+          wire_name = "aws"
+          data_sources = true
+          EOF
+
+          # AWS's own real CloudFormation+Smithy mix (UBI-193): a single
+          # --generate-snapshot-group call generates every real member
+          # regardless of its own schema_source (GenerateCloudFormationMember
+          # for "aws", GenerateSmithyMember for every "aws_data_*" entry,
+          # dispatched per member by ubx-provider-dynamic's own
+          # runGenerateSnapshotGroup) and assembles all 430 into one real
+          # group container -- serving the mixed result is what needed new
+          # code (internal/mixedserver), not generating it.
+          rm -rf "${{ runner.temp }}/new-group"
+          ( cd "${{ runner.temp }}/gen" && \
+            "${{ runner.temp }}/ubx-provider-dynamic" \
+              --generate-snapshot-group="${{ runner.temp }}/new-group" \
+              --group-repo-name=aws \
+              --group-members=aws,aws_data_accessanalyzer,aws_data_account,aws_data_account_access,aws_data_acm,aws_data_acm_pca,aws_data_agent_registry,aws_data_agent_registry_control,aws_data_aiops,aws_data_amp,aws_data_amplify,aws_data_amplifybackend,aws_data_amplifyuibuilder,aws_data_api_gateway,aws_data_apigatewaymanagementapi,aws_data_apigatewayv2,aws_data_app_mesh,aws_data_appconfig,aws_data_appconfigdata,aws_data_appfabric,aws_data_appflow,aws_data_appintegrations,aws_data_application_auto_scaling,aws_data_application_discovery_service,aws_data_application_insights,aws_data_application_signals,aws_data_applicationcostprofiler,aws_data_apprunner,aws_data_appstream,aws_data_appsync,aws_data_arc_region_switch,aws_data_arc_zonal_shift,aws_data_artifact,aws_data_athena,aws_data_auditmanager,aws_data_auto_scaling,aws_data_auto_scaling_plans,aws_data_b2bi,aws_data_backup,aws_data_backup_gateway,aws_data_backupsearch,aws_data_batch,aws_data_bcm_dashboards,aws_data_bcm_data_exports,aws_data_bcm_pricing_calculator,aws_data_bcm_recommended_actions,aws_data_bedrock,aws_data_bedrock_agent,aws_data_bedrock_agent_runtime,aws_data_bedrock_agentcore,aws_data_bedrock_agentcore_control,aws_data_bedrock_data_automation,aws_data_bedrock_data_automation_runtime,aws_data_bedrock_runtime,aws_data_billing,aws_data_billingconductor,aws_data_braket,aws_data_budgets,aws_data_chatbot,aws_data_chime,aws_data_chime_sdk_identity,aws_data_chime_sdk_media_pipelines,aws_data_chime_sdk_meetings,aws_data_chime_sdk_messaging,aws_data_chime_sdk_voice,aws_data_cleanrooms,aws_data_cleanroomsml,aws_data_cloud9,aws_data_cloudcontrol,aws_data_clouddirectory,aws_data_cloudformation,aws_data_cloudfront,aws_data_cloudfront_keyvaluestore,aws_data_cloudhsm,aws_data_cloudhsm_v2,aws_data_cloudsearch,aws_data_cloudsearch_domain,aws_data_cloudtrail,aws_data_cloudtrail_data,aws_data_cloudwatch,aws_data_cloudwatch_events,aws_data_cloudwatch_logs,aws_data_codeartifact,aws_data_codebuild,aws_data_codecatalyst,aws_data_codecommit,aws_data_codeconnections,aws_data_codedeploy,aws_data_codeguru_reviewer,aws_data_codeguru_security,aws_data_codeguruprofiler,aws_data_codepipeline,aws_data_codestar_connections,aws_data_codestar_notifications,aws_data_cognito_identity,aws_data_cognito_identity_provider,aws_data_cognito_sync,aws_data_comprehend,aws_data_comprehendmedical,aws_data_compute_optimizer,aws_data_compute_optimizer_automation,aws_data_config_service,aws_data_connect,aws_data_connect_contact_lens,aws_data_connectcampaigns,aws_data_connectcampaignsv2,aws_data_connectcases,aws_data_connecthealth,aws_data_connectparticipant,aws_data_controlcatalog,aws_data_controltower,aws_data_cost_and_usage_report_service,aws_data_cost_explorer,aws_data_cost_optimization_hub,aws_data_customer_profiles,aws_data_data_pipeline,aws_data_database_migration_service,aws_data_databrew,aws_data_dataexchange,aws_data_datasync,aws_data_datazone,aws_data_dax,aws_data_deadline,aws_data_detective,aws_data_device_farm,aws_data_devops_agent,aws_data_devops_guru,aws_data_direct_connect,aws_data_directory_service,aws_data_directory_service_data,aws_data_dlm,aws_data_docdb,aws_data_docdb_elastic,aws_data_drs,aws_data_dsql,aws_data_dynamodb,aws_data_dynamodb_streams,aws_data_ebs,aws_data_ec2,aws_data_ec2_instance_connect,aws_data_ecr,aws_data_ecr_public,aws_data_ecs,aws_data_efs,aws_data_eks,aws_data_eks_auth,aws_data_elastic_beanstalk,aws_data_elastic_load_balancing,aws_data_elastic_load_balancing_v2,aws_data_elasticache,aws_data_elasticsearch_service,aws_data_elementalinference,aws_data_emr,aws_data_emr_containers,aws_data_emr_serverless,aws_data_entityresolution,aws_data_eventbridge,aws_data_evs,aws_data_finspace,aws_data_finspace_data,aws_data_firehose,aws_data_fis,aws_data_fms,aws_data_forecast,aws_data_forecastquery,aws_data_frauddetector,aws_data_freetier,aws_data_fsx,aws_data_gamelift,aws_data_gameliftstreams,aws_data_geo_maps,aws_data_geo_places,aws_data_geo_routes,aws_data_glacier,aws_data_global_accelerator,aws_data_glue,aws_data_grafana,aws_data_greengrass,aws_data_greengrassv2,aws_data_groundstation,aws_data_guardduty,aws_data_health,aws_data_healthlake,aws_data_iam,aws_data_identitystore,aws_data_imagebuilder,aws_data_inspector,aws_data_inspector_scan,aws_data_inspector2,aws_data_interconnect,aws_data_internetmonitor,aws_data_invoicing,aws_data_iot,aws_data_iot_data_plane,aws_data_iot_jobs_data_plane,aws_data_iot_managed_integrations,aws_data_iot_wireless,aws_data_iotdeviceadvisor,aws_data_iotfleetwise,aws_data_iotsecuretunneling,aws_data_iotsitewise,aws_data_iotthingsgraph,aws_data_iottwinmaker,aws_data_ivs,aws_data_ivs_realtime,aws_data_ivschat,aws_data_kafka,aws_data_kafkaconnect,aws_data_kendra,aws_data_kendra_ranking,aws_data_keyspaces,aws_data_keyspacesstreams,aws_data_kinesis,aws_data_kinesis_analytics,aws_data_kinesis_analytics_v2,aws_data_kinesis_video,aws_data_kinesis_video_archived_media,aws_data_kinesis_video_media,aws_data_kinesis_video_signaling,aws_data_kinesis_video_webrtc_storage,aws_data_kms,aws_data_lakeformation,aws_data_lambda,aws_data_lambda_core,aws_data_lambda_microvms,aws_data_launch_wizard,aws_data_lex_model_building_service,aws_data_lex_models_v2,aws_data_lex_runtime_service,aws_data_lex_runtime_v2,aws_data_license_manager,aws_data_license_manager_linux_subscriptions,aws_data_license_manager_user_subscriptions,aws_data_lightsail,aws_data_location,aws_data_lookoutequipment,aws_data_m2,aws_data_machine_learning,aws_data_macie2,aws_data_mailmanager,aws_data_managedblockchain,aws_data_managedblockchain_query,aws_data_marketplace_agreement,aws_data_marketplace_catalog,aws_data_marketplace_commerce_analytics,aws_data_marketplace_deployment,aws_data_marketplace_discovery,aws_data_marketplace_entitlement_service,aws_data_marketplace_metering,aws_data_marketplace_reporting,aws_data_mediaconnect,aws_data_mediaconvert,aws_data_medialive,aws_data_mediapackage,aws_data_mediapackage_vod,aws_data_mediapackagev2,aws_data_mediastore,aws_data_mediastore_data,aws_data_mediatailor,aws_data_medical_imaging,aws_data_memorydb,aws_data_mgn,aws_data_migration_hub,aws_data_migration_hub_refactor_spaces,aws_data_migrationhub_config,aws_data_migrationhuborchestrator,aws_data_migrationhubstrategy,aws_data_mpa,aws_data_mq,aws_data_mturk,aws_data_mwaa,aws_data_mwaa_serverless,aws_data_neptune,aws_data_neptune_graph,aws_data_neptunedata,aws_data_network_firewall,aws_data_networkflowmonitor,aws_data_networkmanager,aws_data_networkmonitor,aws_data_notifications,aws_data_notificationscontacts,aws_data_nova_act,aws_data_oam,aws_data_observabilityadmin,aws_data_odb,aws_data_omics,aws_data_opensearch,aws_data_opensearchserverless,aws_data_organizations,aws_data_osis,aws_data_outposts,aws_data_partnercentral_account,aws_data_partnercentral_benefits,aws_data_partnercentral_channel,aws_data_partnercentral_selling,aws_data_payment_cryptography,aws_data_payment_cryptography_data,aws_data_pca_connector_ad,aws_data_pca_connector_scep,aws_data_pcs,aws_data_personalize,aws_data_personalize_events,aws_data_personalize_runtime,aws_data_pi,aws_data_pinpoint,aws_data_pinpoint_email,aws_data_pinpoint_sms_voice,aws_data_pinpoint_sms_voice_v2,aws_data_pipes,aws_data_polly,aws_data_pricing,aws_data_pricing_plan_manager,aws_data_proton,aws_data_qapps,aws_data_qbusiness,aws_data_qconnect,aws_data_quicksight,aws_data_ram,aws_data_rbin,aws_data_rds,aws_data_rds_data,aws_data_redshift,aws_data_redshift_data,aws_data_redshift_serverless,aws_data_rekognition,aws_data_repostspace,aws_data_resiliencehub,aws_data_resiliencehubv2,aws_data_resource_explorer_2,aws_data_resource_groups,aws_data_resource_groups_tagging_api,aws_data_rolesanywhere,aws_data_route_53,aws_data_route_53_domains,aws_data_route53_recovery_cluster,aws_data_route53_recovery_control_config,aws_data_route53_recovery_readiness,aws_data_route53globalresolver,aws_data_route53profiles,aws_data_route53resolver,aws_data_rtbfabric,aws_data_rum,aws_data_s3,aws_data_s3_control,aws_data_s3files,aws_data_s3outposts,aws_data_s3tables,aws_data_s3vectors,aws_data_sagemaker,aws_data_sagemaker_a2i_runtime,aws_data_sagemaker_edge,aws_data_sagemaker_featurestore_runtime,aws_data_sagemaker_geospatial,aws_data_sagemaker_metrics,aws_data_sagemaker_runtime,aws_data_sagemaker_runtime_http2,aws_data_sagemakerjobruntime,aws_data_savingsplans,aws_data_scheduler,aws_data_schemas,aws_data_secrets_manager,aws_data_security_ir,aws_data_securityagent,aws_data_securityhub,aws_data_securitylake,aws_data_serverlessapplicationrepository,aws_data_service_catalog,aws_data_service_catalog_appregistry,aws_data_service_quotas,aws_data_servicediscovery,aws_data_ses,aws_data_sesv2,aws_data_sfn,aws_data_shield,aws_data_signer,aws_data_signer_data,aws_data_signin,aws_data_simpledbv2,aws_data_snow_device_management,aws_data_snowball,aws_data_sns,aws_data_socialmessaging,aws_data_sqs,aws_data_ssm,aws_data_ssm_contacts,aws_data_ssm_guiconnect,aws_data_ssm_incidents,aws_data_ssm_quicksetup,aws_data_ssm_sap,aws_data_sso,aws_data_sso_admin,aws_data_sso_oidc,aws_data_storage_gateway,aws_data_sts,aws_data_supplychain,aws_data_support,aws_data_support_app,aws_data_supportauthz,aws_data_sustainability,aws_data_swf,aws_data_synthetics,aws_data_taxsettings,aws_data_textract,aws_data_timestream_influxdb,aws_data_timestream_query,aws_data_timestream_write,aws_data_tnb,aws_data_transcribe,aws_data_transcribe_streaming,aws_data_transfer,aws_data_translate,aws_data_trustedadvisor,aws_data_uxc,aws_data_verifiedpermissions,aws_data_voice_id,aws_data_vpc_lattice,aws_data_waf,aws_data_waf_regional,aws_data_wafv2,aws_data_wellarchitected,aws_data_wickr,aws_data_wisdom,aws_data_workdocs,aws_data_workmail,aws_data_workmailmessageflow,aws_data_workspaces,aws_data_workspaces_instances,aws_data_workspaces_thin_client,aws_data_workspaces_web,aws_data_xray \
+              --prev-snapshot="$GITHUB_WORKSPACE" )
+
+          new="$(python3 -c "import json; print(json.load(open('${{ runner.temp }}/new-group/manifest.json'))['version'])")"
+          echo "new=$new" >> "$GITHUB_OUTPUT"
+          if [ "$new" = "${{ steps.before.outputs.current }}" ]; then
+            echo "newer=false" >> "$GITHUB_OUTPUT"
+            echo "Already current at ${{ steps.before.outputs.current }} -- nothing to do."
+          else
+            echo "newer=true" >> "$GITHUB_OUTPUT"
+            echo "Real version change: ${{ steps.before.outputs.current }} -> $new"
+          fi
+
+      - name: Report which real members changed
+        if: steps.gen.outputs.newer == 'true'
+        run: |
+          set -euo pipefail
+          for f in "${{ runner.temp }}"/new-group/members/*.json; do
+            name="$(basename "$f" .json)"
+            if ! diff -q "$f" "members/$name.json" > /dev/null 2>&1; then
+              echo "changed member: $name"
+            fi
+          done
+
+      - name: Open PR
+        if: steps.gen.outputs.newer == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          cp "${{ runner.temp }}/new-group/manifest.json" manifest.json
+          cp "${{ runner.temp }}"/new-group/members/*.json members/
+          git config user.name "ubx-bot"
+          git config user.email "actions@users.noreply.github.com"
+          branch="snapshot-regen/aws-${{ steps.gen.outputs.new }}"
+          git checkout -b "$branch"
+          git add manifest.json members/
+          git commit -m "snapshot: regenerate from AWS's own live CloudFormation registry and Smithy service models, ${{ steps.before.outputs.current }} -> ${{ steps.gen.outputs.new }}"
+          git push origin "$branch" --force
+          gh pr create \
+            --title "snapshot: regenerate from AWS's own live CloudFormation registry and Smithy service models (${{ steps.before.outputs.current }} -> ${{ steps.gen.outputs.new }})" \
+            --body "Automated regeneration (\`.github/workflows/hash-watch.yml\`), triggered by re-running ubx-provider-dynamic's own \`--generate-snapshot-group\` against AWS's own live CloudFormation registry and Smithy service models (every real member, CloudFormation and Smithy sources together) and diffing mechanically against the previously committed group.
+
+          Previous version: \`${{ steps.before.outputs.current }}\`
+          New version: \`${{ steps.gen.outputs.new }}\`
+
+          Only the real, changed members/*.json files are touched -- unaffected members stay byte-identical. Never auto-merges -- review the diff before merging. After merge, dispatch \`publish.yml\` to cut the real GitHub Release." \
+            --base main --head "$branch"

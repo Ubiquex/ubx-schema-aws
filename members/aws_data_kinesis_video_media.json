@@ -1,0 +1,1350 @@
+{
+  "schema_source": "smithy",
+  "mode": "data_source",
+  "auth": {
+    "Type": "",
+    "Params": null
+  },
+  "base_url": "https://aws.example.invalid",
+  "retry": {
+    "MaxAttempts": 0,
+    "InitialBackoff": "",
+    "MaxBackoff": "",
+    "Jitter": null,
+    "RespectRetryAfter": null,
+    "RateLimitResetHeader": ""
+  },
+  "timeouts": {
+    "Create": "",
+    "Read": "",
+    "Update": "",
+    "Delete": "",
+    "Default": ""
+  },
+  "wire_name": "aws",
+  "raw_spec": {
+    "smithy": "2.0",
+    "metadata": {
+      "suppressions": [
+        {
+          "id": "HttpMethodSemantics",
+          "namespace": "*"
+        },
+        {
+          "id": "HttpResponseCodeSemantics",
+          "namespace": "*"
+        },
+        {
+          "id": "PaginatedTrait",
+          "namespace": "*"
+        },
+        {
+          "id": "HttpHeaderTrait",
+          "namespace": "*"
+        },
+        {
+          "id": "HttpUriConflict",
+          "namespace": "*"
+        },
+        {
+          "id": "Service",
+          "namespace": "*"
+        }
+      ]
+    },
+    "shapes": {
+      "com.amazonaws.kinesisvideomedia#AWSAcuityInletService": {
+        "type": "service",
+        "version": "2017-09-30",
+        "operations": [
+          {
+            "target": "com.amazonaws.kinesisvideomedia#GetMedia"
+          }
+        ],
+        "traits": {
+          "aws.api#service": {
+            "sdkId": "Kinesis Video Media",
+            "arnNamespace": "kinesisvideo",
+            "cloudFormationName": "KinesisVideoMedia",
+            "cloudTrailEventSource": "kinesisvideomedia.amazonaws.com",
+            "endpointPrefix": "kinesisvideo"
+          },
+          "aws.auth#sigv4": {
+            "name": "kinesisvideo"
+          },
+          "aws.protocols#restJson1": {},
+          "smithy.api#documentation": "\u003cp\u003e\u003c/p\u003e",
+          "smithy.api#title": "Amazon Kinesis Video Streams Media",
+          "smithy.rules#endpointBdd": {
+            "version": "1.1",
+            "parameters": {
+              "Region": {
+                "builtIn": "AWS::Region",
+                "required": false,
+                "documentation": "The AWS region used to dispatch the request.",
+                "type": "string"
+              },
+              "UseDualStack": {
+                "builtIn": "AWS::UseDualStack",
+                "required": true,
+                "default": false,
+                "documentation": "When true, use the dual-stack endpoint. If the configured endpoint does not support dual-stack, dispatching the request MAY return an error.",
+                "type": "boolean"
+              },
+              "UseFIPS": {
+                "builtIn": "AWS::UseFIPS",
+                "required": true,
+                "default": false,
+                "documentation": "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
+                "type": "boolean"
+              },
+              "Endpoint": {
+                "builtIn": "SDK::Endpoint",
+                "required": false,
+                "documentation": "Override the endpoint used to send this request",
+                "type": "string"
+              }
+            },
+            "conditions": [
+              {
+                "fn": "isSet",
+                "argv": [
+                  {
+                    "ref": "Endpoint"
+                  }
+                ]
+              },
+              {
+                "fn": "isSet",
+                "argv": [
+                  {
+                    "ref": "Region"
+                  }
+                ]
+              },
+              {
+                "fn": "aws.partition",
+                "argv": [
+                  {
+                    "ref": "Region"
+                  }
+                ],
+                "assign": "PartitionResult"
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "ref": "UseFIPS"
+                  },
+                  true
+                ]
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "ref": "UseDualStack"
+                  },
+                  true
+                ]
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "fn": "getAttr",
+                    "argv": [
+                      {
+                        "ref": "PartitionResult"
+                      },
+                      "supportsDualStack"
+                    ]
+                  },
+                  true
+                ]
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "fn": "getAttr",
+                    "argv": [
+                      {
+                        "ref": "PartitionResult"
+                      },
+                      "supportsFIPS"
+                    ]
+                  },
+                  true
+                ]
+              }
+            ],
+            "results": [
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: FIPS and custom endpoint are not supported",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: Dualstack and custom endpoint are not supported",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": {
+                    "ref": "Endpoint"
+                  },
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://kinesisvideo-fips.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "FIPS and DualStack are enabled, but this partition does not support one or both",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://kinesisvideo-fips.{Region}.{PartitionResult#dnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "FIPS is enabled but this partition does not support FIPS",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://kinesisvideo.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "DualStack is enabled but this partition does not support DualStack",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://kinesisvideo.{Region}.{PartitionResult#dnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: Missing Region",
+                "type": "error"
+              }
+            ],
+            "root": 2,
+            "nodeCount": 13,
+            "nodes": "/////wAAAAH/////AAAAAAAAAAwAAAADAAAAAQAAAAQF9eELAAAAAgAAAAUF9eELAAAAAwAAAAgAAAAGAAAABAAAAAcF9eEKAAAABQX14QgF9eEJAAAABAAAAAoAAAAJAAAABgX14QYF9eEHAAAABQAAAAsF9eEFAAAABgX14QQF9eEFAAAAAwX14QEAAAANAAAABAX14QIF9eED"
+          },
+          "smithy.rules#endpointRuleSet": {
+            "version": "1.0",
+            "parameters": {
+              "Region": {
+                "builtIn": "AWS::Region",
+                "required": false,
+                "documentation": "The AWS region used to dispatch the request.",
+                "type": "string"
+              },
+              "UseDualStack": {
+                "builtIn": "AWS::UseDualStack",
+                "required": true,
+                "default": false,
+                "documentation": "When true, use the dual-stack endpoint. If the configured endpoint does not support dual-stack, dispatching the request MAY return an error.",
+                "type": "boolean"
+              },
+              "UseFIPS": {
+                "builtIn": "AWS::UseFIPS",
+                "required": true,
+                "default": false,
+                "documentation": "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
+                "type": "boolean"
+              },
+              "Endpoint": {
+                "builtIn": "SDK::Endpoint",
+                "required": false,
+                "documentation": "Override the endpoint used to send this request",
+                "type": "string"
+              }
+            },
+            "rules": [
+              {
+                "conditions": [
+                  {
+                    "fn": "isSet",
+                    "argv": [
+                      {
+                        "ref": "Endpoint"
+                      }
+                    ]
+                  }
+                ],
+                "rules": [
+                  {
+                    "conditions": [
+                      {
+                        "fn": "booleanEquals",
+                        "argv": [
+                          {
+                            "ref": "UseFIPS"
+                          },
+                          true
+                        ]
+                      }
+                    ],
+                    "error": "Invalid Configuration: FIPS and custom endpoint are not supported",
+                    "type": "error"
+                  },
+                  {
+                    "conditions": [
+                      {
+                        "fn": "booleanEquals",
+                        "argv": [
+                          {
+                            "ref": "UseDualStack"
+                          },
+                          true
+                        ]
+                      }
+                    ],
+                    "error": "Invalid Configuration: Dualstack and custom endpoint are not supported",
+                    "type": "error"
+                  },
+                  {
+                    "conditions": [],
+                    "endpoint": {
+                      "url": {
+                        "ref": "Endpoint"
+                      },
+                      "properties": {},
+                      "headers": {}
+                    },
+                    "type": "endpoint"
+                  }
+                ],
+                "type": "tree"
+              },
+              {
+                "conditions": [
+                  {
+                    "fn": "isSet",
+                    "argv": [
+                      {
+                        "ref": "Region"
+                      }
+                    ]
+                  }
+                ],
+                "rules": [
+                  {
+                    "conditions": [
+                      {
+                        "fn": "aws.partition",
+                        "argv": [
+                          {
+                            "ref": "Region"
+                          }
+                        ],
+                        "assign": "PartitionResult"
+                      }
+                    ],
+                    "rules": [
+                      {
+                        "conditions": [
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseFIPS"
+                              },
+                              true
+                            ]
+                          },
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseDualStack"
+                              },
+                              true
+                            ]
+                          }
+                        ],
+                        "rules": [
+                          {
+                            "conditions": [
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  true,
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsFIPS"
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  true,
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsDualStack"
+                                    ]
+                                  }
+                                ]
+                              }
+                            ],
+                            "rules": [
+                              {
+                                "conditions": [],
+                                "endpoint": {
+                                  "url": "https://kinesisvideo-fips.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                                  "properties": {},
+                                  "headers": {}
+                                },
+                                "type": "endpoint"
+                              }
+                            ],
+                            "type": "tree"
+                          },
+                          {
+                            "conditions": [],
+                            "error": "FIPS and DualStack are enabled, but this partition does not support one or both",
+                            "type": "error"
+                          }
+                        ],
+                        "type": "tree"
+                      },
+                      {
+                        "conditions": [
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseFIPS"
+                              },
+                              true
+                            ]
+                          }
+                        ],
+                        "rules": [
+                          {
+                            "conditions": [
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsFIPS"
+                                    ]
+                                  },
+                                  true
+                                ]
+                              }
+                            ],
+                            "rules": [
+                              {
+                                "conditions": [],
+                                "endpoint": {
+                                  "url": "https://kinesisvideo-fips.{Region}.{PartitionResult#dnsSuffix}",
+                                  "properties": {},
+                                  "headers": {}
+                                },
+                                "type": "endpoint"
+                              }
+                            ],
+                            "type": "tree"
+                          },
+                          {
+                            "conditions": [],
+                            "error": "FIPS is enabled but this partition does not support FIPS",
+                            "type": "error"
+                          }
+                        ],
+                        "type": "tree"
+                      },
+                      {
+                        "conditions": [
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseDualStack"
+                              },
+                              true
+                            ]
+                          }
+                        ],
+                        "rules": [
+                          {
+                            "conditions": [
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  true,
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsDualStack"
+                                    ]
+                                  }
+                                ]
+                              }
+                            ],
+                            "rules": [
+                              {
+                                "conditions": [],
+                                "endpoint": {
+                                  "url": "https://kinesisvideo.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                                  "properties": {},
+                                  "headers": {}
+                                },
+                                "type": "endpoint"
+                              }
+                            ],
+                            "type": "tree"
+                          },
+                          {
+                            "conditions": [],
+                            "error": "DualStack is enabled but this partition does not support DualStack",
+                            "type": "error"
+                          }
+                        ],
+                        "type": "tree"
+                      },
+                      {
+                        "conditions": [],
+                        "endpoint": {
+                          "url": "https://kinesisvideo.{Region}.{PartitionResult#dnsSuffix}",
+                          "properties": {},
+                          "headers": {}
+                        },
+                        "type": "endpoint"
+                      }
+                    ],
+                    "type": "tree"
+                  }
+                ],
+                "type": "tree"
+              },
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: Missing Region",
+                "type": "error"
+              }
+            ]
+          },
+          "smithy.rules#endpointTests": {
+            "testCases": [
+              {
+                "documentation": "For region af-south-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo.af-south-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "af-south-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region ap-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo.ap-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ap-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region ap-northeast-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo.ap-northeast-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ap-northeast-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region ap-northeast-2 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo.ap-northeast-2.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ap-northeast-2",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region ap-south-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo.ap-south-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ap-south-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region ap-southeast-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo.ap-southeast-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ap-southeast-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region ap-southeast-2 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo.ap-southeast-2.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ap-southeast-2",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region ca-central-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo.ca-central-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ca-central-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region eu-central-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo.eu-central-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "eu-central-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region eu-west-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo.eu-west-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "eu-west-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region eu-west-2 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo.eu-west-2.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "eu-west-2",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region eu-west-3 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo.eu-west-3.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "eu-west-3",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region sa-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo.sa-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "sa-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo.us-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-east-2 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo.us-east-2.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-2",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-west-2 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo.us-west-2.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-west-2",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo-fips.us-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo-fips.us-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo.us-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo-fips.cn-north-1.api.amazonwebservices.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": true,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo-fips.cn-north-1.amazonaws.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo.cn-north-1.api.amazonwebservices.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo.cn-north-1.amazonaws.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo-fips.us-gov-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo-fips.us-gov-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo.us-gov-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo.us-gov-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-iso-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo-fips.us-iso-east-1.c2s.ic.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-iso-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-iso-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo.us-iso-east-1.c2s.ic.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-iso-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-isob-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo-fips.us-isob-east-1.sc2s.sgov.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-isob-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-isob-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo.us-isob-east-1.sc2s.sgov.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-isob-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For custom endpoint with region set and fips disabled and dualstack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://example.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "For custom endpoint with region not set and fips disabled and dualstack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://example.com"
+                  }
+                },
+                "params": {
+                  "UseFIPS": false,
+                  "UseDualStack": false,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "For custom endpoint with fips enabled and dualstack disabled",
+                "expect": {
+                  "error": "Invalid Configuration: FIPS and custom endpoint are not supported"
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "For custom endpoint with fips disabled and dualstack enabled",
+                "expect": {
+                  "error": "Invalid Configuration: Dualstack and custom endpoint are not supported"
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "Missing region",
+                "expect": {
+                  "error": "Invalid Configuration: Missing Region"
+                }
+              }
+            ],
+            "version": "1.0"
+          }
+        }
+      },
+      "com.amazonaws.kinesisvideomedia#ClientLimitExceededException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.kinesisvideomedia#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eKinesis Video Streams has throttled the request because you have exceeded the limit of\n      allowed client calls. Try making the call later.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.kinesisvideomedia#ConnectionLimitExceededException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.kinesisvideomedia#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eKinesis Video Streams has throttled the request because you have exceeded the limit of\n      allowed client connections.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.kinesisvideomedia#ContentType": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 128
+          },
+          "smithy.api#pattern": "^[a-zA-Z0-9_\\.\\-]+$"
+        }
+      },
+      "com.amazonaws.kinesisvideomedia#ContinuationToken": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 128
+          },
+          "smithy.api#pattern": "^[a-zA-Z0-9_\\.\\-]+$"
+        }
+      },
+      "com.amazonaws.kinesisvideomedia#ErrorMessage": {
+        "type": "string"
+      },
+      "com.amazonaws.kinesisvideomedia#FragmentNumberString": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 128
+          },
+          "smithy.api#pattern": "^[0-9]+$"
+        }
+      },
+      "com.amazonaws.kinesisvideomedia#GetMedia": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.kinesisvideomedia#GetMediaInput"
+        },
+        "output": {
+          "target": "com.amazonaws.kinesisvideomedia#GetMediaOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.kinesisvideomedia#ClientLimitExceededException"
+          },
+          {
+            "target": "com.amazonaws.kinesisvideomedia#ConnectionLimitExceededException"
+          },
+          {
+            "target": "com.amazonaws.kinesisvideomedia#InvalidArgumentException"
+          },
+          {
+            "target": "com.amazonaws.kinesisvideomedia#InvalidEndpointException"
+          },
+          {
+            "target": "com.amazonaws.kinesisvideomedia#NotAuthorizedException"
+          },
+          {
+            "target": "com.amazonaws.kinesisvideomedia#ResourceNotFoundException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003e Use this API to retrieve media content from a Kinesis video stream. In the request,\n      you identify the stream name or stream Amazon Resource Name (ARN), and the starting chunk.\n      Kinesis Video Streams then returns a stream of chunks in order by fragment number.\u003c/p\u003e\n         \u003cnote\u003e\n            \u003cp\u003eYou must first call the \u003ccode\u003eGetDataEndpoint\u003c/code\u003e API to get an endpoint. Then\n        send the \u003ccode\u003eGetMedia\u003c/code\u003e requests to this endpoint using the \u003ca href=\"https://docs.aws.amazon.com/cli/latest/reference/\"\u003e--endpoint-url parameter\u003c/a\u003e.\n      \u003c/p\u003e\n         \u003c/note\u003e\n         \u003cp\u003eWhen you put media data (fragments) on a stream, Kinesis Video Streams stores each\n      incoming fragment and related metadata in what is called a \"chunk.\" For more information, see\n        \u003ca href=\"https://docs.aws.amazon.com/kinesisvideostreams/latest/dg/API_dataplane_PutMedia.html\"\u003ePutMedia\u003c/a\u003e. The \u003ccode\u003eGetMedia\u003c/code\u003e API returns a stream of these chunks starting\n      from the chunk that you specify in the request. \u003c/p\u003e\n         \u003cp\u003eThe following limits apply when using the \u003ccode\u003eGetMedia\u003c/code\u003e API:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003eA client can call \u003ccode\u003eGetMedia\u003c/code\u003e up to five times per second per stream.\n        \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eKinesis Video Streams sends media data at a rate of up to 25 megabytes per second\n          (or 200 megabits per second) during a \u003ccode\u003eGetMedia\u003c/code\u003e session. \u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e\n\n         \u003cnote\u003e\n            \u003cp\u003eIf an error is thrown after invoking a Kinesis Video Streams media API, in addition to\n        the HTTP status code and the response body, it includes the following pieces of information: \u003c/p\u003e\n            \u003cul\u003e\n               \u003cli\u003e\n                  \u003cp\u003e\n                     \u003ccode\u003ex-amz-ErrorType\u003c/code\u003e HTTP header \u2013 contains a more specific error type in\n            addition to what the HTTP status code provides. \u003c/p\u003e\n               \u003c/li\u003e\n               \u003cli\u003e\n                  \u003cp\u003e\n                     \u003ccode\u003ex-amz-RequestId\u003c/code\u003e HTTP header \u2013 if you want to report an issue to AWS,\n            the support team can better diagnose the problem if given the Request Id.\u003c/p\u003e\n               \u003c/li\u003e\n            \u003c/ul\u003e\n            \u003cp\u003eBoth the HTTP status code and the ErrorType header can be utilized to make programmatic\n        decisions about whether errors are retry-able and under what conditions, as well as provide\n        information on what actions the client programmer might need to take in order to\n        successfully try again.\u003c/p\u003e\n            \u003cp\u003eFor more information, see the \u003cb\u003eErrors\u003c/b\u003e section at the\n        bottom of this topic, as well as \u003ca href=\"https://docs.aws.amazon.com/kinesisvideostreams/latest/dg/CommonErrors.html\"\u003eCommon Errors\u003c/a\u003e. \u003c/p\u003e\n         \u003c/note\u003e",
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/getMedia",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.kinesisvideomedia#GetMediaInput": {
+        "type": "structure",
+        "members": {
+          "StartSelector": {
+            "target": "com.amazonaws.kinesisvideomedia#StartSelector",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIdentifies the starting chunk to get from the specified stream. \u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "StreamARN": {
+            "target": "com.amazonaws.kinesisvideomedia#ResourceARN",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ARN of the stream from where you want to get the media content. If you don't\n      specify the \u003ccode\u003estreamARN\u003c/code\u003e, you must specify the \u003ccode\u003estreamName\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "StreamName": {
+            "target": "com.amazonaws.kinesisvideomedia#StreamName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Kinesis video stream name from where you want to get the media content. If you\n      don't specify the \u003ccode\u003estreamName\u003c/code\u003e, you must specify the\n      \u003ccode\u003estreamARN\u003c/code\u003e.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.kinesisvideomedia#GetMediaOutput": {
+        "type": "structure",
+        "members": {
+          "ContentType": {
+            "target": "com.amazonaws.kinesisvideomedia#ContentType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe content type of the requested media.\u003c/p\u003e",
+              "smithy.api#httpHeader": "Content-Type"
+            }
+          },
+          "Payload": {
+            "target": "com.amazonaws.kinesisvideomedia#Payload",
+            "traits": {
+              "smithy.api#default": "",
+              "smithy.api#documentation": "\u003cp\u003e The payload Kinesis Video Streams returns is a sequence of chunks from the specified\n      stream. For information about the chunks, see . The\n      chunks that Kinesis Video Streams returns in the \u003ccode\u003eGetMedia\u003c/code\u003e call also include the\n      following additional Matroska (MKV) tags: \u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003eAWS_KINESISVIDEO_CONTINUATION_TOKEN (UTF-8 string) - In the event your\n            \u003ccode\u003eGetMedia\u003c/code\u003e call terminates, you can use this continuation token in your next\n          request to get the next chunk where the last request terminated.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eAWS_KINESISVIDEO_MILLIS_BEHIND_NOW (UTF-8 string) - Client applications can use\n          this tag value to determine how far behind the chunk returned in the response is from the\n          latest chunk on the stream. \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eAWS_KINESISVIDEO_FRAGMENT_NUMBER - Fragment number returned in the chunk.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eAWS_KINESISVIDEO_SERVER_TIMESTAMP - Server timestamp of the fragment.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eAWS_KINESISVIDEO_PRODUCER_TIMESTAMP - Producer timestamp of the fragment.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e\n         \u003cp\u003eThe following tags will be present if an error occurs:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003eAWS_KINESISVIDEO_ERROR_CODE - String description of an error that caused GetMedia\n          to stop.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eAWS_KINESISVIDEO_ERROR_ID: Integer code of the error.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e\n         \u003cp\u003eThe error codes are as follows:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e3002 - Error writing to the stream\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e4000 - Requested fragment is not found\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e4500 - Access denied for the stream's KMS key\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e4501 - Stream's KMS key is disabled\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e4502 - Validation error on the stream's KMS key\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e4503 - KMS key specified in the stream is unavailable\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e4504 - Invalid usage of the KMS key specified in the stream\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e4505 - Invalid state of the KMS key specified in the stream\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e4506 - Unable to find the KMS key specified in the stream\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e5000 - Internal error\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e",
+              "smithy.api#httpPayload": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.kinesisvideomedia#InvalidArgumentException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.kinesisvideomedia#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe value for this input parameter is invalid.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.kinesisvideomedia#InvalidEndpointException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.kinesisvideomedia#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003e Status Code: 400, Caller used wrong endpoint to write data to a stream. On receiving\n      such an exception, the user must call \u003ccode\u003eGetDataEndpoint\u003c/code\u003e with\n        \u003ccode\u003eAccessMode\u003c/code\u003e set to \"READ\" and use the endpoint Kinesis Video returns in the next\n        \u003ccode\u003eGetMedia\u003c/code\u003e call. \u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.kinesisvideomedia#NotAuthorizedException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.kinesisvideomedia#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eStatus Code: 403, The caller is not authorized to perform an operation on the given\n      stream, or the token has expired.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 401
+        }
+      },
+      "com.amazonaws.kinesisvideomedia#Payload": {
+        "type": "blob",
+        "traits": {
+          "smithy.api#streaming": {}
+        }
+      },
+      "com.amazonaws.kinesisvideomedia#ResourceARN": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 1024
+          },
+          "smithy.api#pattern": "^arn:aws:kinesisvideo:[a-z0-9-]+:[0-9]+:[a-z]+/[a-zA-Z0-9_.-]+/[0-9]+$"
+        }
+      },
+      "com.amazonaws.kinesisvideomedia#ResourceNotFoundException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.kinesisvideomedia#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eStatus Code: 404, The stream with the given name does not exist.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 404
+        }
+      },
+      "com.amazonaws.kinesisvideomedia#StartSelector": {
+        "type": "structure",
+        "members": {
+          "AfterFragmentNumber": {
+            "target": "com.amazonaws.kinesisvideomedia#FragmentNumberString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies the fragment number from where you want the \u003ccode\u003eGetMedia\u003c/code\u003e API to\n      start returning the fragments. \u003c/p\u003e"
+            }
+          },
+          "ContinuationToken": {
+            "target": "com.amazonaws.kinesisvideomedia#ContinuationToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eContinuation token that Kinesis Video Streams returned in the previous\n        \u003ccode\u003eGetMedia\u003c/code\u003e response. The \u003ccode\u003eGetMedia\u003c/code\u003e API then starts with the chunk\n      identified by the continuation token.\u003c/p\u003e"
+            }
+          },
+          "StartSelectorType": {
+            "target": "com.amazonaws.kinesisvideomedia#StartSelectorType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIdentifies the fragment on the Kinesis video stream where you want to start getting the\n      data from.\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003eNOW - Start with the latest chunk on the stream.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eEARLIEST - Start with earliest available chunk on the stream.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eFRAGMENT_NUMBER - Start with the chunk after a specific fragment. You must also\n          specify the \u003ccode\u003eAfterFragmentNumber\u003c/code\u003e parameter.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003ePRODUCER_TIMESTAMP or SERVER_TIMESTAMP - Start with the chunk containing a fragment\n          with the specified producer or server timestamp. You specify the timestamp by adding\n            \u003ccode\u003eStartTimestamp\u003c/code\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e CONTINUATION_TOKEN - Read using the specified continuation token. \u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e\n         \u003cnote\u003e\n            \u003cp\u003eIf you choose the NOW, EARLIEST, or CONTINUATION_TOKEN as the\n          \u003ccode\u003estartSelectorType\u003c/code\u003e, you don't provide any additional information in the\n          \u003ccode\u003estartSelector\u003c/code\u003e.\u003c/p\u003e\n         \u003c/note\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "StartTimestamp": {
+            "target": "com.amazonaws.kinesisvideomedia#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA timestamp value. This value is required if you choose the PRODUCER_TIMESTAMP or the\n      SERVER_TIMESTAMP as the \u003ccode\u003estartSelectorType\u003c/code\u003e. The \u003ccode\u003eGetMedia\u003c/code\u003e API then\n      starts with the chunk containing the fragment that has the specified timestamp.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eIdentifies the chunk on the Kinesis video stream where you want the\n        \u003ccode\u003eGetMedia\u003c/code\u003e API to start returning media data. You have the following options to\n      identify the starting chunk: \u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003eChoose the latest (or oldest) chunk.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eIdentify a specific chunk. You can identify a specific chunk either by providing a\n          fragment number or timestamp (server or producer). \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eEach chunk's metadata includes a continuation token as a Matroska (MKV) tag\n            (\u003ccode\u003eAWS_KINESISVIDEO_CONTINUATION_TOKEN\u003c/code\u003e). If your previous\n            \u003ccode\u003eGetMedia\u003c/code\u003e request terminated, you can use this tag value in your next\n            \u003ccode\u003eGetMedia\u003c/code\u003e request. The API then starts returning chunks starting where the\n          last API ended.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e"
+        }
+      },
+      "com.amazonaws.kinesisvideomedia#StartSelectorType": {
+        "type": "enum",
+        "members": {
+          "CONTINUATION_TOKEN": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "CONTINUATION_TOKEN"
+            }
+          },
+          "EARLIEST": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "EARLIEST"
+            }
+          },
+          "FRAGMENT_NUMBER": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "FRAGMENT_NUMBER"
+            }
+          },
+          "NOW": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "NOW"
+            }
+          },
+          "PRODUCER_TIMESTAMP": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "PRODUCER_TIMESTAMP"
+            }
+          },
+          "SERVER_TIMESTAMP": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "SERVER_TIMESTAMP"
+            }
+          }
+        }
+      },
+      "com.amazonaws.kinesisvideomedia#StreamName": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 256
+          },
+          "smithy.api#pattern": "^[a-zA-Z0-9_.-]+$"
+        }
+      },
+      "com.amazonaws.kinesisvideomedia#Timestamp": {
+        "type": "timestamp"
+      }
+    }
+  }
+}

@@ -1,0 +1,2283 @@
+{
+  "schema_source": "smithy",
+  "mode": "data_source",
+  "auth": {
+    "Type": "",
+    "Params": null
+  },
+  "base_url": "https://aws.example.invalid",
+  "retry": {
+    "MaxAttempts": 0,
+    "InitialBackoff": "",
+    "MaxBackoff": "",
+    "Jitter": null,
+    "RespectRetryAfter": null,
+    "RateLimitResetHeader": ""
+  },
+  "timeouts": {
+    "Create": "",
+    "Read": "",
+    "Update": "",
+    "Delete": "",
+    "Default": ""
+  },
+  "wire_name": "aws",
+  "raw_spec": {
+    "smithy": "2.0",
+    "shapes": {
+      "com.amazonaws.supportauthz#AccessDeniedException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eYou don't have sufficient permissions to perform this operation.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 403
+        }
+      },
+      "com.amazonaws.supportauthz#Action": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 3,
+            "max": 255
+          },
+          "smithy.api#pattern": "^[a-z][a-z0-9-]*:[A-Za-z0-9_.-]+$"
+        }
+      },
+      "com.amazonaws.supportauthz#ActionDescription": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 10240
+          }
+        }
+      },
+      "com.amazonaws.supportauthz#ActionSet": {
+        "type": "union",
+        "members": {
+          "actions": {
+            "target": "com.amazonaws.supportauthz#Actions",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of specific support actions to authorize. Maximum of 10 actions.\u003c/p\u003e"
+            }
+          },
+          "allActions": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAuthorizes all available support actions.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe set of actions authorized by a permit. Specify either all actions or a list of specific actions.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.supportauthz#ActionSummaries": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.supportauthz#ActionSummary"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 100
+          }
+        }
+      },
+      "com.amazonaws.supportauthz#ActionSummary": {
+        "type": "structure",
+        "members": {
+          "action": {
+            "target": "com.amazonaws.supportauthz#Action",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the support action.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "description": {
+            "target": "com.amazonaws.supportauthz#ActionDescription",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA description of what the support action does.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "service": {
+            "target": "com.amazonaws.supportauthz#Service",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe AWS service associated with the support action.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA summary of a support action.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.supportauthz#Actions": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.supportauthz#Action"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 10
+          }
+        }
+      },
+      "com.amazonaws.supportauthz#Arn": {
+        "type": "string",
+        "traits": {
+          "aws.api#arnReference": {
+            "type": "AWS::SupportAuthZ::SupportPermit"
+          },
+          "smithy.api#length": {
+            "min": 1,
+            "max": 512
+          },
+          "smithy.api#pattern": "^arn:[a-z0-9-]+:[a-z0-9-]+:[a-z0-9-]*:[0-9]{12}:.+$"
+        }
+      },
+      "com.amazonaws.supportauthz#ClientToken": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 128
+          },
+          "smithy.api#pattern": "^[!-~]+$"
+        }
+      },
+      "com.amazonaws.supportauthz#Condition": {
+        "type": "union",
+        "members": {
+          "allowAfter": {
+            "target": "smithy.api#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe earliest time at which the permit becomes valid.\u003c/p\u003e"
+            }
+          },
+          "allowBefore": {
+            "target": "smithy.api#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe latest time at which the permit remains valid.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA time-window condition that constrains when a support permit is valid.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.supportauthz#Conditions": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.supportauthz#Condition"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "max": 2
+          }
+        }
+      },
+      "com.amazonaws.supportauthz#ConflictException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#required": {}
+            }
+          },
+          "resourceId": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier of the resource that caused the conflict.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "resourceType": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe type of the resource that caused the conflict.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe request conflicts with the current state of the resource.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 409
+        }
+      },
+      "com.amazonaws.supportauthz#CreateSupportPermit": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.supportauthz#CreateSupportPermitInput"
+        },
+        "output": {
+          "target": "com.amazonaws.supportauthz#CreateSupportPermitOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.supportauthz#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#ServiceQuotaExceededException"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eCreates a support permit that authorizes an AWS support operator to perform specified actions on specified resources. The permit is cryptographically signed using a customer-managed AWS KMS key (ECC_NIST_P384, SIGN_VERIFY) to ensure non-repudiation.\u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/support-permits",
+            "method": "POST"
+          }
+        }
+      },
+      "com.amazonaws.supportauthz#CreateSupportPermitInput": {
+        "type": "structure",
+        "members": {
+          "clientToken": {
+            "target": "com.amazonaws.supportauthz#ClientToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA unique, case-sensitive identifier to ensure that the operation completes no more than one time. If this token matches a previous request, the service returns the existing permit without creating a duplicate.\u003c/p\u003e",
+              "smithy.api#idempotencyToken": {}
+            }
+          },
+          "description": {
+            "target": "com.amazonaws.supportauthz#Description",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA human-readable description of why this permit is being created. Maximum length of 1024 characters.\u003c/p\u003e"
+            }
+          },
+          "name": {
+            "target": "com.amazonaws.supportauthz#Name",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA customer-chosen name for the support permit. Must be between 1 and 256 alphanumeric characters.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "permit": {
+            "target": "com.amazonaws.supportauthz#Permit",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe permit definition specifying the actions, resources, and time-window conditions that the support operator is authorized to use.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "signingKeyInfo": {
+            "target": "com.amazonaws.supportauthz#SigningKeyInfo",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe signing key information used to sign the permit. Must reference an AWS KMS key with key usage SIGN_VERIFY and key spec ECC_NIST_P384.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "supportCaseDisplayId": {
+            "target": "com.amazonaws.supportauthz#SupportCaseDisplayId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe display identifier of the AWS Support case associated with this permit.\u003c/p\u003e"
+            }
+          },
+          "tags": {
+            "target": "com.amazonaws.supportauthz#Tags",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe tags to associate with the support permit on creation.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.supportauthz#CreateSupportPermitOutput": {
+        "type": "structure",
+        "members": {
+          "arn": {
+            "target": "com.amazonaws.supportauthz#Arn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the support permit.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "createdAt": {
+            "target": "smithy.api#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe timestamp when the permit was created.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "description": {
+            "target": "com.amazonaws.supportauthz#Description",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe description of the support permit.\u003c/p\u003e"
+            }
+          },
+          "name": {
+            "target": "com.amazonaws.supportauthz#Name",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the support permit.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "permit": {
+            "target": "com.amazonaws.supportauthz#Permit",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe permit definition.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "signingKeyInfo": {
+            "target": "com.amazonaws.supportauthz#SigningKeyInfo",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe signing key information for the permit.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "status": {
+            "target": "com.amazonaws.supportauthz#SupportPermitStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe current status of the support permit.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "supportCaseDisplayId": {
+            "target": "com.amazonaws.supportauthz#SupportCaseDisplayId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe display identifier of the support case associated with the permit.\u003c/p\u003e"
+            }
+          },
+          "tags": {
+            "target": "com.amazonaws.supportauthz#Tags",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe tags associated with the support permit.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.supportauthz#DeleteSupportPermit": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.supportauthz#DeleteSupportPermitInput"
+        },
+        "output": {
+          "target": "com.amazonaws.supportauthz#DeleteSupportPermitOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.supportauthz#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eDeletes a support permit, revoking the authorization previously granted to the AWS support operator.\u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/support-permits/{supportPermitIdentifier}",
+            "method": "DELETE"
+          },
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.supportauthz#DeleteSupportPermitInput": {
+        "type": "structure",
+        "members": {
+          "supportPermitIdentifier": {
+            "target": "com.amazonaws.supportauthz#Arn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) or name of the support permit to delete.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.supportauthz#DeleteSupportPermitOutput": {
+        "type": "structure",
+        "members": {
+          "arn": {
+            "target": "com.amazonaws.supportauthz#Arn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ARN of the deleted support permit.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "createdAt": {
+            "target": "smithy.api#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe timestamp when the permit was originally created.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "description": {
+            "target": "com.amazonaws.supportauthz#Description",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe description of the deleted support permit.\u003c/p\u003e"
+            }
+          },
+          "name": {
+            "target": "com.amazonaws.supportauthz#Name",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the deleted support permit.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "permit": {
+            "target": "com.amazonaws.supportauthz#Permit",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe permit definition of the deleted permit.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "signingKeyInfo": {
+            "target": "com.amazonaws.supportauthz#SigningKeyInfo",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe signing key information for the deleted permit.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "status": {
+            "target": "com.amazonaws.supportauthz#SupportPermitStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe status of the support permit. Returns DELETING.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "supportCaseDisplayId": {
+            "target": "com.amazonaws.supportauthz#SupportCaseDisplayId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe display identifier of the support case associated with the deleted permit.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.supportauthz#Description": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 1024
+          }
+        }
+      },
+      "com.amazonaws.supportauthz#GetAction": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.supportauthz#GetActionInput"
+        },
+        "output": {
+          "target": "com.amazonaws.supportauthz#GetActionOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.supportauthz#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eRetrieves the description of a specific support action.\u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/actions/{action}",
+            "method": "GET"
+          },
+          "smithy.api#readonly": {},
+          "smithy.test#smokeTests": [
+            {
+              "id": "GetActionFailure",
+              "params": {
+                "action": "myservice:NonExistentAction"
+              },
+              "expect": {
+                "failure": {
+                  "errorId": "com.amazonaws.supportauthz#ResourceNotFoundException"
+                }
+              },
+              "vendorParamsShape": "aws.test#AwsVendorParams",
+              "vendorParams": {
+                "region": "ap-northeast-1"
+              }
+            }
+          ]
+        }
+      },
+      "com.amazonaws.supportauthz#GetActionInput": {
+        "type": "structure",
+        "members": {
+          "action": {
+            "target": "com.amazonaws.supportauthz#Action",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the support action to retrieve.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.supportauthz#GetActionOutput": {
+        "type": "structure",
+        "members": {
+          "action": {
+            "target": "com.amazonaws.supportauthz#Action",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the support action.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "description": {
+            "target": "com.amazonaws.supportauthz#ActionDescription",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA description of what the support action does.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "service": {
+            "target": "com.amazonaws.supportauthz#Service",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe AWS service associated with the support action.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.supportauthz#GetSupportPermit": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.supportauthz#GetSupportPermitInput"
+        },
+        "output": {
+          "target": "com.amazonaws.supportauthz#GetSupportPermitOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.supportauthz#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eRetrieves the details of a support permit by its ARN or name.\u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/support-permits/{supportPermitIdentifier}",
+            "method": "GET"
+          },
+          "smithy.api#readonly": {},
+          "smithy.test#smokeTests": [
+            {
+              "id": "GetSupportPermitFailure",
+              "params": {
+                "supportPermitIdentifier": "non-existent-permit-id"
+              },
+              "expect": {
+                "failure": {
+                  "errorId": "com.amazonaws.supportauthz#ResourceNotFoundException"
+                }
+              },
+              "vendorParamsShape": "aws.test#AwsVendorParams",
+              "vendorParams": {
+                "region": "ap-northeast-1"
+              }
+            }
+          ]
+        }
+      },
+      "com.amazonaws.supportauthz#GetSupportPermitInput": {
+        "type": "structure",
+        "members": {
+          "supportPermitIdentifier": {
+            "target": "com.amazonaws.supportauthz#SupportPermitIdentifier",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ARN or name of the support permit to retrieve.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.supportauthz#GetSupportPermitOutput": {
+        "type": "structure",
+        "members": {
+          "arn": {
+            "target": "com.amazonaws.supportauthz#Arn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ARN of the support permit.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "createdAt": {
+            "target": "smithy.api#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe timestamp when the permit was created.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "description": {
+            "target": "com.amazonaws.supportauthz#Description",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe description of the support permit.\u003c/p\u003e"
+            }
+          },
+          "name": {
+            "target": "com.amazonaws.supportauthz#Name",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the support permit.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "permit": {
+            "target": "com.amazonaws.supportauthz#Permit",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe permit definition.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "signingKeyInfo": {
+            "target": "com.amazonaws.supportauthz#SigningKeyInfo",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe signing key information for the permit.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "status": {
+            "target": "com.amazonaws.supportauthz#SupportPermitStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe current status of the support permit.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "supportCaseDisplayId": {
+            "target": "com.amazonaws.supportauthz#SupportCaseDisplayId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe display identifier of the support case associated with the permit.\u003c/p\u003e"
+            }
+          },
+          "tags": {
+            "target": "com.amazonaws.supportauthz#Tags",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe tags associated with the support permit.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.supportauthz#InternalServerException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#required": {}
+            }
+          },
+          "retryAfterSeconds": {
+            "target": "smithy.api#Integer",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe number of seconds to wait before retrying the request.\u003c/p\u003e",
+              "smithy.api#httpHeader": "Retry-After"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eAn internal service error occurred. Try again later.\u003c/p\u003e",
+          "smithy.api#error": "server",
+          "smithy.api#httpError": 500,
+          "smithy.api#retryable": {}
+        }
+      },
+      "com.amazonaws.supportauthz#KmsKeyArn": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 512
+          },
+          "smithy.api#pattern": "^[a-zA-Z0-9/:_-]{1,512}$"
+        }
+      },
+      "com.amazonaws.supportauthz#ListActions": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.supportauthz#ListActionsInput"
+        },
+        "output": {
+          "target": "com.amazonaws.supportauthz#ListActionsOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.supportauthz#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eLists available support actions for a specified AWS service. Use pagination to ensure that the operation returns quickly and successfully.\u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/actions",
+            "method": "GET"
+          },
+          "smithy.api#paginated": {
+            "inputToken": "nextToken",
+            "outputToken": "nextToken",
+            "pageSize": "maxResults",
+            "items": "actionSummaries"
+          },
+          "smithy.api#readonly": {},
+          "smithy.test#smokeTests": [
+            {
+              "id": "ListActionsSuccess",
+              "params": {
+                "service": "myservice"
+              },
+              "expect": {
+                "success": {}
+              },
+              "vendorParamsShape": "aws.test#AwsVendorParams",
+              "vendorParams": {
+                "region": "ap-northeast-1"
+              }
+            }
+          ]
+        }
+      },
+      "com.amazonaws.supportauthz#ListActionsInput": {
+        "type": "structure",
+        "members": {
+          "maxResults": {
+            "target": "com.amazonaws.supportauthz#MaxResults",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of results to return in a single call. Valid range is 1 to 100.\u003c/p\u003e",
+              "smithy.api#httpQuery": "maxResults"
+            }
+          },
+          "nextToken": {
+            "target": "com.amazonaws.supportauthz#NextToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe token for the next page of results.\u003c/p\u003e",
+              "smithy.api#httpQuery": "nextToken"
+            }
+          },
+          "service": {
+            "target": "com.amazonaws.supportauthz#Service",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the AWS service for which to list available support actions.\u003c/p\u003e",
+              "smithy.api#httpQuery": "service",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.supportauthz#ListActionsOutput": {
+        "type": "structure",
+        "members": {
+          "actionSummaries": {
+            "target": "com.amazonaws.supportauthz#ActionSummaries",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe list of support actions.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "nextToken": {
+            "target": "com.amazonaws.supportauthz#NextToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe token for the next page of results, or null if there are no more results.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.supportauthz#ListSupportPermitRequests": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.supportauthz#ListSupportPermitRequestsInput"
+        },
+        "output": {
+          "target": "com.amazonaws.supportauthz#ListSupportPermitRequestsOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.supportauthz#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eLists permit requests from AWS support operators. Use pagination to ensure that the operation returns quickly and successfully.\u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/support-permit-requests",
+            "method": "GET"
+          },
+          "smithy.api#paginated": {
+            "inputToken": "nextToken",
+            "outputToken": "nextToken",
+            "pageSize": "maxResults",
+            "items": "supportPermitRequests"
+          },
+          "smithy.api#readonly": {},
+          "smithy.test#smokeTests": [
+            {
+              "id": "ListSupportPermitRequestsSuccess",
+              "params": {},
+              "expect": {
+                "success": {}
+              },
+              "vendorParamsShape": "aws.test#AwsVendorParams",
+              "vendorParams": {
+                "region": "ap-northeast-1"
+              }
+            }
+          ]
+        }
+      },
+      "com.amazonaws.supportauthz#ListSupportPermitRequestsInput": {
+        "type": "structure",
+        "members": {
+          "maxResults": {
+            "target": "com.amazonaws.supportauthz#MaxResults",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of results to return in a single call. Valid range is 1 to 100.\u003c/p\u003e",
+              "smithy.api#httpQuery": "maxResults"
+            }
+          },
+          "nextToken": {
+            "target": "com.amazonaws.supportauthz#NextToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe token for the next page of results.\u003c/p\u003e",
+              "smithy.api#httpQuery": "nextToken"
+            }
+          },
+          "supportCaseDisplayId": {
+            "target": "com.amazonaws.supportauthz#SupportCaseDisplayId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eFilters the results by support case display identifier.\u003c/p\u003e",
+              "smithy.api#httpQuery": "supportCaseDisplayId"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.supportauthz#ListSupportPermitRequestsOutput": {
+        "type": "structure",
+        "members": {
+          "nextToken": {
+            "target": "com.amazonaws.supportauthz#NextToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe token for the next page of results, or null if there are no more results.\u003c/p\u003e"
+            }
+          },
+          "supportPermitRequests": {
+            "target": "com.amazonaws.supportauthz#SupportPermitRequests",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe list of permit requests.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.supportauthz#ListSupportPermits": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.supportauthz#ListSupportPermitsInput"
+        },
+        "output": {
+          "target": "com.amazonaws.supportauthz#ListSupportPermitsOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.supportauthz#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eLists all support permits in the caller's account. Use pagination to ensure that the operation returns quickly and successfully.\u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/support-permits",
+            "method": "GET"
+          },
+          "smithy.api#paginated": {
+            "inputToken": "nextToken",
+            "outputToken": "nextToken",
+            "pageSize": "maxResults",
+            "items": "supportPermits"
+          },
+          "smithy.api#readonly": {},
+          "smithy.test#smokeTests": [
+            {
+              "id": "ListSupportPermitsSuccess",
+              "params": {},
+              "expect": {
+                "success": {}
+              },
+              "vendorParamsShape": "aws.test#AwsVendorParams",
+              "vendorParams": {
+                "region": "ap-northeast-1"
+              }
+            }
+          ]
+        }
+      },
+      "com.amazonaws.supportauthz#ListSupportPermitsInput": {
+        "type": "structure",
+        "members": {
+          "maxResults": {
+            "target": "com.amazonaws.supportauthz#MaxResults",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of results to return in a single call. Valid range is 1 to 100.\u003c/p\u003e",
+              "smithy.api#httpQuery": "maxResults"
+            }
+          },
+          "nextToken": {
+            "target": "com.amazonaws.supportauthz#NextToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe token for the next page of results.\u003c/p\u003e",
+              "smithy.api#httpQuery": "nextToken"
+            }
+          },
+          "supportPermitStatuses": {
+            "target": "com.amazonaws.supportauthz#SupportPermitStatuses",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eFilters the results by support permit status. Valid values: ACTIVE, INACTIVE, DELETING.\u003c/p\u003e",
+              "smithy.api#httpQuery": "supportPermitStatuses"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.supportauthz#ListSupportPermitsOutput": {
+        "type": "structure",
+        "members": {
+          "nextToken": {
+            "target": "com.amazonaws.supportauthz#NextToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe token for the next page of results, or null if there are no more results.\u003c/p\u003e"
+            }
+          },
+          "supportPermits": {
+            "target": "com.amazonaws.supportauthz#SupportPermitSummaries",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe list of support permits.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.supportauthz#ListTagsForResource": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.supportauthz#ListTagsForResourceInput"
+        },
+        "output": {
+          "target": "com.amazonaws.supportauthz#ListTagsForResourceOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.supportauthz#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eLists the tags associated with a support permit resource.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "GET",
+            "uri": "/tags/{resourceArn}",
+            "code": 200
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.supportauthz#ListTagsForResourceInput": {
+        "type": "structure",
+        "members": {
+          "resourceArn": {
+            "target": "com.amazonaws.supportauthz#Arn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ARN of the resource to list tags for.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.supportauthz#ListTagsForResourceOutput": {
+        "type": "structure",
+        "members": {
+          "tags": {
+            "target": "com.amazonaws.supportauthz#Tags",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe tags associated with the resource.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.supportauthz#MaxResults": {
+        "type": "integer",
+        "traits": {
+          "smithy.api#range": {
+            "min": 1,
+            "max": 100
+          }
+        }
+      },
+      "com.amazonaws.supportauthz#Name": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 256
+          },
+          "smithy.api#pattern": "^[a-zA-Z0-9]{1,256}$"
+        }
+      },
+      "com.amazonaws.supportauthz#NextToken": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 2048
+          },
+          "smithy.api#pattern": "^[a-zA-Z0-9/+=%_-]+$"
+        }
+      },
+      "com.amazonaws.supportauthz#Permit": {
+        "type": "structure",
+        "members": {
+          "actions": {
+            "target": "com.amazonaws.supportauthz#ActionSet",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe set of actions that the support operator is authorized to perform.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "conditions": {
+            "target": "com.amazonaws.supportauthz#Conditions",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe time-window conditions that constrain when the permit is valid. Maximum of 2 conditions.\u003c/p\u003e"
+            }
+          },
+          "resources": {
+            "target": "com.amazonaws.supportauthz#ResourceSet",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe set of resources that the support operator is authorized to act upon.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe permit definition specifying the authorized actions, resources, and time-window conditions for a support operator.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.supportauthz#RejectSupportPermitRequest": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.supportauthz#RejectSupportPermitRequestInput"
+        },
+        "output": {
+          "target": "com.amazonaws.supportauthz#RejectSupportPermitRequestOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.supportauthz#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eRejects a permit request from an AWS support operator. The operator cannot proceed with the requested action.\u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/support-permit-requests/{requestArn}/reject",
+            "method": "PUT"
+          },
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.supportauthz#RejectSupportPermitRequestInput": {
+        "type": "structure",
+        "members": {
+          "requestArn": {
+            "target": "com.amazonaws.supportauthz#RequestArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ARN of the permit request to reject.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.supportauthz#RejectSupportPermitRequestOutput": {
+        "type": "structure",
+        "members": {
+          "requestArn": {
+            "target": "com.amazonaws.supportauthz#RequestArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ARN of the rejected permit request.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.supportauthz#RequestArn": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 512
+          },
+          "smithy.api#pattern": "^[a-zA-Z0-9:/-]{1,512}$"
+        }
+      },
+      "com.amazonaws.supportauthz#Resource": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 512
+          },
+          "smithy.api#pattern": "^[a-zA-Z0-9:/_.-]+$"
+        }
+      },
+      "com.amazonaws.supportauthz#ResourceNotFoundException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#required": {}
+            }
+          },
+          "resourceId": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier of the resource that was not found.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "resourceType": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe type of the resource that was not found.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe specified resource does not exist.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 404
+        }
+      },
+      "com.amazonaws.supportauthz#ResourceSet": {
+        "type": "union",
+        "members": {
+          "allResourcesInRegion": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAuthorizes the support operator to act on all resources in the Region.\u003c/p\u003e"
+            }
+          },
+          "resources": {
+            "target": "com.amazonaws.supportauthz#Resources",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of specific resource identifiers that the support operator is authorized to act upon. Maximum of 5 resources.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe set of resources authorized by a permit. Specify either all resources in the Region or a list of specific resources.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.supportauthz#Resources": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.supportauthz#Resource"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 5
+          }
+        }
+      },
+      "com.amazonaws.supportauthz#Service": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 256
+          },
+          "smithy.api#pattern": "^[a-zA-Z0-9-]+$"
+        }
+      },
+      "com.amazonaws.supportauthz#ServiceQuotaExceededException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#required": {}
+            }
+          },
+          "quotaCode": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe quota code of the exceeded quota.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "resourceId": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier of the resource that exceeded the quota.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "resourceType": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe type of the resource that exceeded the quota.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "serviceCode": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe service code of the originating service.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe request exceeds a service quota for your account.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 402
+        }
+      },
+      "com.amazonaws.supportauthz#SigningKeyInfo": {
+        "type": "union",
+        "members": {
+          "kmsKey": {
+            "target": "com.amazonaws.supportauthz#KmsKeyArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ARN of the AWS KMS key used to sign the permit. The key must have key spec ECC_NIST_P384 and key usage SIGN_VERIFY.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe signing key used to cryptographically sign a support permit.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.supportauthz#SupportAuthZ": {
+        "type": "service",
+        "version": "2026-06-30",
+        "operations": [
+          {
+            "target": "com.amazonaws.supportauthz#CreateSupportPermit"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#DeleteSupportPermit"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#GetAction"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#GetSupportPermit"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#ListActions"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#ListSupportPermitRequests"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#ListSupportPermits"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#ListTagsForResource"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#RejectSupportPermitRequest"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#TagResource"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#UntagResource"
+          }
+        ],
+        "traits": {
+          "aws.api#service": {
+            "arnNamespace": "supportauthz",
+            "sdkId": "SupportAuthZ",
+            "cloudTrailEventSource": "supportauthz.amazonaws.com"
+          },
+          "aws.auth#sigv4": {
+            "name": "supportauthz"
+          },
+          "aws.endpoints#dualStackOnlyEndpoints": {},
+          "aws.endpoints#standardRegionalEndpoints": {},
+          "aws.protocols#restJson1": {},
+          "smithy.api#cors": {
+            "additionalAllowedHeaders": [
+              "*"
+            ]
+          },
+          "smithy.api#documentation": "\u003cfullname\u003eAWS Support Authorization\u003c/fullname\u003e \u003cp\u003eAWS SupportAuthZ enables you to control and authorize the actions that AWS support operators can perform on your resources. You create cryptographically signed support permits specifying which actions operators can perform, on which resources, and under what time-window conditions. Permits are signed using a customer-managed AWS KMS key (ECC_NIST_P384, SIGN_VERIFY) to ensure non-repudiation.\u003c/p\u003e",
+          "smithy.api#title": "SupportAuthZ",
+          "smithy.rules#endpointBdd": {
+            "version": "1.1",
+            "parameters": {
+              "UseFIPS": {
+                "builtIn": "AWS::UseFIPS",
+                "required": true,
+                "default": false,
+                "documentation": "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
+                "type": "boolean"
+              },
+              "Endpoint": {
+                "builtIn": "SDK::Endpoint",
+                "required": false,
+                "documentation": "Override the endpoint used to send this request",
+                "type": "string"
+              },
+              "Region": {
+                "builtIn": "AWS::Region",
+                "required": false,
+                "documentation": "The AWS region used to dispatch the request.",
+                "type": "string"
+              }
+            },
+            "conditions": [
+              {
+                "fn": "isSet",
+                "argv": [
+                  {
+                    "ref": "Endpoint"
+                  }
+                ]
+              },
+              {
+                "fn": "isSet",
+                "argv": [
+                  {
+                    "ref": "Region"
+                  }
+                ]
+              },
+              {
+                "fn": "aws.partition",
+                "argv": [
+                  {
+                    "ref": "Region"
+                  }
+                ],
+                "assign": "PartitionResult"
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "ref": "UseFIPS"
+                  },
+                  true
+                ]
+              }
+            ],
+            "results": [
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: FIPS and custom endpoint are not supported",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": {
+                    "ref": "Endpoint"
+                  },
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://supportauthz-fips.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://supportauthz.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: Missing Region",
+                "type": "error"
+              }
+            ],
+            "root": 2,
+            "nodeCount": 6,
+            "nodes": "/////wAAAAH/////AAAAAAAAAAYAAAADAAAAAQAAAAQF9eEFAAAAAgAAAAUF9eEFAAAAAwX14QMF9eEEAAAAAwX14QEF9eEC"
+          },
+          "smithy.rules#endpointRuleSet": {
+            "version": "1.0",
+            "parameters": {
+              "UseFIPS": {
+                "builtIn": "AWS::UseFIPS",
+                "required": true,
+                "default": false,
+                "documentation": "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
+                "type": "boolean"
+              },
+              "Endpoint": {
+                "builtIn": "SDK::Endpoint",
+                "required": false,
+                "documentation": "Override the endpoint used to send this request",
+                "type": "string"
+              },
+              "Region": {
+                "builtIn": "AWS::Region",
+                "required": false,
+                "documentation": "The AWS region used to dispatch the request.",
+                "type": "string"
+              }
+            },
+            "rules": [
+              {
+                "conditions": [
+                  {
+                    "fn": "isSet",
+                    "argv": [
+                      {
+                        "ref": "Endpoint"
+                      }
+                    ]
+                  }
+                ],
+                "rules": [
+                  {
+                    "conditions": [
+                      {
+                        "fn": "booleanEquals",
+                        "argv": [
+                          {
+                            "ref": "UseFIPS"
+                          },
+                          true
+                        ]
+                      }
+                    ],
+                    "error": "Invalid Configuration: FIPS and custom endpoint are not supported",
+                    "type": "error"
+                  },
+                  {
+                    "conditions": [],
+                    "endpoint": {
+                      "url": {
+                        "ref": "Endpoint"
+                      },
+                      "properties": {},
+                      "headers": {}
+                    },
+                    "type": "endpoint"
+                  }
+                ],
+                "type": "tree"
+              },
+              {
+                "conditions": [],
+                "rules": [
+                  {
+                    "conditions": [
+                      {
+                        "fn": "isSet",
+                        "argv": [
+                          {
+                            "ref": "Region"
+                          }
+                        ]
+                      }
+                    ],
+                    "rules": [
+                      {
+                        "conditions": [
+                          {
+                            "fn": "aws.partition",
+                            "argv": [
+                              {
+                                "ref": "Region"
+                              }
+                            ],
+                            "assign": "PartitionResult"
+                          }
+                        ],
+                        "rules": [
+                          {
+                            "conditions": [
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  {
+                                    "ref": "UseFIPS"
+                                  },
+                                  true
+                                ]
+                              }
+                            ],
+                            "endpoint": {
+                              "url": "https://supportauthz-fips.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                              "properties": {},
+                              "headers": {}
+                            },
+                            "type": "endpoint"
+                          },
+                          {
+                            "conditions": [],
+                            "endpoint": {
+                              "url": "https://supportauthz.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                              "properties": {},
+                              "headers": {}
+                            },
+                            "type": "endpoint"
+                          }
+                        ],
+                        "type": "tree"
+                      }
+                    ],
+                    "type": "tree"
+                  },
+                  {
+                    "conditions": [],
+                    "error": "Invalid Configuration: Missing Region",
+                    "type": "error"
+                  }
+                ],
+                "type": "tree"
+              }
+            ]
+          },
+          "smithy.rules#endpointTests": {
+            "testCases": [
+              {
+                "documentation": "For custom endpoint with region not set and fips disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://example.com"
+                  }
+                },
+                "params": {
+                  "Endpoint": "https://example.com",
+                  "UseFIPS": false
+                }
+              },
+              {
+                "documentation": "For custom endpoint with fips enabled",
+                "expect": {
+                  "error": "Invalid Configuration: FIPS and custom endpoint are not supported"
+                },
+                "params": {
+                  "Endpoint": "https://example.com",
+                  "UseFIPS": true
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://supportauthz-fips.us-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": true
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://supportauthz.us-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false
+                }
+              },
+              {
+                "documentation": "For region cn-northwest-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://supportauthz-fips.cn-northwest-1.api.amazonwebservices.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-northwest-1",
+                  "UseFIPS": true
+                }
+              },
+              {
+                "documentation": "For region cn-northwest-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://supportauthz.cn-northwest-1.api.amazonwebservices.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-northwest-1",
+                  "UseFIPS": false
+                }
+              },
+              {
+                "documentation": "For region us-gov-west-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://supportauthz-fips.us-gov-west-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-west-1",
+                  "UseFIPS": true
+                }
+              },
+              {
+                "documentation": "For region us-gov-west-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://supportauthz.us-gov-west-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-west-1",
+                  "UseFIPS": false
+                }
+              },
+              {
+                "documentation": "Missing region",
+                "expect": {
+                  "error": "Invalid Configuration: Missing Region"
+                }
+              }
+            ],
+            "version": "1.0"
+          }
+        }
+      },
+      "com.amazonaws.supportauthz#SupportCaseDisplayId": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 512
+          },
+          "smithy.api#pattern": "^[a-zA-Z0-9:/-]{1,512}$"
+        }
+      },
+      "com.amazonaws.supportauthz#SupportPermitIdentifier": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 512
+          },
+          "smithy.api#pattern": "^[a-zA-Z0-9:/-]{1,512}$"
+        }
+      },
+      "com.amazonaws.supportauthz#SupportPermitRequest": {
+        "type": "structure",
+        "members": {
+          "createdAt": {
+            "target": "smithy.api#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe timestamp when the request was created.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "permit": {
+            "target": "com.amazonaws.supportauthz#Permit",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe permit definition requested by the operator.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "requestArn": {
+            "target": "com.amazonaws.supportauthz#RequestArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ARN of the permit request.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "status": {
+            "target": "com.amazonaws.supportauthz#SupportPermitRequestStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe current status of the permit request.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "supportCaseDisplayId": {
+            "target": "com.amazonaws.supportauthz#SupportCaseDisplayId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe display identifier of the support case associated with the request.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "updatedAt": {
+            "target": "smithy.api#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe timestamp when the request was last updated.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA permit request from an AWS support operator.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.supportauthz#SupportPermitRequestStatus": {
+        "type": "enum",
+        "members": {
+          "ACCEPTED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe request has been accepted.\u003c/p\u003e",
+              "smithy.api#enumValue": "ACCEPTED"
+            }
+          },
+          "CANCELLED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe request has been cancelled.\u003c/p\u003e",
+              "smithy.api#enumValue": "CANCELLED"
+            }
+          },
+          "PENDING": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe request is pending customer review.\u003c/p\u003e",
+              "smithy.api#enumValue": "PENDING"
+            }
+          },
+          "REJECTED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe request has been rejected.\u003c/p\u003e",
+              "smithy.api#enumValue": "REJECTED"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe status of a support permit request.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.supportauthz#SupportPermitRequests": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.supportauthz#SupportPermitRequest"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 100
+          }
+        }
+      },
+      "com.amazonaws.supportauthz#SupportPermitStatus": {
+        "type": "enum",
+        "members": {
+          "ACTIVE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe permit is active and can be used by the support operator.\u003c/p\u003e",
+              "smithy.api#enumValue": "ACTIVE"
+            }
+          },
+          "DELETING": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe permit is being deleted.\u003c/p\u003e",
+              "smithy.api#enumValue": "DELETING"
+            }
+          },
+          "INACTIVE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe permit is inactive and cannot be used.\u003c/p\u003e",
+              "smithy.api#enumValue": "INACTIVE"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe status of a support permit.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.supportauthz#SupportPermitStatuses": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.supportauthz#SupportPermitStatus"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 5
+          }
+        }
+      },
+      "com.amazonaws.supportauthz#SupportPermitSummaries": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.supportauthz#SupportPermitSummary"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 100
+          }
+        }
+      },
+      "com.amazonaws.supportauthz#SupportPermitSummary": {
+        "type": "structure",
+        "members": {
+          "arn": {
+            "target": "com.amazonaws.supportauthz#Arn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ARN of the support permit.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "createdAt": {
+            "target": "smithy.api#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe timestamp when the permit was created.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "name": {
+            "target": "com.amazonaws.supportauthz#Name",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the support permit.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "permit": {
+            "target": "com.amazonaws.supportauthz#Permit",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe permit definition.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "signingKeyInfo": {
+            "target": "com.amazonaws.supportauthz#SigningKeyInfo",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe signing key information for the permit.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "status": {
+            "target": "com.amazonaws.supportauthz#SupportPermitStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe current status of the support permit.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "supportCaseDisplayId": {
+            "target": "com.amazonaws.supportauthz#SupportCaseDisplayId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe display identifier of the support case associated with the permit.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA summary of a support permit.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.supportauthz#TagKey": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 128
+          }
+        }
+      },
+      "com.amazonaws.supportauthz#TagKeyList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.supportauthz#TagKey"
+        }
+      },
+      "com.amazonaws.supportauthz#TagResource": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.supportauthz#TagResourceInput"
+        },
+        "output": {
+          "target": "com.amazonaws.supportauthz#TagResourceOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.supportauthz#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eAdds or overwrites one or more tags for a support permit resource.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/tags/{resourceArn}",
+            "code": 204
+          }
+        }
+      },
+      "com.amazonaws.supportauthz#TagResourceInput": {
+        "type": "structure",
+        "members": {
+          "resourceArn": {
+            "target": "com.amazonaws.supportauthz#Arn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ARN of the resource to tag.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "tags": {
+            "target": "com.amazonaws.supportauthz#Tags",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe tags to add to the resource. Maximum of 50 tags.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.supportauthz#TagResourceOutput": {
+        "type": "structure",
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.supportauthz#TagValue": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 256
+          }
+        }
+      },
+      "com.amazonaws.supportauthz#Tags": {
+        "type": "map",
+        "key": {
+          "target": "com.amazonaws.supportauthz#TagKey"
+        },
+        "value": {
+          "target": "com.amazonaws.supportauthz#TagValue"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 50
+          }
+        }
+      },
+      "com.amazonaws.supportauthz#ThrottlingException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#required": {}
+            }
+          },
+          "retryAfterSeconds": {
+            "target": "smithy.api#Integer",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe number of seconds to wait before retrying the request.\u003c/p\u003e",
+              "smithy.api#httpHeader": "Retry-After"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe request rate exceeded the allowed limit. Try again later.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 429,
+          "smithy.api#retryable": {
+            "throttling": true
+          }
+        }
+      },
+      "com.amazonaws.supportauthz#UntagResource": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.supportauthz#UntagResourceInput"
+        },
+        "output": {
+          "target": "com.amazonaws.supportauthz#UntagResourceOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.supportauthz#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.supportauthz#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eRemoves one or more tags from a support permit resource.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "DELETE",
+            "uri": "/tags/{resourceArn}",
+            "code": 204
+          },
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.supportauthz#UntagResourceInput": {
+        "type": "structure",
+        "members": {
+          "resourceArn": {
+            "target": "com.amazonaws.supportauthz#Arn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ARN of the resource to untag.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "tagKeys": {
+            "target": "com.amazonaws.supportauthz#TagKeyList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe tag keys to remove from the resource.\u003c/p\u003e",
+              "smithy.api#httpQuery": "tagKeys",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.supportauthz#UntagResourceOutput": {
+        "type": "structure",
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.supportauthz#ValidationException": {
+        "type": "structure",
+        "members": {
+          "fieldList": {
+            "target": "com.amazonaws.supportauthz#ValidationExceptionFieldList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of fields that fail validation. Each entry identifies the field and the reason for the constraint violation.\u003c/p\u003e"
+            }
+          },
+          "message": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe input fails to satisfy the constraints specified by the service.\u003c/p\u003e",
+          "smithy.api#error": "client"
+        }
+      },
+      "com.amazonaws.supportauthz#ValidationExceptionField": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA detailed description of the validation failure.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "path": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA JSONPointer expression to the structure member whose value failed to satisfy the modeled constraints.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eDescribes one specific validation failure for an input member.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.supportauthz#ValidationExceptionFieldList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.supportauthz#ValidationExceptionField"
+        }
+      }
+    }
+  }
+}

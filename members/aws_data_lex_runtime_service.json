@@ -1,0 +1,2903 @@
+{
+  "schema_source": "smithy",
+  "mode": "data_source",
+  "auth": {
+    "Type": "",
+    "Params": null
+  },
+  "base_url": "https://aws.example.invalid",
+  "retry": {
+    "MaxAttempts": 0,
+    "InitialBackoff": "",
+    "MaxBackoff": "",
+    "Jitter": null,
+    "RespectRetryAfter": null,
+    "RateLimitResetHeader": ""
+  },
+  "timeouts": {
+    "Create": "",
+    "Read": "",
+    "Update": "",
+    "Delete": "",
+    "Default": ""
+  },
+  "wire_name": "aws",
+  "raw_spec": {
+    "smithy": "2.0",
+    "metadata": {
+      "suppressions": [
+        {
+          "id": "HttpMethodSemantics",
+          "namespace": "*"
+        },
+        {
+          "id": "HttpResponseCodeSemantics",
+          "namespace": "*"
+        },
+        {
+          "id": "PaginatedTrait",
+          "namespace": "*"
+        },
+        {
+          "id": "HttpHeaderTrait",
+          "namespace": "*"
+        },
+        {
+          "id": "HttpUriConflict",
+          "namespace": "*"
+        },
+        {
+          "id": "Service",
+          "namespace": "*"
+        }
+      ]
+    },
+    "shapes": {
+      "com.amazonaws.lexruntimeservice#AWSDeepSenseRunTimeService": {
+        "type": "service",
+        "version": "2016-11-28",
+        "operations": [
+          {
+            "target": "com.amazonaws.lexruntimeservice#DeleteSession"
+          },
+          {
+            "target": "com.amazonaws.lexruntimeservice#GetSession"
+          },
+          {
+            "target": "com.amazonaws.lexruntimeservice#PostContent"
+          },
+          {
+            "target": "com.amazonaws.lexruntimeservice#PostText"
+          },
+          {
+            "target": "com.amazonaws.lexruntimeservice#PutSession"
+          }
+        ],
+        "traits": {
+          "aws.api#service": {
+            "sdkId": "Lex Runtime Service",
+            "arnNamespace": "lex",
+            "cloudFormationName": "LexRuntimeService",
+            "cloudTrailEventSource": "lexruntimeservice.amazonaws.com",
+            "docId": "runtime.lex-2016-11-28",
+            "endpointPrefix": "runtime.lex"
+          },
+          "aws.auth#sigv4": {
+            "name": "lex"
+          },
+          "aws.protocols#restJson1": {},
+          "smithy.api#documentation": "\u003cp\u003eAmazon Lex provides both build and runtime endpoints. Each endpoint\n      provides a set of operations (API). Your conversational bot uses the\n      runtime API to understand user utterances (user input text or voice). For\n      example, suppose a user says \"I want pizza\", your bot sends this input to\n      Amazon Lex using the runtime API. Amazon Lex recognizes that the user\n      request is for the OrderPizza intent (one of the intents defined in the\n      bot). Then Amazon Lex engages in user conversation on behalf of the bot to\n      elicit required information (slot values, such as pizza size and crust\n      type), and then performs fulfillment activity (that you configured when\n      you created the bot). You use the build-time API to create and manage your\n      Amazon Lex bot. For a list of build-time operations, see the build-time\n      API, . \u003c/p\u003e",
+          "smithy.api#title": "Amazon Lex Runtime Service",
+          "smithy.rules#endpointBdd": {
+            "version": "1.1",
+            "parameters": {
+              "Region": {
+                "builtIn": "AWS::Region",
+                "required": false,
+                "documentation": "The AWS region used to dispatch the request.",
+                "type": "string"
+              },
+              "UseDualStack": {
+                "builtIn": "AWS::UseDualStack",
+                "required": true,
+                "default": false,
+                "documentation": "When true, use the dual-stack endpoint. If the configured endpoint does not support dual-stack, dispatching the request MAY return an error.",
+                "type": "boolean"
+              },
+              "UseFIPS": {
+                "builtIn": "AWS::UseFIPS",
+                "required": true,
+                "default": false,
+                "documentation": "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
+                "type": "boolean"
+              },
+              "Endpoint": {
+                "builtIn": "SDK::Endpoint",
+                "required": false,
+                "documentation": "Override the endpoint used to send this request",
+                "type": "string"
+              }
+            },
+            "conditions": [
+              {
+                "fn": "isSet",
+                "argv": [
+                  {
+                    "ref": "Endpoint"
+                  }
+                ]
+              },
+              {
+                "fn": "isSet",
+                "argv": [
+                  {
+                    "ref": "Region"
+                  }
+                ]
+              },
+              {
+                "fn": "aws.partition",
+                "argv": [
+                  {
+                    "ref": "Region"
+                  }
+                ],
+                "assign": "PartitionResult"
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "ref": "UseFIPS"
+                  },
+                  true
+                ]
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "ref": "UseDualStack"
+                  },
+                  true
+                ]
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "fn": "getAttr",
+                    "argv": [
+                      {
+                        "ref": "PartitionResult"
+                      },
+                      "supportsDualStack"
+                    ]
+                  },
+                  true
+                ]
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "fn": "getAttr",
+                    "argv": [
+                      {
+                        "ref": "PartitionResult"
+                      },
+                      "supportsFIPS"
+                    ]
+                  },
+                  true
+                ]
+              },
+              {
+                "fn": "stringEquals",
+                "argv": [
+                  {
+                    "fn": "getAttr",
+                    "argv": [
+                      {
+                        "ref": "PartitionResult"
+                      },
+                      "name"
+                    ]
+                  },
+                  "aws"
+                ]
+              },
+              {
+                "fn": "stringEquals",
+                "argv": [
+                  {
+                    "fn": "getAttr",
+                    "argv": [
+                      {
+                        "ref": "PartitionResult"
+                      },
+                      "name"
+                    ]
+                  },
+                  "aws-us-gov"
+                ]
+              }
+            ],
+            "results": [
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: FIPS and custom endpoint are not supported",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: Dualstack and custom endpoint are not supported",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": {
+                    "ref": "Endpoint"
+                  },
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://runtime.lex-fips.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "FIPS and DualStack are enabled, but this partition does not support one or both",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://runtime-fips.lex.{Region}.amazonaws.com",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://runtime.lex-fips.{Region}.{PartitionResult#dnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "FIPS is enabled but this partition does not support FIPS",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://runtime.lex.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "DualStack is enabled but this partition does not support DualStack",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://runtime.lex.{Region}.amazonaws.com",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://runtime.lex.{Region}.{PartitionResult#dnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: Missing Region",
+                "type": "error"
+              }
+            ],
+            "root": 2,
+            "nodeCount": 17,
+            "nodes": "/////wAAAAH/////AAAAAAAAABAAAAADAAAAAQAAAAQF9eENAAAAAgAAAAUF9eENAAAAAwAAAAoAAAAGAAAABAAAAAkAAAAHAAAABwX14QsAAAAIAAAACAX14QsF9eEMAAAABQX14QkF9eEKAAAABAAAAA4AAAALAAAABgAAAAwF9eEIAAAABwX14QYAAAANAAAACAX14QYF9eEHAAAABQAAAA8F9eEFAAAABgX14QQF9eEFAAAAAwX14QEAAAARAAAABAX14QIF9eED"
+          },
+          "smithy.rules#endpointRuleSet": {
+            "version": "1.0",
+            "parameters": {
+              "Region": {
+                "builtIn": "AWS::Region",
+                "required": false,
+                "documentation": "The AWS region used to dispatch the request.",
+                "type": "string"
+              },
+              "UseDualStack": {
+                "builtIn": "AWS::UseDualStack",
+                "required": true,
+                "default": false,
+                "documentation": "When true, use the dual-stack endpoint. If the configured endpoint does not support dual-stack, dispatching the request MAY return an error.",
+                "type": "boolean"
+              },
+              "UseFIPS": {
+                "builtIn": "AWS::UseFIPS",
+                "required": true,
+                "default": false,
+                "documentation": "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
+                "type": "boolean"
+              },
+              "Endpoint": {
+                "builtIn": "SDK::Endpoint",
+                "required": false,
+                "documentation": "Override the endpoint used to send this request",
+                "type": "string"
+              }
+            },
+            "rules": [
+              {
+                "conditions": [
+                  {
+                    "fn": "isSet",
+                    "argv": [
+                      {
+                        "ref": "Endpoint"
+                      }
+                    ]
+                  }
+                ],
+                "rules": [
+                  {
+                    "conditions": [
+                      {
+                        "fn": "booleanEquals",
+                        "argv": [
+                          {
+                            "ref": "UseFIPS"
+                          },
+                          true
+                        ]
+                      }
+                    ],
+                    "error": "Invalid Configuration: FIPS and custom endpoint are not supported",
+                    "type": "error"
+                  },
+                  {
+                    "conditions": [
+                      {
+                        "fn": "booleanEquals",
+                        "argv": [
+                          {
+                            "ref": "UseDualStack"
+                          },
+                          true
+                        ]
+                      }
+                    ],
+                    "error": "Invalid Configuration: Dualstack and custom endpoint are not supported",
+                    "type": "error"
+                  },
+                  {
+                    "conditions": [],
+                    "endpoint": {
+                      "url": {
+                        "ref": "Endpoint"
+                      },
+                      "properties": {},
+                      "headers": {}
+                    },
+                    "type": "endpoint"
+                  }
+                ],
+                "type": "tree"
+              },
+              {
+                "conditions": [
+                  {
+                    "fn": "isSet",
+                    "argv": [
+                      {
+                        "ref": "Region"
+                      }
+                    ]
+                  }
+                ],
+                "rules": [
+                  {
+                    "conditions": [
+                      {
+                        "fn": "aws.partition",
+                        "argv": [
+                          {
+                            "ref": "Region"
+                          }
+                        ],
+                        "assign": "PartitionResult"
+                      }
+                    ],
+                    "rules": [
+                      {
+                        "conditions": [
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseFIPS"
+                              },
+                              true
+                            ]
+                          },
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseDualStack"
+                              },
+                              true
+                            ]
+                          }
+                        ],
+                        "rules": [
+                          {
+                            "conditions": [
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  true,
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsFIPS"
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  true,
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsDualStack"
+                                    ]
+                                  }
+                                ]
+                              }
+                            ],
+                            "rules": [
+                              {
+                                "conditions": [],
+                                "endpoint": {
+                                  "url": "https://runtime.lex-fips.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                                  "properties": {},
+                                  "headers": {}
+                                },
+                                "type": "endpoint"
+                              }
+                            ],
+                            "type": "tree"
+                          },
+                          {
+                            "conditions": [],
+                            "error": "FIPS and DualStack are enabled, but this partition does not support one or both",
+                            "type": "error"
+                          }
+                        ],
+                        "type": "tree"
+                      },
+                      {
+                        "conditions": [
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseFIPS"
+                              },
+                              true
+                            ]
+                          }
+                        ],
+                        "rules": [
+                          {
+                            "conditions": [
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsFIPS"
+                                    ]
+                                  },
+                                  true
+                                ]
+                              }
+                            ],
+                            "rules": [
+                              {
+                                "conditions": [
+                                  {
+                                    "fn": "stringEquals",
+                                    "argv": [
+                                      {
+                                        "fn": "getAttr",
+                                        "argv": [
+                                          {
+                                            "ref": "PartitionResult"
+                                          },
+                                          "name"
+                                        ]
+                                      },
+                                      "aws"
+                                    ]
+                                  }
+                                ],
+                                "endpoint": {
+                                  "url": "https://runtime-fips.lex.{Region}.amazonaws.com",
+                                  "properties": {},
+                                  "headers": {}
+                                },
+                                "type": "endpoint"
+                              },
+                              {
+                                "conditions": [
+                                  {
+                                    "fn": "stringEquals",
+                                    "argv": [
+                                      {
+                                        "fn": "getAttr",
+                                        "argv": [
+                                          {
+                                            "ref": "PartitionResult"
+                                          },
+                                          "name"
+                                        ]
+                                      },
+                                      "aws-us-gov"
+                                    ]
+                                  }
+                                ],
+                                "endpoint": {
+                                  "url": "https://runtime-fips.lex.{Region}.amazonaws.com",
+                                  "properties": {},
+                                  "headers": {}
+                                },
+                                "type": "endpoint"
+                              },
+                              {
+                                "conditions": [],
+                                "endpoint": {
+                                  "url": "https://runtime.lex-fips.{Region}.{PartitionResult#dnsSuffix}",
+                                  "properties": {},
+                                  "headers": {}
+                                },
+                                "type": "endpoint"
+                              }
+                            ],
+                            "type": "tree"
+                          },
+                          {
+                            "conditions": [],
+                            "error": "FIPS is enabled but this partition does not support FIPS",
+                            "type": "error"
+                          }
+                        ],
+                        "type": "tree"
+                      },
+                      {
+                        "conditions": [
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseDualStack"
+                              },
+                              true
+                            ]
+                          }
+                        ],
+                        "rules": [
+                          {
+                            "conditions": [
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  true,
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsDualStack"
+                                    ]
+                                  }
+                                ]
+                              }
+                            ],
+                            "rules": [
+                              {
+                                "conditions": [],
+                                "endpoint": {
+                                  "url": "https://runtime.lex.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                                  "properties": {},
+                                  "headers": {}
+                                },
+                                "type": "endpoint"
+                              }
+                            ],
+                            "type": "tree"
+                          },
+                          {
+                            "conditions": [],
+                            "error": "DualStack is enabled but this partition does not support DualStack",
+                            "type": "error"
+                          }
+                        ],
+                        "type": "tree"
+                      },
+                      {
+                        "conditions": [
+                          {
+                            "fn": "stringEquals",
+                            "argv": [
+                              "aws",
+                              {
+                                "fn": "getAttr",
+                                "argv": [
+                                  {
+                                    "ref": "PartitionResult"
+                                  },
+                                  "name"
+                                ]
+                              }
+                            ]
+                          }
+                        ],
+                        "endpoint": {
+                          "url": "https://runtime.lex.{Region}.amazonaws.com",
+                          "properties": {},
+                          "headers": {}
+                        },
+                        "type": "endpoint"
+                      },
+                      {
+                        "conditions": [
+                          {
+                            "fn": "stringEquals",
+                            "argv": [
+                              "aws-us-gov",
+                              {
+                                "fn": "getAttr",
+                                "argv": [
+                                  {
+                                    "ref": "PartitionResult"
+                                  },
+                                  "name"
+                                ]
+                              }
+                            ]
+                          }
+                        ],
+                        "endpoint": {
+                          "url": "https://runtime.lex.{Region}.amazonaws.com",
+                          "properties": {},
+                          "headers": {}
+                        },
+                        "type": "endpoint"
+                      },
+                      {
+                        "conditions": [],
+                        "endpoint": {
+                          "url": "https://runtime.lex.{Region}.{PartitionResult#dnsSuffix}",
+                          "properties": {},
+                          "headers": {}
+                        },
+                        "type": "endpoint"
+                      }
+                    ],
+                    "type": "tree"
+                  }
+                ],
+                "type": "tree"
+              },
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: Missing Region",
+                "type": "error"
+              }
+            ]
+          },
+          "smithy.rules#endpointTests": {
+            "testCases": [
+              {
+                "documentation": "For region ap-northeast-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://runtime.lex.ap-northeast-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ap-northeast-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region ap-southeast-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://runtime.lex.ap-southeast-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ap-southeast-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region ap-southeast-2 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://runtime.lex.ap-southeast-2.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ap-southeast-2",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region eu-central-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://runtime.lex.eu-central-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "eu-central-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region eu-west-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://runtime.lex.eu-west-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "eu-west-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region eu-west-2 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://runtime.lex.eu-west-2.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "eu-west-2",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://runtime.lex.us-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://runtime-fips.lex.us-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-west-2 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://runtime.lex.us-west-2.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-west-2",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-west-2 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://runtime-fips.lex.us-west-2.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-west-2",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://runtime.lex-fips.us-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://runtime.lex.us-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://runtime.lex-fips.cn-north-1.api.amazonwebservices.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": true,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://runtime.lex-fips.cn-north-1.amazonaws.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://runtime.lex.cn-north-1.api.amazonwebservices.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://runtime.lex.cn-north-1.amazonaws.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-gov-west-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://runtime.lex.us-gov-west-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-west-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-gov-west-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://runtime-fips.lex.us-gov-west-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-west-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://runtime.lex-fips.us-gov-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://runtime-fips.lex.us-gov-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://runtime.lex.us-gov-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://runtime.lex.us-gov-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-iso-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://runtime.lex-fips.us-iso-east-1.c2s.ic.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-iso-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-iso-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://runtime.lex.us-iso-east-1.c2s.ic.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-iso-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-isob-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://runtime.lex-fips.us-isob-east-1.sc2s.sgov.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-isob-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-isob-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://runtime.lex.us-isob-east-1.sc2s.sgov.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-isob-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For custom endpoint with region set and fips disabled and dualstack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://example.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "For custom endpoint with region not set and fips disabled and dualstack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://example.com"
+                  }
+                },
+                "params": {
+                  "UseFIPS": false,
+                  "UseDualStack": false,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "For custom endpoint with fips enabled and dualstack disabled",
+                "expect": {
+                  "error": "Invalid Configuration: FIPS and custom endpoint are not supported"
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "For custom endpoint with fips disabled and dualstack enabled",
+                "expect": {
+                  "error": "Invalid Configuration: Dualstack and custom endpoint are not supported"
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "Missing region",
+                "expect": {
+                  "error": "Invalid Configuration: Missing Region"
+                }
+              }
+            ],
+            "version": "1.0"
+          }
+        }
+      },
+      "com.amazonaws.lexruntimeservice#Accept": {
+        "type": "string"
+      },
+      "com.amazonaws.lexruntimeservice#ActiveContext": {
+        "type": "structure",
+        "members": {
+          "name": {
+            "target": "com.amazonaws.lexruntimeservice#ActiveContextName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the context.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "parameters": {
+            "target": "com.amazonaws.lexruntimeservice#ActiveContextParametersMap",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eState variables for the current context. You can use these values as\n      default values for slots in subsequent events.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "timeToLive": {
+            "target": "com.amazonaws.lexruntimeservice#ActiveContextTimeToLive",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe length of time or number of turns that a context remains\n      active.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA context is a variable that contains information about the current\n      state of the conversation between a user and Amazon Lex. Context can be set\n      automatically by Amazon Lex when an intent is fulfilled, or it can be set at\n      runtime using the \u003ccode\u003ePutContent\u003c/code\u003e, \u003ccode\u003ePutText\u003c/code\u003e, or\n        \u003ccode\u003ePutSession\u003c/code\u003e operation.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.lexruntimeservice#ActiveContextName": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 100
+          },
+          "smithy.api#pattern": "^([A-Za-z]_?)+$"
+        }
+      },
+      "com.amazonaws.lexruntimeservice#ActiveContextParametersMap": {
+        "type": "map",
+        "key": {
+          "target": "com.amazonaws.lexruntimeservice#ParameterName"
+        },
+        "value": {
+          "target": "com.amazonaws.lexruntimeservice#Text"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 10
+          }
+        }
+      },
+      "com.amazonaws.lexruntimeservice#ActiveContextTimeToLive": {
+        "type": "structure",
+        "members": {
+          "timeToLiveInSeconds": {
+            "target": "com.amazonaws.lexruntimeservice#ActiveContextTimeToLiveInSeconds",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe number of seconds that the context should be active after it is\n      first sent in a \u003ccode\u003ePostContent\u003c/code\u003e or \u003ccode\u003ePostText\u003c/code\u003e\n      response. You can set the value between 5 and 86,400 seconds (24\n      hours).\u003c/p\u003e"
+            }
+          },
+          "turnsToLive": {
+            "target": "com.amazonaws.lexruntimeservice#ActiveContextTurnsToLive",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe number of conversation turns that the context should be active. A\n      conversation turn is one \u003ccode\u003ePostContent\u003c/code\u003e or \u003ccode\u003ePostText\u003c/code\u003e\n      request and the corresponding response from Amazon Lex.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe length of time or number of turns that a context remains\n      active.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.lexruntimeservice#ActiveContextTimeToLiveInSeconds": {
+        "type": "integer",
+        "traits": {
+          "smithy.api#range": {
+            "min": 5,
+            "max": 86400
+          }
+        }
+      },
+      "com.amazonaws.lexruntimeservice#ActiveContextTurnsToLive": {
+        "type": "integer",
+        "traits": {
+          "smithy.api#range": {
+            "min": 1,
+            "max": 20
+          }
+        }
+      },
+      "com.amazonaws.lexruntimeservice#ActiveContextsList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.lexruntimeservice#ActiveContext"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 20
+          },
+          "smithy.api#sensitive": {}
+        }
+      },
+      "com.amazonaws.lexruntimeservice#BadGatewayException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.lexruntimeservice#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eEither the Amazon Lex bot is still building, or one of the dependent\n      services (Amazon Polly, AWS Lambda) failed with an internal service\n      error.\u003c/p\u003e",
+          "smithy.api#error": "server",
+          "smithy.api#httpError": 502
+        }
+      },
+      "com.amazonaws.lexruntimeservice#BadRequestException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "com.amazonaws.lexruntimeservice#String"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003e Request validation failed, there is no usable message in the context,\n      or the bot build failed, is still in progress, or contains unbuilt\n      changes. \u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.lexruntimeservice#BlobStream": {
+        "type": "blob",
+        "traits": {
+          "smithy.api#streaming": {}
+        }
+      },
+      "com.amazonaws.lexruntimeservice#BotAlias": {
+        "type": "string"
+      },
+      "com.amazonaws.lexruntimeservice#BotName": {
+        "type": "string"
+      },
+      "com.amazonaws.lexruntimeservice#BotVersion": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 64
+          },
+          "smithy.api#pattern": "^[0-9]+|\\$LATEST$"
+        }
+      },
+      "com.amazonaws.lexruntimeservice#Button": {
+        "type": "structure",
+        "members": {
+          "text": {
+            "target": "com.amazonaws.lexruntimeservice#ButtonTextStringWithLength",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eText that is visible to the user on the button.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "value": {
+            "target": "com.amazonaws.lexruntimeservice#ButtonValueStringWithLength",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe value sent to Amazon Lex when a user chooses the button. For\n      example, consider button text \"NYC.\" When the user chooses the button, the\n      value sent can be \"New York City.\"\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eRepresents an option to be shown on the client platform (Facebook,\n      Slack, etc.)\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.lexruntimeservice#ButtonTextStringWithLength": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 15
+          }
+        }
+      },
+      "com.amazonaws.lexruntimeservice#ButtonValueStringWithLength": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 1000
+          }
+        }
+      },
+      "com.amazonaws.lexruntimeservice#ConfirmationStatus": {
+        "type": "enum",
+        "members": {
+          "CONFIRMED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Confirmed"
+            }
+          },
+          "DENIED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Denied"
+            }
+          },
+          "NONE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "None"
+            }
+          }
+        }
+      },
+      "com.amazonaws.lexruntimeservice#ConflictException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "com.amazonaws.lexruntimeservice#String"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003e Two clients are using the same AWS account, Amazon Lex bot, and user\n      ID. \u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 409
+        }
+      },
+      "com.amazonaws.lexruntimeservice#ContentType": {
+        "type": "enum",
+        "members": {
+          "GENERIC": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "application/vnd.amazonaws.card.generic"
+            }
+          }
+        }
+      },
+      "com.amazonaws.lexruntimeservice#DeleteSession": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.lexruntimeservice#DeleteSessionRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.lexruntimeservice#DeleteSessionResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.lexruntimeservice#BadRequestException"
+          },
+          {
+            "target": "com.amazonaws.lexruntimeservice#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.lexruntimeservice#InternalFailureException"
+          },
+          {
+            "target": "com.amazonaws.lexruntimeservice#LimitExceededException"
+          },
+          {
+            "target": "com.amazonaws.lexruntimeservice#NotFoundException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eRemoves session information for a specified bot, alias, and user ID.\n    \u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "DELETE",
+            "uri": "/bot/{botName}/alias/{botAlias}/user/{userId}/session",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.lexruntimeservice#DeleteSessionRequest": {
+        "type": "structure",
+        "members": {
+          "botAlias": {
+            "target": "com.amazonaws.lexruntimeservice#BotAlias",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe alias in use for the bot that contains the session data.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "botName": {
+            "target": "com.amazonaws.lexruntimeservice#BotName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the bot that contains the session data.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "userId": {
+            "target": "com.amazonaws.lexruntimeservice#UserId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier of the user associated with the session data.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.lexruntimeservice#DeleteSessionResponse": {
+        "type": "structure",
+        "members": {
+          "botAlias": {
+            "target": "com.amazonaws.lexruntimeservice#BotAlias",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe alias in use for the bot associated with the session data.\u003c/p\u003e"
+            }
+          },
+          "botName": {
+            "target": "com.amazonaws.lexruntimeservice#BotName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the bot associated with the session data.\u003c/p\u003e"
+            }
+          },
+          "sessionId": {
+            "target": "com.amazonaws.lexruntimeservice#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier for the session.\u003c/p\u003e"
+            }
+          },
+          "userId": {
+            "target": "com.amazonaws.lexruntimeservice#UserId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID of the client application user.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.lexruntimeservice#DependencyFailedException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.lexruntimeservice#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003e One of the dependencies, such as AWS Lambda or Amazon Polly, threw an\n      exception. For example, \u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003eIf Amazon Lex does not have sufficient permissions to call a Lambda\n          function.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eIf a Lambda function takes longer than 30 seconds to\n          execute.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eIf a fulfillment Lambda function returns a \u003ccode\u003eDelegate\u003c/code\u003e\n          dialog action without removing any slot values.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 424
+        }
+      },
+      "com.amazonaws.lexruntimeservice#DialogAction": {
+        "type": "structure",
+        "members": {
+          "fulfillmentState": {
+            "target": "com.amazonaws.lexruntimeservice#FulfillmentState",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe fulfillment state of the intent. The possible values are:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eFailed\u003c/code\u003e - The Lambda function associated with the\n          intent failed to fulfill the intent.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eFulfilled\u003c/code\u003e - The intent has fulfilled by the Lambda\n          function associated with the intent. \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eReadyForFulfillment\u003c/code\u003e - All of the information\n          necessary for the intent is present and the intent ready to be\n          fulfilled by the client application.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e"
+            }
+          },
+          "intentName": {
+            "target": "com.amazonaws.lexruntimeservice#IntentName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the intent.\u003c/p\u003e"
+            }
+          },
+          "message": {
+            "target": "com.amazonaws.lexruntimeservice#Text",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe message that should be shown to the user. If you don't specify a\n      message, Amazon Lex will use the message configured for the intent.\u003c/p\u003e"
+            }
+          },
+          "messageFormat": {
+            "target": "com.amazonaws.lexruntimeservice#MessageFormatType",
+            "traits": {
+              "smithy.api#documentation": "\u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003ePlainText\u003c/code\u003e - The message contains plain UTF-8\n          text.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eCustomPayload\u003c/code\u003e - The message is a custom format for\n          the client.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eSSML\u003c/code\u003e - The message contains text formatted for voice\n          output.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eComposite\u003c/code\u003e - The message contains an escaped JSON\n          object containing one or more messages. For more information, see\n            \u003ca href=\"https://docs.aws.amazon.com/lex/latest/dg/howitworks-manage-prompts.html\"\u003eMessage Groups\u003c/a\u003e. \u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e"
+            }
+          },
+          "slotToElicit": {
+            "target": "com.amazonaws.lexruntimeservice#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the slot that should be elicited from the user.\u003c/p\u003e"
+            }
+          },
+          "slots": {
+            "target": "com.amazonaws.lexruntimeservice#StringMap",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eMap of the slots that have been gathered and their values. \u003c/p\u003e"
+            }
+          },
+          "type": {
+            "target": "com.amazonaws.lexruntimeservice#DialogActionType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe next action that the bot should take in its interaction with the\n      user. The possible values are:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eConfirmIntent\u003c/code\u003e - The next action is asking the user if\n          the intent is complete and ready to be fulfilled. This is a yes/no\n          question such as \"Place the order?\"\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eClose\u003c/code\u003e - Indicates that the there will not be a\n          response from the user. For example, the statement \"Your order has\n          been placed\" does not require a response.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eDelegate\u003c/code\u003e - The next action is determined by\n          Amazon Lex.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eElicitIntent\u003c/code\u003e - The next action is to determine the\n          intent that the user wants to fulfill.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eElicitSlot\u003c/code\u003e - The next action is to elicit a slot\n          value from the user.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eDescribes the next action that the bot should take in its interaction\n      with the user and provides information about the context in which the\n      action takes place. Use the \u003ccode\u003eDialogAction\u003c/code\u003e data type to set the\n      interaction to a specific state, or to return the interaction to a\n      previous state.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.lexruntimeservice#DialogActionType": {
+        "type": "enum",
+        "members": {
+          "CLOSE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Close"
+            }
+          },
+          "CONFIRM_INTENT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ConfirmIntent"
+            }
+          },
+          "DELEGATE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Delegate"
+            }
+          },
+          "ELICIT_INTENT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ElicitIntent"
+            }
+          },
+          "ELICIT_SLOT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ElicitSlot"
+            }
+          }
+        }
+      },
+      "com.amazonaws.lexruntimeservice#DialogState": {
+        "type": "enum",
+        "members": {
+          "CONFIRM_INTENT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ConfirmIntent"
+            }
+          },
+          "ELICIT_INTENT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ElicitIntent"
+            }
+          },
+          "ELICIT_SLOT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ElicitSlot"
+            }
+          },
+          "FAILED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Failed"
+            }
+          },
+          "FULFILLED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Fulfilled"
+            }
+          },
+          "READY_FOR_FULFILLMENT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ReadyForFulfillment"
+            }
+          }
+        }
+      },
+      "com.amazonaws.lexruntimeservice#Double": {
+        "type": "double",
+        "traits": {
+          "smithy.api#default": 0
+        }
+      },
+      "com.amazonaws.lexruntimeservice#ErrorMessage": {
+        "type": "string"
+      },
+      "com.amazonaws.lexruntimeservice#FulfillmentState": {
+        "type": "enum",
+        "members": {
+          "FAILED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Failed"
+            }
+          },
+          "FULFILLED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Fulfilled"
+            }
+          },
+          "READY_FOR_FULFILLMENT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ReadyForFulfillment"
+            }
+          }
+        }
+      },
+      "com.amazonaws.lexruntimeservice#GenericAttachment": {
+        "type": "structure",
+        "members": {
+          "attachmentLinkUrl": {
+            "target": "com.amazonaws.lexruntimeservice#StringUrlWithLength",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe URL of an attachment to the response card.\u003c/p\u003e"
+            }
+          },
+          "buttons": {
+            "target": "com.amazonaws.lexruntimeservice#listOfButtons",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe list of options to show to the user.\u003c/p\u003e"
+            }
+          },
+          "imageUrl": {
+            "target": "com.amazonaws.lexruntimeservice#StringUrlWithLength",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe URL of an image that is displayed to the user.\u003c/p\u003e"
+            }
+          },
+          "subTitle": {
+            "target": "com.amazonaws.lexruntimeservice#StringWithLength",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe subtitle shown below the title.\u003c/p\u003e"
+            }
+          },
+          "title": {
+            "target": "com.amazonaws.lexruntimeservice#StringWithLength",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe title of the option.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eRepresents an option rendered to the user when a prompt is shown. It\n      could be an image, a button, a link, or text. \u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.lexruntimeservice#GetSession": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.lexruntimeservice#GetSessionRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.lexruntimeservice#GetSessionResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.lexruntimeservice#BadRequestException"
+          },
+          {
+            "target": "com.amazonaws.lexruntimeservice#InternalFailureException"
+          },
+          {
+            "target": "com.amazonaws.lexruntimeservice#LimitExceededException"
+          },
+          {
+            "target": "com.amazonaws.lexruntimeservice#NotFoundException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eReturns session information for a specified bot, alias, and user\n      ID.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "GET",
+            "uri": "/bot/{botName}/alias/{botAlias}/user/{userId}/session",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.lexruntimeservice#GetSessionRequest": {
+        "type": "structure",
+        "members": {
+          "botAlias": {
+            "target": "com.amazonaws.lexruntimeservice#BotAlias",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe alias in use for the bot that contains the session data.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "botName": {
+            "target": "com.amazonaws.lexruntimeservice#BotName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the bot that contains the session data.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "checkpointLabelFilter": {
+            "target": "com.amazonaws.lexruntimeservice#IntentSummaryCheckpointLabel",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA string used to filter the intents returned in the\n        \u003ccode\u003erecentIntentSummaryView\u003c/code\u003e structure. \u003c/p\u003e\n         \u003cp\u003eWhen you specify a filter, only intents with their\n        \u003ccode\u003echeckpointLabel\u003c/code\u003e field set to that string are\n      returned.\u003c/p\u003e",
+              "smithy.api#httpQuery": "checkpointLabelFilter"
+            }
+          },
+          "userId": {
+            "target": "com.amazonaws.lexruntimeservice#UserId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID of the client application user. Amazon Lex uses this to identify a\n      user's conversation with your bot. \u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.lexruntimeservice#GetSessionResponse": {
+        "type": "structure",
+        "members": {
+          "activeContexts": {
+            "target": "com.amazonaws.lexruntimeservice#ActiveContextsList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of active contexts for the session. A context can be set when\n      an intent is fulfilled or by calling the \u003ccode\u003ePostContent\u003c/code\u003e,\n        \u003ccode\u003ePostText\u003c/code\u003e, or \u003ccode\u003ePutSession\u003c/code\u003e operation.\u003c/p\u003e\n         \u003cp\u003eYou can use a context to control the intents that can follow up an\n      intent, or to modify the operation of your application.\u003c/p\u003e"
+            }
+          },
+          "dialogAction": {
+            "target": "com.amazonaws.lexruntimeservice#DialogAction",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eDescribes the current state of the bot.\u003c/p\u003e"
+            }
+          },
+          "recentIntentSummaryView": {
+            "target": "com.amazonaws.lexruntimeservice#IntentSummaryList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn array of information about the intents used in the session. The\n      array can contain a maximum of three summaries. If more than three intents\n      are used in the session, the \u003ccode\u003erecentIntentSummaryView\u003c/code\u003e\n      operation contains information about the last three intents used.\u003c/p\u003e\n         \u003cp\u003eIf you set the \u003ccode\u003echeckpointLabelFilter\u003c/code\u003e parameter in the\n      request, the array contains only the intents with the specified\n      label.\u003c/p\u003e"
+            }
+          },
+          "sessionAttributes": {
+            "target": "com.amazonaws.lexruntimeservice#StringMap",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eMap of key/value pairs representing the session-specific context\n      information. It contains application information passed between Amazon Lex and\n      a client application.\u003c/p\u003e"
+            }
+          },
+          "sessionId": {
+            "target": "com.amazonaws.lexruntimeservice#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA unique identifier for the session.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.lexruntimeservice#HttpContentType": {
+        "type": "string"
+      },
+      "com.amazonaws.lexruntimeservice#IntentConfidence": {
+        "type": "structure",
+        "members": {
+          "score": {
+            "target": "com.amazonaws.lexruntimeservice#Double",
+            "traits": {
+              "smithy.api#default": 0,
+              "smithy.api#documentation": "\u003cp\u003eA score that indicates how confident Amazon Lex is that an intent satisfies\n      the user's intent. Ranges between 0.00 and 1.00. Higher scores indicate\n      higher confidence.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eProvides a score that indicates the confidence that Amazon Lex has that an\n      intent is the one that satisfies the user's intent.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.lexruntimeservice#IntentList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.lexruntimeservice#PredictedIntent"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 4
+          }
+        }
+      },
+      "com.amazonaws.lexruntimeservice#IntentName": {
+        "type": "string"
+      },
+      "com.amazonaws.lexruntimeservice#IntentSummary": {
+        "type": "structure",
+        "members": {
+          "checkpointLabel": {
+            "target": "com.amazonaws.lexruntimeservice#IntentSummaryCheckpointLabel",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA user-defined label that identifies a particular intent. You can use\n      this label to return to a previous intent. \u003c/p\u003e\n         \u003cp\u003eUse the \u003ccode\u003echeckpointLabelFilter\u003c/code\u003e parameter of the\n        \u003ccode\u003eGetSessionRequest\u003c/code\u003e operation to filter the intents returned\n      by the operation to those with only the specified label.\u003c/p\u003e"
+            }
+          },
+          "confirmationStatus": {
+            "target": "com.amazonaws.lexruntimeservice#ConfirmationStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe status of the intent after the user responds to the confirmation\n      prompt. If the user confirms the intent, Amazon Lex sets this field to\n        \u003ccode\u003eConfirmed\u003c/code\u003e. If the user denies the intent, Amazon Lex sets this\n      value to \u003ccode\u003eDenied\u003c/code\u003e. The possible values are:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eConfirmed\u003c/code\u003e - The user has responded \"Yes\" to the\n          confirmation prompt, confirming that the intent is complete and that\n          it is ready to be fulfilled.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eDenied\u003c/code\u003e - The user has responded \"No\" to the\n          confirmation prompt.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eNone\u003c/code\u003e - The user has never been prompted for\n          confirmation; or, the user was prompted but did not confirm or deny\n          the prompt.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e"
+            }
+          },
+          "dialogActionType": {
+            "target": "com.amazonaws.lexruntimeservice#DialogActionType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe next action that the bot should take in its interaction with the\n      user. The possible values are:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eConfirmIntent\u003c/code\u003e - The next action is asking the user if\n          the intent is complete and ready to be fulfilled. This is a yes/no\n          question such as \"Place the order?\"\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eClose\u003c/code\u003e - Indicates that the there will not be a\n          response from the user. For example, the statement \"Your order has\n          been placed\" does not require a response.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eElicitIntent\u003c/code\u003e - The next action is to determine the\n          intent that the user wants to fulfill.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eElicitSlot\u003c/code\u003e - The next action is to elicit a slot\n          value from the user.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "fulfillmentState": {
+            "target": "com.amazonaws.lexruntimeservice#FulfillmentState",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe fulfillment state of the intent. The possible values are:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eFailed\u003c/code\u003e - The Lambda function associated with the\n          intent failed to fulfill the intent.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eFulfilled\u003c/code\u003e - The intent has fulfilled by the Lambda\n          function associated with the intent. \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eReadyForFulfillment\u003c/code\u003e - All of the information\n          necessary for the intent is present and the intent ready to be\n          fulfilled by the client application.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e"
+            }
+          },
+          "intentName": {
+            "target": "com.amazonaws.lexruntimeservice#IntentName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the intent.\u003c/p\u003e"
+            }
+          },
+          "slotToElicit": {
+            "target": "com.amazonaws.lexruntimeservice#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe next slot to elicit from the user. If there is not slot to elicit,\n      the field is blank.\u003c/p\u003e"
+            }
+          },
+          "slots": {
+            "target": "com.amazonaws.lexruntimeservice#StringMap",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eMap of the slots that have been gathered and their values. \u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eProvides information about the state of an intent. You can use this\n      information to get the current state of an intent so that you can process\n      the intent, or so that you can return the intent to its previous\n      state.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.lexruntimeservice#IntentSummaryCheckpointLabel": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 255
+          },
+          "smithy.api#pattern": "^[a-zA-Z0-9-]+$"
+        }
+      },
+      "com.amazonaws.lexruntimeservice#IntentSummaryList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.lexruntimeservice#IntentSummary"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 3
+          }
+        }
+      },
+      "com.amazonaws.lexruntimeservice#InternalFailureException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "com.amazonaws.lexruntimeservice#String"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eInternal service error. Retry the call.\u003c/p\u003e",
+          "smithy.api#error": "server",
+          "smithy.api#httpError": 500
+        }
+      },
+      "com.amazonaws.lexruntimeservice#LimitExceededException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "com.amazonaws.lexruntimeservice#String"
+          },
+          "retryAfterSeconds": {
+            "target": "com.amazonaws.lexruntimeservice#String",
+            "traits": {
+              "smithy.api#httpHeader": "Retry-After"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eExceeded a limit.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 429
+        }
+      },
+      "com.amazonaws.lexruntimeservice#LoopDetectedException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.lexruntimeservice#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThis exception is not used.\u003c/p\u003e",
+          "smithy.api#error": "server",
+          "smithy.api#httpError": 508
+        }
+      },
+      "com.amazonaws.lexruntimeservice#MessageFormatType": {
+        "type": "enum",
+        "members": {
+          "COMPOSITE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Composite"
+            }
+          },
+          "CUSTOM_PAYLOAD": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "CustomPayload"
+            }
+          },
+          "PLAIN_TEXT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "PlainText"
+            }
+          },
+          "SSML": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "SSML"
+            }
+          }
+        }
+      },
+      "com.amazonaws.lexruntimeservice#NotAcceptableException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "com.amazonaws.lexruntimeservice#String"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe accept header in the request does not have a valid value.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 406
+        }
+      },
+      "com.amazonaws.lexruntimeservice#NotFoundException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "com.amazonaws.lexruntimeservice#String"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe resource (such as the Amazon Lex bot or an alias) that is referred\n      to is not found.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 404
+        }
+      },
+      "com.amazonaws.lexruntimeservice#ParameterName": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 100
+          }
+        }
+      },
+      "com.amazonaws.lexruntimeservice#PostContent": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.lexruntimeservice#PostContentRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.lexruntimeservice#PostContentResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.lexruntimeservice#BadGatewayException"
+          },
+          {
+            "target": "com.amazonaws.lexruntimeservice#BadRequestException"
+          },
+          {
+            "target": "com.amazonaws.lexruntimeservice#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.lexruntimeservice#DependencyFailedException"
+          },
+          {
+            "target": "com.amazonaws.lexruntimeservice#InternalFailureException"
+          },
+          {
+            "target": "com.amazonaws.lexruntimeservice#LimitExceededException"
+          },
+          {
+            "target": "com.amazonaws.lexruntimeservice#LoopDetectedException"
+          },
+          {
+            "target": "com.amazonaws.lexruntimeservice#NotAcceptableException"
+          },
+          {
+            "target": "com.amazonaws.lexruntimeservice#NotFoundException"
+          },
+          {
+            "target": "com.amazonaws.lexruntimeservice#RequestTimeoutException"
+          },
+          {
+            "target": "com.amazonaws.lexruntimeservice#UnsupportedMediaTypeException"
+          }
+        ],
+        "traits": {
+          "aws.auth#unsignedPayload": {},
+          "smithy.api#auth": [
+            "aws.auth#sigv4"
+          ],
+          "smithy.api#documentation": "\u003cp\u003e Sends user input (text or speech) to Amazon Lex. Clients use this API to\n      send text and audio requests to Amazon Lex at runtime. Amazon Lex interprets the\n      user input using the machine learning model that it built for the bot. \u003c/p\u003e\n         \u003cp\u003eThe \u003ccode\u003ePostContent\u003c/code\u003e operation supports audio input at 8kHz\n      and 16kHz. You can use 8kHz audio to achieve higher speech recognition\n      accuracy in telephone audio applications. \u003c/p\u003e\n         \u003cp\u003e In response, Amazon Lex returns the next message to convey to the user.\n      Consider the following example messages: \u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e For a user input \"I would like a pizza,\" Amazon Lex might return a\n          response with a message eliciting slot data (for example,\n            \u003ccode\u003ePizzaSize\u003c/code\u003e): \"What size pizza would you like?\". \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e After the user provides all of the pizza order information, Amazon Lex\n          might return a response with a message to get user confirmation:\n          \"Order the pizza?\". \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e After the user replies \"Yes\" to the confirmation prompt, Amazon Lex\n          might return a conclusion statement: \"Thank you, your cheese pizza has\n          been ordered.\". \u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e\n         \u003cp\u003e Not all Amazon Lex messages require a response from the user. For example,\n      conclusion statements do not require a response. Some messages require\n      only a yes or no response. In addition to the \u003ccode\u003emessage\u003c/code\u003e, Amazon Lex\n      provides additional context about the message in the response that you can\n      use to enhance client behavior, such as displaying the appropriate client\n      user interface. Consider the following examples: \u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e If the message is to elicit slot data, Amazon Lex returns the\n          following context information: \u003c/p\u003e\n               \u003cul\u003e\n                  \u003cli\u003e\n                     \u003cp\u003e\n                        \u003ccode\u003ex-amz-lex-dialog-state\u003c/code\u003e header set to\n                \u003ccode\u003eElicitSlot\u003c/code\u003e\n                     \u003c/p\u003e\n                  \u003c/li\u003e\n                  \u003cli\u003e\n                     \u003cp\u003e\n                        \u003ccode\u003ex-amz-lex-intent-name\u003c/code\u003e header set to the intent name\n              in the current context \u003c/p\u003e\n                  \u003c/li\u003e\n                  \u003cli\u003e\n                     \u003cp\u003e\n                        \u003ccode\u003ex-amz-lex-slot-to-elicit\u003c/code\u003e header set to the slot name\n              for which the \u003ccode\u003emessage\u003c/code\u003e is eliciting information\n            \u003c/p\u003e\n                  \u003c/li\u003e\n                  \u003cli\u003e\n                     \u003cp\u003e\n                        \u003ccode\u003ex-amz-lex-slots\u003c/code\u003e header set to a map of slots\n              configured for the intent with their current values \u003c/p\u003e\n                  \u003c/li\u003e\n               \u003c/ul\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e If the message is a confirmation prompt, the\n            \u003ccode\u003ex-amz-lex-dialog-state\u003c/code\u003e header is set to\n            \u003ccode\u003eConfirmation\u003c/code\u003e and the\n            \u003ccode\u003ex-amz-lex-slot-to-elicit\u003c/code\u003e header is omitted. \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e If the message is a clarification prompt configured for the\n          intent, indicating that the user intent is not understood, the\n            \u003ccode\u003ex-amz-dialog-state\u003c/code\u003e header is set to\n            \u003ccode\u003eElicitIntent\u003c/code\u003e and the \u003ccode\u003ex-amz-slot-to-elicit\u003c/code\u003e\n          header is omitted. \u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e\n         \u003cp\u003e In addition, Amazon Lex also returns your application-specific\n        \u003ccode\u003esessionAttributes\u003c/code\u003e. For more information, see \u003ca href=\"https://docs.aws.amazon.com/lex/latest/dg/context-mgmt.html\"\u003eManaging\n        Conversation Context\u003c/a\u003e. \u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/bot/{botName}/alias/{botAlias}/user/{userId}/content",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.lexruntimeservice#PostContentRequest": {
+        "type": "structure",
+        "members": {
+          "accept": {
+            "target": "com.amazonaws.lexruntimeservice#Accept",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003e You pass this value as the \u003ccode\u003eAccept\u003c/code\u003e HTTP header. \u003c/p\u003e\n         \u003cp\u003e The message Amazon Lex returns in the response can be either text or\n      speech based on the \u003ccode\u003eAccept\u003c/code\u003e HTTP header value in the request. \u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e If the value is \u003ccode\u003etext/plain; charset=utf-8\u003c/code\u003e, Amazon Lex\n          returns text in the response. \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e If the value begins with \u003ccode\u003eaudio/\u003c/code\u003e, Amazon Lex returns\n          speech in the response. Amazon Lex uses Amazon Polly to generate the speech\n          (using the configuration you specified in the \u003ccode\u003eAccept\u003c/code\u003e\n          header). For example, if you specify \u003ccode\u003eaudio/mpeg\u003c/code\u003e as the\n          value, Amazon Lex returns speech in the MPEG format.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eIf the value is \u003ccode\u003eaudio/pcm\u003c/code\u003e, the speech returned is\n            \u003ccode\u003eaudio/pcm\u003c/code\u003e in 16-bit, little endian format.\n          \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eThe following are the accepted values:\u003c/p\u003e\n               \u003cul\u003e\n                  \u003cli\u003e\n                     \u003cp\u003eaudio/mpeg\u003c/p\u003e\n                  \u003c/li\u003e\n                  \u003cli\u003e\n                     \u003cp\u003eaudio/ogg\u003c/p\u003e\n                  \u003c/li\u003e\n                  \u003cli\u003e\n                     \u003cp\u003eaudio/pcm\u003c/p\u003e\n                  \u003c/li\u003e\n                  \u003cli\u003e\n                     \u003cp\u003etext/plain; charset=utf-8\u003c/p\u003e\n                  \u003c/li\u003e\n                  \u003cli\u003e\n                     \u003cp\u003eaudio/* (defaults to mpeg)\u003c/p\u003e\n                  \u003c/li\u003e\n               \u003c/ul\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e",
+              "smithy.api#httpHeader": "Accept"
+            }
+          },
+          "activeContexts": {
+            "target": "com.amazonaws.lexruntimeservice#SynthesizedJsonActiveContextsString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of contexts active for the request. A context can be activated\n      when a previous intent is fulfilled, or by including the context in the\n      request,\u003c/p\u003e\n         \u003cp\u003eIf you don't specify a list of contexts, Amazon Lex will use the current\n      list of contexts for the session. If you specify an empty list, all\n      contexts for the session are cleared.\u003c/p\u003e",
+              "smithy.api#httpHeader": "x-amz-lex-active-contexts"
+            }
+          },
+          "botAlias": {
+            "target": "com.amazonaws.lexruntimeservice#BotAlias",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAlias of the Amazon Lex bot.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "botName": {
+            "target": "com.amazonaws.lexruntimeservice#BotName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eName of the Amazon Lex bot.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "contentType": {
+            "target": "com.amazonaws.lexruntimeservice#HttpContentType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003e You pass this value as the \u003ccode\u003eContent-Type\u003c/code\u003e HTTP header. \u003c/p\u003e\n         \u003cp\u003e Indicates the audio format or text. The header value must start with\n      one of the following prefixes: \u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003ePCM format, audio data must be in little-endian byte order.\u003c/p\u003e\n               \u003cul\u003e\n                  \u003cli\u003e\n                     \u003cp\u003eaudio/l16; rate=16000; channels=1\u003c/p\u003e\n                  \u003c/li\u003e\n                  \u003cli\u003e\n                     \u003cp\u003eaudio/x-l16; sample-rate=16000; channel-count=1\u003c/p\u003e\n                  \u003c/li\u003e\n                  \u003cli\u003e\n                     \u003cp\u003eaudio/lpcm; sample-rate=8000; sample-size-bits=16;\n              channel-count=1; is-big-endian=false \u003c/p\u003e\n                  \u003c/li\u003e\n               \u003c/ul\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eOpus format\u003c/p\u003e\n               \u003cul\u003e\n                  \u003cli\u003e\n                     \u003cp\u003eaudio/x-cbr-opus-with-preamble; preamble-size=0;\n              bit-rate=256000; frame-size-milliseconds=4\u003c/p\u003e\n                  \u003c/li\u003e\n               \u003c/ul\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eText format\u003c/p\u003e\n               \u003cul\u003e\n                  \u003cli\u003e\n                     \u003cp\u003etext/plain; charset=utf-8\u003c/p\u003e\n                  \u003c/li\u003e\n               \u003c/ul\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e",
+              "smithy.api#httpHeader": "Content-Type",
+              "smithy.api#required": {}
+            }
+          },
+          "inputStream": {
+            "target": "com.amazonaws.lexruntimeservice#BlobStream",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003e User input in PCM or Opus audio format or text format as described in\n      the \u003ccode\u003eContent-Type\u003c/code\u003e HTTP header. \u003c/p\u003e\n         \u003cp\u003eYou can stream audio data to Amazon Lex or you can create a local buffer\n      that captures all of the audio data before sending. In general, you get\n      better performance if you stream audio data rather than buffering the data\n      locally.\u003c/p\u003e",
+              "smithy.api#httpPayload": {},
+              "smithy.api#required": {}
+            }
+          },
+          "requestAttributes": {
+            "target": "com.amazonaws.lexruntimeservice#SynthesizedJsonAttributesString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eYou pass this value as the \u003ccode\u003ex-amz-lex-request-attributes\u003c/code\u003e\n      HTTP header.\u003c/p\u003e\n         \u003cp\u003eRequest-specific information passed between Amazon Lex and a client\n      application. The value must be a JSON serialized and base64 encoded map\n      with string keys and values. The total size of the\n        \u003ccode\u003erequestAttributes\u003c/code\u003e and \u003ccode\u003esessionAttributes\u003c/code\u003e\n      headers is limited to 12 KB.\u003c/p\u003e\n         \u003cp\u003eThe namespace \u003ccode\u003ex-amz-lex:\u003c/code\u003e is reserved for special\n      attributes. Don't create any request attributes with the prefix\n        \u003ccode\u003ex-amz-lex:\u003c/code\u003e.\u003c/p\u003e\n         \u003cp\u003eFor more information, see \u003ca href=\"https://docs.aws.amazon.com/lex/latest/dg/context-mgmt.html#context-mgmt-request-attribs\"\u003eSetting Request Attributes\u003c/a\u003e.\u003c/p\u003e",
+              "smithy.api#httpHeader": "x-amz-lex-request-attributes"
+            }
+          },
+          "sessionAttributes": {
+            "target": "com.amazonaws.lexruntimeservice#SynthesizedJsonAttributesString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eYou pass this value as the \u003ccode\u003ex-amz-lex-session-attributes\u003c/code\u003e\n      HTTP header.\u003c/p\u003e\n         \u003cp\u003eApplication-specific information passed between Amazon Lex and a client\n      application. The value must be a JSON serialized and base64 encoded map\n      with string keys and values. The total size of the\n        \u003ccode\u003esessionAttributes\u003c/code\u003e and \u003ccode\u003erequestAttributes\u003c/code\u003e\n      headers is limited to 12 KB.\u003c/p\u003e\n         \u003cp\u003eFor more information, see \u003ca href=\"https://docs.aws.amazon.com/lex/latest/dg/context-mgmt.html#context-mgmt-session-attribs\"\u003eSetting Session Attributes\u003c/a\u003e.\u003c/p\u003e",
+              "smithy.api#httpHeader": "x-amz-lex-session-attributes"
+            }
+          },
+          "userId": {
+            "target": "com.amazonaws.lexruntimeservice#UserId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID of the client application user. Amazon Lex uses this to identify a\n      user's conversation with your bot. At runtime, each request must contain\n      the \u003ccode\u003euserID\u003c/code\u003e field.\u003c/p\u003e\n         \u003cp\u003eTo decide the user ID to use for your application, consider the\n      following factors.\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003eThe \u003ccode\u003euserID\u003c/code\u003e field must not contain any personally\n          identifiable information of the user, for example, name, personal\n          identification numbers, or other end user personal information.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eIf you want a user to start a conversation on one device and\n          continue on another device, use a user-specific identifier.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eIf you want the same user to be able to have two independent\n          conversations on two different devices, choose a device-specific\n          identifier.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eA user can't have two independent conversations with two different\n          versions of the same bot. For example, a user can't have a\n          conversation with the PROD and BETA versions of the same bot. If you\n          anticipate that a user will need to have conversation with two\n          different versions, for example, while testing, include the bot alias\n          in the user ID to separate the two conversations.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.lexruntimeservice#PostContentResponse": {
+        "type": "structure",
+        "members": {
+          "activeContexts": {
+            "target": "com.amazonaws.lexruntimeservice#SynthesizedJsonActiveContextsString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of active contexts for the session. A context can be set when\n      an intent is fulfilled or by calling the \u003ccode\u003ePostContent\u003c/code\u003e,\n        \u003ccode\u003ePostText\u003c/code\u003e, or \u003ccode\u003ePutSession\u003c/code\u003e operation.\u003c/p\u003e\n         \u003cp\u003eYou can use a context to control the intents that can follow up an\n      intent, or to modify the operation of your application.\u003c/p\u003e",
+              "smithy.api#httpHeader": "x-amz-lex-active-contexts"
+            }
+          },
+          "alternativeIntents": {
+            "target": "com.amazonaws.lexruntimeservice#SynthesizedJsonString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eOne to four alternative intents that may be applicable to the user's\n      intent.\u003c/p\u003e\n         \u003cp\u003eEach alternative includes a score that indicates how confident Amazon Lex\n      is that the intent matches the user's intent. The intents are sorted by\n      the confidence score.\u003c/p\u003e",
+              "smithy.api#httpHeader": "x-amz-lex-alternative-intents"
+            }
+          },
+          "audioStream": {
+            "target": "com.amazonaws.lexruntimeservice#BlobStream",
+            "traits": {
+              "smithy.api#default": "",
+              "smithy.api#documentation": "\u003cp\u003eThe prompt (or statement) to convey to the user. This is based on the\n      bot configuration and context. For example, if Amazon Lex did not understand\n      the user intent, it sends the \u003ccode\u003eclarificationPrompt\u003c/code\u003e configured\n      for the bot. If the intent requires confirmation before taking the\n      fulfillment action, it sends the \u003ccode\u003econfirmationPrompt\u003c/code\u003e. Another\n      example: Suppose that the Lambda function successfully fulfilled the\n      intent, and sent a message to convey to the user. Then Amazon Lex sends that\n      message in the response. \u003c/p\u003e",
+              "smithy.api#httpPayload": {}
+            }
+          },
+          "botVersion": {
+            "target": "com.amazonaws.lexruntimeservice#BotVersion",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe version of the bot that responded to the conversation. You can use\n      this information to help determine if one version of a bot is performing\n      better than another version.\u003c/p\u003e",
+              "smithy.api#httpHeader": "x-amz-lex-bot-version"
+            }
+          },
+          "contentType": {
+            "target": "com.amazonaws.lexruntimeservice#HttpContentType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eContent type as specified in the \u003ccode\u003eAccept\u003c/code\u003e HTTP header in\n      the request.\u003c/p\u003e",
+              "smithy.api#httpHeader": "Content-Type"
+            }
+          },
+          "dialogState": {
+            "target": "com.amazonaws.lexruntimeservice#DialogState",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIdentifies the current state of the user interaction. Amazon Lex returns\n      one of the following values as \u003ccode\u003edialogState\u003c/code\u003e. The client can\n      optionally use this information to customize the user interface. \u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eElicitIntent\u003c/code\u003e - Amazon Lex wants to elicit the user's intent.\n          Consider the following examples: \u003c/p\u003e\n               \u003cp\u003e For example, a user might utter an intent (\"I want to order a\n          pizza\"). If Amazon Lex cannot infer the user intent from this utterance, it\n          will return this dialog state. \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eConfirmIntent\u003c/code\u003e - Amazon Lex is expecting a \"yes\" or \"no\"\n          response. \u003c/p\u003e\n               \u003cp\u003eFor example, Amazon Lex wants user confirmation before fulfilling an\n          intent. Instead of a simple \"yes\" or \"no\" response, a user might\n          respond with additional information. For example, \"yes, but make it a\n          thick crust pizza\" or \"no, I want to order a drink.\" Amazon Lex can process\n          such additional information (in these examples, update the crust type\n          slot or change the intent from OrderPizza to OrderDrink). \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eElicitSlot\u003c/code\u003e - Amazon Lex is expecting the value of a slot for\n          the current intent. \u003c/p\u003e\n               \u003cp\u003e For example, suppose that in the response Amazon Lex sends this\n          message: \"What size pizza would you like?\". A user might reply with\n          the slot value (e.g., \"medium\"). The user might also provide\n          additional information in the response (e.g., \"medium thick crust\n          pizza\"). Amazon Lex can process such additional information appropriately.\n        \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eFulfilled\u003c/code\u003e - Conveys that the Lambda function has\n          successfully fulfilled the intent. \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eReadyForFulfillment\u003c/code\u003e - Conveys that the client has to\n          fulfill the request. \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eFailed\u003c/code\u003e - Conveys that the conversation with the user\n          failed. \u003c/p\u003e\n               \u003cp\u003e This can happen for various reasons, including that the user does\n          not provide an appropriate response to prompts from the service (you\n          can configure how many times Amazon Lex can prompt a user for specific\n          information), or if the Lambda function fails to fulfill the intent.\n        \u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e",
+              "smithy.api#httpHeader": "x-amz-lex-dialog-state"
+            }
+          },
+          "encodedInputTranscript": {
+            "target": "com.amazonaws.lexruntimeservice#SensitiveStringUnbounded",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe text used to process the request.\u003c/p\u003e\n         \u003cp\u003eIf the input was an audio stream, the\n        \u003ccode\u003eencodedInputTranscript\u003c/code\u003e field contains the text extracted\n      from the audio stream. This is the text that is actually processed to\n      recognize intents and slot values. You can use this information to\n      determine if Amazon Lex is correctly processing the audio that you send.\u003c/p\u003e\n         \u003cp\u003eThe \u003ccode\u003eencodedInputTranscript\u003c/code\u003e field is base-64 encoded. You must \n      decode the field before you can use the value.\u003c/p\u003e",
+              "smithy.api#httpHeader": "x-amz-lex-encoded-input-transcript"
+            }
+          },
+          "encodedMessage": {
+            "target": "com.amazonaws.lexruntimeservice#SensitiveString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe message to convey to the user. The message can come from the bot's\n      configuration or from a Lambda function.\u003c/p\u003e\n         \u003cp\u003eIf the intent is not configured with a Lambda function, or if the Lambda\n      function returned \u003ccode\u003eDelegate\u003c/code\u003e as the\n        \u003ccode\u003edialogAction.type\u003c/code\u003e in its response, Amazon Lex decides on the\n      next course of action and selects an appropriate message from the bot's\n      configuration based on the current interaction context. For example, if\n      Amazon Lex isn't able to understand user input, it uses a clarification prompt\n      message.\u003c/p\u003e\n         \u003cp\u003eWhen you create an intent you can assign messages to groups. When\n      messages are assigned to groups Amazon Lex returns one message from each group\n      in the response. The message field is an escaped JSON string containing\n      the messages. For more information about the structure of the JSON string\n      returned, see \u003ca\u003emsg-prompts-formats\u003c/a\u003e.\u003c/p\u003e\n         \u003cp\u003eIf the Lambda function returns a message, Amazon Lex passes it to the client\n      in its response.\u003c/p\u003e\n         \u003cp\u003eThe \u003ccode\u003eencodedMessage\u003c/code\u003e field is base-64 encoded. You must \n      decode the field before you can use the value.\u003c/p\u003e",
+              "smithy.api#httpHeader": "x-amz-lex-encoded-message"
+            }
+          },
+          "inputTranscript": {
+            "target": "com.amazonaws.lexruntimeservice#String",
+            "traits": {
+              "smithy.api#deprecated": {
+                "message": "The inputTranscript field is deprecated, use the encodedInputTranscript field instead. The inputTranscript field is available only in the de-DE, en-AU, en-GB, en-US, es-419, es-ES, es-US, fr-CA, fr-FR and it-IT locales."
+              },
+              "smithy.api#documentation": "\u003cp\u003eThe text used to process the request.\u003c/p\u003e\n         \u003cp\u003eYou can use this field only in the de-DE, en-AU, en-GB, en-US, es-419,\n      es-ES, es-US, fr-CA, fr-FR, and it-IT locales. In all other locales, the\n        \u003ccode\u003einputTranscript\u003c/code\u003e field is null. You should use the\n        \u003ccode\u003eencodedInputTranscript\u003c/code\u003e field instead.\u003c/p\u003e\n         \u003cp\u003eIf the input was an audio stream, the \u003ccode\u003einputTranscript\u003c/code\u003e\n      field contains the text extracted from the audio stream. This is the text\n      that is actually processed to recognize intents and slot values. You can\n      use this information to determine if Amazon Lex is correctly processing the\n      audio that you send.\u003c/p\u003e",
+              "smithy.api#httpHeader": "x-amz-lex-input-transcript"
+            }
+          },
+          "intentName": {
+            "target": "com.amazonaws.lexruntimeservice#IntentName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eCurrent user intent that Amazon Lex is aware of.\u003c/p\u003e",
+              "smithy.api#httpHeader": "x-amz-lex-intent-name"
+            }
+          },
+          "message": {
+            "target": "com.amazonaws.lexruntimeservice#Text",
+            "traits": {
+              "smithy.api#deprecated": {
+                "message": "The message field is deprecated, use the encodedMessage field instead. The message field is available only in the de-DE, en-AU, en-GB, en-US, es-419, es-ES, es-US, fr-CA, fr-FR and it-IT locales."
+              },
+              "smithy.api#documentation": "\u003cp\u003eYou can only use this field in the de-DE, en-AU, en-GB, en-US, es-419,\n      es-ES, es-US, fr-CA, fr-FR, and it-IT locales. In all other locales, the\n        \u003ccode\u003emessage\u003c/code\u003e field is null. You should use the\n        \u003ccode\u003eencodedMessage\u003c/code\u003e field instead.\u003c/p\u003e\n         \u003cp\u003eThe message to convey to the user. The message can come from the bot's\n      configuration or from a Lambda function.\u003c/p\u003e\n         \u003cp\u003eIf the intent is not configured with a Lambda function, or if the Lambda\n      function returned \u003ccode\u003eDelegate\u003c/code\u003e as the\n        \u003ccode\u003edialogAction.type\u003c/code\u003e in its response, Amazon Lex decides on the\n      next course of action and selects an appropriate message from the bot's\n      configuration based on the current interaction context. For example, if\n      Amazon Lex isn't able to understand user input, it uses a clarification prompt\n      message.\u003c/p\u003e\n         \u003cp\u003eWhen you create an intent you can assign messages to groups. When\n      messages are assigned to groups Amazon Lex returns one message from each group\n      in the response. The message field is an escaped JSON string containing\n      the messages. For more information about the structure of the JSON string\n      returned, see \u003ca\u003emsg-prompts-formats\u003c/a\u003e.\u003c/p\u003e\n         \u003cp\u003eIf the Lambda function returns a message, Amazon Lex passes it to the client\n      in its response.\u003c/p\u003e",
+              "smithy.api#httpHeader": "x-amz-lex-message"
+            }
+          },
+          "messageFormat": {
+            "target": "com.amazonaws.lexruntimeservice#MessageFormatType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe format of the response message. One of the following\n      values:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003ePlainText\u003c/code\u003e - The message contains plain UTF-8\n          text.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eCustomPayload\u003c/code\u003e - The message is a custom format for\n          the client.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eSSML\u003c/code\u003e - The message contains text formatted for voice\n          output.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eComposite\u003c/code\u003e - The message contains an escaped JSON\n          object containing one or more messages from the groups that messages\n          were assigned to when the intent was created.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e",
+              "smithy.api#httpHeader": "x-amz-lex-message-format"
+            }
+          },
+          "nluIntentConfidence": {
+            "target": "com.amazonaws.lexruntimeservice#SynthesizedJsonString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eProvides a score that indicates how confident Amazon Lex is that the\n      returned intent is the one that matches the user's intent. The score is\n      between 0.0 and 1.0.\u003c/p\u003e\n         \u003cp\u003eThe score is a relative score, not an absolute score. The score may\n      change based on improvements to Amazon Lex. \u003c/p\u003e",
+              "smithy.api#httpHeader": "x-amz-lex-nlu-intent-confidence"
+            }
+          },
+          "sentimentResponse": {
+            "target": "com.amazonaws.lexruntimeservice#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe sentiment expressed in an utterance.\u003c/p\u003e\n         \u003cp\u003eWhen the bot is configured to send utterances to Amazon Comprehend for\n      sentiment analysis, this field contains the result of the analysis.\u003c/p\u003e",
+              "smithy.api#httpHeader": "x-amz-lex-sentiment"
+            }
+          },
+          "sessionAttributes": {
+            "target": "com.amazonaws.lexruntimeservice#SynthesizedJsonString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003e Map of key/value pairs representing the session-specific context\n      information. \u003c/p\u003e",
+              "smithy.api#httpHeader": "x-amz-lex-session-attributes"
+            }
+          },
+          "sessionId": {
+            "target": "com.amazonaws.lexruntimeservice#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier for the session.\u003c/p\u003e",
+              "smithy.api#httpHeader": "x-amz-lex-session-id"
+            }
+          },
+          "slotToElicit": {
+            "target": "com.amazonaws.lexruntimeservice#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003e If the \u003ccode\u003edialogState\u003c/code\u003e value is \u003ccode\u003eElicitSlot\u003c/code\u003e,\n      returns the name of the slot for which Amazon Lex is eliciting a value. \u003c/p\u003e",
+              "smithy.api#httpHeader": "x-amz-lex-slot-to-elicit"
+            }
+          },
+          "slots": {
+            "target": "com.amazonaws.lexruntimeservice#SynthesizedJsonString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eMap of zero or more intent slots (name/value pairs) Amazon Lex detected\n      from the user input during the conversation. The field is base-64\n      encoded.\u003c/p\u003e\n         \u003cp\u003eAmazon Lex creates a resolution list containing likely values for a slot.\n      The value that it returns is determined by the\n        \u003ccode\u003evalueSelectionStrategy\u003c/code\u003e selected when the slot type was\n      created or updated. If \u003ccode\u003evalueSelectionStrategy\u003c/code\u003e is set to\n        \u003ccode\u003eORIGINAL_VALUE\u003c/code\u003e, the value provided by the user is returned,\n      if the user value is similar to the slot values. If\n        \u003ccode\u003evalueSelectionStrategy\u003c/code\u003e is set to\n        \u003ccode\u003eTOP_RESOLUTION\u003c/code\u003e Amazon Lex returns the first value in the\n      resolution list or, if there is no resolution list, null. If you don't\n      specify a \u003ccode\u003evalueSelectionStrategy\u003c/code\u003e, the default is\n        \u003ccode\u003eORIGINAL_VALUE\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#httpHeader": "x-amz-lex-slots"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.lexruntimeservice#PostText": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.lexruntimeservice#PostTextRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.lexruntimeservice#PostTextResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.lexruntimeservice#BadGatewayException"
+          },
+          {
+            "target": "com.amazonaws.lexruntimeservice#BadRequestException"
+          },
+          {
+            "target": "com.amazonaws.lexruntimeservice#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.lexruntimeservice#DependencyFailedException"
+          },
+          {
+            "target": "com.amazonaws.lexruntimeservice#InternalFailureException"
+          },
+          {
+            "target": "com.amazonaws.lexruntimeservice#LimitExceededException"
+          },
+          {
+            "target": "com.amazonaws.lexruntimeservice#LoopDetectedException"
+          },
+          {
+            "target": "com.amazonaws.lexruntimeservice#NotFoundException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eSends user input to Amazon Lex. Client applications can use this API to\n      send requests to Amazon Lex at runtime. Amazon Lex then interprets the user input\n      using the machine learning model it built for the bot. \u003c/p\u003e\n         \u003cp\u003e In response, Amazon Lex returns the next \u003ccode\u003emessage\u003c/code\u003e to convey to\n      the user an optional \u003ccode\u003eresponseCard\u003c/code\u003e to display. Consider the\n      following example messages: \u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e For a user input \"I would like a pizza\", Amazon Lex might return a\n          response with a message eliciting slot data (for example, PizzaSize):\n          \"What size pizza would you like?\" \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e After the user provides all of the pizza order information,\n          Amazon Lex might return a response with a message to obtain user\n          confirmation \"Proceed with the pizza order?\". \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e After the user replies to a confirmation prompt with a \"yes\",\n          Amazon Lex might return a conclusion statement: \"Thank you, your cheese\n          pizza has been ordered.\". \u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e\n\n         \u003cp\u003e Not all Amazon Lex messages require a user response. For example, a\n      conclusion statement does not require a response. Some messages require\n      only a \"yes\" or \"no\" user response. In addition to the\n        \u003ccode\u003emessage\u003c/code\u003e, Amazon Lex provides additional context about the\n      message in the response that you might use to enhance client behavior, for\n      example, to display the appropriate client user interface. These are the\n        \u003ccode\u003eslotToElicit\u003c/code\u003e, \u003ccode\u003edialogState\u003c/code\u003e,\n        \u003ccode\u003eintentName\u003c/code\u003e, and \u003ccode\u003eslots\u003c/code\u003e fields in the response.\n      Consider the following examples: \u003c/p\u003e\n\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003eIf the message is to elicit slot data, Amazon Lex returns the\n          following context information:\u003c/p\u003e\n               \u003cul\u003e\n                  \u003cli\u003e\n                     \u003cp\u003e\n                        \u003ccode\u003edialogState\u003c/code\u003e set to ElicitSlot \u003c/p\u003e\n                  \u003c/li\u003e\n                  \u003cli\u003e\n                     \u003cp\u003e\n                        \u003ccode\u003eintentName\u003c/code\u003e set to the intent name in the current\n              context \u003c/p\u003e\n                  \u003c/li\u003e\n                  \u003cli\u003e\n                     \u003cp\u003e\n                        \u003ccode\u003eslotToElicit\u003c/code\u003e set to the slot name for which the\n                \u003ccode\u003emessage\u003c/code\u003e is eliciting information \u003c/p\u003e\n                  \u003c/li\u003e\n                  \u003cli\u003e\n                     \u003cp\u003e\n                        \u003ccode\u003eslots\u003c/code\u003e set to a map of slots, configured for the\n              intent, with currently known values \u003c/p\u003e\n                  \u003c/li\u003e\n               \u003c/ul\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e If the message is a confirmation prompt, the\n            \u003ccode\u003edialogState\u003c/code\u003e is set to ConfirmIntent and\n            \u003ccode\u003eSlotToElicit\u003c/code\u003e is set to null. \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eIf the message is a clarification prompt (configured for the\n          intent) that indicates that user intent is not understood, the\n            \u003ccode\u003edialogState\u003c/code\u003e is set to ElicitIntent and\n            \u003ccode\u003eslotToElicit\u003c/code\u003e is set to null. \u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e\n\n         \u003cp\u003e In addition, Amazon Lex also returns your application-specific\n        \u003ccode\u003esessionAttributes\u003c/code\u003e. For more information, see \u003ca href=\"https://docs.aws.amazon.com/lex/latest/dg/context-mgmt.html\"\u003eManaging\n        Conversation Context\u003c/a\u003e. \u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/bot/{botName}/alias/{botAlias}/user/{userId}/text",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.lexruntimeservice#PostTextRequest": {
+        "type": "structure",
+        "members": {
+          "activeContexts": {
+            "target": "com.amazonaws.lexruntimeservice#ActiveContextsList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of contexts active for the request. A context can be activated\n      when a previous intent is fulfilled, or by including the context in the\n      request,\u003c/p\u003e\n         \u003cp\u003eIf you don't specify a list of contexts, Amazon Lex will use the current\n      list of contexts for the session. If you specify an empty list, all\n      contexts for the session are cleared.\u003c/p\u003e"
+            }
+          },
+          "botAlias": {
+            "target": "com.amazonaws.lexruntimeservice#BotAlias",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe alias of the Amazon Lex bot.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "botName": {
+            "target": "com.amazonaws.lexruntimeservice#BotName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the Amazon Lex bot.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "inputText": {
+            "target": "com.amazonaws.lexruntimeservice#Text",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe text that the user entered (Amazon Lex interprets this text).\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "requestAttributes": {
+            "target": "com.amazonaws.lexruntimeservice#StringMap",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eRequest-specific information passed between Amazon Lex and a client\n      application.\u003c/p\u003e\n         \u003cp\u003eThe namespace \u003ccode\u003ex-amz-lex:\u003c/code\u003e is reserved for special\n      attributes. Don't create any request attributes with the prefix\n        \u003ccode\u003ex-amz-lex:\u003c/code\u003e.\u003c/p\u003e\n         \u003cp\u003eFor more information, see \u003ca href=\"https://docs.aws.amazon.com/lex/latest/dg/context-mgmt.html#context-mgmt-request-attribs\"\u003eSetting Request Attributes\u003c/a\u003e.\u003c/p\u003e"
+            }
+          },
+          "sessionAttributes": {
+            "target": "com.amazonaws.lexruntimeservice#StringMap",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eApplication-specific information passed between Amazon Lex and a client\n      application.\u003c/p\u003e\n         \u003cp\u003eFor more information, see \u003ca href=\"https://docs.aws.amazon.com/lex/latest/dg/context-mgmt.html#context-mgmt-session-attribs\"\u003eSetting Session Attributes\u003c/a\u003e.\u003c/p\u003e"
+            }
+          },
+          "userId": {
+            "target": "com.amazonaws.lexruntimeservice#UserId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID of the client application user. Amazon Lex uses this to identify a\n      user's conversation with your bot. At runtime, each request must contain\n      the \u003ccode\u003euserID\u003c/code\u003e field.\u003c/p\u003e\n         \u003cp\u003eTo decide the user ID to use for your application, consider the\n      following factors.\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003eThe \u003ccode\u003euserID\u003c/code\u003e field must not contain any personally\n          identifiable information of the user, for example, name, personal\n          identification numbers, or other end user personal information.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eIf you want a user to start a conversation on one device and\n          continue on another device, use a user-specific identifier.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eIf you want the same user to be able to have two independent\n          conversations on two different devices, choose a device-specific\n          identifier.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eA user can't have two independent conversations with two different\n          versions of the same bot. For example, a user can't have a\n          conversation with the PROD and BETA versions of the same bot. If you\n          anticipate that a user will need to have conversation with two\n          different versions, for example, while testing, include the bot alias\n          in the user ID to separate the two conversations.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.lexruntimeservice#PostTextResponse": {
+        "type": "structure",
+        "members": {
+          "activeContexts": {
+            "target": "com.amazonaws.lexruntimeservice#ActiveContextsList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of active contexts for the session. A context can be set when\n      an intent is fulfilled or by calling the \u003ccode\u003ePostContent\u003c/code\u003e,\n        \u003ccode\u003ePostText\u003c/code\u003e, or \u003ccode\u003ePutSession\u003c/code\u003e operation.\u003c/p\u003e\n         \u003cp\u003eYou can use a context to control the intents that can follow up an\n      intent, or to modify the operation of your application.\u003c/p\u003e"
+            }
+          },
+          "alternativeIntents": {
+            "target": "com.amazonaws.lexruntimeservice#IntentList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eOne to four alternative intents that may be applicable to the user's\n      intent.\u003c/p\u003e\n         \u003cp\u003eEach alternative includes a score that indicates how confident Amazon Lex\n      is that the intent matches the user's intent. The intents are sorted by\n      the confidence score.\u003c/p\u003e"
+            }
+          },
+          "botVersion": {
+            "target": "com.amazonaws.lexruntimeservice#BotVersion",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe version of the bot that responded to the conversation. You can use\n      this information to help determine if one version of a bot is performing\n      better than another version.\u003c/p\u003e"
+            }
+          },
+          "dialogState": {
+            "target": "com.amazonaws.lexruntimeservice#DialogState",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003e Identifies the current state of the user interaction. Amazon Lex returns\n      one of the following values as \u003ccode\u003edialogState\u003c/code\u003e. The client can\n      optionally use this information to customize the user interface. \u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eElicitIntent\u003c/code\u003e - Amazon Lex wants to elicit user intent. \u003c/p\u003e\n               \u003cp\u003eFor example, a user might utter an intent (\"I want to order a\n          pizza\"). If Amazon Lex cannot infer the user intent from this utterance, it\n          will return this dialogState.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eConfirmIntent\u003c/code\u003e - Amazon Lex is expecting a \"yes\" or \"no\"\n          response. \u003c/p\u003e\n               \u003cp\u003e For example, Amazon Lex wants user confirmation before fulfilling an\n          intent. \u003c/p\u003e\n               \u003cp\u003eInstead of a simple \"yes\" or \"no,\" a user might respond with\n          additional information. For example, \"yes, but make it thick crust\n          pizza\" or \"no, I want to order a drink\". Amazon Lex can process such\n          additional information (in these examples, update the crust type slot\n          value, or change intent from OrderPizza to OrderDrink).\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eElicitSlot\u003c/code\u003e - Amazon Lex is expecting a slot value for the\n          current intent. \u003c/p\u003e\n               \u003cp\u003eFor example, suppose that in the response Amazon Lex sends this\n          message: \"What size pizza would you like?\". A user might reply with\n          the slot value (e.g., \"medium\"). The user might also provide\n          additional information in the response (e.g., \"medium thick crust\n          pizza\"). Amazon Lex can process such additional information appropriately.\n        \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eFulfilled\u003c/code\u003e - Conveys that the Lambda function configured\n          for the intent has successfully fulfilled the intent. \u003c/p\u003e\n\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eReadyForFulfillment\u003c/code\u003e - Conveys that the client has to\n          fulfill the intent. \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eFailed\u003c/code\u003e - Conveys that the conversation with the user\n          failed. \u003c/p\u003e\n               \u003cp\u003e This can happen for various reasons including that the user did\n          not provide an appropriate response to prompts from the service (you\n          can configure how many times Amazon Lex can prompt a user for specific\n          information), or the Lambda function failed to fulfill the intent.\n        \u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e"
+            }
+          },
+          "intentName": {
+            "target": "com.amazonaws.lexruntimeservice#IntentName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe current user intent that Amazon Lex is aware of.\u003c/p\u003e"
+            }
+          },
+          "message": {
+            "target": "com.amazonaws.lexruntimeservice#Text",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe message to convey to the user. The message can come from the bot's\n      configuration or from a Lambda function.\u003c/p\u003e\n         \u003cp\u003eIf the intent is not configured with a Lambda function, or if the Lambda\n      function returned \u003ccode\u003eDelegate\u003c/code\u003e as the\n        \u003ccode\u003edialogAction.type\u003c/code\u003e its response, Amazon Lex decides on the next\n      course of action and selects an appropriate message from the bot's\n      configuration based on the current interaction context. For example, if\n      Amazon Lex isn't able to understand user input, it uses a clarification prompt\n      message.\u003c/p\u003e\n         \u003cp\u003eWhen you create an intent you can assign messages to groups. When\n      messages are assigned to groups Amazon Lex returns one message from each group\n      in the response. The message field is an escaped JSON string containing\n      the messages. For more information about the structure of the JSON string\n      returned, see \u003ca\u003emsg-prompts-formats\u003c/a\u003e.\u003c/p\u003e\n         \u003cp\u003eIf the Lambda function returns a message, Amazon Lex passes it to the client\n      in its response.\u003c/p\u003e"
+            }
+          },
+          "messageFormat": {
+            "target": "com.amazonaws.lexruntimeservice#MessageFormatType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe format of the response message. One of the following\n      values:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003ePlainText\u003c/code\u003e - The message contains plain UTF-8\n          text.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eCustomPayload\u003c/code\u003e - The message is a custom format\n          defined by the Lambda function.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eSSML\u003c/code\u003e - The message contains text formatted for voice\n          output.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eComposite\u003c/code\u003e - The message contains an escaped JSON\n          object containing one or more messages from the groups that messages\n          were assigned to when the intent was created.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e"
+            }
+          },
+          "nluIntentConfidence": {
+            "target": "com.amazonaws.lexruntimeservice#IntentConfidence",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eProvides a score that indicates how confident Amazon Lex is that the\n      returned intent is the one that matches the user's intent. The score is\n      between 0.0 and 1.0. For more information, see \u003ca href=\"https://docs.aws.amazon.com/lex/latest/dg/confidence-scores.html\"\u003eConfidence Scores\u003c/a\u003e.\u003c/p\u003e\n         \u003cp\u003eThe score is a relative score, not an absolute score. The score may\n      change based on improvements to Amazon Lex.\u003c/p\u003e"
+            }
+          },
+          "responseCard": {
+            "target": "com.amazonaws.lexruntimeservice#ResponseCard",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eRepresents the options that the user has to respond to the current\n      prompt. Response Card can come from the bot configuration (in the\n      Amazon Lex console, choose the settings button next to a slot) or from a\n      code hook (Lambda function). \u003c/p\u003e"
+            }
+          },
+          "sentimentResponse": {
+            "target": "com.amazonaws.lexruntimeservice#SentimentResponse",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe sentiment expressed in and utterance.\u003c/p\u003e\n         \u003cp\u003eWhen the bot is configured to send utterances to Amazon Comprehend for\n      sentiment analysis, this field contains the result of the analysis.\u003c/p\u003e"
+            }
+          },
+          "sessionAttributes": {
+            "target": "com.amazonaws.lexruntimeservice#StringMap",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA map of key-value pairs representing the session-specific context\n      information.\u003c/p\u003e"
+            }
+          },
+          "sessionId": {
+            "target": "com.amazonaws.lexruntimeservice#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA unique identifier for the session.\u003c/p\u003e"
+            }
+          },
+          "slotToElicit": {
+            "target": "com.amazonaws.lexruntimeservice#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIf the \u003ccode\u003edialogState\u003c/code\u003e value is \u003ccode\u003eElicitSlot\u003c/code\u003e,\n      returns the name of the slot for which Amazon Lex is eliciting a value. \u003c/p\u003e"
+            }
+          },
+          "slots": {
+            "target": "com.amazonaws.lexruntimeservice#StringMap",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003e The intent slots that Amazon Lex detected from the user input in the\n      conversation. \u003c/p\u003e\n         \u003cp\u003eAmazon Lex creates a resolution list containing likely values for a slot.\n      The value that it returns is determined by the\n        \u003ccode\u003evalueSelectionStrategy\u003c/code\u003e selected when the slot type was\n      created or updated. If \u003ccode\u003evalueSelectionStrategy\u003c/code\u003e is set to\n        \u003ccode\u003eORIGINAL_VALUE\u003c/code\u003e, the value provided by the user is returned,\n      if the user value is similar to the slot values. If\n        \u003ccode\u003evalueSelectionStrategy\u003c/code\u003e is set to\n        \u003ccode\u003eTOP_RESOLUTION\u003c/code\u003e Amazon Lex returns the first value in the\n      resolution list or, if there is no resolution list, null. If you don't\n      specify a \u003ccode\u003evalueSelectionStrategy\u003c/code\u003e, the default is\n        \u003ccode\u003eORIGINAL_VALUE\u003c/code\u003e.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.lexruntimeservice#PredictedIntent": {
+        "type": "structure",
+        "members": {
+          "intentName": {
+            "target": "com.amazonaws.lexruntimeservice#IntentName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the intent that Amazon Lex suggests satisfies the user's\n      intent.\u003c/p\u003e"
+            }
+          },
+          "nluIntentConfidence": {
+            "target": "com.amazonaws.lexruntimeservice#IntentConfidence",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIndicates how confident Amazon Lex is that an intent satisfies the user's\n      intent.\u003c/p\u003e"
+            }
+          },
+          "slots": {
+            "target": "com.amazonaws.lexruntimeservice#StringMap",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe slot and slot values associated with the predicted intent.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eAn intent that Amazon Lex suggests satisfies the user's intent. Includes\n      the name of the intent, the confidence that Amazon Lex has that the user's\n      intent is satisfied, and the slots defined for the intent.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.lexruntimeservice#PutSession": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.lexruntimeservice#PutSessionRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.lexruntimeservice#PutSessionResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.lexruntimeservice#BadGatewayException"
+          },
+          {
+            "target": "com.amazonaws.lexruntimeservice#BadRequestException"
+          },
+          {
+            "target": "com.amazonaws.lexruntimeservice#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.lexruntimeservice#DependencyFailedException"
+          },
+          {
+            "target": "com.amazonaws.lexruntimeservice#InternalFailureException"
+          },
+          {
+            "target": "com.amazonaws.lexruntimeservice#LimitExceededException"
+          },
+          {
+            "target": "com.amazonaws.lexruntimeservice#NotAcceptableException"
+          },
+          {
+            "target": "com.amazonaws.lexruntimeservice#NotFoundException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eCreates a new session or modifies an existing session with an Amazon Lex\n      bot. Use this operation to enable your application to set the state of the\n      bot.\u003c/p\u003e\n         \u003cp\u003eFor more information, see \u003ca href=\"https://docs.aws.amazon.com/lex/latest/dg/how-session-api.html\"\u003eManaging\n        Sessions\u003c/a\u003e.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/bot/{botName}/alias/{botAlias}/user/{userId}/session",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.lexruntimeservice#PutSessionRequest": {
+        "type": "structure",
+        "members": {
+          "accept": {
+            "target": "com.amazonaws.lexruntimeservice#Accept",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe message that Amazon Lex returns in the response can be either text or\n      speech based depending on the value of this field.\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003eIf the value is \u003ccode\u003etext/plain; charset=utf-8\u003c/code\u003e, Amazon Lex\n          returns text in the response.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eIf the value begins with \u003ccode\u003eaudio/\u003c/code\u003e, Amazon Lex returns speech\n          in the response. Amazon Lex uses Amazon Polly to generate the speech in the\n          configuration that you specify. For example, if you specify\n            \u003ccode\u003eaudio/mpeg\u003c/code\u003e as the value, Amazon Lex returns speech in the\n          MPEG format.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eIf the value is \u003ccode\u003eaudio/pcm\u003c/code\u003e, the speech is returned as\n            \u003ccode\u003eaudio/pcm\u003c/code\u003e in 16-bit, little endian format.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eThe following are the accepted values:\u003c/p\u003e\n               \u003cul\u003e\n                  \u003cli\u003e\n                     \u003cp\u003e\n                        \u003ccode\u003eaudio/mpeg\u003c/code\u003e\n                     \u003c/p\u003e\n                  \u003c/li\u003e\n                  \u003cli\u003e\n                     \u003cp\u003e\n                        \u003ccode\u003eaudio/ogg\u003c/code\u003e\n                     \u003c/p\u003e\n                  \u003c/li\u003e\n                  \u003cli\u003e\n                     \u003cp\u003e\n                        \u003ccode\u003eaudio/pcm\u003c/code\u003e\n                     \u003c/p\u003e\n                  \u003c/li\u003e\n                  \u003cli\u003e\n                     \u003cp\u003e\n                        \u003ccode\u003eaudio/*\u003c/code\u003e (defaults to mpeg)\u003c/p\u003e\n                  \u003c/li\u003e\n                  \u003cli\u003e\n                     \u003cp\u003e\n                        \u003ccode\u003etext/plain; charset=utf-8\u003c/code\u003e\n                     \u003c/p\u003e\n                  \u003c/li\u003e\n               \u003c/ul\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e",
+              "smithy.api#httpHeader": "Accept"
+            }
+          },
+          "activeContexts": {
+            "target": "com.amazonaws.lexruntimeservice#ActiveContextsList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of contexts active for the request. A context can be activated\n      when a previous intent is fulfilled, or by including the context in the\n      request,\u003c/p\u003e\n         \u003cp\u003eIf you don't specify a list of contexts, Amazon Lex will use the current\n      list of contexts for the session. If you specify an empty list, all\n      contexts for the session are cleared.\u003c/p\u003e"
+            }
+          },
+          "botAlias": {
+            "target": "com.amazonaws.lexruntimeservice#BotAlias",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe alias in use for the bot that contains the session data.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "botName": {
+            "target": "com.amazonaws.lexruntimeservice#BotName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the bot that contains the session data.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "dialogAction": {
+            "target": "com.amazonaws.lexruntimeservice#DialogAction",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSets the next action that the bot should take to fulfill the\n      conversation.\u003c/p\u003e"
+            }
+          },
+          "recentIntentSummaryView": {
+            "target": "com.amazonaws.lexruntimeservice#IntentSummaryList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA summary of the recent intents for the bot. You can use the intent\n      summary view to set a checkpoint label on an intent and modify attributes\n      of intents. You can also use it to remove or add intent summary objects to\n      the list.\u003c/p\u003e\n         \u003cp\u003eAn intent that you modify or add to the list must make sense for the\n      bot. For example, the intent name must be valid for the bot. You must\n      provide valid values for:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eintentName\u003c/code\u003e\n               \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eslot names\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eslotToElict\u003c/code\u003e\n               \u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e\n         \u003cp\u003eIf you send the \u003ccode\u003erecentIntentSummaryView\u003c/code\u003e parameter in a\n        \u003ccode\u003ePutSession\u003c/code\u003e request, the contents of the new summary view\n      replaces the old summary view. For example, if a \u003ccode\u003eGetSession\u003c/code\u003e\n      request returns three intents in the summary view and you call\n        \u003ccode\u003ePutSession\u003c/code\u003e with one intent in the summary view, the next\n      call to \u003ccode\u003eGetSession\u003c/code\u003e will only return one intent.\u003c/p\u003e"
+            }
+          },
+          "sessionAttributes": {
+            "target": "com.amazonaws.lexruntimeservice#StringMap",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eMap of key/value pairs representing the session-specific context\n      information. It contains application information passed between Amazon Lex and\n      a client application.\u003c/p\u003e"
+            }
+          },
+          "userId": {
+            "target": "com.amazonaws.lexruntimeservice#UserId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID of the client application user. Amazon Lex uses this to identify a\n      user's conversation with your bot. \u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.lexruntimeservice#PutSessionResponse": {
+        "type": "structure",
+        "members": {
+          "activeContexts": {
+            "target": "com.amazonaws.lexruntimeservice#SynthesizedJsonActiveContextsString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of active contexts for the session.\u003c/p\u003e",
+              "smithy.api#httpHeader": "x-amz-lex-active-contexts"
+            }
+          },
+          "audioStream": {
+            "target": "com.amazonaws.lexruntimeservice#BlobStream",
+            "traits": {
+              "smithy.api#default": "",
+              "smithy.api#documentation": "\u003cp\u003eThe audio version of the message to convey to the user.\u003c/p\u003e",
+              "smithy.api#httpPayload": {}
+            }
+          },
+          "contentType": {
+            "target": "com.amazonaws.lexruntimeservice#HttpContentType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eContent type as specified in the \u003ccode\u003eAccept\u003c/code\u003e HTTP header in\n      the request.\u003c/p\u003e",
+              "smithy.api#httpHeader": "Content-Type"
+            }
+          },
+          "dialogState": {
+            "target": "com.amazonaws.lexruntimeservice#DialogState",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003e\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eConfirmIntent\u003c/code\u003e - Amazon Lex is expecting a \"yes\" or \"no\"\n          response to confirm the intent before fulfilling an intent.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eElicitIntent\u003c/code\u003e - Amazon Lex wants to elicit the user's\n          intent.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eElicitSlot\u003c/code\u003e - Amazon Lex is expecting the value of a slot\n          for the current intent.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eFailed\u003c/code\u003e - Conveys that the conversation with the user\n          has failed. This can happen for various reasons, including the user\n          does not provide an appropriate response to prompts from the service,\n          or if the Lambda function fails to fulfill the intent.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eFulfilled\u003c/code\u003e - Conveys that the Lambda function has\n          sucessfully fulfilled the intent.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eReadyForFulfillment\u003c/code\u003e - Conveys that the client has to\n          fulfill the intent.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e",
+              "smithy.api#httpHeader": "x-amz-lex-dialog-state"
+            }
+          },
+          "encodedMessage": {
+            "target": "com.amazonaws.lexruntimeservice#SensitiveString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe next message that should be presented to the user.\u003c/p\u003e\n         \u003cp\u003eThe \u003ccode\u003eencodedMessage\u003c/code\u003e field is base-64 encoded. You must \n      decode the field before you can use the value.\u003c/p\u003e",
+              "smithy.api#httpHeader": "x-amz-lex-encoded-message"
+            }
+          },
+          "intentName": {
+            "target": "com.amazonaws.lexruntimeservice#IntentName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the current intent.\u003c/p\u003e",
+              "smithy.api#httpHeader": "x-amz-lex-intent-name"
+            }
+          },
+          "message": {
+            "target": "com.amazonaws.lexruntimeservice#Text",
+            "traits": {
+              "smithy.api#deprecated": {
+                "message": "The message field is deprecated, use the encodedMessage field instead. The message field is available only in the de-DE, en-AU, en-GB, en-US, es-419, es-ES, es-US, fr-CA, fr-FR and it-IT locales."
+              },
+              "smithy.api#documentation": "\u003cp\u003eThe next message that should be presented to the user.\u003c/p\u003e\n         \u003cp\u003eYou can only use this field in the de-DE, en-AU, en-GB, en-US, es-419,\n      es-ES, es-US, fr-CA, fr-FR, and it-IT locales. In all other locales, the\n        \u003ccode\u003emessage\u003c/code\u003e field is null. You should use the\n        \u003ccode\u003eencodedMessage\u003c/code\u003e field instead.\u003c/p\u003e",
+              "smithy.api#httpHeader": "x-amz-lex-message"
+            }
+          },
+          "messageFormat": {
+            "target": "com.amazonaws.lexruntimeservice#MessageFormatType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe format of the response message. One of the following\n      values:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003ePlainText\u003c/code\u003e - The message contains plain UTF-8\n          text.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eCustomPayload\u003c/code\u003e - The message is a custom format for\n          the client.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eSSML\u003c/code\u003e - The message contains text formatted for voice\n          output.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eComposite\u003c/code\u003e - The message contains an escaped JSON\n          object containing one or more messages from the groups that messages\n          were assigned to when the intent was created.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e",
+              "smithy.api#httpHeader": "x-amz-lex-message-format"
+            }
+          },
+          "sessionAttributes": {
+            "target": "com.amazonaws.lexruntimeservice#SynthesizedJsonString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eMap of key/value pairs representing session-specific context\n      information.\u003c/p\u003e",
+              "smithy.api#httpHeader": "x-amz-lex-session-attributes"
+            }
+          },
+          "sessionId": {
+            "target": "com.amazonaws.lexruntimeservice#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA unique identifier for the session.\u003c/p\u003e",
+              "smithy.api#httpHeader": "x-amz-lex-session-id"
+            }
+          },
+          "slotToElicit": {
+            "target": "com.amazonaws.lexruntimeservice#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIf the \u003ccode\u003edialogState\u003c/code\u003e is \u003ccode\u003eElicitSlot\u003c/code\u003e, returns\n      the name of the slot for which Amazon Lex is eliciting a value.\u003c/p\u003e",
+              "smithy.api#httpHeader": "x-amz-lex-slot-to-elicit"
+            }
+          },
+          "slots": {
+            "target": "com.amazonaws.lexruntimeservice#SynthesizedJsonString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eMap of zero or more intent slots Amazon Lex detected from the user input\n      during the conversation.\u003c/p\u003e\n         \u003cp\u003eAmazon Lex creates a resolution list containing likely values for a slot.\n      The value that it returns is determined by the\n        \u003ccode\u003evalueSelectionStrategy\u003c/code\u003e selected when the slot type was\n      created or updated. If \u003ccode\u003evalueSelectionStrategy\u003c/code\u003e is set to\n        \u003ccode\u003eORIGINAL_VALUE\u003c/code\u003e, the value provided by the user is returned,\n      if the user value is similar to the slot values. If\n        \u003ccode\u003evalueSelectionStrategy\u003c/code\u003e is set to\n        \u003ccode\u003eTOP_RESOLUTION\u003c/code\u003e Amazon Lex returns the first value in the\n      resolution list or, if there is no resolution list, null. If you don't\n      specify a \u003ccode\u003evalueSelectionStrategy\u003c/code\u003e the default is\n        \u003ccode\u003eORIGINAL_VALUE\u003c/code\u003e. \u003c/p\u003e",
+              "smithy.api#httpHeader": "x-amz-lex-slots"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.lexruntimeservice#RequestTimeoutException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "com.amazonaws.lexruntimeservice#String"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe input speech is too long.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 408
+        }
+      },
+      "com.amazonaws.lexruntimeservice#ResponseCard": {
+        "type": "structure",
+        "members": {
+          "contentType": {
+            "target": "com.amazonaws.lexruntimeservice#ContentType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe content type of the response.\u003c/p\u003e"
+            }
+          },
+          "genericAttachments": {
+            "target": "com.amazonaws.lexruntimeservice#genericAttachmentList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn array of attachment objects representing options.\u003c/p\u003e"
+            }
+          },
+          "version": {
+            "target": "com.amazonaws.lexruntimeservice#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe version of the response card format.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eIf you configure a response card when creating your bots, Amazon Lex\n      substitutes the session attributes and slot values that are available, and\n      then returns it. The response card can also come from a Lambda function (\n        \u003ccode\u003edialogCodeHook\u003c/code\u003e and \u003ccode\u003efulfillmentActivity\u003c/code\u003e on an\n      intent).\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.lexruntimeservice#SensitiveString": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 1366
+          },
+          "smithy.api#sensitive": {}
+        }
+      },
+      "com.amazonaws.lexruntimeservice#SensitiveStringUnbounded": {
+        "type": "string",
+        "traits": {
+          "smithy.api#sensitive": {}
+        }
+      },
+      "com.amazonaws.lexruntimeservice#SentimentLabel": {
+        "type": "string"
+      },
+      "com.amazonaws.lexruntimeservice#SentimentResponse": {
+        "type": "structure",
+        "members": {
+          "sentimentLabel": {
+            "target": "com.amazonaws.lexruntimeservice#SentimentLabel",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe inferred sentiment that Amazon Comprehend has the highest\n      confidence in.\u003c/p\u003e"
+            }
+          },
+          "sentimentScore": {
+            "target": "com.amazonaws.lexruntimeservice#SentimentScore",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe likelihood that the sentiment was correctly inferred.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe sentiment expressed in an utterance.\u003c/p\u003e\n         \u003cp\u003eWhen the bot is configured to send utterances to Amazon Comprehend for\n      sentiment analysis, this field structure contains the result of the\n      analysis.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.lexruntimeservice#SentimentScore": {
+        "type": "string"
+      },
+      "com.amazonaws.lexruntimeservice#String": {
+        "type": "string"
+      },
+      "com.amazonaws.lexruntimeservice#StringMap": {
+        "type": "map",
+        "key": {
+          "target": "com.amazonaws.lexruntimeservice#String"
+        },
+        "value": {
+          "target": "com.amazonaws.lexruntimeservice#String"
+        },
+        "traits": {
+          "smithy.api#sensitive": {}
+        }
+      },
+      "com.amazonaws.lexruntimeservice#StringUrlWithLength": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 2048
+          }
+        }
+      },
+      "com.amazonaws.lexruntimeservice#StringWithLength": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 80
+          }
+        }
+      },
+      "com.amazonaws.lexruntimeservice#SynthesizedJsonActiveContextsString": {
+        "type": "string",
+        "traits": {
+          "smithy.api#mediaType": "application/json",
+          "smithy.api#sensitive": {}
+        }
+      },
+      "com.amazonaws.lexruntimeservice#SynthesizedJsonAttributesString": {
+        "type": "string",
+        "traits": {
+          "smithy.api#mediaType": "application/json",
+          "smithy.api#sensitive": {}
+        }
+      },
+      "com.amazonaws.lexruntimeservice#SynthesizedJsonString": {
+        "type": "string",
+        "traits": {
+          "smithy.api#mediaType": "application/json"
+        }
+      },
+      "com.amazonaws.lexruntimeservice#Text": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 1024
+          },
+          "smithy.api#sensitive": {}
+        }
+      },
+      "com.amazonaws.lexruntimeservice#UnsupportedMediaTypeException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "com.amazonaws.lexruntimeservice#String"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe Content-Type header (\u003ccode\u003ePostContent\u003c/code\u003e API) has an invalid\n      value. \u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 415
+        }
+      },
+      "com.amazonaws.lexruntimeservice#UserId": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 2,
+            "max": 100
+          },
+          "smithy.api#pattern": "^[0-9a-zA-Z._:-]+$"
+        }
+      },
+      "com.amazonaws.lexruntimeservice#genericAttachmentList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.lexruntimeservice#GenericAttachment"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 10
+          }
+        }
+      },
+      "com.amazonaws.lexruntimeservice#listOfButtons": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.lexruntimeservice#Button"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 5
+          }
+        }
+      }
+    }
+  }
+}
