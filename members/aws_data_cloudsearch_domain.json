@@ -1,0 +1,1710 @@
+{
+  "schema_source": "smithy",
+  "mode": "data_source",
+  "auth": {
+    "Type": "",
+    "Params": null
+  },
+  "base_url": "https://aws.example.invalid",
+  "retry": {
+    "MaxAttempts": 0,
+    "InitialBackoff": "",
+    "MaxBackoff": "",
+    "Jitter": null,
+    "RespectRetryAfter": null,
+    "RateLimitResetHeader": ""
+  },
+  "timeouts": {
+    "Create": "",
+    "Read": "",
+    "Update": "",
+    "Delete": "",
+    "Default": ""
+  },
+  "wire_name": "aws",
+  "raw_spec": {
+    "smithy": "2.0",
+    "metadata": {
+      "suppressions": [
+        {
+          "id": "HttpMethodSemantics",
+          "namespace": "*"
+        },
+        {
+          "id": "HttpResponseCodeSemantics",
+          "namespace": "*"
+        },
+        {
+          "id": "PaginatedTrait",
+          "namespace": "*"
+        },
+        {
+          "id": "HttpHeaderTrait",
+          "namespace": "*"
+        },
+        {
+          "id": "HttpUriConflict",
+          "namespace": "*"
+        },
+        {
+          "id": "Service",
+          "namespace": "*"
+        }
+      ]
+    },
+    "shapes": {
+      "com.amazonaws.cloudsearchdomain#Adds": {
+        "type": "long",
+        "traits": {
+          "smithy.api#default": 0
+        }
+      },
+      "com.amazonaws.cloudsearchdomain#AmazonCloudSearch2013": {
+        "type": "service",
+        "version": "2013-01-01",
+        "operations": [
+          {
+            "target": "com.amazonaws.cloudsearchdomain#Search"
+          },
+          {
+            "target": "com.amazonaws.cloudsearchdomain#Suggest"
+          },
+          {
+            "target": "com.amazonaws.cloudsearchdomain#UploadDocuments"
+          }
+        ],
+        "traits": {
+          "aws.api#service": {
+            "sdkId": "CloudSearch Domain",
+            "arnNamespace": "cloudsearch",
+            "cloudFormationName": "CloudSearchDomain",
+            "cloudTrailEventSource": "cloudsearchdomain.amazonaws.com",
+            "docId": "cloudsearchdomain-2013-01-01",
+            "endpointPrefix": "cloudsearchdomain"
+          },
+          "aws.auth#sigv4": {
+            "name": "cloudsearch"
+          },
+          "aws.protocols#restJson1": {},
+          "smithy.api#documentation": "\u003cp\u003eYou use the AmazonCloudSearch2013 API to upload documents to a search domain and search those documents. \u003c/p\u003e\n\n         \u003cp\u003eThe endpoints for submitting \u003ccode\u003eUploadDocuments\u003c/code\u003e, \u003ccode\u003eSearch\u003c/code\u003e, and \u003ccode\u003eSuggest\u003c/code\u003e requests are domain-specific. To get the endpoints for your domain, use the Amazon CloudSearch configuration service \u003ccode\u003eDescribeDomains\u003c/code\u003e action. The domain endpoints are also displayed on the domain dashboard in the Amazon CloudSearch console. You submit suggest requests to the search endpoint. \u003c/p\u003e\n         \u003cp\u003eFor more information, see the \u003ca href=\"http://docs.aws.amazon.com/cloudsearch/latest/developerguide\"\u003eAmazon CloudSearch Developer Guide\u003c/a\u003e.\u003c/p\u003e",
+          "smithy.api#title": "Amazon CloudSearch Domain",
+          "smithy.api#xmlNamespace": {
+            "uri": "http://cloudsearch.amazonaws.com/doc/2013-01-01/"
+          },
+          "smithy.rules#endpointBdd": {
+            "version": "1.1",
+            "parameters": {
+              "Region": {
+                "builtIn": "AWS::Region",
+                "required": false,
+                "documentation": "The AWS region used to dispatch the request.",
+                "type": "string"
+              },
+              "UseDualStack": {
+                "builtIn": "AWS::UseDualStack",
+                "required": true,
+                "default": false,
+                "documentation": "When true, use the dual-stack endpoint. If the configured endpoint does not support dual-stack, dispatching the request MAY return an error.",
+                "type": "boolean"
+              },
+              "UseFIPS": {
+                "builtIn": "AWS::UseFIPS",
+                "required": true,
+                "default": false,
+                "documentation": "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
+                "type": "boolean"
+              },
+              "Endpoint": {
+                "builtIn": "SDK::Endpoint",
+                "required": false,
+                "documentation": "Override the endpoint used to send this request",
+                "type": "string"
+              }
+            },
+            "conditions": [
+              {
+                "fn": "isSet",
+                "argv": [
+                  {
+                    "ref": "Endpoint"
+                  }
+                ]
+              },
+              {
+                "fn": "isSet",
+                "argv": [
+                  {
+                    "ref": "Region"
+                  }
+                ]
+              },
+              {
+                "fn": "aws.partition",
+                "argv": [
+                  {
+                    "ref": "Region"
+                  }
+                ],
+                "assign": "PartitionResult"
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "ref": "UseFIPS"
+                  },
+                  true
+                ]
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "ref": "UseDualStack"
+                  },
+                  true
+                ]
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "fn": "getAttr",
+                    "argv": [
+                      {
+                        "ref": "PartitionResult"
+                      },
+                      "supportsDualStack"
+                    ]
+                  },
+                  true
+                ]
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "fn": "getAttr",
+                    "argv": [
+                      {
+                        "ref": "PartitionResult"
+                      },
+                      "supportsFIPS"
+                    ]
+                  },
+                  true
+                ]
+              }
+            ],
+            "results": [
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: FIPS and custom endpoint are not supported",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: Dualstack and custom endpoint are not supported",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": {
+                    "ref": "Endpoint"
+                  },
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://cloudsearchdomain-fips.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "FIPS and DualStack are enabled, but this partition does not support one or both",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://cloudsearchdomain-fips.{Region}.{PartitionResult#dnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "FIPS is enabled but this partition does not support FIPS",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://cloudsearchdomain.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "DualStack is enabled but this partition does not support DualStack",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://cloudsearchdomain.{Region}.{PartitionResult#dnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: Missing Region",
+                "type": "error"
+              }
+            ],
+            "root": 2,
+            "nodeCount": 13,
+            "nodes": "/////wAAAAH/////AAAAAAAAAAwAAAADAAAAAQAAAAQF9eELAAAAAgAAAAUF9eELAAAAAwAAAAgAAAAGAAAABAAAAAcF9eEKAAAABQX14QgF9eEJAAAABAAAAAoAAAAJAAAABgX14QYF9eEHAAAABQAAAAsF9eEFAAAABgX14QQF9eEFAAAAAwX14QEAAAANAAAABAX14QIF9eED"
+          },
+          "smithy.rules#endpointRuleSet": {
+            "version": "1.0",
+            "parameters": {
+              "Region": {
+                "builtIn": "AWS::Region",
+                "required": false,
+                "documentation": "The AWS region used to dispatch the request.",
+                "type": "string"
+              },
+              "UseDualStack": {
+                "builtIn": "AWS::UseDualStack",
+                "required": true,
+                "default": false,
+                "documentation": "When true, use the dual-stack endpoint. If the configured endpoint does not support dual-stack, dispatching the request MAY return an error.",
+                "type": "boolean"
+              },
+              "UseFIPS": {
+                "builtIn": "AWS::UseFIPS",
+                "required": true,
+                "default": false,
+                "documentation": "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
+                "type": "boolean"
+              },
+              "Endpoint": {
+                "builtIn": "SDK::Endpoint",
+                "required": false,
+                "documentation": "Override the endpoint used to send this request",
+                "type": "string"
+              }
+            },
+            "rules": [
+              {
+                "conditions": [
+                  {
+                    "fn": "isSet",
+                    "argv": [
+                      {
+                        "ref": "Endpoint"
+                      }
+                    ]
+                  }
+                ],
+                "rules": [
+                  {
+                    "conditions": [
+                      {
+                        "fn": "booleanEquals",
+                        "argv": [
+                          {
+                            "ref": "UseFIPS"
+                          },
+                          true
+                        ]
+                      }
+                    ],
+                    "error": "Invalid Configuration: FIPS and custom endpoint are not supported",
+                    "type": "error"
+                  },
+                  {
+                    "conditions": [
+                      {
+                        "fn": "booleanEquals",
+                        "argv": [
+                          {
+                            "ref": "UseDualStack"
+                          },
+                          true
+                        ]
+                      }
+                    ],
+                    "error": "Invalid Configuration: Dualstack and custom endpoint are not supported",
+                    "type": "error"
+                  },
+                  {
+                    "conditions": [],
+                    "endpoint": {
+                      "url": {
+                        "ref": "Endpoint"
+                      },
+                      "properties": {},
+                      "headers": {}
+                    },
+                    "type": "endpoint"
+                  }
+                ],
+                "type": "tree"
+              },
+              {
+                "conditions": [
+                  {
+                    "fn": "isSet",
+                    "argv": [
+                      {
+                        "ref": "Region"
+                      }
+                    ]
+                  }
+                ],
+                "rules": [
+                  {
+                    "conditions": [
+                      {
+                        "fn": "aws.partition",
+                        "argv": [
+                          {
+                            "ref": "Region"
+                          }
+                        ],
+                        "assign": "PartitionResult"
+                      }
+                    ],
+                    "rules": [
+                      {
+                        "conditions": [
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseFIPS"
+                              },
+                              true
+                            ]
+                          },
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseDualStack"
+                              },
+                              true
+                            ]
+                          }
+                        ],
+                        "rules": [
+                          {
+                            "conditions": [
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  true,
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsFIPS"
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  true,
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsDualStack"
+                                    ]
+                                  }
+                                ]
+                              }
+                            ],
+                            "rules": [
+                              {
+                                "conditions": [],
+                                "endpoint": {
+                                  "url": "https://cloudsearchdomain-fips.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                                  "properties": {},
+                                  "headers": {}
+                                },
+                                "type": "endpoint"
+                              }
+                            ],
+                            "type": "tree"
+                          },
+                          {
+                            "conditions": [],
+                            "error": "FIPS and DualStack are enabled, but this partition does not support one or both",
+                            "type": "error"
+                          }
+                        ],
+                        "type": "tree"
+                      },
+                      {
+                        "conditions": [
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseFIPS"
+                              },
+                              true
+                            ]
+                          }
+                        ],
+                        "rules": [
+                          {
+                            "conditions": [
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsFIPS"
+                                    ]
+                                  },
+                                  true
+                                ]
+                              }
+                            ],
+                            "rules": [
+                              {
+                                "conditions": [],
+                                "endpoint": {
+                                  "url": "https://cloudsearchdomain-fips.{Region}.{PartitionResult#dnsSuffix}",
+                                  "properties": {},
+                                  "headers": {}
+                                },
+                                "type": "endpoint"
+                              }
+                            ],
+                            "type": "tree"
+                          },
+                          {
+                            "conditions": [],
+                            "error": "FIPS is enabled but this partition does not support FIPS",
+                            "type": "error"
+                          }
+                        ],
+                        "type": "tree"
+                      },
+                      {
+                        "conditions": [
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseDualStack"
+                              },
+                              true
+                            ]
+                          }
+                        ],
+                        "rules": [
+                          {
+                            "conditions": [
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  true,
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsDualStack"
+                                    ]
+                                  }
+                                ]
+                              }
+                            ],
+                            "rules": [
+                              {
+                                "conditions": [],
+                                "endpoint": {
+                                  "url": "https://cloudsearchdomain.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                                  "properties": {},
+                                  "headers": {}
+                                },
+                                "type": "endpoint"
+                              }
+                            ],
+                            "type": "tree"
+                          },
+                          {
+                            "conditions": [],
+                            "error": "DualStack is enabled but this partition does not support DualStack",
+                            "type": "error"
+                          }
+                        ],
+                        "type": "tree"
+                      },
+                      {
+                        "conditions": [],
+                        "endpoint": {
+                          "url": "https://cloudsearchdomain.{Region}.{PartitionResult#dnsSuffix}",
+                          "properties": {},
+                          "headers": {}
+                        },
+                        "type": "endpoint"
+                      }
+                    ],
+                    "type": "tree"
+                  }
+                ],
+                "type": "tree"
+              },
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: Missing Region",
+                "type": "error"
+              }
+            ]
+          },
+          "smithy.rules#endpointTests": {
+            "testCases": [
+              {
+                "documentation": "For region us-east-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://cloudsearchdomain-fips.us-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://cloudsearchdomain-fips.us-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://cloudsearchdomain.us-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://cloudsearchdomain.us-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://cloudsearchdomain-fips.cn-north-1.api.amazonwebservices.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": true,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://cloudsearchdomain-fips.cn-north-1.amazonaws.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://cloudsearchdomain.cn-north-1.api.amazonwebservices.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://cloudsearchdomain.cn-north-1.amazonaws.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://cloudsearchdomain-fips.us-gov-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://cloudsearchdomain-fips.us-gov-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://cloudsearchdomain.us-gov-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://cloudsearchdomain.us-gov-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-iso-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://cloudsearchdomain-fips.us-iso-east-1.c2s.ic.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-iso-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-iso-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://cloudsearchdomain.us-iso-east-1.c2s.ic.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-iso-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-isob-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://cloudsearchdomain-fips.us-isob-east-1.sc2s.sgov.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-isob-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-isob-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://cloudsearchdomain.us-isob-east-1.sc2s.sgov.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-isob-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For custom endpoint with region set and fips disabled and dualstack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://example.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "For custom endpoint with region not set and fips disabled and dualstack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://example.com"
+                  }
+                },
+                "params": {
+                  "UseFIPS": false,
+                  "UseDualStack": false,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "For custom endpoint with fips enabled and dualstack disabled",
+                "expect": {
+                  "error": "Invalid Configuration: FIPS and custom endpoint are not supported"
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "For custom endpoint with fips disabled and dualstack enabled",
+                "expect": {
+                  "error": "Invalid Configuration: Dualstack and custom endpoint are not supported"
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "Missing region",
+                "expect": {
+                  "error": "Invalid Configuration: Missing Region"
+                }
+              }
+            ],
+            "version": "1.0"
+          }
+        }
+      },
+      "com.amazonaws.cloudsearchdomain#Blob": {
+        "type": "blob",
+        "traits": {
+          "smithy.api#streaming": {}
+        }
+      },
+      "com.amazonaws.cloudsearchdomain#Bucket": {
+        "type": "structure",
+        "members": {
+          "count": {
+            "target": "com.amazonaws.cloudsearchdomain#Long",
+            "traits": {
+              "smithy.api#default": 0,
+              "smithy.api#documentation": "\u003cp\u003eThe number of hits that contain the facet value in the specified facet field.\u003c/p\u003e"
+            }
+          },
+          "value": {
+            "target": "com.amazonaws.cloudsearchdomain#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe  facet value being counted.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA container for facet information. \u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.cloudsearchdomain#BucketInfo": {
+        "type": "structure",
+        "members": {
+          "buckets": {
+            "target": "com.amazonaws.cloudsearchdomain#BucketList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of the calculated facet values and counts.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA container for the calculated facet values and counts.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.cloudsearchdomain#BucketList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.cloudsearchdomain#Bucket"
+        }
+      },
+      "com.amazonaws.cloudsearchdomain#ContentType": {
+        "type": "enum",
+        "members": {
+          "application_json": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "application/json"
+            }
+          },
+          "application_xml": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "application/xml"
+            }
+          }
+        }
+      },
+      "com.amazonaws.cloudsearchdomain#Cursor": {
+        "type": "string"
+      },
+      "com.amazonaws.cloudsearchdomain#Deletes": {
+        "type": "long",
+        "traits": {
+          "smithy.api#default": 0
+        }
+      },
+      "com.amazonaws.cloudsearchdomain#DocumentServiceException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "com.amazonaws.cloudsearchdomain#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe description of the errors returned by the document service.\u003c/p\u003e"
+            }
+          },
+          "status": {
+            "target": "com.amazonaws.cloudsearchdomain#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe return status of a document upload request, \u003ccode\u003eerror\u003c/code\u003e or \u003ccode\u003esuccess\u003c/code\u003e.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eInformation about any problems encountered while processing an upload request.\u003c/p\u003e",
+          "smithy.api#error": "client"
+        }
+      },
+      "com.amazonaws.cloudsearchdomain#DocumentServiceWarning": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "com.amazonaws.cloudsearchdomain#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe description for a warning returned by the document service.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA warning returned by the document service when an issue is discovered while processing an upload request.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.cloudsearchdomain#DocumentServiceWarnings": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.cloudsearchdomain#DocumentServiceWarning"
+        }
+      },
+      "com.amazonaws.cloudsearchdomain#Double": {
+        "type": "double",
+        "traits": {
+          "smithy.api#default": 0
+        }
+      },
+      "com.amazonaws.cloudsearchdomain#Expr": {
+        "type": "string"
+      },
+      "com.amazonaws.cloudsearchdomain#Exprs": {
+        "type": "map",
+        "key": {
+          "target": "com.amazonaws.cloudsearchdomain#String"
+        },
+        "value": {
+          "target": "com.amazonaws.cloudsearchdomain#String"
+        }
+      },
+      "com.amazonaws.cloudsearchdomain#Facet": {
+        "type": "string"
+      },
+      "com.amazonaws.cloudsearchdomain#Facets": {
+        "type": "map",
+        "key": {
+          "target": "com.amazonaws.cloudsearchdomain#String"
+        },
+        "value": {
+          "target": "com.amazonaws.cloudsearchdomain#BucketInfo"
+        }
+      },
+      "com.amazonaws.cloudsearchdomain#FieldStats": {
+        "type": "structure",
+        "members": {
+          "count": {
+            "target": "com.amazonaws.cloudsearchdomain#Long",
+            "traits": {
+              "smithy.api#default": 0,
+              "smithy.api#documentation": "\u003cp\u003eThe number of documents that contain a value in the specified field in the result set.\u003c/p\u003e"
+            }
+          },
+          "max": {
+            "target": "com.amazonaws.cloudsearchdomain#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe maximum value found in the specified field in the result set.\u003c/p\u003e\n       \u003cp\u003eIf the field is numeric (\u003ccode\u003eint\u003c/code\u003e, \u003ccode\u003eint-array\u003c/code\u003e, \u003ccode\u003edouble\u003c/code\u003e, or \u003ccode\u003edouble-array\u003c/code\u003e), \u003ccode\u003emax\u003c/code\u003e is the string representation of a double-precision 64-bit floating point value. If the field is \u003ccode\u003edate\u003c/code\u003e or \u003ccode\u003edate-array\u003c/code\u003e, \u003ccode\u003emax\u003c/code\u003e is the string representation of a date with the format specified in \u003ca href=\"http://tools.ietf.org/html/rfc3339\"\u003eIETF RFC3339\u003c/a\u003e: yyyy-mm-ddTHH:mm:ss.SSSZ.\u003c/p\u003e"
+            }
+          },
+          "mean": {
+            "target": "com.amazonaws.cloudsearchdomain#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe average of the values found in the specified field in the result set.\u003c/p\u003e\n       \u003cp\u003eIf the field is numeric (\u003ccode\u003eint\u003c/code\u003e, \u003ccode\u003eint-array\u003c/code\u003e, \u003ccode\u003edouble\u003c/code\u003e, or \u003ccode\u003edouble-array\u003c/code\u003e), \u003ccode\u003emean\u003c/code\u003e is the string representation of a double-precision 64-bit floating point value. If the field is \u003ccode\u003edate\u003c/code\u003e or \u003ccode\u003edate-array\u003c/code\u003e, \u003ccode\u003emean\u003c/code\u003e is the string representation of a date with the format specified in \u003ca href=\"http://tools.ietf.org/html/rfc3339\"\u003eIETF RFC3339\u003c/a\u003e: yyyy-mm-ddTHH:mm:ss.SSSZ.\u003c/p\u003e"
+            }
+          },
+          "min": {
+            "target": "com.amazonaws.cloudsearchdomain#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe minimum value found in the specified field in the result set.\u003c/p\u003e\n       \u003cp\u003eIf the field is numeric (\u003ccode\u003eint\u003c/code\u003e, \u003ccode\u003eint-array\u003c/code\u003e, \u003ccode\u003edouble\u003c/code\u003e, or \u003ccode\u003edouble-array\u003c/code\u003e), \u003ccode\u003emin\u003c/code\u003e is the string representation of a double-precision 64-bit floating point value. If the field is \u003ccode\u003edate\u003c/code\u003e or \u003ccode\u003edate-array\u003c/code\u003e, \u003ccode\u003emin\u003c/code\u003e is the string representation of a date with the format specified in \u003ca href=\"http://tools.ietf.org/html/rfc3339\"\u003eIETF RFC3339\u003c/a\u003e: yyyy-mm-ddTHH:mm:ss.SSSZ.\u003c/p\u003e"
+            }
+          },
+          "missing": {
+            "target": "com.amazonaws.cloudsearchdomain#Long",
+            "traits": {
+              "smithy.api#default": 0,
+              "smithy.api#documentation": "\u003cp\u003eThe number of documents that do not contain a value in the specified field in the result set.\u003c/p\u003e"
+            }
+          },
+          "stddev": {
+            "target": "com.amazonaws.cloudsearchdomain#Double",
+            "traits": {
+              "smithy.api#default": 0,
+              "smithy.api#documentation": "\u003cp\u003eThe standard deviation of the values in the specified field in the result set.\u003c/p\u003e"
+            }
+          },
+          "sum": {
+            "target": "com.amazonaws.cloudsearchdomain#Double",
+            "traits": {
+              "smithy.api#default": 0,
+              "smithy.api#documentation": "\u003cp\u003eThe sum of the field values across the documents in the result set. \u003ccode\u003enull\u003c/code\u003e for date fields.\u003c/p\u003e"
+            }
+          },
+          "sumOfSquares": {
+            "target": "com.amazonaws.cloudsearchdomain#Double",
+            "traits": {
+              "smithy.api#default": 0,
+              "smithy.api#documentation": "\u003cp\u003eThe sum of all field values in the result set squared.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe statistics for a field calculated in the request.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.cloudsearchdomain#FieldValue": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.cloudsearchdomain#String"
+        }
+      },
+      "com.amazonaws.cloudsearchdomain#Fields": {
+        "type": "map",
+        "key": {
+          "target": "com.amazonaws.cloudsearchdomain#String"
+        },
+        "value": {
+          "target": "com.amazonaws.cloudsearchdomain#FieldValue"
+        }
+      },
+      "com.amazonaws.cloudsearchdomain#FilterQuery": {
+        "type": "string"
+      },
+      "com.amazonaws.cloudsearchdomain#Highlight": {
+        "type": "string"
+      },
+      "com.amazonaws.cloudsearchdomain#Highlights": {
+        "type": "map",
+        "key": {
+          "target": "com.amazonaws.cloudsearchdomain#String"
+        },
+        "value": {
+          "target": "com.amazonaws.cloudsearchdomain#String"
+        }
+      },
+      "com.amazonaws.cloudsearchdomain#Hit": {
+        "type": "structure",
+        "members": {
+          "exprs": {
+            "target": "com.amazonaws.cloudsearchdomain#Exprs",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe expressions returned from a document that matches the search request.\u003c/p\u003e"
+            }
+          },
+          "fields": {
+            "target": "com.amazonaws.cloudsearchdomain#Fields",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe fields returned from a document that matches the search request.\u003c/p\u003e"
+            }
+          },
+          "highlights": {
+            "target": "com.amazonaws.cloudsearchdomain#Highlights",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe highlights returned from a document that matches the search request.\u003c/p\u003e"
+            }
+          },
+          "id": {
+            "target": "com.amazonaws.cloudsearchdomain#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe document ID of a document that matches the search request.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eInformation about a document that matches the search request.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.cloudsearchdomain#HitList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.cloudsearchdomain#Hit"
+        }
+      },
+      "com.amazonaws.cloudsearchdomain#Hits": {
+        "type": "structure",
+        "members": {
+          "cursor": {
+            "target": "com.amazonaws.cloudsearchdomain#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA cursor that can be used to retrieve the next set of matching documents when you want to page through a large result set.\u003c/p\u003e"
+            }
+          },
+          "found": {
+            "target": "com.amazonaws.cloudsearchdomain#Long",
+            "traits": {
+              "smithy.api#default": 0,
+              "smithy.api#documentation": "\u003cp\u003eThe total number of documents that match the search request.\u003c/p\u003e"
+            }
+          },
+          "hit": {
+            "target": "com.amazonaws.cloudsearchdomain#HitList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA document that matches the search request.\u003c/p\u003e"
+            }
+          },
+          "start": {
+            "target": "com.amazonaws.cloudsearchdomain#Long",
+            "traits": {
+              "smithy.api#default": 0,
+              "smithy.api#documentation": "\u003cp\u003eThe index of the first matching document.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe collection of documents that match the search request.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.cloudsearchdomain#Long": {
+        "type": "long",
+        "traits": {
+          "smithy.api#default": 0
+        }
+      },
+      "com.amazonaws.cloudsearchdomain#Partial": {
+        "type": "boolean",
+        "traits": {
+          "smithy.api#default": false
+        }
+      },
+      "com.amazonaws.cloudsearchdomain#Query": {
+        "type": "string"
+      },
+      "com.amazonaws.cloudsearchdomain#QueryOptions": {
+        "type": "string"
+      },
+      "com.amazonaws.cloudsearchdomain#QueryParser": {
+        "type": "enum",
+        "members": {
+          "dismax": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "dismax"
+            }
+          },
+          "lucene": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "lucene"
+            }
+          },
+          "simple": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "simple"
+            }
+          },
+          "structured": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "structured"
+            }
+          }
+        }
+      },
+      "com.amazonaws.cloudsearchdomain#Return": {
+        "type": "string"
+      },
+      "com.amazonaws.cloudsearchdomain#Search": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.cloudsearchdomain#SearchRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.cloudsearchdomain#SearchResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.cloudsearchdomain#SearchException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eRetrieves a list of documents that match the specified search criteria. How you specify the search criteria depends on which query parser you use. Amazon CloudSearch supports four query parsers:\u003c/p\u003e\n      \u003cul\u003e\n         \u003cli\u003e\u003ccode\u003esimple\u003c/code\u003e: search all \u003ccode\u003etext\u003c/code\u003e and \u003ccode\u003etext-array\u003c/code\u003e fields for the specified string. Search for phrases, individual terms, and prefixes. \u003c/li\u003e\n         \u003cli\u003e\u003ccode\u003estructured\u003c/code\u003e: search specific fields, construct compound queries using Boolean operators, and use advanced features such as term boosting and proximity searching.\u003c/li\u003e\n         \u003cli\u003e\u003ccode\u003elucene\u003c/code\u003e: specify search criteria using the Apache Lucene query parser syntax.\u003c/li\u003e\n         \u003cli\u003e\u003ccode\u003edismax\u003c/code\u003e: specify search criteria using the simplified subset of the Apache Lucene query parser syntax defined by the DisMax query parser.\u003c/li\u003e\n      \u003c/ul\u003e\n      \u003cp\u003eFor more information, see \u003ca href=\"http://docs.aws.amazon.com/cloudsearch/latest/developerguide/searching.html\"\u003eSearching Your Data\u003c/a\u003e in the \u003ci\u003eAmazon CloudSearch Developer Guide\u003c/i\u003e.\u003c/p\u003e\n      \u003cp\u003eThe endpoint for submitting \u003ccode\u003eSearch\u003c/code\u003e requests is domain-specific. You submit search requests to a domain's search endpoint. To get the search endpoint for your domain, use the Amazon CloudSearch configuration service \u003ccode\u003eDescribeDomains\u003c/code\u003e action. A domain's endpoints are also displayed on the domain dashboard in the Amazon CloudSearch console. \u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "GET",
+            "uri": "/2013-01-01/search?format=sdk\u0026pretty=true",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.cloudsearchdomain#SearchException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "com.amazonaws.cloudsearchdomain#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA description of the error returned by the search service.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eInformation about any problems encountered while processing a search request.\u003c/p\u003e",
+          "smithy.api#error": "client"
+        }
+      },
+      "com.amazonaws.cloudsearchdomain#SearchRequest": {
+        "type": "structure",
+        "members": {
+          "cursor": {
+            "target": "com.amazonaws.cloudsearchdomain#Cursor",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eRetrieves a cursor value you can use to page through large result sets.\n         Use the \u003ccode\u003esize\u003c/code\u003e parameter to control the number of hits to include in each response. You can specify either the \u003ccode\u003ecursor\u003c/code\u003e or\n         \u003ccode\u003estart\u003c/code\u003e parameter in a request; they are mutually exclusive. To get the first cursor, set the cursor value to \u003ccode\u003einitial\u003c/code\u003e. In subsequent requests, specify the cursor value returned in the hits section of the response. \u003c/p\u003e\n      \u003cp\u003eFor more\n         information, see \u003ca href=\"http://docs.aws.amazon.com/cloudsearch/latest/developerguide/paginating-results.html\"\u003ePaginating Results\u003c/a\u003e in the \u003ci\u003eAmazon CloudSearch Developer Guide\u003c/i\u003e.\u003c/p\u003e",
+              "smithy.api#httpQuery": "cursor"
+            }
+          },
+          "expr": {
+            "target": "com.amazonaws.cloudsearchdomain#Expr",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eDefines one or more numeric expressions that can be used to sort results or specify search or filter\n         criteria. You can also specify expressions as return fields. \u003c/p\u003e\n      \u003cp\u003eYou specify the expressions in JSON using the form \u003ccode\u003e{\"EXPRESSIONNAME\":\"EXPRESSION\"}\u003c/code\u003e. You can define and use multiple expressions in a search request. For example:\u003c/p\u003e\n      \u003cp\u003e\u003ccode\u003e\n         {\"expression1\":\"_score*rating\", \"expression2\":\"(1/rank)*year\"}\n      \u003c/code\u003e \u003c/p\u003e\n      \u003cp\u003eFor information about the variables, operators, and functions you can use in expressions, see \u003ca href=\"http://docs.aws.amazon.com/cloudsearch/latest/developerguide/configuring-expressions.html#writing-expressions\"\u003eWriting Expressions\u003c/a\u003e\n         in the \u003ci\u003eAmazon CloudSearch Developer Guide\u003c/i\u003e.\u003c/p\u003e",
+              "smithy.api#httpQuery": "expr"
+            }
+          },
+          "facet": {
+            "target": "com.amazonaws.cloudsearchdomain#Facet",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies one or more fields for which to get facet information, and options that control how the facet information is returned. Each specified field must be facet-enabled in the domain configuration. The fields and options are specified in JSON using the form \u003ccode\u003e{\"FIELD\":{\"OPTION\":VALUE,\"OPTION:\"STRING\"},\"FIELD\":{\"OPTION\":VALUE,\"OPTION\":\"STRING\"}}\u003c/code\u003e.\u003c/p\u003e\n         \u003cp\u003eYou can specify the following faceting options:\u003c/p\u003e\n      \u003cul\u003e\n         \u003cli\u003e\n            \u003cp\u003e\u003ccode\u003ebuckets\u003c/code\u003e specifies an array of the facet values or\n               ranges to count. Ranges are specified using the same syntax that you use to search for a range of values.\n               For more information, see \u003ca href=\"http://docs.aws.amazon.com/cloudsearch/latest/developerguide/searching-ranges.html\"\u003e\n                  Searching for a Range of Values\u003c/a\u003e in the \u003ci\u003eAmazon CloudSearch Developer Guide\u003c/i\u003e. Buckets are returned in the order they\n               are specified in the request. The \u003ccode\u003esort\u003c/code\u003e and \u003ccode\u003esize\u003c/code\u003e options are\n               not valid if you specify \u003ccode\u003ebuckets\u003c/code\u003e.\u003c/p\u003e\n         \u003c/li\u003e\n         \u003cli\u003e\n            \u003cp\u003e\u003ccode\u003esize\u003c/code\u003e specifies the maximum number of facets to include in the results. By\n               default, Amazon CloudSearch returns counts for the top 10. The\n               \u003ccode\u003esize\u003c/code\u003e parameter is only valid when you specify\n               the \u003ccode\u003esort\u003c/code\u003e option; it cannot be used in conjunction\n               with \u003ccode\u003ebuckets\u003c/code\u003e.\u003c/p\u003e\n         \u003c/li\u003e\n         \u003cli\u003e\n            \u003cp\u003e\u003ccode\u003esort\u003c/code\u003e specifies how you want to sort the facets in\n               the results: \u003ccode\u003ebucket\u003c/code\u003e or \u003ccode\u003ecount\u003c/code\u003e. Specify\n               \u003ccode\u003ebucket\u003c/code\u003e to sort alphabetically or numerically by\n               facet value (in ascending order). Specify \u003ccode\u003ecount\u003c/code\u003e to\n               sort by the facet counts computed for each facet value (in\n               descending order). To retrieve facet counts for particular\n               values or ranges of values, use the \u003ccode\u003ebuckets\u003c/code\u003e option\n               instead of \u003ccode\u003esort\u003c/code\u003e. \u003c/p\u003e\n         \u003c/li\u003e\n      \u003c/ul\u003e\n      \u003cp\u003eIf no facet options are specified, facet counts are computed for all field values, the facets are sorted by facet count, and the top 10 facets are returned in the results.\u003c/p\u003e\n\n      \u003cp\u003eTo count particular buckets of values, use the \u003ccode\u003ebuckets\u003c/code\u003e option. For example, the following request uses the \u003ccode\u003ebuckets\u003c/code\u003e option to calculate and return facet counts by decade.\u003c/p\u003e\n      \u003cp\u003e\u003ccode\u003e\n         {\"year\":{\"buckets\":[\"[1970,1979]\",\"[1980,1989]\",\"[1990,1999]\",\"[2000,2009]\",\"[2010,}\"]}}\n      \u003c/code\u003e\u003c/p\u003e\n\n         \u003cp\u003eTo sort facets by facet count, use the \u003ccode\u003ecount\u003c/code\u003e option. For example, the following request sets the \u003ccode\u003esort\u003c/code\u003e option to \u003ccode\u003ecount\u003c/code\u003e to sort the facet values by facet count, with the facet\n            values that have the most matching documents listed first. Setting the \u003ccode\u003esize\u003c/code\u003e option to 3 returns only the top three facet values.\u003c/p\u003e\n         \u003cp\u003e\u003ccode\u003e\n            {\"year\":{\"sort\":\"count\",\"size\":3}}\n         \u003c/code\u003e\u003c/p\u003e\n\n         \u003cp\u003eTo sort the facets by value, use the \u003ccode\u003ebucket\u003c/code\u003e option. For example, the following  request sets the \u003ccode\u003esort\u003c/code\u003e option to \u003ccode\u003ebucket\u003c/code\u003e to sort the facet values numerically by year, with earliest year listed first. \u003c/p\u003e\n         \u003cp\u003e\u003ccode\u003e\n            {\"year\":{\"sort\":\"bucket\"}}\n         \u003c/code\u003e\u003c/p\u003e\n      \u003cp\u003eFor more\n         information, see \u003ca href=\"http://docs.aws.amazon.com/cloudsearch/latest/developerguide/faceting.html\"\u003eGetting and Using Facet Information\u003c/a\u003e\n         in the \u003ci\u003eAmazon CloudSearch Developer Guide\u003c/i\u003e.\u003c/p\u003e",
+              "smithy.api#httpQuery": "facet"
+            }
+          },
+          "filterQuery": {
+            "target": "com.amazonaws.cloudsearchdomain#FilterQuery",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies a structured query that filters the results of a search without affecting how the results are scored and sorted. You use \u003ccode\u003efilterQuery\u003c/code\u003e in conjunction with the \u003ccode\u003equery\u003c/code\u003e parameter to filter the documents that match the constraints specified in the \u003ccode\u003equery\u003c/code\u003e parameter. Specifying a filter controls only which matching documents are included in the results, it has no effect on how they are scored and sorted. The \u003ccode\u003efilterQuery\u003c/code\u003e parameter supports the full structured query syntax. \u003c/p\u003e\n      \u003cp\u003eFor more information about using filters, see \u003ca href=\"http://docs.aws.amazon.com/cloudsearch/latest/developerguide/filtering-results.html\"\u003eFiltering Matching Documents\u003c/a\u003e\n         in the \u003ci\u003eAmazon CloudSearch Developer Guide\u003c/i\u003e.\u003c/p\u003e",
+              "smithy.api#httpQuery": "fq"
+            }
+          },
+          "highlight": {
+            "target": "com.amazonaws.cloudsearchdomain#Highlight",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eRetrieves highlights for matches in the specified \u003ccode\u003etext\u003c/code\u003e or\n         \u003ccode\u003etext-array\u003c/code\u003e fields. Each specified field must be highlight enabled in the domain configuration. The fields and options are specified in JSON using the form \u003ccode\u003e{\"FIELD\":{\"OPTION\":VALUE,\"OPTION:\"STRING\"},\"FIELD\":{\"OPTION\":VALUE,\"OPTION\":\"STRING\"}}\u003c/code\u003e.\u003c/p\u003e\n      \u003cp\u003eYou can specify the following highlight options:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003ccode\u003eformat\u003c/code\u003e: specifies the format of the data in the\n                  text field: \u003ccode\u003etext\u003c/code\u003e or \u003ccode\u003ehtml\u003c/code\u003e. When data is\n                  returned as HTML, all non-alphanumeric characters are encoded.\n                  The default is \u003ccode\u003ehtml\u003c/code\u003e.\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003ccode\u003emax_phrases\u003c/code\u003e: specifies the maximum number of\n                  occurrences of the search term(s) you want to highlight. By\n                  default, the first occurrence is highlighted.\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003ccode\u003epre_tag\u003c/code\u003e: specifies the string to prepend to an\n                  occurrence of a search term. The default for HTML highlights is\n               \u003ccode\u003e\u0026lt;em\u0026gt;\u003c/code\u003e. The default for text highlights is\n                  \u003ccode\u003e*\u003c/code\u003e.\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003ccode\u003epost_tag\u003c/code\u003e: specifies the string to append to an\n                  occurrence of a search term. The default for HTML highlights is\n                  \u003ccode\u003e\u0026lt;/em\u0026gt;\u003c/code\u003e. The default for text highlights is\n                  \u003ccode\u003e*\u003c/code\u003e.\n            \u003c/li\u003e\n         \u003c/ul\u003e\n         \u003cp\u003eIf no highlight options are specified for a field, the returned field text is treated as HTML and the first match is\n            highlighted with emphasis tags:  \u003ccode\u003e\u0026lt;em\u003esearch-term\u0026lt;/em\u0026gt;\u003c/code\u003e.\u003c/p\u003e\n            \u003cp\u003eFor example, the following request retrieves highlights for the \u003ccode\u003eactors\u003c/code\u003e and \u003ccode\u003etitle\u003c/code\u003e fields.\u003c/p\u003e\n                 \u003cp\u003e \u003ccode\u003e{\n    \"actors\": {},\n    \"title\": {\"format\": \"text\",\"max_phrases\": 2,\"pre_tag\": \"\u003cb\u003e\",\"post_tag\": \"\u003c/b\u003e\"}\n                    }\u003c/code\u003e\u003c/p\u003e",
+              "smithy.api#httpQuery": "highlight"
+            }
+          },
+          "partial": {
+            "target": "com.amazonaws.cloudsearchdomain#Partial",
+            "traits": {
+              "smithy.api#default": false,
+              "smithy.api#documentation": "\u003cp\u003eEnables partial results to be returned if one or more index partitions are unavailable. When your search index is partitioned across multiple search instances, by default Amazon CloudSearch only returns results if every partition can be queried. This means that the failure of a single search instance can result in 5xx (internal server) errors. When you enable partial results, Amazon CloudSearch returns whatever results are available and includes the percentage of documents searched in the search results (percent-searched). This enables you to more gracefully degrade your users' search experience. For example, rather than displaying no results, you could display the partial results and a message indicating that the results might be incomplete due to a temporary system outage.\u003c/p\u003e",
+              "smithy.api#httpQuery": "partial"
+            }
+          },
+          "query": {
+            "target": "com.amazonaws.cloudsearchdomain#Query",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies the search criteria for the request. How you specify the search\n         criteria depends on the query parser used for the request and the parser options\n         specified in the \u003ccode\u003equeryOptions\u003c/code\u003e parameter. By default,\n         the \u003ccode\u003esimple\u003c/code\u003e query parser is used to process requests. To use\n         the \u003ccode\u003estructured\u003c/code\u003e, \u003ccode\u003elucene\u003c/code\u003e, or \u003ccode\u003edismax\u003c/code\u003e query parser,\n         you must also specify the \u003ccode\u003equeryParser\u003c/code\u003e parameter. \u003c/p\u003e\n            \u003cp\u003eFor more information about specifying search criteria, see \u003ca href=\"http://docs.aws.amazon.com/cloudsearch/latest/developerguide/searching.html\"\u003eSearching Your Data\u003c/a\u003e in the \u003ci\u003eAmazon CloudSearch Developer Guide\u003c/i\u003e.\u003c/p\u003e",
+              "smithy.api#httpQuery": "q",
+              "smithy.api#required": {}
+            }
+          },
+          "queryOptions": {
+            "target": "com.amazonaws.cloudsearchdomain#QueryOptions",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eConfigures options for the query parser specified in the \u003ccode\u003equeryParser\u003c/code\u003e parameter. You specify the options in JSON using the following form \u003ccode\u003e{\"OPTION1\":\"VALUE1\",\"OPTION2\":VALUE2\"...\"OPTIONN\":\"VALUEN\"}.\u003c/code\u003e\u003c/p\u003e\n\n      \u003cp\u003eThe options you can configure vary according to which parser you use:\u003c/p\u003e\n      \u003cul\u003e\n         \u003cli\u003e\u003ccode\u003edefaultOperator\u003c/code\u003e: The default operator used to combine individual terms in the search string. For example: \u003ccode\u003edefaultOperator: 'or'\u003c/code\u003e. For the \u003ccode\u003edismax\u003c/code\u003e parser, you specify a percentage that represents the percentage of terms in the search string (rounded down) that must match, rather than a default operator. A value of \u003ccode\u003e0%\u003c/code\u003e is the equivalent to OR, and a value of \u003ccode\u003e100%\u003c/code\u003e is equivalent to AND. The percentage must be specified as a value in the range 0-100 followed by the percent (%) symbol. For example, \u003ccode\u003edefaultOperator: 50%\u003c/code\u003e. Valid values: \u003ccode\u003eand\u003c/code\u003e, \u003ccode\u003eor\u003c/code\u003e, a percentage in the range 0%-100% (\u003ccode\u003edismax\u003c/code\u003e). Default: \u003ccode\u003eand\u003c/code\u003e (\u003ccode\u003esimple\u003c/code\u003e, \u003ccode\u003estructured\u003c/code\u003e, \u003ccode\u003elucene\u003c/code\u003e) or \u003ccode\u003e100\u003c/code\u003e (\u003ccode\u003edismax\u003c/code\u003e). Valid for: \u003ccode\u003esimple\u003c/code\u003e, \u003ccode\u003estructured\u003c/code\u003e, \u003ccode\u003elucene\u003c/code\u003e, and \u003ccode\u003edismax\u003c/code\u003e.\u003c/li\u003e\n         \u003cli\u003e\u003ccode\u003efields\u003c/code\u003e: An array of the fields to search when no fields are specified in a search. If no fields are specified in a search and this option is not specified, all text and text-array fields are searched. You can specify a weight for each field to control the relative importance of each field when Amazon CloudSearch calculates relevance scores. To specify a field weight, append a caret (\u003ccode\u003e^\u003c/code\u003e) symbol and the weight to the field name. For example, to boost the importance of the \u003ccode\u003etitle\u003c/code\u003e field over the \u003ccode\u003edescription\u003c/code\u003e field you could specify: \u003ccode\u003e\"fields\":[\"title^5\",\"description\"]\u003c/code\u003e.  Valid values: The name of any configured field and an optional numeric value greater than zero. Default: All \u003ccode\u003etext\u003c/code\u003e and \u003ccode\u003etext-array\u003c/code\u003e fields. Valid for: \u003ccode\u003esimple\u003c/code\u003e, \u003ccode\u003estructured\u003c/code\u003e, \u003ccode\u003elucene\u003c/code\u003e, and \u003ccode\u003edismax\u003c/code\u003e.\u003c/li\u003e\n         \u003cli\u003e\u003ccode\u003eoperators\u003c/code\u003e: An array of the operators or special characters you want to\n            disable for the simple query parser. If you disable the\n            \u003ccode\u003eand\u003c/code\u003e, \u003ccode\u003eor\u003c/code\u003e, or \u003ccode\u003enot\u003c/code\u003e\n            operators, the corresponding operators (\u003ccode\u003e+\u003c/code\u003e,\n            \u003ccode\u003e|\u003c/code\u003e, \u003ccode\u003e-\u003c/code\u003e) have no special meaning and\n            are dropped from the search string. Similarly, disabling\n            \u003ccode\u003eprefix\u003c/code\u003e disables the wildcard operator\n            (\u003ccode\u003e*\u003c/code\u003e) and disabling \u003ccode\u003ephrase\u003c/code\u003e disables\n            the ability to search for phrases by enclosing phrases in double\n            quotes. Disabling precedence disables the ability to control\n            order of precedence using parentheses. Disabling \u003ccode\u003enear\u003c/code\u003e disables\n            the ability to use the ~ operator to perform a sloppy phrase search.\n            Disabling the \u003ccode\u003efuzzy\u003c/code\u003e operator disables the ability to use the ~ operator to perform a fuzzy search.\n            \u003ccode\u003eescape\u003c/code\u003e disables the ability to use a backslash\n            (\u003ccode\u003e\\\u003c/code\u003e) to escape special characters within the\n            search string. Disabling whitespace is an advanced option that\n            prevents the parser from tokenizing on whitespace, which can be\n            useful for Vietnamese. (It prevents Vietnamese words from being\n            split incorrectly.) For example, you could disable all operators\n            other than the phrase operator to support just simple term and\n            phrase queries: \u003ccode\u003e\"operators\":[\"and\",\"not\",\"or\",\n               \"prefix\"]\u003c/code\u003e. Valid values: \u003ccode\u003eand\u003c/code\u003e, \u003ccode\u003eescape\u003c/code\u003e,\n            \u003ccode\u003efuzzy\u003c/code\u003e, \u003ccode\u003enear\u003c/code\u003e, \u003ccode\u003enot\u003c/code\u003e, \u003ccode\u003eor\u003c/code\u003e,\n            \u003ccode\u003ephrase\u003c/code\u003e, \u003ccode\u003eprecedence\u003c/code\u003e, \u003ccode\u003eprefix\u003c/code\u003e,\n            \u003ccode\u003ewhitespace\u003c/code\u003e. Default: All\n            operators and special characters are enabled. Valid for:\n            \u003ccode\u003esimple\u003c/code\u003e.\u003c/li\u003e\n         \u003cli\u003e\u003ccode\u003ephraseFields\u003c/code\u003e: An array of the \u003ccode\u003etext\u003c/code\u003e or \u003ccode\u003etext-array\u003c/code\u003e fields you want to use for\n            phrase searches. When the terms in the search string appear in\n            close proximity within a field, the field scores higher. You can\n            specify a weight for each field to boost that score. The\n            \u003ccode\u003ephraseSlop\u003c/code\u003e option controls how much the matches\n            can deviate from the search string and still be boosted. To\n            specify a field weight, append a caret (\u003ccode\u003e^\u003c/code\u003e) symbol\n            and the weight to the field name. For example, to boost phrase\n            matches in the \u003ccode\u003etitle\u003c/code\u003e field over the\n            \u003ccode\u003eabstract\u003c/code\u003e field, you could specify:\n            \u003ccode\u003e\"phraseFields\":[\"title^3\",\n               \"plot\"]\u003c/code\u003e\n            Valid values: The name of any \u003ccode\u003etext\u003c/code\u003e or\n            \u003ccode\u003etext-array\u003c/code\u003e field and an optional numeric value greater than zero. Default: No fields. If you don't specify any fields with \u003ccode\u003ephraseFields\u003c/code\u003e, proximity scoring is disabled even if \u003ccode\u003ephraseSlop\u003c/code\u003e is specified. Valid\n            for: \u003ccode\u003edismax\u003c/code\u003e.\u003c/li\u003e\n         \u003cli\u003e\u003ccode\u003ephraseSlop\u003c/code\u003e: An integer value that specifies how much matches can deviate from the search phrase and still be boosted according to the weights specified in the \u003ccode\u003ephraseFields\u003c/code\u003e option; for example, \u003ccode\u003ephraseSlop: 2\u003c/code\u003e. You must also specify \u003ccode\u003ephraseFields\u003c/code\u003e to enable proximity scoring. Valid values: positive integers. Default: 0. Valid for: \u003ccode\u003edismax\u003c/code\u003e.\u003c/li\u003e\n         \u003cli\u003e\u003ccode\u003eexplicitPhraseSlop\u003c/code\u003e: An integer value that specifies how much a match can deviate from the search phrase when the phrase is enclosed in double quotes in the search string. (Phrases that exceed this proximity distance are not considered a match.) For example, to specify a slop of three for dismax phrase queries, you would specify \u003ccode\u003e\"explicitPhraseSlop\":3\u003c/code\u003e. Valid values: positive integers. Default: 0. Valid for: \u003ccode\u003edismax\u003c/code\u003e.\u003c/li\u003e\n         \u003cli\u003e\u003ccode\u003etieBreaker\u003c/code\u003e: When a term in the search string is found in a document's field, a score is calculated for that field based on how common the word is in that field compared to other documents. If the term occurs in multiple fields within a document, by default only the highest scoring field contributes to the document's overall score. You can specify a \u003ccode\u003etieBreaker\u003c/code\u003e value to enable the matches in lower-scoring fields to contribute to the document's score. That way, if two documents have the same max field score for a particular term, the score for the document that has matches in more fields will be higher. The formula for calculating the score with a tieBreaker is \u003ccode\u003e(max field score) + (tieBreaker) * (sum of the scores for the rest of the matching fields)\u003c/code\u003e.\n\n            Set \u003ccode\u003etieBreaker\u003c/code\u003e to 0 to disregard all but the highest scoring field (pure max): \u003ccode\u003e\"tieBreaker\":0\u003c/code\u003e. Set to 1 to sum the scores from all fields (pure sum): \u003ccode\u003e\"tieBreaker\":1\u003c/code\u003e. Valid values: 0.0 to 1.0. Default: 0.0. Valid for: \u003ccode\u003edismax\u003c/code\u003e.\n         \u003c/li\u003e\n      \u003c/ul\u003e",
+              "smithy.api#httpQuery": "q.options"
+            }
+          },
+          "queryParser": {
+            "target": "com.amazonaws.cloudsearchdomain#QueryParser",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies which\n         query parser to use to process the request. If \u003ccode\u003equeryParser\u003c/code\u003e is not specified, Amazon CloudSearch\n         uses the \u003ccode\u003esimple\u003c/code\u003e query parser. \u003c/p\u003e\n      \u003cp\u003eAmazon CloudSearch supports four query parsers:\u003c/p\u003e\n      \u003cul\u003e\n         \u003cli\u003e\n            \u003ccode\u003esimple\u003c/code\u003e: perform simple searches of \u003ccode\u003etext\u003c/code\u003e and\n               \u003ccode\u003etext-array\u003c/code\u003e fields. By default, the\n               \u003ccode\u003esimple\u003c/code\u003e query parser searches all\n               \u003ccode\u003etext\u003c/code\u003e and \u003ccode\u003etext-array\u003c/code\u003e fields. You\n               can specify which fields to search by with the\n               \u003ccode\u003equeryOptions\u003c/code\u003e parameter. If you prefix a search\n               term with a plus sign (+) documents must contain the term to be considered a match.\n               (This is the default, unless you configure the default operator with the \u003ccode\u003equeryOptions\u003c/code\u003e parameter.)\n               You can use the \u003ccode\u003e-\u003c/code\u003e (NOT), \u003ccode\u003e|\u003c/code\u003e\n               (OR), and \u003ccode\u003e*\u003c/code\u003e (wildcard) operators to exclude\n               particular terms, find results that match any of the specified\n               terms, or search for a prefix. To search for a phrase rather\n               than individual terms, enclose the phrase in double quotes. For\n               more information, see \u003ca href=\"http://docs.aws.amazon.com/cloudsearch/latest/developerguide/searching-text.html\"\u003eSearching for Text\u003c/a\u003e in the \u003ci\u003eAmazon CloudSearch Developer Guide\u003c/i\u003e.\n         \u003c/li\u003e\n         \u003cli\u003e\n            \u003ccode\u003estructured\u003c/code\u003e: perform advanced searches by combining\n               multiple expressions to define the search criteria. You can also search\n               within particular fields, search for values and ranges of values, and use\n               advanced options such as term boosting, \u003ccode\u003ematchall\u003c/code\u003e, and \u003ccode\u003enear\u003c/code\u003e.\n               For more information, see \u003ca href=\"http://docs.aws.amazon.com/cloudsearch/latest/developerguide/searching-compound-queries.html\"\u003eConstructing Compound Queries\u003c/a\u003e in the \u003ci\u003eAmazon CloudSearch Developer Guide\u003c/i\u003e.\n         \u003c/li\u003e\n         \u003cli\u003e\n            \u003ccode\u003elucene\u003c/code\u003e: search using the Apache Lucene query parser syntax.\n               For more information, see \u003ca href=\"http://lucene.apache.org/core/4_6_0/queryparser/org/apache/lucene/queryparser/classic/package-summary.html#package_description\"\u003eApache Lucene Query Parser Syntax\u003c/a\u003e.\n         \u003c/li\u003e\n         \u003cli\u003e\n            \u003ccode\u003edismax\u003c/code\u003e: search using the simplified subset of the Apache Lucene query parser syntax\n               defined by the DisMax query parser.\n               For more information, see \u003ca href=\"http://wiki.apache.org/solr/DisMaxQParserPlugin#Query_Syntax\"\u003eDisMax Query Parser Syntax\u003c/a\u003e.\n         \u003c/li\u003e\n\n      \u003c/ul\u003e",
+              "smithy.api#httpQuery": "q.parser"
+            }
+          },
+          "return": {
+            "target": "com.amazonaws.cloudsearchdomain#Return",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies the field and expression values to include in the response. Multiple fields or expressions are specified as a comma-separated list. By default, a search response includes all\n         return enabled fields (\u003ccode\u003e_all_fields\u003c/code\u003e).\n         To  return only the document IDs for the matching documents,\n         specify \u003ccode\u003e_no_fields\u003c/code\u003e.\n         To retrieve the relevance score calculated for each document,\n         specify \u003ccode\u003e_score\u003c/code\u003e.  \u003c/p\u003e",
+              "smithy.api#httpQuery": "return"
+            }
+          },
+          "size": {
+            "target": "com.amazonaws.cloudsearchdomain#Size",
+            "traits": {
+              "smithy.api#default": 0,
+              "smithy.api#documentation": "\u003cp\u003eSpecifies the maximum number of search hits to include in the response. \u003c/p\u003e",
+              "smithy.api#httpQuery": "size"
+            }
+          },
+          "sort": {
+            "target": "com.amazonaws.cloudsearchdomain#Sort",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies the fields or custom expressions to use to sort the search\n         results. Multiple fields or expressions are specified as a comma-separated list.\n         You must specify the sort direction (\u003ccode\u003easc\u003c/code\u003e or\n         \u003ccode\u003edesc\u003c/code\u003e) for each field; for example, \u003ccode\u003eyear\n            desc,title asc\u003c/code\u003e. To use a field to sort results, the field must be sort-enabled in\n         the domain configuration. Array type fields cannot be used for sorting.\n         If no \u003ccode\u003esort\u003c/code\u003e parameter is specified, results are sorted by\n         their default relevance scores in descending order: \u003ccode\u003e_score\n            desc\u003c/code\u003e. You can also sort by document ID\n         (\u003ccode\u003e_id asc\u003c/code\u003e) and version (\u003ccode\u003e_version desc\u003c/code\u003e).\u003c/p\u003e\n      \u003cp\u003eFor more information, see \u003ca href=\"http://docs.aws.amazon.com/cloudsearch/latest/developerguide/sorting-results.html\"\u003eSorting Results\u003c/a\u003e in the \u003ci\u003eAmazon CloudSearch Developer Guide\u003c/i\u003e.\u003c/p\u003e",
+              "smithy.api#httpQuery": "sort"
+            }
+          },
+          "start": {
+            "target": "com.amazonaws.cloudsearchdomain#Start",
+            "traits": {
+              "smithy.api#default": 0,
+              "smithy.api#documentation": "\u003cp\u003eSpecifies the offset of the first search hit you want to return. Note that the result set is zero-based; the first result is at index 0. You can specify either the \u003ccode\u003estart\u003c/code\u003e or \u003ccode\u003ecursor\u003c/code\u003e parameter in a request, they are mutually exclusive.  \u003c/p\u003e\n      \u003cp\u003eFor more information, see \u003ca href=\"http://docs.aws.amazon.com/cloudsearch/latest/developerguide/paginating-results.html\"\u003ePaginating Results\u003c/a\u003e in the \u003ci\u003eAmazon CloudSearch Developer Guide\u003c/i\u003e.\u003c/p\u003e",
+              "smithy.api#httpQuery": "start"
+            }
+          },
+          "stats": {
+            "target": "com.amazonaws.cloudsearchdomain#Stat",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies one or more fields for which to get statistics information. Each specified field must be facet-enabled in the domain configuration. The fields are specified in JSON using the form:\u003c/p\u003e\n      \u003ccode\u003e{\"FIELD-A\":{},\"FIELD-B\":{}}\u003c/code\u003e\n      \u003cp\u003eThere are currently no options supported for statistics.\u003c/p\u003e",
+              "smithy.api#httpQuery": "stats"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eContainer for the parameters to the \u003ccode\u003eSearch\u003c/code\u003e request.\u003c/p\u003e",
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.cloudsearchdomain#SearchResponse": {
+        "type": "structure",
+        "members": {
+          "facets": {
+            "target": "com.amazonaws.cloudsearchdomain#Facets",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe requested facet information.\u003c/p\u003e"
+            }
+          },
+          "hits": {
+            "target": "com.amazonaws.cloudsearchdomain#Hits",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe documents that match the search criteria.\u003c/p\u003e"
+            }
+          },
+          "stats": {
+            "target": "com.amazonaws.cloudsearchdomain#Stats",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe requested field statistics information.\u003c/p\u003e"
+            }
+          },
+          "status": {
+            "target": "com.amazonaws.cloudsearchdomain#SearchStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe status information returned for the search request.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe result of a \u003ccode\u003eSearch\u003c/code\u003e request. Contains the documents that match the specified search criteria and any requested fields, highlights, and facet information.\u003c/p\u003e",
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.cloudsearchdomain#SearchStatus": {
+        "type": "structure",
+        "members": {
+          "rid": {
+            "target": "com.amazonaws.cloudsearchdomain#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe encrypted resource ID for the request.\u003c/p\u003e"
+            }
+          },
+          "timems": {
+            "target": "com.amazonaws.cloudsearchdomain#Long",
+            "traits": {
+              "smithy.api#default": 0,
+              "smithy.api#documentation": "\u003cp\u003eHow long it took to process the request, in milliseconds.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eContains the resource id (\u003ccode\u003erid\u003c/code\u003e) and the time it took to process the request (\u003ccode\u003etimems\u003c/code\u003e).\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.cloudsearchdomain#Size": {
+        "type": "long",
+        "traits": {
+          "smithy.api#default": 0
+        }
+      },
+      "com.amazonaws.cloudsearchdomain#Sort": {
+        "type": "string"
+      },
+      "com.amazonaws.cloudsearchdomain#Start": {
+        "type": "long",
+        "traits": {
+          "smithy.api#default": 0
+        }
+      },
+      "com.amazonaws.cloudsearchdomain#Stat": {
+        "type": "string"
+      },
+      "com.amazonaws.cloudsearchdomain#Stats": {
+        "type": "map",
+        "key": {
+          "target": "com.amazonaws.cloudsearchdomain#String"
+        },
+        "value": {
+          "target": "com.amazonaws.cloudsearchdomain#FieldStats"
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe statistics calculated in the request.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.cloudsearchdomain#String": {
+        "type": "string"
+      },
+      "com.amazonaws.cloudsearchdomain#Suggest": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.cloudsearchdomain#SuggestRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.cloudsearchdomain#SuggestResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.cloudsearchdomain#SearchException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eRetrieves autocomplete suggestions for a partial query string. You can use suggestions enable you to display likely matches before users finish typing. In Amazon CloudSearch, suggestions are based on the contents of a particular text field. When you request suggestions, Amazon CloudSearch finds all of the documents whose values in the suggester field start with the specified query string. The beginning of the field must match the query string to be considered a match. \u003c/p\u003e\n      \u003cp\u003eFor more information about configuring suggesters and retrieving suggestions, see \u003ca href=\"http://docs.aws.amazon.com/cloudsearch/latest/developerguide/getting-suggestions.html\"\u003eGetting Suggestions\u003c/a\u003e in the \u003ci\u003eAmazon CloudSearch Developer Guide\u003c/i\u003e. \u003c/p\u003e\n\n      \u003cp\u003eThe endpoint for submitting \u003ccode\u003eSuggest\u003c/code\u003e requests is domain-specific. You submit suggest requests to a domain's search endpoint. To get the search endpoint for your domain, use the Amazon CloudSearch configuration service \u003ccode\u003eDescribeDomains\u003c/code\u003e action. A domain's endpoints are also displayed on the domain dashboard in the Amazon CloudSearch console. \u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "GET",
+            "uri": "/2013-01-01/suggest?format=sdk\u0026pretty=true",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.cloudsearchdomain#SuggestModel": {
+        "type": "structure",
+        "members": {
+          "found": {
+            "target": "com.amazonaws.cloudsearchdomain#Long",
+            "traits": {
+              "smithy.api#default": 0,
+              "smithy.api#documentation": "\u003cp\u003eThe number of documents that were found to match the query string.\u003c/p\u003e"
+            }
+          },
+          "query": {
+            "target": "com.amazonaws.cloudsearchdomain#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe query string specified in the suggest request.\u003c/p\u003e"
+            }
+          },
+          "suggestions": {
+            "target": "com.amazonaws.cloudsearchdomain#Suggestions",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe documents that match the query string.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eContainer for the suggestion information returned in a \u003ccode\u003eSuggestResponse\u003c/code\u003e.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.cloudsearchdomain#SuggestRequest": {
+        "type": "structure",
+        "members": {
+          "query": {
+            "target": "com.amazonaws.cloudsearchdomain#Query",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies the string for which you want to get suggestions.\u003c/p\u003e",
+              "smithy.api#httpQuery": "q",
+              "smithy.api#required": {}
+            }
+          },
+          "size": {
+            "target": "com.amazonaws.cloudsearchdomain#SuggestionsSize",
+            "traits": {
+              "smithy.api#default": 0,
+              "smithy.api#documentation": "\u003cp\u003eSpecifies the maximum number of suggestions to return. \u003c/p\u003e",
+              "smithy.api#httpQuery": "size"
+            }
+          },
+          "suggester": {
+            "target": "com.amazonaws.cloudsearchdomain#Suggester",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies the name of the suggester to use to find suggested matches.\u003c/p\u003e",
+              "smithy.api#httpQuery": "suggester",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eContainer for the parameters to the \u003ccode\u003eSuggest\u003c/code\u003e request.\u003c/p\u003e",
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.cloudsearchdomain#SuggestResponse": {
+        "type": "structure",
+        "members": {
+          "status": {
+            "target": "com.amazonaws.cloudsearchdomain#SuggestStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe status of a \u003ccode\u003eSuggestRequest\u003c/code\u003e. Contains the resource ID (\u003ccode\u003erid\u003c/code\u003e) and how long it took to process the request (\u003ccode\u003etimems\u003c/code\u003e).\u003c/p\u003e"
+            }
+          },
+          "suggest": {
+            "target": "com.amazonaws.cloudsearchdomain#SuggestModel",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eContainer for the matching search suggestion information.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eContains the response to a \u003ccode\u003eSuggest\u003c/code\u003e request.\u003c/p\u003e",
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.cloudsearchdomain#SuggestStatus": {
+        "type": "structure",
+        "members": {
+          "rid": {
+            "target": "com.amazonaws.cloudsearchdomain#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe encrypted resource ID for the request.\u003c/p\u003e"
+            }
+          },
+          "timems": {
+            "target": "com.amazonaws.cloudsearchdomain#Long",
+            "traits": {
+              "smithy.api#default": 0,
+              "smithy.api#documentation": "\u003cp\u003eHow long it took to process the request, in milliseconds.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eContains the resource id (\u003ccode\u003erid\u003c/code\u003e) and the time it took to process the request (\u003ccode\u003etimems\u003c/code\u003e).\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.cloudsearchdomain#Suggester": {
+        "type": "string"
+      },
+      "com.amazonaws.cloudsearchdomain#SuggestionMatch": {
+        "type": "structure",
+        "members": {
+          "id": {
+            "target": "com.amazonaws.cloudsearchdomain#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe document ID of the suggested document.\u003c/p\u003e"
+            }
+          },
+          "score": {
+            "target": "com.amazonaws.cloudsearchdomain#Long",
+            "traits": {
+              "smithy.api#default": 0,
+              "smithy.api#documentation": "\u003cp\u003eThe relevance score of a suggested match.\u003c/p\u003e"
+            }
+          },
+          "suggestion": {
+            "target": "com.amazonaws.cloudsearchdomain#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe string that matches the query string specified in the \u003ccode\u003eSuggestRequest\u003c/code\u003e. \u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eAn autocomplete suggestion that matches the query string specified in a \u003ccode\u003eSuggestRequest\u003c/code\u003e. \u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.cloudsearchdomain#Suggestions": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.cloudsearchdomain#SuggestionMatch"
+        }
+      },
+      "com.amazonaws.cloudsearchdomain#SuggestionsSize": {
+        "type": "long",
+        "traits": {
+          "smithy.api#default": 0
+        }
+      },
+      "com.amazonaws.cloudsearchdomain#UploadDocuments": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.cloudsearchdomain#UploadDocumentsRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.cloudsearchdomain#UploadDocumentsResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.cloudsearchdomain#DocumentServiceException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003ePosts a batch of documents to a search domain for indexing.  A document batch is a collection of add and delete operations that represent the documents you want to add, update, or delete from your domain. Batches can be described in either JSON or XML. Each item that you want Amazon CloudSearch to return as a search result (such as a product) is represented as a document. Every document has a unique ID and one or more fields that contain the data that you want to search and return in results. Individual documents  cannot contain more than 1 MB of data. The entire batch cannot exceed 5 MB. To get the best possible upload performance, group add and delete operations in batches that are close the 5 MB limit. Submitting a large volume of single-document batches can overload a domain's document service.  \u003c/p\u003e\n      \u003cp\u003eThe endpoint for submitting \u003ccode\u003eUploadDocuments\u003c/code\u003e requests is domain-specific. To get the document endpoint for your domain, use the Amazon CloudSearch configuration service \u003ccode\u003eDescribeDomains\u003c/code\u003e action. A domain's endpoints are also displayed on the domain dashboard in the Amazon CloudSearch console. \u003c/p\u003e\n      \u003cp\u003eFor more information about formatting your data for Amazon CloudSearch, see \u003ca href=\"http://docs.aws.amazon.com/cloudsearch/latest/developerguide/preparing-data.html\"\u003ePreparing Your Data\u003c/a\u003e in the \u003ci\u003eAmazon CloudSearch Developer Guide\u003c/i\u003e.\n      For more information about uploading data for indexing, see \u003ca href=\"http://docs.aws.amazon.com/cloudsearch/latest/developerguide/uploading-data.html\"\u003eUploading Data\u003c/a\u003e in the \u003ci\u003eAmazon CloudSearch Developer Guide\u003c/i\u003e. \u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/2013-01-01/documents/batch?format=sdk",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.cloudsearchdomain#UploadDocumentsRequest": {
+        "type": "structure",
+        "members": {
+          "contentType": {
+            "target": "com.amazonaws.cloudsearchdomain#ContentType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe format of the batch you are uploading. Amazon CloudSearch supports two document batch formats:\u003c/p\u003e\n      \u003cul\u003e\n         \u003cli\u003eapplication/json\u003c/li\u003e\n         \u003cli\u003eapplication/xml\u003c/li\u003e\n      \u003c/ul\u003e",
+              "smithy.api#httpHeader": "Content-Type",
+              "smithy.api#required": {}
+            }
+          },
+          "documents": {
+            "target": "com.amazonaws.cloudsearchdomain#Blob",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA batch of documents formatted in JSON or HTML.\u003c/p\u003e",
+              "smithy.api#httpPayload": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eContainer for the parameters to the \u003ccode\u003eUploadDocuments\u003c/code\u003e request.\u003c/p\u003e",
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.cloudsearchdomain#UploadDocumentsResponse": {
+        "type": "structure",
+        "members": {
+          "adds": {
+            "target": "com.amazonaws.cloudsearchdomain#Adds",
+            "traits": {
+              "smithy.api#default": 0,
+              "smithy.api#documentation": "\u003cp\u003eThe number of documents that were added to the search domain.\u003c/p\u003e"
+            }
+          },
+          "deletes": {
+            "target": "com.amazonaws.cloudsearchdomain#Deletes",
+            "traits": {
+              "smithy.api#default": 0,
+              "smithy.api#documentation": "\u003cp\u003eThe number of documents that were deleted from the search domain.\u003c/p\u003e"
+            }
+          },
+          "status": {
+            "target": "com.amazonaws.cloudsearchdomain#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe status of an \u003ccode\u003eUploadDocumentsRequest\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "warnings": {
+            "target": "com.amazonaws.cloudsearchdomain#DocumentServiceWarnings",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAny warnings returned by the document service about the documents being uploaded.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eContains the response to an \u003ccode\u003eUploadDocuments\u003c/code\u003e request.\u003c/p\u003e",
+          "smithy.api#output": {}
+        }
+      }
+    }
+  }
+}

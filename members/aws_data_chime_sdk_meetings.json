@@ -1,0 +1,3887 @@
+{
+  "schema_source": "smithy",
+  "mode": "data_source",
+  "auth": {
+    "Type": "",
+    "Params": null
+  },
+  "base_url": "https://aws.example.invalid",
+  "retry": {
+    "MaxAttempts": 0,
+    "InitialBackoff": "",
+    "MaxBackoff": "",
+    "Jitter": null,
+    "RespectRetryAfter": null,
+    "RateLimitResetHeader": ""
+  },
+  "timeouts": {
+    "Create": "",
+    "Read": "",
+    "Update": "",
+    "Delete": "",
+    "Default": ""
+  },
+  "wire_name": "aws",
+  "raw_spec": {
+    "smithy": "2.0",
+    "metadata": {
+      "suppressions": [
+        {
+          "id": "HttpMethodSemantics",
+          "namespace": "*"
+        },
+        {
+          "id": "HttpResponseCodeSemantics",
+          "namespace": "*"
+        },
+        {
+          "id": "PaginatedTrait",
+          "namespace": "*"
+        },
+        {
+          "id": "HttpHeaderTrait",
+          "namespace": "*"
+        },
+        {
+          "id": "HttpUriConflict",
+          "namespace": "*"
+        },
+        {
+          "id": "Service",
+          "namespace": "*"
+        }
+      ]
+    },
+    "shapes": {
+      "com.amazonaws.chimesdkmeetings#AmazonResourceName": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 1011
+          },
+          "smithy.api#pattern": "^arn:"
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#Arn": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 1024
+          },
+          "smithy.api#pattern": "^arn[\\/\\:\\-\\_\\.a-zA-Z0-9]+$",
+          "smithy.api#sensitive": {}
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#Attendee": {
+        "type": "structure",
+        "members": {
+          "AttendeeId": {
+            "target": "com.amazonaws.chimesdkmeetings#GuidString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Chime SDK attendee ID.\u003c/p\u003e"
+            }
+          },
+          "Capabilities": {
+            "target": "com.amazonaws.chimesdkmeetings#AttendeeCapabilities",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe capabilities assigned to an attendee: audio, video, or content.\u003c/p\u003e\n         \u003cnote\u003e\n            \u003cp\u003eYou use the capabilities with a set of values that control what the capabilities can do, such as \u003ccode\u003eSendReceive\u003c/code\u003e data. For more information about those values, see \n            .\u003c/p\u003e\n         \u003c/note\u003e\n         \u003cp\u003eWhen using capabilities, be aware of these corner cases:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003eIf you specify \u003ccode\u003eMeetingFeatures:Video:MaxResolution:None\u003c/code\u003e when you create a meeting, all API requests \n                    that include \u003ccode\u003eSendReceive\u003c/code\u003e, \u003ccode\u003eSend\u003c/code\u003e, or \u003ccode\u003eReceive\u003c/code\u003e for \u003ccode\u003eAttendeeCapabilities:Video\u003c/code\u003e will be rejected with \u003ccode\u003eValidationError 400\u003c/code\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eIf you specify \u003ccode\u003eMeetingFeatures:Content:MaxResolution:None\u003c/code\u003e when you create a meeting, all API requests that include \u003ccode\u003eSendReceive\u003c/code\u003e, \u003ccode\u003eSend\u003c/code\u003e, or \n                    \u003ccode\u003eReceive\u003c/code\u003e for \u003ccode\u003eAttendeeCapabilities:Content\u003c/code\u003e will be rejected with \u003ccode\u003eValidationError 400\u003c/code\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eYou can't set \u003ccode\u003econtent\u003c/code\u003e capabilities to \u003ccode\u003eSendReceive\u003c/code\u003e or \u003ccode\u003eReceive\u003c/code\u003e unless you also set \u003ccode\u003evideo\u003c/code\u003e capabilities to \u003ccode\u003eSendReceive\u003c/code\u003e \n                    or \u003ccode\u003eReceive\u003c/code\u003e. If you don't set the \u003ccode\u003evideo\u003c/code\u003e capability to receive, the response will contain an HTTP 400 Bad Request status code. However, you can set your \u003ccode\u003evideo\u003c/code\u003e capability \n                    to receive and you set your \u003ccode\u003econtent\u003c/code\u003e capability to not receive.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eIf meeting features is defined as \u003ccode\u003eVideo:MaxResolution:None\u003c/code\u003e but\n                    \u003ccode\u003eContent:MaxResolution\u003c/code\u003e is defined as something other than\n                    \u003ccode\u003eNone\u003c/code\u003e and attendee capabilities are not defined in the API\n                    request, then the default attendee video capability is set to\n                    \u003ccode\u003eReceive\u003c/code\u003e and attendee content capability is set to\n                    \u003ccode\u003eSendReceive\u003c/code\u003e. This is because content \u003ccode\u003eSendReceive\u003c/code\u003e\n                    requires video to be at least \u003ccode\u003eReceive\u003c/code\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eWhen you change an \u003ccode\u003eaudio\u003c/code\u003e capability from \u003ccode\u003eNone\u003c/code\u003e or \u003ccode\u003eReceive\u003c/code\u003e to \u003ccode\u003eSend\u003c/code\u003e or \u003ccode\u003eSendReceive\u003c/code\u003e , \n                    and if the attendee left their microphone unmuted, audio will flow from the attendee to the other meeting participants.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eWhen you change a \u003ccode\u003evideo\u003c/code\u003e or \u003ccode\u003econtent\u003c/code\u003e capability from \u003ccode\u003eNone\u003c/code\u003e or \u003ccode\u003eReceive\u003c/code\u003e to \u003ccode\u003eSend\u003c/code\u003e or \u003ccode\u003eSendReceive\u003c/code\u003e , \n                    and if the attendee turned on their video or content streams, remote attendees can receive those streams, but only after media renegotiation between the client and the Amazon Chime back-end server.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e"
+            }
+          },
+          "ExternalUserId": {
+            "target": "com.amazonaws.chimesdkmeetings#ExternalUserId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Chime SDK external user ID. An idempotency token. Links the attendee to an identity managed by a builder application.\u003c/p\u003e\n         \u003cp\u003ePattern: \u003ccode\u003e[-_\u0026@+=,(){}\\[\\]\\/\u00ab\u00bb.:|'\"#a-zA-Z0-9\u00c0-\u00ff\\s]*\u003c/code\u003e\n         \u003c/p\u003e\n         \u003cp\u003eValues that begin with \u003ccode\u003eaws:\u003c/code\u003e are reserved. You can't configure a value that uses this prefix. \n            Case insensitive.\u003c/p\u003e"
+            }
+          },
+          "JoinToken": {
+            "target": "com.amazonaws.chimesdkmeetings#JoinTokenString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe join token used by the Amazon Chime SDK attendee.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eAn Amazon Chime SDK meeting attendee. Includes a unique \n           \u003ccode\u003eAttendeeId\u003c/code\u003e and \u003ccode\u003eJoinToken\u003c/code\u003e. The \n           \u003ccode\u003eJoinToken\u003c/code\u003e\n           allows a client to authenticate and join as the specified attendee. The \n           \u003ccode\u003eJoinToken\u003c/code\u003e\n           expires when the meeting ends, or when \n           \u003ca\u003eDeleteAttendee\u003c/a\u003e\n           is called. After that, the attendee is unable to join the meeting.\n       \u003c/p\u003e\n         \u003cp\u003eWe recommend securely transferring each \u003ccode\u003eJoinToken\u003c/code\u003e from your server application\n           to the client so that no other client has access to the token except for the one\n           authorized to represent the attendee.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#AttendeeCapabilities": {
+        "type": "structure",
+        "members": {
+          "Audio": {
+            "target": "com.amazonaws.chimesdkmeetings#MediaCapabilities",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe audio capability assigned to an attendee.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Content": {
+            "target": "com.amazonaws.chimesdkmeetings#MediaCapabilities",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe content capability assigned to an attendee.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Video": {
+            "target": "com.amazonaws.chimesdkmeetings#MediaCapabilities",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe video capability assigned to an attendee.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe media capabilities of an attendee: audio, video, or content.\u003c/p\u003e\n         \u003cnote\u003e\n            \u003cp\u003eYou use the capabilities with a set of values that control what the capabilities can do, such as \u003ccode\u003eSendReceive\u003c/code\u003e data. For more information, refer to \n             and .\u003c/p\u003e\n         \u003c/note\u003e\n         \u003cp\u003eWhen using capabilities, be aware of these corner cases:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003eIf you specify \u003ccode\u003eMeetingFeatures:Video:MaxResolution:None\u003c/code\u003e when you create a meeting, all API requests \n                    that include \u003ccode\u003eSendReceive\u003c/code\u003e, \u003ccode\u003eSend\u003c/code\u003e, or \u003ccode\u003eReceive\u003c/code\u003e for \u003ccode\u003eAttendeeCapabilities:Video\u003c/code\u003e will be rejected with \u003ccode\u003eValidationError 400\u003c/code\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eIf you specify \u003ccode\u003eMeetingFeatures:Content:MaxResolution:None\u003c/code\u003e when you create a meeting, all API requests that include \u003ccode\u003eSendReceive\u003c/code\u003e, \u003ccode\u003eSend\u003c/code\u003e, or \n                    \u003ccode\u003eReceive\u003c/code\u003e for \u003ccode\u003eAttendeeCapabilities:Content\u003c/code\u003e will be rejected with \u003ccode\u003eValidationError 400\u003c/code\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eYou can't set \u003ccode\u003econtent\u003c/code\u003e capabilities to \u003ccode\u003eSendReceive\u003c/code\u003e or \u003ccode\u003eReceive\u003c/code\u003e unless you also set \u003ccode\u003evideo\u003c/code\u003e capabilities to \u003ccode\u003eSendReceive\u003c/code\u003e \n                    or \u003ccode\u003eReceive\u003c/code\u003e. If you don't set the \u003ccode\u003evideo\u003c/code\u003e capability to receive, the response will contain an HTTP 400 Bad Request status code. However, you can set your \n                    \u003ccode\u003evideo\u003c/code\u003e capability to receive and you set your \u003ccode\u003econtent\u003c/code\u003e capability to not receive.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eIf meeting features is defined as \u003ccode\u003eVideo:MaxResolution:None\u003c/code\u003e but\n                    \u003ccode\u003eContent:MaxResolution\u003c/code\u003e is defined as something other than\n                    \u003ccode\u003eNone\u003c/code\u003e and attendee capabilities are not defined in the API\n                    request, then the default attendee video capability is set to\n                    \u003ccode\u003eReceive\u003c/code\u003e and attendee content capability is set to\n                    \u003ccode\u003eSendReceive\u003c/code\u003e. This is because content \u003ccode\u003eSendReceive\u003c/code\u003e\n                    requires video to be at least \u003ccode\u003eReceive\u003c/code\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eWhen you change an \u003ccode\u003eaudio\u003c/code\u003e capability from \u003ccode\u003eNone\u003c/code\u003e or \u003ccode\u003eReceive\u003c/code\u003e to \u003ccode\u003eSend\u003c/code\u003e or \u003ccode\u003eSendReceive\u003c/code\u003e , \n                    and an attendee unmutes their microphone, audio flows from the attendee to the other meeting participants.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eWhen you change a \u003ccode\u003evideo\u003c/code\u003e or \u003ccode\u003econtent\u003c/code\u003e capability from \u003ccode\u003eNone\u003c/code\u003e or \u003ccode\u003eReceive\u003c/code\u003e to \u003ccode\u003eSend\u003c/code\u003e or \u003ccode\u003eSendReceive\u003c/code\u003e , \n                    and the attendee turns on their video or content streams, remote attendees can receive those streams, but only after media renegotiation between the client and the Amazon Chime back-end server.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e"
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#AttendeeFeatures": {
+        "type": "structure",
+        "members": {
+          "MaxCount": {
+            "target": "com.amazonaws.chimesdkmeetings#AttendeeMax",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of attendees allowed into the meeting.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eLists the maximum number of attendees allowed into the meeting.\u003c/p\u003e\n         \u003cnote\u003e\n            \u003cp\u003eIf you specify \u003ccode\u003eFHD\u003c/code\u003e for \u003ccode\u003eMeetingFeatures:Video:MaxResolution\u003c/code\u003e, or if you specify  \n           \u003ccode\u003eUHD\u003c/code\u003e for \u003ccode\u003eMeetingFeatures:Content:MaxResolution\u003c/code\u003e, the maximum number of attendees changes from the default of \u003ccode\u003e250\u003c/code\u003e to \u003ccode\u003e25\u003c/code\u003e.\u003c/p\u003e\n         \u003c/note\u003e"
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#AttendeeIdItem": {
+        "type": "structure",
+        "members": {
+          "AttendeeId": {
+            "target": "com.amazonaws.chimesdkmeetings#GuidString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of one or more attendee IDs.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA structure that contains one or more attendee IDs.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#AttendeeIdsList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.chimesdkmeetings#AttendeeIdItem"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 250
+          }
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#AttendeeList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.chimesdkmeetings#Attendee"
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#AttendeeMax": {
+        "type": "integer",
+        "traits": {
+          "smithy.api#range": {
+            "min": 1,
+            "max": 250
+          }
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#AudioFeatures": {
+        "type": "structure",
+        "members": {
+          "EchoReduction": {
+            "target": "com.amazonaws.chimesdkmeetings#MeetingFeatureStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eMakes echo reduction available to clients who connect to the meeting.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eAn optional category of meeting features that contains audio-specific configurations, such as operating parameters for Amazon Voice Focus. \u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#BadRequestException": {
+        "type": "structure",
+        "members": {
+          "Code": {
+            "target": "com.amazonaws.chimesdkmeetings#String"
+          },
+          "Message": {
+            "target": "com.amazonaws.chimesdkmeetings#String"
+          },
+          "RequestId": {
+            "target": "com.amazonaws.chimesdkmeetings#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe request id associated with the call responsible for the exception.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe input parameters don't match the service's restrictions.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#BatchCreateAttendee": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.chimesdkmeetings#BatchCreateAttendeeRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.chimesdkmeetings#BatchCreateAttendeeResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.chimesdkmeetings#BadRequestException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ForbiddenException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#LimitExceededException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#NotFoundException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ServiceFailureException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ServiceUnavailableException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#UnauthorizedException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#UnprocessableEntityException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eCreates up to 100 attendees for an active Amazon Chime SDK meeting. For more information about the Amazon Chime SDK, see \n            \u003ca href=\"https://docs.aws.amazon.com/chime-sdk/latest/dg/meetings-sdk.html\"\u003eUsing the Amazon Chime SDK\u003c/a\u003e in the \u003ci\u003eAmazon Chime Developer Guide\u003c/i\u003e.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/meetings/{MeetingId}/attendees?operation=batch-create",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#BatchCreateAttendeeErrorList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.chimesdkmeetings#CreateAttendeeError"
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#BatchCreateAttendeeRequest": {
+        "type": "structure",
+        "members": {
+          "Attendees": {
+            "target": "com.amazonaws.chimesdkmeetings#CreateAttendeeRequestItemList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe attendee information, including attendees' IDs and join tokens.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "MeetingId": {
+            "target": "com.amazonaws.chimesdkmeetings#GuidString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Chime SDK ID of the meeting to which you're adding attendees.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#BatchCreateAttendeeResponse": {
+        "type": "structure",
+        "members": {
+          "Attendees": {
+            "target": "com.amazonaws.chimesdkmeetings#AttendeeList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe attendee information, including attendees' IDs and join tokens.\u003c/p\u003e"
+            }
+          },
+          "Errors": {
+            "target": "com.amazonaws.chimesdkmeetings#BatchCreateAttendeeErrorList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIf the action fails for one or more of the attendees in the request, a list of the attendees is returned, along with error codes and error messages.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#BatchUpdateAttendeeCapabilitiesExcept": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.chimesdkmeetings#BatchUpdateAttendeeCapabilitiesExceptRequest"
+        },
+        "output": {
+          "target": "smithy.api#Unit"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.chimesdkmeetings#BadRequestException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ForbiddenException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#NotFoundException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ServiceFailureException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ServiceUnavailableException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#UnauthorizedException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eUpdates \u003ccode\u003eAttendeeCapabilities\u003c/code\u003e except the capabilities listed in an \u003ccode\u003eExcludedAttendeeIds\u003c/code\u003e table.\u003c/p\u003e\n         \u003cnote\u003e\n            \u003cp\u003eYou use the capabilities with a set of values that control what the capabilities can do, such as \u003ccode\u003eSendReceive\u003c/code\u003e data. For more information about those values, see \n            .\u003c/p\u003e\n         \u003c/note\u003e\n         \u003cp\u003eWhen using capabilities, be aware of these corner cases:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003eIf you specify \u003ccode\u003eMeetingFeatures:Video:MaxResolution:None\u003c/code\u003e when you create a meeting, all API requests \n                    that include \u003ccode\u003eSendReceive\u003c/code\u003e, \u003ccode\u003eSend\u003c/code\u003e, or \u003ccode\u003eReceive\u003c/code\u003e for \u003ccode\u003eAttendeeCapabilities:Video\u003c/code\u003e will be rejected with \u003ccode\u003eValidationError 400\u003c/code\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eIf you specify \u003ccode\u003eMeetingFeatures:Content:MaxResolution:None\u003c/code\u003e when you create a meeting, all API requests that include \u003ccode\u003eSendReceive\u003c/code\u003e, \u003ccode\u003eSend\u003c/code\u003e, or \n                    \u003ccode\u003eReceive\u003c/code\u003e for \u003ccode\u003eAttendeeCapabilities:Content\u003c/code\u003e will be rejected with \u003ccode\u003eValidationError 400\u003c/code\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eYou can't set \u003ccode\u003econtent\u003c/code\u003e capabilities to \u003ccode\u003eSendReceive\u003c/code\u003e or \u003ccode\u003eReceive\u003c/code\u003e unless you also set \u003ccode\u003evideo\u003c/code\u003e capabilities to \u003ccode\u003eSendReceive\u003c/code\u003e \n                    or \u003ccode\u003eReceive\u003c/code\u003e. If you don't set the \u003ccode\u003evideo\u003c/code\u003e capability to receive, the response will contain an HTTP 400 Bad Request status code. However, you can set your \u003ccode\u003evideo\u003c/code\u003e capability \n                    to receive and you set your \u003ccode\u003econtent\u003c/code\u003e capability to not receive.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eIf meeting features is defined as \u003ccode\u003eVideo:MaxResolution:None\u003c/code\u003e but\n                    \u003ccode\u003eContent:MaxResolution\u003c/code\u003e is defined as something other than\n                    \u003ccode\u003eNone\u003c/code\u003e and attendee capabilities are not defined in the API\n                    request, then the default attendee video capability is set to\n                    \u003ccode\u003eReceive\u003c/code\u003e and attendee content capability is set to\n                    \u003ccode\u003eSendReceive\u003c/code\u003e. This is because content \u003ccode\u003eSendReceive\u003c/code\u003e\n                    requires video to be at least \u003ccode\u003eReceive\u003c/code\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eWhen you change an \u003ccode\u003eaudio\u003c/code\u003e capability from \u003ccode\u003eNone\u003c/code\u003e or \u003ccode\u003eReceive\u003c/code\u003e to \u003ccode\u003eSend\u003c/code\u003e or \u003ccode\u003eSendReceive\u003c/code\u003e , \n                    and if the attendee left their microphone unmuted, audio will flow from the attendee to the other meeting participants.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eWhen you change a \u003ccode\u003evideo\u003c/code\u003e or \u003ccode\u003econtent\u003c/code\u003e capability from \u003ccode\u003eNone\u003c/code\u003e or \u003ccode\u003eReceive\u003c/code\u003e to \u003ccode\u003eSend\u003c/code\u003e or \u003ccode\u003eSendReceive\u003c/code\u003e , \n                    and if the attendee turned on their video or content streams, remote attendees can receive those streams, but only after media renegotiation between the client and the Amazon Chime back-end server.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e",
+          "smithy.api#http": {
+            "method": "PUT",
+            "uri": "/meetings/{MeetingId}/attendees/capabilities?operation=batch-update-except",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#BatchUpdateAttendeeCapabilitiesExceptRequest": {
+        "type": "structure",
+        "members": {
+          "Capabilities": {
+            "target": "com.amazonaws.chimesdkmeetings#AttendeeCapabilities",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe capabilities (\u003ccode\u003eaudio\u003c/code\u003e, \u003ccode\u003evideo\u003c/code\u003e, or \u003ccode\u003econtent\u003c/code\u003e) that you want to update.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "ExcludedAttendeeIds": {
+            "target": "com.amazonaws.chimesdkmeetings#AttendeeIdsList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe \u003ccode\u003eAttendeeIDs\u003c/code\u003e that you want to exclude from one or more capabilities.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "MeetingId": {
+            "target": "com.amazonaws.chimesdkmeetings#GuidString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID of the meeting associated with the update request.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#Boolean": {
+        "type": "boolean",
+        "traits": {
+          "smithy.api#default": false
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#ChimeMeetingsSDKService": {
+        "type": "service",
+        "version": "2021-07-15",
+        "operations": [
+          {
+            "target": "com.amazonaws.chimesdkmeetings#BatchCreateAttendee"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#BatchUpdateAttendeeCapabilitiesExcept"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#CreateAttendee"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#CreateMeeting"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#CreateMeetingWithAttendees"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#DeleteAttendee"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#DeleteMeeting"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#GetAttendee"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#GetMeeting"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ListAttendees"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ListTagsForResource"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#StartMeetingTranscription"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#StopMeetingTranscription"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#TagResource"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#UntagResource"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#UpdateAttendeeCapabilities"
+          }
+        ],
+        "traits": {
+          "aws.api#service": {
+            "sdkId": "Chime SDK Meetings",
+            "arnNamespace": "chime",
+            "cloudFormationName": "ChimeSDKMeetings",
+            "cloudTrailEventSource": "chimesdkmeetings.amazonaws.com",
+            "endpointPrefix": "meetings-chime"
+          },
+          "aws.auth#sigv4": {
+            "name": "chime"
+          },
+          "aws.protocols#restJson1": {},
+          "smithy.api#documentation": "\u003cp\u003eThe Amazon Chime SDK meetings APIs in this section allow software developers to create Amazon Chime SDK meetings, set the Amazon Web Services Regions for meetings, create and manage users, and send and \n            receive meeting notifications. For more information about the meeting APIs, see \n            \u003ca href=\"https://docs.aws.amazon.com/chime-sdk/latest/APIReference/API_Operations_Amazon_Chime_SDK_Meetings.html\"\u003eAmazon Chime SDK meetings\u003c/a\u003e.\u003c/p\u003e",
+          "smithy.api#title": "Amazon Chime SDK Meetings",
+          "smithy.rules#endpointBdd": {
+            "version": "1.1",
+            "parameters": {
+              "Region": {
+                "builtIn": "AWS::Region",
+                "required": false,
+                "documentation": "The AWS region used to dispatch the request.",
+                "type": "string"
+              },
+              "UseDualStack": {
+                "builtIn": "AWS::UseDualStack",
+                "required": true,
+                "default": false,
+                "documentation": "When true, use the dual-stack endpoint. If the configured endpoint does not support dual-stack, dispatching the request MAY return an error.",
+                "type": "boolean"
+              },
+              "UseFIPS": {
+                "builtIn": "AWS::UseFIPS",
+                "required": true,
+                "default": false,
+                "documentation": "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
+                "type": "boolean"
+              },
+              "Endpoint": {
+                "builtIn": "SDK::Endpoint",
+                "required": false,
+                "documentation": "Override the endpoint used to send this request",
+                "type": "string"
+              }
+            },
+            "conditions": [
+              {
+                "fn": "isSet",
+                "argv": [
+                  {
+                    "ref": "Endpoint"
+                  }
+                ]
+              },
+              {
+                "fn": "isSet",
+                "argv": [
+                  {
+                    "ref": "Region"
+                  }
+                ]
+              },
+              {
+                "fn": "aws.partition",
+                "argv": [
+                  {
+                    "ref": "Region"
+                  }
+                ],
+                "assign": "PartitionResult"
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "ref": "UseFIPS"
+                  },
+                  true
+                ]
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "ref": "UseDualStack"
+                  },
+                  true
+                ]
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "fn": "getAttr",
+                    "argv": [
+                      {
+                        "ref": "PartitionResult"
+                      },
+                      "supportsDualStack"
+                    ]
+                  },
+                  true
+                ]
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "fn": "getAttr",
+                    "argv": [
+                      {
+                        "ref": "PartitionResult"
+                      },
+                      "supportsFIPS"
+                    ]
+                  },
+                  true
+                ]
+              }
+            ],
+            "results": [
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: FIPS and custom endpoint are not supported",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: Dualstack and custom endpoint are not supported",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": {
+                    "ref": "Endpoint"
+                  },
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://meetings-chime-fips.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "FIPS and DualStack are enabled, but this partition does not support one or both",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://meetings-chime-fips.{Region}.{PartitionResult#dnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "FIPS is enabled but this partition does not support FIPS",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://meetings-chime.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "DualStack is enabled but this partition does not support DualStack",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://meetings-chime.{Region}.{PartitionResult#dnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: Missing Region",
+                "type": "error"
+              }
+            ],
+            "root": 2,
+            "nodeCount": 13,
+            "nodes": "/////wAAAAH/////AAAAAAAAAAwAAAADAAAAAQAAAAQF9eELAAAAAgAAAAUF9eELAAAAAwAAAAgAAAAGAAAABAAAAAcF9eEKAAAABQX14QgF9eEJAAAABAAAAAoAAAAJAAAABgX14QYF9eEHAAAABQAAAAsF9eEFAAAABgX14QQF9eEFAAAAAwX14QEAAAANAAAABAX14QIF9eED"
+          },
+          "smithy.rules#endpointRuleSet": {
+            "version": "1.0",
+            "parameters": {
+              "Region": {
+                "builtIn": "AWS::Region",
+                "required": false,
+                "documentation": "The AWS region used to dispatch the request.",
+                "type": "string"
+              },
+              "UseDualStack": {
+                "builtIn": "AWS::UseDualStack",
+                "required": true,
+                "default": false,
+                "documentation": "When true, use the dual-stack endpoint. If the configured endpoint does not support dual-stack, dispatching the request MAY return an error.",
+                "type": "boolean"
+              },
+              "UseFIPS": {
+                "builtIn": "AWS::UseFIPS",
+                "required": true,
+                "default": false,
+                "documentation": "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
+                "type": "boolean"
+              },
+              "Endpoint": {
+                "builtIn": "SDK::Endpoint",
+                "required": false,
+                "documentation": "Override the endpoint used to send this request",
+                "type": "string"
+              }
+            },
+            "rules": [
+              {
+                "conditions": [
+                  {
+                    "fn": "isSet",
+                    "argv": [
+                      {
+                        "ref": "Endpoint"
+                      }
+                    ]
+                  }
+                ],
+                "rules": [
+                  {
+                    "conditions": [
+                      {
+                        "fn": "booleanEquals",
+                        "argv": [
+                          {
+                            "ref": "UseFIPS"
+                          },
+                          true
+                        ]
+                      }
+                    ],
+                    "error": "Invalid Configuration: FIPS and custom endpoint are not supported",
+                    "type": "error"
+                  },
+                  {
+                    "conditions": [
+                      {
+                        "fn": "booleanEquals",
+                        "argv": [
+                          {
+                            "ref": "UseDualStack"
+                          },
+                          true
+                        ]
+                      }
+                    ],
+                    "error": "Invalid Configuration: Dualstack and custom endpoint are not supported",
+                    "type": "error"
+                  },
+                  {
+                    "conditions": [],
+                    "endpoint": {
+                      "url": {
+                        "ref": "Endpoint"
+                      },
+                      "properties": {},
+                      "headers": {}
+                    },
+                    "type": "endpoint"
+                  }
+                ],
+                "type": "tree"
+              },
+              {
+                "conditions": [
+                  {
+                    "fn": "isSet",
+                    "argv": [
+                      {
+                        "ref": "Region"
+                      }
+                    ]
+                  }
+                ],
+                "rules": [
+                  {
+                    "conditions": [
+                      {
+                        "fn": "aws.partition",
+                        "argv": [
+                          {
+                            "ref": "Region"
+                          }
+                        ],
+                        "assign": "PartitionResult"
+                      }
+                    ],
+                    "rules": [
+                      {
+                        "conditions": [
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseFIPS"
+                              },
+                              true
+                            ]
+                          },
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseDualStack"
+                              },
+                              true
+                            ]
+                          }
+                        ],
+                        "rules": [
+                          {
+                            "conditions": [
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  true,
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsFIPS"
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  true,
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsDualStack"
+                                    ]
+                                  }
+                                ]
+                              }
+                            ],
+                            "rules": [
+                              {
+                                "conditions": [],
+                                "endpoint": {
+                                  "url": "https://meetings-chime-fips.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                                  "properties": {},
+                                  "headers": {}
+                                },
+                                "type": "endpoint"
+                              }
+                            ],
+                            "type": "tree"
+                          },
+                          {
+                            "conditions": [],
+                            "error": "FIPS and DualStack are enabled, but this partition does not support one or both",
+                            "type": "error"
+                          }
+                        ],
+                        "type": "tree"
+                      },
+                      {
+                        "conditions": [
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseFIPS"
+                              },
+                              true
+                            ]
+                          }
+                        ],
+                        "rules": [
+                          {
+                            "conditions": [
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsFIPS"
+                                    ]
+                                  },
+                                  true
+                                ]
+                              }
+                            ],
+                            "rules": [
+                              {
+                                "conditions": [],
+                                "endpoint": {
+                                  "url": "https://meetings-chime-fips.{Region}.{PartitionResult#dnsSuffix}",
+                                  "properties": {},
+                                  "headers": {}
+                                },
+                                "type": "endpoint"
+                              }
+                            ],
+                            "type": "tree"
+                          },
+                          {
+                            "conditions": [],
+                            "error": "FIPS is enabled but this partition does not support FIPS",
+                            "type": "error"
+                          }
+                        ],
+                        "type": "tree"
+                      },
+                      {
+                        "conditions": [
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseDualStack"
+                              },
+                              true
+                            ]
+                          }
+                        ],
+                        "rules": [
+                          {
+                            "conditions": [
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  true,
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsDualStack"
+                                    ]
+                                  }
+                                ]
+                              }
+                            ],
+                            "rules": [
+                              {
+                                "conditions": [],
+                                "endpoint": {
+                                  "url": "https://meetings-chime.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                                  "properties": {},
+                                  "headers": {}
+                                },
+                                "type": "endpoint"
+                              }
+                            ],
+                            "type": "tree"
+                          },
+                          {
+                            "conditions": [],
+                            "error": "DualStack is enabled but this partition does not support DualStack",
+                            "type": "error"
+                          }
+                        ],
+                        "type": "tree"
+                      },
+                      {
+                        "conditions": [],
+                        "endpoint": {
+                          "url": "https://meetings-chime.{Region}.{PartitionResult#dnsSuffix}",
+                          "properties": {},
+                          "headers": {}
+                        },
+                        "type": "endpoint"
+                      }
+                    ],
+                    "type": "tree"
+                  }
+                ],
+                "type": "tree"
+              },
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: Missing Region",
+                "type": "error"
+              }
+            ]
+          },
+          "smithy.rules#endpointTests": {
+            "testCases": [
+              {
+                "documentation": "For region ap-southeast-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://meetings-chime.ap-southeast-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ap-southeast-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region eu-central-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://meetings-chime.eu-central-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "eu-central-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://meetings-chime.us-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://meetings-chime-fips.us-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-west-2 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://meetings-chime.us-west-2.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-west-2",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-west-2 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://meetings-chime-fips.us-west-2.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-west-2",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://meetings-chime-fips.us-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://meetings-chime.us-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://meetings-chime-fips.cn-north-1.api.amazonwebservices.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": true,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://meetings-chime-fips.cn-north-1.amazonaws.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://meetings-chime.cn-north-1.api.amazonwebservices.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://meetings-chime.cn-north-1.amazonaws.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://meetings-chime.us-gov-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://meetings-chime-fips.us-gov-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-gov-west-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://meetings-chime.us-gov-west-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-west-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-gov-west-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://meetings-chime-fips.us-gov-west-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-west-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://meetings-chime-fips.us-gov-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://meetings-chime.us-gov-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region us-iso-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://meetings-chime-fips.us-iso-east-1.c2s.ic.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-iso-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-iso-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://meetings-chime.us-iso-east-1.c2s.ic.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-iso-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-isob-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://meetings-chime-fips.us-isob-east-1.sc2s.sgov.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-isob-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-isob-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://meetings-chime.us-isob-east-1.sc2s.sgov.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-isob-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For custom endpoint with region set and fips disabled and dualstack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://example.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "For custom endpoint with region not set and fips disabled and dualstack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://example.com"
+                  }
+                },
+                "params": {
+                  "UseFIPS": false,
+                  "UseDualStack": false,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "For custom endpoint with fips enabled and dualstack disabled",
+                "expect": {
+                  "error": "Invalid Configuration: FIPS and custom endpoint are not supported"
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "For custom endpoint with fips disabled and dualstack enabled",
+                "expect": {
+                  "error": "Invalid Configuration: Dualstack and custom endpoint are not supported"
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "Missing region",
+                "expect": {
+                  "error": "Invalid Configuration: Missing Region"
+                }
+              }
+            ],
+            "version": "1.0"
+          }
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#ClientRequestToken": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 2,
+            "max": 64
+          },
+          "smithy.api#pattern": "^[-_a-zA-Z0-9]*$",
+          "smithy.api#sensitive": {}
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#ConflictException": {
+        "type": "structure",
+        "members": {
+          "Code": {
+            "target": "com.amazonaws.chimesdkmeetings#String"
+          },
+          "Message": {
+            "target": "com.amazonaws.chimesdkmeetings#String"
+          },
+          "RequestId": {
+            "target": "com.amazonaws.chimesdkmeetings#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID of the request involved in the conflict.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eMultiple instances of the same request have been made simultaneously.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 409
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#ContentFeatures": {
+        "type": "structure",
+        "members": {
+          "MaxResolution": {
+            "target": "com.amazonaws.chimesdkmeetings#ContentResolution",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe maximum resolution for the meeting content.\u003c/p\u003e\n         \u003cnote\u003e\n            \u003cp\u003eDefaults to \u003ccode\u003eFHD\u003c/code\u003e. To use \u003ccode\u003eUHD\u003c/code\u003e, you must also provide a \u003ccode\u003eMeetingFeatures:Attendee:MaxCount\u003c/code\u003e\n         value and override the default size limit of 250 attendees.\u003c/p\u003e\n         \u003c/note\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eLists the content (screen share) features for the meeting. Applies to all attendees.\u003c/p\u003e\n         \u003cnote\u003e\n            \u003cp\u003eIf you specify \u003ccode\u003eMeetingFeatures:Content:MaxResolution:None\u003c/code\u003e when you create a meeting, all API requests that include \u003ccode\u003eSendReceive\u003c/code\u003e, \u003ccode\u003eSend\u003c/code\u003e, or \n                \u003ccode\u003eReceive\u003c/code\u003e for \u003ccode\u003eAttendeeCapabilities:Content\u003c/code\u003e will be rejected with \u003ccode\u003eValidationError 400\u003c/code\u003e.\u003c/p\u003e\n         \u003c/note\u003e"
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#ContentResolution": {
+        "type": "enum",
+        "members": {
+          "FHD": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "FHD"
+            }
+          },
+          "NONE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "None"
+            }
+          },
+          "UHD": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "UHD"
+            }
+          }
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#CreateAttendee": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.chimesdkmeetings#CreateAttendeeRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.chimesdkmeetings#CreateAttendeeResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.chimesdkmeetings#BadRequestException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ForbiddenException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#LimitExceededException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#NotFoundException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ServiceFailureException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ServiceUnavailableException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#UnauthorizedException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#UnprocessableEntityException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003e\n           Creates a new attendee for an active Amazon Chime SDK meeting. For more information about the Amazon Chime SDK, see \n           \u003ca href=\"https://docs.aws.amazon.com/chime-sdk/latest/dg/meetings-sdk.html\"\u003eUsing the Amazon Chime SDK\u003c/a\u003e\n           in the \n           \u003ci\u003eAmazon Chime Developer Guide\u003c/i\u003e.\n       \u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/meetings/{MeetingId}/attendees",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#CreateAttendeeError": {
+        "type": "structure",
+        "members": {
+          "ErrorCode": {
+            "target": "com.amazonaws.chimesdkmeetings#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe error code.\u003c/p\u003e"
+            }
+          },
+          "ErrorMessage": {
+            "target": "com.amazonaws.chimesdkmeetings#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe error message.\u003c/p\u003e"
+            }
+          },
+          "ExternalUserId": {
+            "target": "com.amazonaws.chimesdkmeetings#ExternalUserId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Chime SDK external user ID. An idempotency token. Links the attendee to an identity managed by a builder application.\u003c/p\u003e\n         \u003cp\u003ePattern: \u003ccode\u003e[-_\u0026@+=,(){}\\[\\]\\/\u00ab\u00bb.:|'\"#a-zA-Z0-9\u00c0-\u00ff\\s]*\u003c/code\u003e\n         \u003c/p\u003e\n         \u003cp\u003eValues that begin with \u003ccode\u003eaws:\u003c/code\u003e are reserved. You can't configure a value that uses this prefix. \n            Case insensitive.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe list of errors returned when errors are encountered during the BatchCreateAttendee and CreateAttendee actions. This includes external user IDs, error codes, and error messages.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#CreateAttendeeRequest": {
+        "type": "structure",
+        "members": {
+          "Capabilities": {
+            "target": "com.amazonaws.chimesdkmeetings#AttendeeCapabilities",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe capabilities (\u003ccode\u003eaudio\u003c/code\u003e, \u003ccode\u003evideo\u003c/code\u003e, or \u003ccode\u003econtent\u003c/code\u003e) that you want to grant an attendee. If you don't specify capabilities, all users have send and receive capabilities on \n            all media channels by default.\u003c/p\u003e\n         \u003cnote\u003e\n            \u003cp\u003eYou use the capabilities with a set of values that control what the capabilities can do, such as \u003ccode\u003eSendReceive\u003c/code\u003e data. For more information about those values, see \n            .\u003c/p\u003e\n         \u003c/note\u003e\n         \u003cp\u003eWhen using capabilities, be aware of these corner cases:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003eIf you specify \u003ccode\u003eMeetingFeatures:Video:MaxResolution:None\u003c/code\u003e when you create a meeting, all API requests \n                        that include \u003ccode\u003eSendReceive\u003c/code\u003e, \u003ccode\u003eSend\u003c/code\u003e, or \u003ccode\u003eReceive\u003c/code\u003e for \u003ccode\u003eAttendeeCapabilities:Video\u003c/code\u003e will be rejected with \u003ccode\u003eValidationError 400\u003c/code\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eIf you specify \u003ccode\u003eMeetingFeatures:Content:MaxResolution:None\u003c/code\u003e when you create a meeting, all API requests that include \u003ccode\u003eSendReceive\u003c/code\u003e, \u003ccode\u003eSend\u003c/code\u003e, or \n                        \u003ccode\u003eReceive\u003c/code\u003e for \u003ccode\u003eAttendeeCapabilities:Content\u003c/code\u003e will be rejected with \u003ccode\u003eValidationError 400\u003c/code\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eYou can't set \u003ccode\u003econtent\u003c/code\u003e capabilities to \u003ccode\u003eSendReceive\u003c/code\u003e or \u003ccode\u003eReceive\u003c/code\u003e unless you also set \u003ccode\u003evideo\u003c/code\u003e capabilities to \u003ccode\u003eSendReceive\u003c/code\u003e \n                    or \u003ccode\u003eReceive\u003c/code\u003e. If you don't set the \u003ccode\u003evideo\u003c/code\u003e capability to receive, the response will contain an HTTP 400 Bad Request status code. However, you can set your \u003ccode\u003evideo\u003c/code\u003e capability \n                    to receive and you set your \u003ccode\u003econtent\u003c/code\u003e capability to not receive.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eIf meeting features is defined as \u003ccode\u003eVideo:MaxResolution:None\u003c/code\u003e but\n                        \u003ccode\u003eContent:MaxResolution\u003c/code\u003e is defined as something other than\n                        \u003ccode\u003eNone\u003c/code\u003e and attendee capabilities are not defined in the API\n                        request, then the default attendee video capability is set to\n                        \u003ccode\u003eReceive\u003c/code\u003e and attendee content capability is set to\n                        \u003ccode\u003eSendReceive\u003c/code\u003e. This is because content \u003ccode\u003eSendReceive\u003c/code\u003e\n                        requires video to be at least \u003ccode\u003eReceive\u003c/code\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eWhen you change an \u003ccode\u003eaudio\u003c/code\u003e capability from \u003ccode\u003eNone\u003c/code\u003e or \u003ccode\u003eReceive\u003c/code\u003e to \u003ccode\u003eSend\u003c/code\u003e or \u003ccode\u003eSendReceive\u003c/code\u003e , \n                    and if the attendee left their microphone unmuted, audio will flow from the attendee to the other meeting participants.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eWhen you change a \u003ccode\u003evideo\u003c/code\u003e or \u003ccode\u003econtent\u003c/code\u003e capability from \u003ccode\u003eNone\u003c/code\u003e or \u003ccode\u003eReceive\u003c/code\u003e to \u003ccode\u003eSend\u003c/code\u003e or \u003ccode\u003eSendReceive\u003c/code\u003e , \n                   and if the attendee turned on their video or content streams, remote attendees can receive those streams, but only after media renegotiation between the client and the Amazon Chime back-end server.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e"
+            }
+          },
+          "ExternalUserId": {
+            "target": "com.amazonaws.chimesdkmeetings#ExternalUserId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Chime SDK external user ID. An idempotency token. Links the attendee to an identity managed by a builder application.\u003c/p\u003e\n         \u003cp\u003ePattern: \u003ccode\u003e[-_\u0026@+=,(){}\\[\\]\\/\u00ab\u00bb.:|'\"#a-zA-Z0-9\u00c0-\u00ff\\s]*\u003c/code\u003e\n         \u003c/p\u003e\n         \u003cp\u003eValues that begin with \u003ccode\u003eaws:\u003c/code\u003e are reserved. You can't configure a value that\n            uses this prefix.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "MeetingId": {
+            "target": "com.amazonaws.chimesdkmeetings#GuidString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique ID of the meeting.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#CreateAttendeeRequestItem": {
+        "type": "structure",
+        "members": {
+          "Capabilities": {
+            "target": "com.amazonaws.chimesdkmeetings#AttendeeCapabilities",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of one or more capabilities.\u003c/p\u003e"
+            }
+          },
+          "ExternalUserId": {
+            "target": "com.amazonaws.chimesdkmeetings#ExternalUserId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Chime SDK external user ID. An idempotency token. Links the attendee to an identity managed by a builder application.\u003c/p\u003e\n         \u003cp\u003ePattern: \u003ccode\u003e[-_\u0026@+=,(){}\\[\\]\\/\u00ab\u00bb.:|'\"#a-zA-Z0-9\u00c0-\u00ff\\s]*\u003c/code\u003e\n         \u003c/p\u003e\n         \u003cp\u003eValues that begin with \u003ccode\u003eaws:\u003c/code\u003e are reserved. You can't configure a value that uses this prefix. \n            Case insensitive.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe Amazon Chime SDK attendee fields to create, used with the BatchCreateAttendee action.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#CreateAttendeeRequestItemList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.chimesdkmeetings#CreateAttendeeRequestItem"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 100
+          }
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#CreateAttendeeResponse": {
+        "type": "structure",
+        "members": {
+          "Attendee": {
+            "target": "com.amazonaws.chimesdkmeetings#Attendee",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe attendee information, including attendee ID and join token.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#CreateMeeting": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.chimesdkmeetings#CreateMeetingRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.chimesdkmeetings#CreateMeetingResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.chimesdkmeetings#BadRequestException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ForbiddenException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#LimitExceededException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ServiceFailureException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ServiceUnavailableException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#UnauthorizedException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eCreates a new Amazon Chime SDK meeting in the specified media Region with no initial attendees. For more information about specifying media Regions, see \n           \u003ca href=\"https://docs.aws.amazon.com/chime-sdk/latest/dg/sdk-available-regions\"\u003eAvailable Regions\u003c/a\u003e and \n           \u003ca href=\"https://docs.aws.amazon.com/chime-sdk/latest/dg/chime-sdk-meetings-regions.html\"\u003eUsing meeting Regions\u003c/a\u003e, both \n           in the \u003ci\u003eAmazon Chime SDK Developer Guide\u003c/i\u003e. For more information about the Amazon Chime SDK, see \n           \u003ca href=\"https://docs.aws.amazon.com/chime-sdk/latest/dg/meetings-sdk.html\"\u003eUsing the Amazon Chime SDK\u003c/a\u003e\n           in the \n           \u003ci\u003eAmazon Chime SDK Developer Guide\u003c/i\u003e.\n       \u003c/p\u003e\n         \u003cnote\u003e\n            \u003cp\u003eIf you use this API in conjuction with the  and  APIs, and you don't specify the \n       \u003ccode\u003eMeetingFeatures.Content.MaxResolution\u003c/code\u003e or \u003ccode\u003eMeetingFeatures.Video.MaxResolution\u003c/code\u003e parameters, the following defaults are used:\u003c/p\u003e\n            \u003cul\u003e\n               \u003cli\u003e\n                  \u003cp\u003eContent.MaxResolution: FHD\u003c/p\u003e\n               \u003c/li\u003e\n               \u003cli\u003e\n                  \u003cp\u003eVideo.MaxResolution: HD\u003c/p\u003e\n               \u003c/li\u003e\n            \u003c/ul\u003e\n         \u003c/note\u003e",
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/meetings",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#CreateMeetingRequest": {
+        "type": "structure",
+        "members": {
+          "ClientRequestToken": {
+            "target": "com.amazonaws.chimesdkmeetings#ClientRequestToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier for the client request. Use a different token for different meetings.\u003c/p\u003e",
+              "smithy.api#idempotencyToken": {},
+              "smithy.api#required": {}
+            }
+          },
+          "ExternalMeetingId": {
+            "target": "com.amazonaws.chimesdkmeetings#ExternalMeetingId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe external meeting ID.\u003c/p\u003e\n         \u003cp\u003ePattern: \u003ccode\u003e[-_\u0026@+=,(){}\\[\\]\\/\u00ab\u00bb.:|'\"#a-zA-Z0-9\u00c0-\u00ff\\s]*\u003c/code\u003e\n         \u003c/p\u003e\n         \u003cp\u003eValues that begin with \u003ccode\u003eaws:\u003c/code\u003e are reserved. You can't configure a value that uses this prefix. \n           Case insensitive.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "MediaPlacementNetworkType": {
+            "target": "com.amazonaws.chimesdkmeetings#MediaPlacementNetworkType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe type of network for the media placement. Either IPv4 only or dual-stack (IPv4 and IPv6).\u003c/p\u003e"
+            }
+          },
+          "MediaRegion": {
+            "target": "com.amazonaws.chimesdkmeetings#MediaRegion",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Region in which to create the meeting.\u003c/p\u003e\n         \u003cp\u003e\n           Available values: \n           \u003ccode\u003eaf-south-1\u003c/code\u003e, \n           \u003ccode\u003eap-northeast-1\u003c/code\u003e, \n           \u003ccode\u003eap-northeast-2\u003c/code\u003e, \n           \u003ccode\u003eap-south-1\u003c/code\u003e, \n           \u003ccode\u003eap-southeast-1\u003c/code\u003e, \n           \u003ccode\u003eap-southeast-2\u003c/code\u003e,           \n           \u003ccode\u003eca-central-1\u003c/code\u003e, \n           \u003ccode\u003eeu-central-1\u003c/code\u003e, \n           \u003ccode\u003eeu-north-1\u003c/code\u003e, \n           \u003ccode\u003eeu-south-1\u003c/code\u003e, \n           \u003ccode\u003eeu-west-1\u003c/code\u003e, \n           \u003ccode\u003eeu-west-2\u003c/code\u003e, \n           \u003ccode\u003eeu-west-3\u003c/code\u003e,            \n           \u003ccode\u003esa-east-1\u003c/code\u003e, \n           \u003ccode\u003eus-east-1\u003c/code\u003e, \n           \u003ccode\u003eus-east-2\u003c/code\u003e, \n           \u003ccode\u003eus-west-1\u003c/code\u003e, \n           \u003ccode\u003eus-west-2\u003c/code\u003e.\n       \u003c/p\u003e\n         \u003cp\u003eAvailable values in Amazon Web Services GovCloud (US) Regions: \u003ccode\u003eus-gov-east-1\u003c/code\u003e, \u003ccode\u003eus-gov-west-1\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "MeetingFeatures": {
+            "target": "com.amazonaws.chimesdkmeetings#MeetingFeaturesConfiguration",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eLists the audio and video features enabled for a meeting, such as echo reduction.\u003c/p\u003e"
+            }
+          },
+          "MeetingHostId": {
+            "target": "com.amazonaws.chimesdkmeetings#ExternalUserId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eReserved.\u003c/p\u003e"
+            }
+          },
+          "NotificationsConfiguration": {
+            "target": "com.amazonaws.chimesdkmeetings#NotificationsConfiguration",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe configuration for resource targets to receive notifications when meeting and attendee events occur.\u003c/p\u003e"
+            }
+          },
+          "PrimaryMeetingId": {
+            "target": "com.amazonaws.chimesdkmeetings#PrimaryMeetingId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eWhen specified, replicates the media from the primary meeting to the new meeting.\u003c/p\u003e"
+            }
+          },
+          "Tags": {
+            "target": "com.amazonaws.chimesdkmeetings#TagList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eApplies one or more tags to an Amazon Chime SDK meeting. Note the following:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003eNot all resources have tags. For a list of services with resources that support tagging using this operation, see \n        \u003ca href=\"https://docs.aws.amazon.com/resourcegroupstagging/latest/APIReference/supported-services.html\"\u003eServices that support the Resource Groups Tagging API\u003c/a\u003e. If the resource \n        doesn't yet support this operation, the resource's service might support tagging using its own API operations. For more information, refer to the documentation for that service.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eEach resource can have up to 50 tags. For other limits, see \u003ca href=\"https://docs.aws.amazon.com/general/latest/gr/aws_tagging.html#tag-conventions\"\u003eTag Naming and Usage Conventions\u003c/a\u003e in the \n       \u003ci\u003eAWS General Reference\u003c/i\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eYou can only tag resources that are located in the specified Amazon Web Services Region for the Amazon Web Services account.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eTo add tags to a resource, you need the necessary permissions for the service that the resource belongs to as well as permissions for adding tags. For more information, see the \n        documentation for each service.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e\n         \u003cimportant\u003e\n            \u003cp\u003eDo not store personally identifiable information (PII) or other confidential or sensitive information in tags. We use tags to provide you with billing and administration services. Tags are not intended to be \n            used for private or sensitive data.\u003c/p\u003e\n         \u003c/important\u003e\n         \u003cp\u003e\n            \u003cb\u003eMinimum permissions\u003c/b\u003e\n         \u003c/p\u003e\n         \u003cp\u003eIn addition to the \u003ccode\u003etag:TagResources\u003c/code\u003e permission required by this operation, you must also have the tagging permission defined by the service that created the resource. For example, \n                   to tag a \u003ccode\u003eChimeSDKMeetings\u003c/code\u003e instance using the \u003ccode\u003eTagResources\u003c/code\u003e operation, you must have both of the following permissions:\u003c/p\u003e\n         \u003cp\u003e\n            \u003ccode\u003etag:TagResources\u003c/code\u003e\n         \u003c/p\u003e\n         \u003cp\u003e\n            \u003ccode\u003eChimeSDKMeetings:CreateTags\u003c/code\u003e\n         \u003c/p\u003e\n         \u003cnote\u003e\n            \u003cp\u003eSome services might have specific requirements for tagging some resources. For example, to tag an Amazon S3 bucket, you must also have the \u003ccode\u003es3:GetBucketTagging\u003c/code\u003e permission. \n                If the expected minimum permissions don't work, check the documentation for that service's tagging APIs for more information.\u003c/p\u003e\n         \u003c/note\u003e"
+            }
+          },
+          "TenantIds": {
+            "target": "com.amazonaws.chimesdkmeetings#TenantIdList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA consistent and opaque identifier, created and maintained by the builder to represent a segment of their users.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#CreateMeetingResponse": {
+        "type": "structure",
+        "members": {
+          "Meeting": {
+            "target": "com.amazonaws.chimesdkmeetings#Meeting",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe meeting information, including the meeting ID and \n           \u003ccode\u003eMediaPlacement\u003c/code\u003e.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#CreateMeetingWithAttendees": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.chimesdkmeetings#CreateMeetingWithAttendeesRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.chimesdkmeetings#CreateMeetingWithAttendeesResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.chimesdkmeetings#BadRequestException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ForbiddenException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#LimitExceededException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ServiceFailureException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ServiceUnavailableException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#UnauthorizedException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003e\n           Creates a new Amazon Chime SDK meeting in the specified media Region, with attendees. For more information about specifying media Regions, see \n           \u003ca href=\"https://docs.aws.amazon.com/chime-sdk/latest/dg/sdk-available-regions\"\u003eAvailable Regions\u003c/a\u003e and \n           \u003ca href=\"https://docs.aws.amazon.com/chime-sdk/latest/dg/chime-sdk-meetings-regions.html\"\u003eUsing meeting Regions\u003c/a\u003e, both \n           in the \u003ci\u003eAmazon Chime SDK Developer Guide\u003c/i\u003e. For more information about the Amazon Chime SDK, see \n           \u003ca href=\"https://docs.aws.amazon.com/chime-sdk/latest/dg/meetings-sdk.html\"\u003eUsing the Amazon Chime SDK\u003c/a\u003e\n           in the \n           \u003ci\u003eAmazon Chime SDK Developer Guide\u003c/i\u003e.\n       \u003c/p\u003e\n         \u003cnote\u003e\n            \u003cp\u003eIf you use this API in conjuction with the  and  APIs, and you don't specify the \n           \u003ccode\u003eMeetingFeatures.Content.MaxResolution\u003c/code\u003e or \u003ccode\u003eMeetingFeatures.Video.MaxResolution\u003c/code\u003e parameters, the following defaults are used:\u003c/p\u003e\n            \u003cul\u003e\n               \u003cli\u003e\n                  \u003cp\u003eContent.MaxResolution: FHD\u003c/p\u003e\n               \u003c/li\u003e\n               \u003cli\u003e\n                  \u003cp\u003eVideo.MaxResolution: HD\u003c/p\u003e\n               \u003c/li\u003e\n            \u003c/ul\u003e\n         \u003c/note\u003e",
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/meetings?operation=create-attendees",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#CreateMeetingWithAttendeesRequest": {
+        "type": "structure",
+        "members": {
+          "Attendees": {
+            "target": "com.amazonaws.chimesdkmeetings#CreateMeetingWithAttendeesRequestItemList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe attendee information, including attendees' IDs and join tokens.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "ClientRequestToken": {
+            "target": "com.amazonaws.chimesdkmeetings#ClientRequestToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier for the client request. Use a different token for different meetings.\u003c/p\u003e",
+              "smithy.api#idempotencyToken": {},
+              "smithy.api#required": {}
+            }
+          },
+          "ExternalMeetingId": {
+            "target": "com.amazonaws.chimesdkmeetings#ExternalMeetingId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe external meeting ID.\u003c/p\u003e\n         \u003cp\u003ePattern: \u003ccode\u003e[-_\u0026@+=,(){}\\[\\]\\/\u00ab\u00bb.:|'\"#a-zA-Z0-9\u00c0-\u00ff\\s]*\u003c/code\u003e\n         \u003c/p\u003e\n         \u003cp\u003eValues that begin with \u003ccode\u003eaws:\u003c/code\u003e are reserved. You can't configure a value that uses this prefix. \n           Case insensitive.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "MediaPlacementNetworkType": {
+            "target": "com.amazonaws.chimesdkmeetings#MediaPlacementNetworkType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe type of network for the media placement. Either IPv4 only or dual-stack (IPv4 and IPv6).\u003c/p\u003e"
+            }
+          },
+          "MediaRegion": {
+            "target": "com.amazonaws.chimesdkmeetings#MediaRegion",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Region in which to create the meeting.\u003c/p\u003e\n         \u003cp\u003e\n           Available values: \n           \u003ccode\u003eaf-south-1\u003c/code\u003e, \n           \u003ccode\u003eap-northeast-1\u003c/code\u003e, \n           \u003ccode\u003eap-northeast-2\u003c/code\u003e, \n           \u003ccode\u003eap-south-1\u003c/code\u003e, \n           \u003ccode\u003eap-southeast-1\u003c/code\u003e, \n           \u003ccode\u003eap-southeast-2\u003c/code\u003e,           \n           \u003ccode\u003eca-central-1\u003c/code\u003e, \n           \u003ccode\u003eeu-central-1\u003c/code\u003e, \n           \u003ccode\u003eeu-north-1\u003c/code\u003e, \n           \u003ccode\u003eeu-south-1\u003c/code\u003e, \n           \u003ccode\u003eeu-west-1\u003c/code\u003e, \n           \u003ccode\u003eeu-west-2\u003c/code\u003e, \n           \u003ccode\u003eeu-west-3\u003c/code\u003e,            \n           \u003ccode\u003esa-east-1\u003c/code\u003e, \n           \u003ccode\u003eus-east-1\u003c/code\u003e, \n           \u003ccode\u003eus-east-2\u003c/code\u003e, \n           \u003ccode\u003eus-west-1\u003c/code\u003e, \n           \u003ccode\u003eus-west-2\u003c/code\u003e.\n       \u003c/p\u003e\n         \u003cp\u003eAvailable values in Amazon Web Services GovCloud (US) Regions: \u003ccode\u003eus-gov-east-1\u003c/code\u003e, \u003ccode\u003eus-gov-west-1\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "MeetingFeatures": {
+            "target": "com.amazonaws.chimesdkmeetings#MeetingFeaturesConfiguration",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eLists the audio and video features enabled for a meeting, such as echo reduction.\u003c/p\u003e"
+            }
+          },
+          "MeetingHostId": {
+            "target": "com.amazonaws.chimesdkmeetings#ExternalUserId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eReserved.\u003c/p\u003e"
+            }
+          },
+          "NotificationsConfiguration": {
+            "target": "com.amazonaws.chimesdkmeetings#NotificationsConfiguration",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe configuration for resource targets to receive notifications when meeting and attendee events occur.\u003c/p\u003e"
+            }
+          },
+          "PrimaryMeetingId": {
+            "target": "com.amazonaws.chimesdkmeetings#PrimaryMeetingId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eWhen specified, replicates the media from the primary meeting to the new meeting.\u003c/p\u003e"
+            }
+          },
+          "Tags": {
+            "target": "com.amazonaws.chimesdkmeetings#TagList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe tags in the request.\u003c/p\u003e"
+            }
+          },
+          "TenantIds": {
+            "target": "com.amazonaws.chimesdkmeetings#TenantIdList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA consistent and opaque identifier, created and maintained by the builder to represent a segment of their users.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#CreateMeetingWithAttendeesRequestItemList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.chimesdkmeetings#CreateAttendeeRequestItem"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 20
+          }
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#CreateMeetingWithAttendeesResponse": {
+        "type": "structure",
+        "members": {
+          "Attendees": {
+            "target": "com.amazonaws.chimesdkmeetings#AttendeeList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe attendee information, including attendees' IDs and join tokens.\u003c/p\u003e"
+            }
+          },
+          "Errors": {
+            "target": "com.amazonaws.chimesdkmeetings#BatchCreateAttendeeErrorList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIf the action fails for one or more of the attendees in the request, a list of the attendees is returned, along with error codes and error messages.\u003c/p\u003e"
+            }
+          },
+          "Meeting": {
+            "target": "com.amazonaws.chimesdkmeetings#Meeting",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe meeting information, including the meeting ID and \n           \u003ccode\u003eMediaPlacement\u003c/code\u003e.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#DeleteAttendee": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.chimesdkmeetings#DeleteAttendeeRequest"
+        },
+        "output": {
+          "target": "smithy.api#Unit"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.chimesdkmeetings#BadRequestException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ForbiddenException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#NotFoundException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ServiceFailureException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ServiceUnavailableException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#UnauthorizedException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eDeletes an attendee from the specified Amazon Chime SDK meeting and deletes their \n           \u003ccode\u003eJoinToken\u003c/code\u003e. Attendees are automatically deleted when a Amazon Chime SDK meeting is deleted. For more information about the Amazon Chime SDK, see \n           \u003ca href=\"https://docs.aws.amazon.com/chime-sdk/latest/dg/meetings-sdk.html\"\u003eUsing the Amazon Chime SDK\u003c/a\u003e\n           in the \u003ci\u003eAmazon Chime Developer Guide\u003c/i\u003e.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "DELETE",
+            "uri": "/meetings/{MeetingId}/attendees/{AttendeeId}",
+            "code": 204
+          }
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#DeleteAttendeeRequest": {
+        "type": "structure",
+        "members": {
+          "AttendeeId": {
+            "target": "com.amazonaws.chimesdkmeetings#GuidString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Chime SDK attendee ID.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "MeetingId": {
+            "target": "com.amazonaws.chimesdkmeetings#GuidString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Chime SDK meeting ID.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#DeleteMeeting": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.chimesdkmeetings#DeleteMeetingRequest"
+        },
+        "output": {
+          "target": "smithy.api#Unit"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.chimesdkmeetings#BadRequestException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ForbiddenException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#NotFoundException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ServiceFailureException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ServiceUnavailableException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#UnauthorizedException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eDeletes the specified Amazon Chime SDK meeting. The operation deletes all attendees, disconnects all clients, and prevents new clients from \n           joining the meeting. For more information about the Amazon Chime SDK, see \n           \u003ca href=\"https://docs.aws.amazon.com/chime-sdk/latest/dg/meetings-sdk.html\"\u003eUsing the Amazon Chime SDK\u003c/a\u003e in the \n           \u003ci\u003eAmazon Chime Developer Guide\u003c/i\u003e.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "DELETE",
+            "uri": "/meetings/{MeetingId}",
+            "code": 204
+          }
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#DeleteMeetingRequest": {
+        "type": "structure",
+        "members": {
+          "MeetingId": {
+            "target": "com.amazonaws.chimesdkmeetings#GuidString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Chime SDK meeting ID.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#EngineTranscribeMedicalSettings": {
+        "type": "structure",
+        "members": {
+          "ContentIdentificationType": {
+            "target": "com.amazonaws.chimesdkmeetings#TranscribeMedicalContentIdentificationType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSet this field to \u003ccode\u003ePHI\u003c/code\u003e to identify personal health information in the transcription output.\u003c/p\u003e"
+            }
+          },
+          "LanguageCode": {
+            "target": "com.amazonaws.chimesdkmeetings#TranscribeMedicalLanguageCode",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe language code specified for the Amazon Transcribe Medical engine.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Region": {
+            "target": "com.amazonaws.chimesdkmeetings#TranscribeMedicalRegion",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Web Services Region passed to Amazon Transcribe Medical. If you don't specify a Region, Amazon Chime uses the meeting's Region. \u003c/p\u003e"
+            }
+          },
+          "Specialty": {
+            "target": "com.amazonaws.chimesdkmeetings#TranscribeMedicalSpecialty",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe specialty specified for the Amazon Transcribe Medical engine.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Type": {
+            "target": "com.amazonaws.chimesdkmeetings#TranscribeMedicalType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe type of transcription.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "VocabularyName": {
+            "target": "com.amazonaws.chimesdkmeetings#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the vocabulary passed to Amazon Transcribe Medical.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eSettings specific to the Amazon Transcribe Medical engine.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#EngineTranscribeSettings": {
+        "type": "structure",
+        "members": {
+          "ContentIdentificationType": {
+            "target": "com.amazonaws.chimesdkmeetings#TranscribeContentIdentificationType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eLabels all personally identifiable information (PII) identified in your transcript. If you don't include \u003ccode\u003ePiiEntityTypes\u003c/code\u003e, all PII is identified.\u003c/p\u003e\n         \u003cnote\u003e\n            \u003cp\u003eYou can\u2019t set \u003ccode\u003eContentIdentificationType\u003c/code\u003e and \u003ccode\u003eContentRedactionType\u003c/code\u003e.\u003c/p\u003e\n         \u003c/note\u003e"
+            }
+          },
+          "ContentRedactionType": {
+            "target": "com.amazonaws.chimesdkmeetings#TranscribeContentRedactionType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eContent redaction is performed at the segment level. If you don't include \u003ccode\u003ePiiEntityTypes\u003c/code\u003e, all PII is redacted.\u003c/p\u003e\n         \u003cnote\u003e\n            \u003cp\u003eYou can\u2019t set \u003ccode\u003eContentRedactionType\u003c/code\u003e and \u003ccode\u003eContentIdentificationType\u003c/code\u003e.\u003c/p\u003e\n         \u003c/note\u003e"
+            }
+          },
+          "EnablePartialResultsStabilization": {
+            "target": "com.amazonaws.chimesdkmeetings#Boolean",
+            "traits": {
+              "smithy.api#default": false,
+              "smithy.api#documentation": "\u003cp\u003eEnables partial result stabilization for your transcription. Partial result stabilization can reduce latency in your output, but may impact accuracy.\u003c/p\u003e"
+            }
+          },
+          "IdentifyLanguage": {
+            "target": "com.amazonaws.chimesdkmeetings#Boolean",
+            "traits": {
+              "smithy.api#default": false,
+              "smithy.api#documentation": "\u003cp\u003eEnables automatic language identification for your transcription.\u003c/p\u003e\n         \u003cp\u003eIf you include \u003ccode\u003eIdentifyLanguage\u003c/code\u003e, you can optionally use \u003ccode\u003eLanguageOptions\u003c/code\u003e to include a list of language codes that you think may be present in your audio stream. \n            Including language options can improve transcription accuracy.\u003c/p\u003e\n         \u003cp\u003eYou can also use \u003ccode\u003ePreferredLanguage\u003c/code\u003e to include a preferred language. Doing so can help Amazon Transcribe identify the language faster.\u003c/p\u003e\n         \u003cp\u003eYou must include either \u003ccode\u003eLanguageCode\u003c/code\u003e or \u003ccode\u003eIdentifyLanguage\u003c/code\u003e.\u003c/p\u003e\n         \u003cp\u003eLanguage identification can't be combined with custom language models or redaction.\u003c/p\u003e"
+            }
+          },
+          "LanguageCode": {
+            "target": "com.amazonaws.chimesdkmeetings#TranscribeLanguageCode",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecify the language code that represents the language spoken.\u003c/p\u003e\n         \u003cp\u003eIf you're unsure of the language spoken in your audio, consider using \u003ccode\u003eIdentifyLanguage\u003c/code\u003e to enable automatic language identification.\u003c/p\u003e"
+            }
+          },
+          "LanguageModelName": {
+            "target": "com.amazonaws.chimesdkmeetings#TranscribeLanguageModelName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecify the name of the custom language model that you want to use when processing your transcription. Note that language model names are case sensitive.\u003c/p\u003e\n         \u003cp\u003eThe language of the specified language model must match the language code. If the languages don't match, the custom language model isn't applied. There are no errors or warnings associated with \n            a language mismatch.\u003c/p\u003e\n         \u003cp\u003eIf you use Amazon Transcribe in multiple Regions, the custom language model must be available in Amazon Transcribe in each Region.\u003c/p\u003e"
+            }
+          },
+          "LanguageOptions": {
+            "target": "com.amazonaws.chimesdkmeetings#TranscribeLanguageOptions",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecify two or more language codes that represent the languages you think may be present in your media; including more than five is not recommended. If you're unsure what languages \n            are present, do not include this parameter.\u003c/p\u003e\n         \u003cp\u003eIncluding language options can improve the accuracy of language identification.\u003c/p\u003e\n         \u003cp\u003eIf you include \u003ccode\u003eLanguageOptions\u003c/code\u003e, you must also include \u003ccode\u003eIdentifyLanguage\u003c/code\u003e.\u003c/p\u003e\n         \u003cimportant\u003e\n            \u003cp\u003eYou can only include one language dialect per language. For example, you cannot include \u003ccode\u003een-US\u003c/code\u003e and \u003ccode\u003een-AU\u003c/code\u003e.\u003c/p\u003e\n         \u003c/important\u003e"
+            }
+          },
+          "PartialResultsStability": {
+            "target": "com.amazonaws.chimesdkmeetings#TranscribePartialResultsStability",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecify the level of stability to use when you enable partial results stabilization (\u003ccode\u003eEnablePartialResultsStabilization\u003c/code\u003e).\u003c/p\u003e\n         \u003cp\u003eLow stability provides the highest accuracy. High stability transcribes faster, but with slightly lower accuracy.\u003c/p\u003e"
+            }
+          },
+          "PiiEntityTypes": {
+            "target": "com.amazonaws.chimesdkmeetings#TranscribePiiEntityTypes",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecify which types of personally identifiable information (PII) you want to redact in your transcript. You can include as many types as you'd like, or you can select \u003ccode\u003eALL\u003c/code\u003e.\u003c/p\u003e\n         \u003cp\u003eValues must be comma-separated and can include: \u003ccode\u003eADDRESS\u003c/code\u003e, \u003ccode\u003eBANK_ACCOUNT_NUMBER\u003c/code\u003e, \u003ccode\u003eBANK_ROUTING\u003c/code\u003e, \u003ccode\u003eCREDIT_DEBIT_CVV\u003c/code\u003e, \u003ccode\u003eCREDIT_DEBIT_EXPIRY\u003c/code\u003e\n            \u003ccode\u003eCREDIT_DEBIT_NUMBER\u003c/code\u003e, \u003ccode\u003eEMAIL\u003c/code\u003e,\u003ccode\u003eNAME\u003c/code\u003e, \u003ccode\u003ePHONE\u003c/code\u003e,  \u003ccode\u003ePIN\u003c/code\u003e, \n                \u003ccode\u003eSSN\u003c/code\u003e, or \u003ccode\u003eALL\u003c/code\u003e.\u003c/p\u003e\n         \u003cp\u003eNote that if you include \u003ccode\u003ePiiEntityTypes\u003c/code\u003e, you must also include \u003ccode\u003eContentIdentificationType\u003c/code\u003e or \u003ccode\u003eContentRedactionType\u003c/code\u003e.\u003c/p\u003e\n         \u003cp\u003eIf you include \u003ccode\u003eContentRedactionType\u003c/code\u003e or \u003ccode\u003eContentIdentificationType\u003c/code\u003e, but do not include PiiEntityTypes, all PII is redacted or identified.\u003c/p\u003e"
+            }
+          },
+          "PreferredLanguage": {
+            "target": "com.amazonaws.chimesdkmeetings#TranscribeLanguageCode",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecify a preferred language from the subset of languages codes you specified in \u003ccode\u003eLanguageOptions\u003c/code\u003e.\u003c/p\u003e\n         \u003cp\u003eYou can only use this parameter if you include \u003ccode\u003eIdentifyLanguage\u003c/code\u003e and \u003ccode\u003eLanguageOptions\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "Region": {
+            "target": "com.amazonaws.chimesdkmeetings#TranscribeRegion",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Web Services Region in which to use Amazon Transcribe.\u003c/p\u003e\n         \u003cp\u003eIf you don't specify a Region, then the \u003ca href=\"https://docs.aws.amazon.com/chime-sdk/latest/APIReference/API_meeting-chime_CreateMeeting.html\"\u003eMediaRegion\u003c/a\u003e of the meeting is used.  \n            However, if Amazon Transcribe is not available in the \u003ccode\u003eMediaRegion\u003c/code\u003e, then a \u003ccode\u003eTranscriptFailed\u003c/code\u003e event is sent.\u003c/p\u003e\n         \u003cp\u003eUse \u003ccode\u003eauto\u003c/code\u003e to use Amazon Transcribe in a Region near the meeting\u2019s \u003ccode\u003eMediaRegion\u003c/code\u003e.  For more information, refer to \n            \u003ca href=\"https://docs.aws.amazon.com/chime-sdk/latest/dg/transcription-options.html#choose-region\"\u003eChoosing a transcription Region\u003c/a\u003e in the \n            \u003ci\u003eAmazon Chime SDK Developer Guide\u003c/i\u003e.\u003c/p\u003e"
+            }
+          },
+          "VocabularyFilterMethod": {
+            "target": "com.amazonaws.chimesdkmeetings#TranscribeVocabularyFilterMethod",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecify how you want your vocabulary filter applied to your transcript.\u003c/p\u003e\n         \u003cp\u003eTo replace words with \u003ccode\u003e***\u003c/code\u003e, choose \u003ccode\u003emask\u003c/code\u003e.\u003c/p\u003e\n         \u003cp\u003eTo delete words, choose \u003ccode\u003eremove\u003c/code\u003e.\u003c/p\u003e\n         \u003cp\u003eTo flag words without changing them, choose \u003ccode\u003etag\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "VocabularyFilterName": {
+            "target": "com.amazonaws.chimesdkmeetings#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecify the name of the custom vocabulary filter that you want to use when processing your transcription. Note that vocabulary filter names are case sensitive. \u003c/p\u003e\n         \u003cp\u003eIf you use Amazon Transcribe in multiple Regions, the vocabulary filter must be available in Amazon Transcribe in each Region.\u003c/p\u003e\n         \u003cp\u003eIf you include \u003ccode\u003eIdentifyLanguage\u003c/code\u003e and want to use one or more vocabulary filters with your transcription, use the \u003ccode\u003eVocabularyFilterNames\u003c/code\u003e parameter instead.\u003c/p\u003e"
+            }
+          },
+          "VocabularyFilterNames": {
+            "target": "com.amazonaws.chimesdkmeetings#TranscribeVocabularyNamesOrFilterNamesString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecify the names of the custom vocabulary filters that you want to use when processing your transcription. Note that vocabulary filter names are case sensitive.\u003c/p\u003e\n         \u003cp\u003eIf you use Amazon Transcribe in multiple Regions, the vocabulary filter must be available in Amazon Transcribe in each Region.\u003c/p\u003e\n         \u003cp\u003e If you're \u003ci\u003enot\u003c/i\u003e including \u003ccode\u003eIdentifyLanguage\u003c/code\u003e and want to use a custom vocabulary filter with your transcription, use the \u003ccode\u003eVocabularyFilterName\u003c/code\u003e \n            parameter instead.\u003c/p\u003e"
+            }
+          },
+          "VocabularyName": {
+            "target": "com.amazonaws.chimesdkmeetings#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecify the name of the custom vocabulary that you want to use when processing your transcription. Note that vocabulary names are case sensitive.\u003c/p\u003e\n         \u003cp\u003eIf you use Amazon Transcribe multiple Regions, the vocabulary must be available in Amazon Transcribe in each Region.\u003c/p\u003e\n         \u003cp\u003eIf you include \u003ccode\u003eIdentifyLanguage\u003c/code\u003e and want to use one or more custom vocabularies with your transcription, use the \u003ccode\u003eVocabularyNames\u003c/code\u003e \n                parameter instead.\u003c/p\u003e"
+            }
+          },
+          "VocabularyNames": {
+            "target": "com.amazonaws.chimesdkmeetings#TranscribeVocabularyNamesOrFilterNamesString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecify the names of the custom vocabularies that you want to use when processing your transcription. Note that vocabulary names are case sensitive.\u003c/p\u003e\n         \u003cp\u003eIf you use Amazon Transcribe in multiple Regions, the vocabulary must be available in Amazon Transcribe in each Region.\u003c/p\u003e\n         \u003cp\u003eIf you don't include \u003ccode\u003eIdentifyLanguage\u003c/code\u003e and want to use a custom vocabulary with your transcription, use the \u003ccode\u003eVocabularyName\u003c/code\u003e parameter instead.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eSettings specific for Amazon Transcribe as the live transcription engine. \u003c/p\u003e\n         \u003cp\u003eIf you specify an invalid combination of parameters, a \u003ccode\u003eTranscriptFailed\u003c/code\u003e event will be sent with the contents of the \n            \u003ccode\u003eBadRequestException\u003c/code\u003e generated by Amazon Transcribe.  For more information on each parameter and which combinations are valid, refer to the \n            \u003ca href=\"https://docs.aws.amazon.com/transcribe/latest/APIReference/API_streaming_StartStreamTranscription.html\"\u003eStartStreamTranscription\u003c/a\u003e API in the \n            \u003ci\u003eAmazon Transcribe Developer Guide\u003c/i\u003e.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#ExternalMeetingId": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 2,
+            "max": 64
+          },
+          "smithy.api#sensitive": {}
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#ExternalUserId": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 2,
+            "max": 64
+          },
+          "smithy.api#sensitive": {}
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#ForbiddenException": {
+        "type": "structure",
+        "members": {
+          "Code": {
+            "target": "com.amazonaws.chimesdkmeetings#String"
+          },
+          "Message": {
+            "target": "com.amazonaws.chimesdkmeetings#String"
+          },
+          "RequestId": {
+            "target": "com.amazonaws.chimesdkmeetings#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe request id associated with the call responsible for the exception.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe client is permanently forbidden from making the request.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 403
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#GetAttendee": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.chimesdkmeetings#GetAttendeeRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.chimesdkmeetings#GetAttendeeResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.chimesdkmeetings#BadRequestException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ForbiddenException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#NotFoundException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ServiceFailureException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ServiceUnavailableException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#UnauthorizedException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003e\n            Gets the Amazon Chime SDK attendee details for a specified meeting ID and attendee ID. For more information about the Amazon Chime SDK, see \n            \u003ca href=\"https://docs.aws.amazon.com/chime-sdk/latest/dg/meetings-sdk.html\"\u003eUsing the Amazon Chime SDK\u003c/a\u003e\n            in the \u003ci\u003eAmazon Chime Developer Guide\u003c/i\u003e.\n        \u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "GET",
+            "uri": "/meetings/{MeetingId}/attendees/{AttendeeId}",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#GetAttendeeRequest": {
+        "type": "structure",
+        "members": {
+          "AttendeeId": {
+            "target": "com.amazonaws.chimesdkmeetings#GuidString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Chime SDK attendee ID.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "MeetingId": {
+            "target": "com.amazonaws.chimesdkmeetings#GuidString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Chime SDK meeting ID.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#GetAttendeeResponse": {
+        "type": "structure",
+        "members": {
+          "Attendee": {
+            "target": "com.amazonaws.chimesdkmeetings#Attendee",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Chime SDK attendee information.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#GetMeeting": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.chimesdkmeetings#GetMeetingRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.chimesdkmeetings#GetMeetingResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.chimesdkmeetings#BadRequestException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ForbiddenException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#NotFoundException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ServiceFailureException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ServiceUnavailableException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#UnauthorizedException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eGets the Amazon Chime SDK meeting details for the specified meeting ID. For more information about the Amazon Chime SDK, see \n            \u003ca href=\"https://docs.aws.amazon.com/chime-sdk/latest/dg/meetings-sdk.html\"\u003eUsing the Amazon Chime SDK\u003c/a\u003e\n            in the \u003ci\u003eAmazon Chime Developer Guide\u003c/i\u003e.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "GET",
+            "uri": "/meetings/{MeetingId}",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#GetMeetingRequest": {
+        "type": "structure",
+        "members": {
+          "MeetingId": {
+            "target": "com.amazonaws.chimesdkmeetings#GuidString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Chime SDK meeting ID.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#GetMeetingResponse": {
+        "type": "structure",
+        "members": {
+          "Meeting": {
+            "target": "com.amazonaws.chimesdkmeetings#Meeting",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Chime SDK meeting information.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#GuidString": {
+        "type": "string",
+        "traits": {
+          "smithy.api#pattern": "^[a-fA-F0-9]{8}(?:-[a-fA-F0-9]{4}){3}-[a-fA-F0-9]{12}$"
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#JoinTokenString": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 2,
+            "max": 2048
+          },
+          "smithy.api#sensitive": {}
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#LimitExceededException": {
+        "type": "structure",
+        "members": {
+          "Code": {
+            "target": "com.amazonaws.chimesdkmeetings#String"
+          },
+          "Message": {
+            "target": "com.amazonaws.chimesdkmeetings#String"
+          },
+          "RequestId": {
+            "target": "com.amazonaws.chimesdkmeetings#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe request id associated with the call responsible for the exception.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe request exceeds the resource limit.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#ListAttendees": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.chimesdkmeetings#ListAttendeesRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.chimesdkmeetings#ListAttendeesResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.chimesdkmeetings#BadRequestException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ForbiddenException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#NotFoundException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ServiceFailureException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ServiceUnavailableException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#UnauthorizedException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003e\n            Lists the attendees for the specified Amazon Chime SDK meeting. For more information about the Amazon Chime SDK, see \n            \u003ca href=\"https://docs.aws.amazon.com/chime-sdk/latest/dg/meetings-sdk.html\"\u003eUsing the Amazon Chime SDK\u003c/a\u003e\n            in the \u003ci\u003eAmazon Chime Developer Guide\u003c/i\u003e.\n        \u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "GET",
+            "uri": "/meetings/{MeetingId}/attendees",
+            "code": 200
+          },
+          "smithy.api#paginated": {
+            "inputToken": "NextToken",
+            "outputToken": "NextToken",
+            "pageSize": "MaxResults"
+          }
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#ListAttendeesRequest": {
+        "type": "structure",
+        "members": {
+          "MaxResults": {
+            "target": "com.amazonaws.chimesdkmeetings#ResultMax",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of results to return in a single call.\u003c/p\u003e",
+              "smithy.api#httpQuery": "max-results"
+            }
+          },
+          "MeetingId": {
+            "target": "com.amazonaws.chimesdkmeetings#GuidString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Chime SDK meeting ID.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "NextToken": {
+            "target": "com.amazonaws.chimesdkmeetings#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe token to use to retrieve the next page of results.\u003c/p\u003e",
+              "smithy.api#httpQuery": "next-token"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#ListAttendeesResponse": {
+        "type": "structure",
+        "members": {
+          "Attendees": {
+            "target": "com.amazonaws.chimesdkmeetings#AttendeeList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Chime SDK attendee information.\u003c/p\u003e"
+            }
+          },
+          "NextToken": {
+            "target": "com.amazonaws.chimesdkmeetings#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe token to use to retrieve the next page of results.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#ListTagsForResource": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.chimesdkmeetings#ListTagsForResourceRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.chimesdkmeetings#ListTagsForResourceResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.chimesdkmeetings#BadRequestException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ForbiddenException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#LimitExceededException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ServiceFailureException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ServiceUnavailableException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#UnauthorizedException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eReturns a list of the tags available for the specified resource.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "GET",
+            "uri": "/tags",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#ListTagsForResourceRequest": {
+        "type": "structure",
+        "members": {
+          "ResourceARN": {
+            "target": "com.amazonaws.chimesdkmeetings#AmazonResourceName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ARN of the resource.\u003c/p\u003e",
+              "smithy.api#httpQuery": "arn",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#ListTagsForResourceResponse": {
+        "type": "structure",
+        "members": {
+          "Tags": {
+            "target": "com.amazonaws.chimesdkmeetings#TagList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe tags requested for the specified resource.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#MediaCapabilities": {
+        "type": "enum",
+        "members": {
+          "NONE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "None"
+            }
+          },
+          "RECEIVE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Receive"
+            }
+          },
+          "SEND": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Send"
+            }
+          },
+          "SEND_RECEIVE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "SendReceive"
+            }
+          }
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#MediaPlacement": {
+        "type": "structure",
+        "members": {
+          "AudioFallbackUrl": {
+            "target": "com.amazonaws.chimesdkmeetings#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe audio fallback URL.\u003c/p\u003e"
+            }
+          },
+          "AudioHostUrl": {
+            "target": "com.amazonaws.chimesdkmeetings#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe audio host URL.\u003c/p\u003e"
+            }
+          },
+          "EventIngestionUrl": {
+            "target": "com.amazonaws.chimesdkmeetings#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe event ingestion URL.\u003c/p\u003e"
+            }
+          },
+          "ScreenDataUrl": {
+            "target": "com.amazonaws.chimesdkmeetings#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe screen data URL.\u003c/p\u003e\n         \u003cimportant\u003e\n            \u003cp\u003e\n               \u003cb\u003eThis parameter is deprecated and no longer used by the Amazon Chime SDK.\u003c/b\u003e\n            \u003c/p\u003e\n         \u003c/important\u003e"
+            }
+          },
+          "ScreenSharingUrl": {
+            "target": "com.amazonaws.chimesdkmeetings#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe screen sharing URL.\u003c/p\u003e\n         \u003cimportant\u003e\n            \u003cp\u003e\n               \u003cb\u003eThis parameter is deprecated and no longer used by the Amazon Chime SDK.\u003c/b\u003e\n            \u003c/p\u003e\n         \u003c/important\u003e"
+            }
+          },
+          "ScreenViewingUrl": {
+            "target": "com.amazonaws.chimesdkmeetings#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe screen viewing URL.\u003c/p\u003e\n         \u003cimportant\u003e\n            \u003cp\u003e\n               \u003cb\u003eThis parameter is deprecated and no longer used by the Amazon Chime SDK.\u003c/b\u003e\n            \u003c/p\u003e\n         \u003c/important\u003e"
+            }
+          },
+          "SignalingUrl": {
+            "target": "com.amazonaws.chimesdkmeetings#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe signaling URL.\u003c/p\u003e"
+            }
+          },
+          "TurnControlUrl": {
+            "target": "com.amazonaws.chimesdkmeetings#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe turn control URL.\u003c/p\u003e\n         \u003cimportant\u003e\n            \u003cp\u003e\n               \u003cb\u003eThis parameter is deprecated and no longer used by the Amazon Chime SDK.\u003c/b\u003e\n            \u003c/p\u003e\n         \u003c/important\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA set of endpoints used by clients to connect to the media service group for an Amazon Chime SDK meeting.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#MediaPlacementNetworkType": {
+        "type": "enum",
+        "members": {
+          "DUAL_STACK": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "DualStack"
+            }
+          },
+          "IPV4_ONLY": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Ipv4Only"
+            }
+          }
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#MediaRegion": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 2,
+            "max": 64
+          }
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#Meeting": {
+        "type": "structure",
+        "members": {
+          "ExternalMeetingId": {
+            "target": "com.amazonaws.chimesdkmeetings#ExternalMeetingId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe external meeting ID.\u003c/p\u003e\n         \u003cp\u003ePattern: \u003ccode\u003e[-_\u0026@+=,(){}\\[\\]\\/\u00ab\u00bb.:|'\"#a-zA-Z0-9\u00c0-\u00ff\\s]*\u003c/code\u003e\n         \u003c/p\u003e\n         \u003cp\u003eValues that begin with \u003ccode\u003eaws:\u003c/code\u003e are reserved. You can't configure a value that uses this prefix. \n            Case insensitive.\u003c/p\u003e"
+            }
+          },
+          "MediaPlacement": {
+            "target": "com.amazonaws.chimesdkmeetings#MediaPlacement",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe media placement for the meeting.\u003c/p\u003e"
+            }
+          },
+          "MediaRegion": {
+            "target": "com.amazonaws.chimesdkmeetings#MediaRegion",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Region in which you create the meeting. Available values: \u003ccode\u003eaf-south-1\u003c/code\u003e, \u003ccode\u003eap-northeast-1\u003c/code\u003e, \n            \u003ccode\u003eap-northeast-2\u003c/code\u003e, \u003ccode\u003eap-south-1\u003c/code\u003e, \u003ccode\u003eap-southeast-1\u003c/code\u003e, \u003ccode\u003eap-southeast-2\u003c/code\u003e, \u003ccode\u003eca-central-1\u003c/code\u003e, \n            \u003ccode\u003eeu-central-1\u003c/code\u003e, \u003ccode\u003eeu-north-1\u003c/code\u003e, \u003ccode\u003eeu-south-1\u003c/code\u003e,\n            \u003ccode\u003eeu-west-1\u003c/code\u003e, \u003ccode\u003eeu-west-2\u003c/code\u003e, \u003ccode\u003eeu-west-3\u003c/code\u003e,\n            \u003ccode\u003esa-east-1\u003c/code\u003e, \u003ccode\u003eus-east-1\u003c/code\u003e, \u003ccode\u003eus-east-2\u003c/code\u003e,\n            \u003ccode\u003eus-west-1\u003c/code\u003e, \u003ccode\u003eus-west-2\u003c/code\u003e.\u003c/p\u003e\n         \u003cp\u003eAvailable values in Amazon Web Services GovCloud (US) Regions: \u003ccode\u003eus-gov-east-1\u003c/code\u003e, \u003ccode\u003eus-gov-west-1\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "MeetingArn": {
+            "target": "com.amazonaws.chimesdkmeetings#AmazonResourceName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ARN of the meeting.\u003c/p\u003e"
+            }
+          },
+          "MeetingFeatures": {
+            "target": "com.amazonaws.chimesdkmeetings#MeetingFeaturesConfiguration",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe features available to a meeting, such as echo reduction.\u003c/p\u003e"
+            }
+          },
+          "MeetingHostId": {
+            "target": "com.amazonaws.chimesdkmeetings#ExternalUserId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eReserved.\u003c/p\u003e"
+            }
+          },
+          "MeetingId": {
+            "target": "com.amazonaws.chimesdkmeetings#GuidString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Chime SDK meeting ID.\u003c/p\u003e"
+            }
+          },
+          "PrimaryMeetingId": {
+            "target": "com.amazonaws.chimesdkmeetings#PrimaryMeetingId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eWhen specified, replicates the media from the primary meeting to this meeting.\u003c/p\u003e"
+            }
+          },
+          "TenantIds": {
+            "target": "com.amazonaws.chimesdkmeetings#TenantIdList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eArray of strings.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA meeting created using the Amazon Chime SDK.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#MeetingFeatureStatus": {
+        "type": "enum",
+        "members": {
+          "AVAILABLE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "AVAILABLE"
+            }
+          },
+          "UNAVAILABLE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "UNAVAILABLE"
+            }
+          }
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#MeetingFeaturesConfiguration": {
+        "type": "structure",
+        "members": {
+          "Attendee": {
+            "target": "com.amazonaws.chimesdkmeetings#AttendeeFeatures",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe configuration settings for the attendee features available to a meeting.\u003c/p\u003e"
+            }
+          },
+          "Audio": {
+            "target": "com.amazonaws.chimesdkmeetings#AudioFeatures",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe configuration settings for the audio features available to a meeting.\u003c/p\u003e"
+            }
+          },
+          "Content": {
+            "target": "com.amazonaws.chimesdkmeetings#ContentFeatures",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe configuration settings for the content features available to a meeting.\u003c/p\u003e"
+            }
+          },
+          "Video": {
+            "target": "com.amazonaws.chimesdkmeetings#VideoFeatures",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe configuration settings for the video features available to a meeting.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe configuration settings of the features available to a meeting.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#NotFoundException": {
+        "type": "structure",
+        "members": {
+          "Code": {
+            "target": "com.amazonaws.chimesdkmeetings#String"
+          },
+          "Message": {
+            "target": "com.amazonaws.chimesdkmeetings#String"
+          },
+          "RequestId": {
+            "target": "com.amazonaws.chimesdkmeetings#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe request ID associated with the call responsible for the exception.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eOne or more of the resources in the request does not exist in the system.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 404
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#NotificationsConfiguration": {
+        "type": "structure",
+        "members": {
+          "LambdaFunctionArn": {
+            "target": "com.amazonaws.chimesdkmeetings#Arn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ARN of the Amazon Web Services Lambda function in the notifications configuration.\u003c/p\u003e"
+            }
+          },
+          "SnsTopicArn": {
+            "target": "com.amazonaws.chimesdkmeetings#Arn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ARN of the SNS topic.\u003c/p\u003e"
+            }
+          },
+          "SqsQueueArn": {
+            "target": "com.amazonaws.chimesdkmeetings#Arn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ARN of the SQS queue.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe configuration for resource targets to receive notifications when meeting and attendee events occur.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#PrimaryMeetingId": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 2,
+            "max": 64
+          }
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#ResourceNotFoundException": {
+        "type": "structure",
+        "members": {
+          "Code": {
+            "target": "com.amazonaws.chimesdkmeetings#String"
+          },
+          "Message": {
+            "target": "com.amazonaws.chimesdkmeetings#String"
+          },
+          "RequestId": {
+            "target": "com.amazonaws.chimesdkmeetings#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID of the resource that couldn't be found.\u003c/p\u003e"
+            }
+          },
+          "ResourceName": {
+            "target": "com.amazonaws.chimesdkmeetings#AmazonResourceName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the resource that couldn't be found.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe resource that you want to tag couldn't be found.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 404
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#ResultMax": {
+        "type": "integer",
+        "traits": {
+          "smithy.api#range": {
+            "min": 1,
+            "max": 100
+          }
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#RetryAfterSeconds": {
+        "type": "string"
+      },
+      "com.amazonaws.chimesdkmeetings#ServiceFailureException": {
+        "type": "structure",
+        "members": {
+          "Code": {
+            "target": "com.amazonaws.chimesdkmeetings#String"
+          },
+          "Message": {
+            "target": "com.amazonaws.chimesdkmeetings#String"
+          },
+          "RequestId": {
+            "target": "com.amazonaws.chimesdkmeetings#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID of the failed request.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe service encountered an unexpected error.\u003c/p\u003e",
+          "smithy.api#error": "server",
+          "smithy.api#httpError": 500
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#ServiceUnavailableException": {
+        "type": "structure",
+        "members": {
+          "Code": {
+            "target": "com.amazonaws.chimesdkmeetings#String"
+          },
+          "Message": {
+            "target": "com.amazonaws.chimesdkmeetings#String"
+          },
+          "RequestId": {
+            "target": "com.amazonaws.chimesdkmeetings#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe request id associated with the call responsible for the exception.\u003c/p\u003e"
+            }
+          },
+          "RetryAfterSeconds": {
+            "target": "com.amazonaws.chimesdkmeetings#RetryAfterSeconds",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe number of seconds the caller should wait before retrying.\u003c/p\u003e",
+              "smithy.api#httpHeader": "Retry-After"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe service is currently unavailable.\u003c/p\u003e",
+          "smithy.api#error": "server",
+          "smithy.api#httpError": 503
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#StartMeetingTranscription": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.chimesdkmeetings#StartMeetingTranscriptionRequest"
+        },
+        "output": {
+          "target": "smithy.api#Unit"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.chimesdkmeetings#BadRequestException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ForbiddenException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#LimitExceededException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#NotFoundException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ServiceFailureException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ServiceUnavailableException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#UnauthorizedException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#UnprocessableEntityException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eStarts transcription for the specified \u003ccode\u003emeetingId\u003c/code\u003e. For more information, refer to \u003ca href=\"https://docs.aws.amazon.com/chime-sdk/latest/dg/meeting-transcription.html\"\u003e\n            Using Amazon Chime SDK live transcription\n        \u003c/a\u003e in the \u003ci\u003eAmazon Chime SDK Developer Guide\u003c/i\u003e.\u003c/p\u003e\n         \u003cp\u003eIf you specify an invalid configuration, a \u003ccode\u003eTranscriptFailed\u003c/code\u003e event will be sent with the contents of the \u003ccode\u003eBadRequestException\u003c/code\u003e generated by Amazon Transcribe.  \n            For more information on each parameter and which combinations are valid, refer to the \n            \u003ca href=\"https://docs.aws.amazon.com/transcribe/latest/APIReference/API_streaming_StartStreamTranscription.html\"\u003eStartStreamTranscription\u003c/a\u003e API in the \n            \u003ci\u003eAmazon Transcribe Developer Guide\u003c/i\u003e.\u003c/p\u003e\n         \u003cnote\u003e\n            \u003cp\u003eBy default, Amazon Transcribe may use and store audio content processed by the service to develop and improve Amazon Web Services AI/ML services as \n            further described in section 50 of the \u003ca href=\"https://aws.amazon.com/service-terms/\"\u003eAmazon Web Services Service Terms\u003c/a\u003e. Using Amazon Transcribe \n            may be subject to federal and state laws or regulations regarding the recording or interception of electronic communications. It is your and your end users\u2019 \n            responsibility to comply with all applicable laws regarding the recording, including properly notifying all participants in a recorded session or communication \n            that the session or communication is being recorded, and obtaining all necessary consents. You can opt out from Amazon Web Services using audio content to develop and \n            improve AWS AI/ML services by configuring an AI services opt out policy using Amazon Web Services Organizations.\u003c/p\u003e\n         \u003c/note\u003e",
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/meetings/{MeetingId}/transcription?operation=start",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#StartMeetingTranscriptionRequest": {
+        "type": "structure",
+        "members": {
+          "MeetingId": {
+            "target": "com.amazonaws.chimesdkmeetings#GuidString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique ID of the meeting being transcribed.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "TranscriptionConfiguration": {
+            "target": "com.amazonaws.chimesdkmeetings#TranscriptionConfiguration",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe configuration for the current transcription operation. Must contain \u003ccode\u003eEngineTranscribeSettings\u003c/code\u003e or \n            \u003ccode\u003eEngineTranscribeMedicalSettings\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#StopMeetingTranscription": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.chimesdkmeetings#StopMeetingTranscriptionRequest"
+        },
+        "output": {
+          "target": "smithy.api#Unit"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.chimesdkmeetings#BadRequestException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ForbiddenException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#NotFoundException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ServiceFailureException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ServiceUnavailableException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#UnauthorizedException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#UnprocessableEntityException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eStops transcription for the specified \u003ccode\u003emeetingId\u003c/code\u003e. For more information, refer to \u003ca href=\"https://docs.aws.amazon.com/chime-sdk/latest/dg/meeting-transcription.html\"\u003e\n            Using Amazon Chime SDK live transcription\n        \u003c/a\u003e in the \u003ci\u003eAmazon Chime SDK Developer Guide\u003c/i\u003e.\u003c/p\u003e\n         \u003cimportant\u003e\n            \u003cp\u003eBy default, Amazon Transcribe may use and store audio content processed by the service to develop and improve Amazon Web Services AI/ML services as \n                    further described in section 50 of the \u003ca href=\"https://aws.amazon.com/service-terms/\"\u003eAmazon Web Services Service Terms\u003c/a\u003e. Using Amazon Transcribe \n                    may be subject to federal and state laws or regulations regarding the recording or interception of electronic communications. It is your and your end users\u2019 \n                    responsibility to comply with all applicable laws regarding the recording, including properly notifying all participants in a recorded session or communication \n                    that the session or communication is being recorded, and obtaining all necessary consents. You can opt out from Amazon Web Services using audio content to develop and \n                    improve Amazon Web Services AI/ML services by configuring an AI services opt out policy using Amazon Web Services Organizations.\u003c/p\u003e\n         \u003c/important\u003e",
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/meetings/{MeetingId}/transcription?operation=stop",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#StopMeetingTranscriptionRequest": {
+        "type": "structure",
+        "members": {
+          "MeetingId": {
+            "target": "com.amazonaws.chimesdkmeetings#GuidString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique ID of the meeting for which you stop transcription.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#String": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 4096
+          }
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#Tag": {
+        "type": "structure",
+        "members": {
+          "Key": {
+            "target": "com.amazonaws.chimesdkmeetings#TagKey",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe tag's key.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Value": {
+            "target": "com.amazonaws.chimesdkmeetings#TagValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe tag's value.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA key-value pair that you define.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#TagKey": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 128
+          },
+          "smithy.api#pattern": "^[a-zA-Z+-=._:/]+$"
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#TagKeyList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.chimesdkmeetings#TagKey"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 50
+          }
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#TagList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.chimesdkmeetings#Tag"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 50
+          }
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#TagResource": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.chimesdkmeetings#TagResourceRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.chimesdkmeetings#TagResourceResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.chimesdkmeetings#BadRequestException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ForbiddenException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#LimitExceededException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ServiceFailureException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ServiceUnavailableException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#TooManyTagsException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#UnauthorizedException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe resource that supports tags.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/tags?operation=tag-resource",
+            "code": 204
+          }
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#TagResourceRequest": {
+        "type": "structure",
+        "members": {
+          "ResourceARN": {
+            "target": "com.amazonaws.chimesdkmeetings#AmazonResourceName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ARN of the resource.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Tags": {
+            "target": "com.amazonaws.chimesdkmeetings#TagList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eLists the requested tags.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#TagResourceResponse": {
+        "type": "structure",
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#TagValue": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 256
+          },
+          "smithy.api#pattern": "^[\\s\\w+-=\\.:/@]*$"
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#TenantId": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 2,
+            "max": 256
+          },
+          "smithy.api#pattern": "^(?!.*?(.)\\1{3})[-_!@#$a-zA-Z0-9]*$"
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#TenantIdList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.chimesdkmeetings#TenantId"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 5
+          }
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#ThrottlingException": {
+        "type": "structure",
+        "members": {
+          "Code": {
+            "target": "com.amazonaws.chimesdkmeetings#String"
+          },
+          "Message": {
+            "target": "com.amazonaws.chimesdkmeetings#String"
+          },
+          "RequestId": {
+            "target": "com.amazonaws.chimesdkmeetings#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID of the request that exceeded the throttling limit.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe number of customer requests exceeds the request rate limit.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 429
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#TooManyTagsException": {
+        "type": "structure",
+        "members": {
+          "Code": {
+            "target": "com.amazonaws.chimesdkmeetings#String"
+          },
+          "Message": {
+            "target": "com.amazonaws.chimesdkmeetings#String"
+          },
+          "RequestId": {
+            "target": "com.amazonaws.chimesdkmeetings#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID of the request that contains too many tags.\u003c/p\u003e"
+            }
+          },
+          "ResourceName": {
+            "target": "com.amazonaws.chimesdkmeetings#AmazonResourceName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the resource that received too many tags.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eToo many tags were added to the specified resource.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#TranscribeContentIdentificationType": {
+        "type": "enum",
+        "members": {
+          "PII": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "PII"
+            }
+          }
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#TranscribeContentRedactionType": {
+        "type": "enum",
+        "members": {
+          "PII": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "PII"
+            }
+          }
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#TranscribeLanguageCode": {
+        "type": "enum",
+        "members": {
+          "DE_DE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "de-DE"
+            }
+          },
+          "EN_AU": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "en-AU"
+            }
+          },
+          "EN_GB": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "en-GB"
+            }
+          },
+          "EN_US": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "en-US"
+            }
+          },
+          "ES_US": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "es-US"
+            }
+          },
+          "FR_CA": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "fr-CA"
+            }
+          },
+          "FR_FR": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "fr-FR"
+            }
+          },
+          "HI_IN": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "hi-IN"
+            }
+          },
+          "IT_IT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "it-IT"
+            }
+          },
+          "JA_JP": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ja-JP"
+            }
+          },
+          "KO_KR": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ko-KR"
+            }
+          },
+          "PT_BR": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "pt-BR"
+            }
+          },
+          "TH_TH": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "th-TH"
+            }
+          },
+          "ZH_CN": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "zh-CN"
+            }
+          }
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#TranscribeLanguageModelName": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 200
+          },
+          "smithy.api#pattern": "^[0-9a-zA-Z._-]+$"
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#TranscribeLanguageOptions": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 200
+          },
+          "smithy.api#pattern": "^[a-zA-Z-,]+$"
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#TranscribeMedicalContentIdentificationType": {
+        "type": "enum",
+        "members": {
+          "PHI": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "PHI"
+            }
+          }
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#TranscribeMedicalLanguageCode": {
+        "type": "enum",
+        "members": {
+          "EN_US": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "en-US"
+            }
+          }
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#TranscribeMedicalRegion": {
+        "type": "enum",
+        "members": {
+          "AP_SOUTHEAST_2": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ap-southeast-2"
+            }
+          },
+          "AUTO": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "auto"
+            }
+          },
+          "CA_CENTRAL_1": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ca-central-1"
+            }
+          },
+          "EU_WEST_1": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "eu-west-1"
+            }
+          },
+          "US_EAST_1": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "us-east-1"
+            }
+          },
+          "US_EAST_2": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "us-east-2"
+            }
+          },
+          "US_WEST_2": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "us-west-2"
+            }
+          }
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#TranscribeMedicalSpecialty": {
+        "type": "enum",
+        "members": {
+          "CARDIOLOGY": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "CARDIOLOGY"
+            }
+          },
+          "NEUROLOGY": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "NEUROLOGY"
+            }
+          },
+          "ONCOLOGY": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ONCOLOGY"
+            }
+          },
+          "PRIMARYCARE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "PRIMARYCARE"
+            }
+          },
+          "RADIOLOGY": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "RADIOLOGY"
+            }
+          },
+          "UROLOGY": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "UROLOGY"
+            }
+          }
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#TranscribeMedicalType": {
+        "type": "enum",
+        "members": {
+          "CONVERSATION": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "CONVERSATION"
+            }
+          },
+          "DICTATION": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "DICTATION"
+            }
+          }
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#TranscribePartialResultsStability": {
+        "type": "enum",
+        "members": {
+          "HIGH": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "high"
+            }
+          },
+          "LOW": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "low"
+            }
+          },
+          "MEDIUM": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "medium"
+            }
+          }
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#TranscribePiiEntityTypes": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 300
+          },
+          "smithy.api#pattern": "^[A-Z_, ]+$"
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#TranscribeRegion": {
+        "type": "enum",
+        "members": {
+          "AP_NORTHEAST_1": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ap-northeast-1"
+            }
+          },
+          "AP_NORTHEAST_2": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ap-northeast-2"
+            }
+          },
+          "AP_SOUTHEAST_2": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ap-southeast-2"
+            }
+          },
+          "AUTO": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "auto"
+            }
+          },
+          "CA_CENTRAL_1": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ca-central-1"
+            }
+          },
+          "EU_CENTRAL_1": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "eu-central-1"
+            }
+          },
+          "EU_WEST_1": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "eu-west-1"
+            }
+          },
+          "EU_WEST_2": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "eu-west-2"
+            }
+          },
+          "SA_EAST_1": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "sa-east-1"
+            }
+          },
+          "US_EAST_1": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "us-east-1"
+            }
+          },
+          "US_EAST_2": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "us-east-2"
+            }
+          },
+          "US_GOV_WEST_1": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "us-gov-west-1"
+            }
+          },
+          "US_WEST_2": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "us-west-2"
+            }
+          }
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#TranscribeVocabularyFilterMethod": {
+        "type": "enum",
+        "members": {
+          "MASK": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "mask"
+            }
+          },
+          "REMOVE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "remove"
+            }
+          },
+          "TAG": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "tag"
+            }
+          }
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#TranscribeVocabularyNamesOrFilterNamesString": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 3000
+          },
+          "smithy.api#pattern": "^[a-zA-Z0-9,-._]+$"
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#TranscriptionConfiguration": {
+        "type": "structure",
+        "members": {
+          "EngineTranscribeMedicalSettings": {
+            "target": "com.amazonaws.chimesdkmeetings#EngineTranscribeMedicalSettings",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe transcription configuration settings passed to Amazon Transcribe Medical.\u003c/p\u003e"
+            }
+          },
+          "EngineTranscribeSettings": {
+            "target": "com.amazonaws.chimesdkmeetings#EngineTranscribeSettings",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe transcription configuration settings passed to Amazon Transcribe.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe configuration for the current transcription operation. Must contain \u003ccode\u003eEngineTranscribeSettings\u003c/code\u003e or \u003ccode\u003eEngineTranscribeMedicalSettings\u003c/code\u003e.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#UnauthorizedException": {
+        "type": "structure",
+        "members": {
+          "Code": {
+            "target": "com.amazonaws.chimesdkmeetings#String"
+          },
+          "Message": {
+            "target": "com.amazonaws.chimesdkmeetings#String"
+          },
+          "RequestId": {
+            "target": "com.amazonaws.chimesdkmeetings#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe request id associated with the call responsible for the exception.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe user isn't authorized to request a resource.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 401
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#UnprocessableEntityException": {
+        "type": "structure",
+        "members": {
+          "Code": {
+            "target": "com.amazonaws.chimesdkmeetings#String"
+          },
+          "Message": {
+            "target": "com.amazonaws.chimesdkmeetings#String"
+          },
+          "RequestId": {
+            "target": "com.amazonaws.chimesdkmeetings#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe request id associated with the call responsible for the exception.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe request was well-formed but was unable to be followed due to semantic errors.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 422
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#UntagResource": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.chimesdkmeetings#UntagResourceRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.chimesdkmeetings#UntagResourceResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.chimesdkmeetings#BadRequestException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ForbiddenException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#LimitExceededException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ServiceFailureException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ServiceUnavailableException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#UnauthorizedException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eRemoves the specified tags from the specified resources. When you specify a tag key, the action removes both that key and its associated value. The operation succeeds even if you \n                attempt to remove tags from a resource that were already removed. Note the following:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003eTo remove tags from a resource, you need the necessary permissions for the service that the resource belongs to as well as permissions for removing tags. For more information, \n                see the documentation for the service whose resource you want to untag.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eYou can only tag resources that are located in the specified Amazon Web Services Region for the calling Amazon Web Services account.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e\n         \u003cp\u003e\n            \u003cb\u003eMinimum permissions\u003c/b\u003e\n         \u003c/p\u003e\n         \u003cp\u003eIn addition to the \u003ccode\u003etag:UntagResources\u003c/code\u003e permission required by this operation, you must also have the remove tags permission defined by the service that created the resource. \n                For example, to remove the tags from an Amazon EC2 instance using the \u003ccode\u003eUntagResources\u003c/code\u003e operation, you must have both of the following permissions:\u003c/p\u003e\n         \u003cp\u003e\n            \u003ccode\u003etag:UntagResource\u003c/code\u003e\n         \u003c/p\u003e\n         \u003cp\u003e\n            \u003ccode\u003eChimeSDKMeetings:DeleteTags\u003c/code\u003e\n         \u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/tags?operation=untag-resource",
+            "code": 204
+          }
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#UntagResourceRequest": {
+        "type": "structure",
+        "members": {
+          "ResourceARN": {
+            "target": "com.amazonaws.chimesdkmeetings#AmazonResourceName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ARN of the resource that you're removing tags from.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "TagKeys": {
+            "target": "com.amazonaws.chimesdkmeetings#TagKeyList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe tag keys being removed from the resources.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#UntagResourceResponse": {
+        "type": "structure",
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#UpdateAttendeeCapabilities": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.chimesdkmeetings#UpdateAttendeeCapabilitiesRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.chimesdkmeetings#UpdateAttendeeCapabilitiesResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.chimesdkmeetings#BadRequestException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ForbiddenException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#NotFoundException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ServiceFailureException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ServiceUnavailableException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.chimesdkmeetings#UnauthorizedException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe capabilities that you want to update.\u003c/p\u003e\n         \u003cnote\u003e\n            \u003cp\u003eYou use the capabilities with a set of values that control what the capabilities can do, such as \u003ccode\u003eSendReceive\u003c/code\u003e data. For more information about those values, see \n            .\u003c/p\u003e\n         \u003c/note\u003e\n         \u003cp\u003eWhen using capabilities, be aware of these corner cases:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003eIf you specify \u003ccode\u003eMeetingFeatures:Video:MaxResolution:None\u003c/code\u003e when you create a meeting, all API requests \n                    that include \u003ccode\u003eSendReceive\u003c/code\u003e, \u003ccode\u003eSend\u003c/code\u003e, or \u003ccode\u003eReceive\u003c/code\u003e for \u003ccode\u003eAttendeeCapabilities:Video\u003c/code\u003e will be rejected with \u003ccode\u003eValidationError 400\u003c/code\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eIf you specify \u003ccode\u003eMeetingFeatures:Content:MaxResolution:None\u003c/code\u003e when you create a meeting, all API requests that include \u003ccode\u003eSendReceive\u003c/code\u003e, \u003ccode\u003eSend\u003c/code\u003e, or \n                    \u003ccode\u003eReceive\u003c/code\u003e for \u003ccode\u003eAttendeeCapabilities:Content\u003c/code\u003e will be rejected with \u003ccode\u003eValidationError 400\u003c/code\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eYou can't set \u003ccode\u003econtent\u003c/code\u003e capabilities to \u003ccode\u003eSendReceive\u003c/code\u003e or \u003ccode\u003eReceive\u003c/code\u003e unless you also set \u003ccode\u003evideo\u003c/code\u003e capabilities to \u003ccode\u003eSendReceive\u003c/code\u003e \n                    or \u003ccode\u003eReceive\u003c/code\u003e. If you don't set the \u003ccode\u003evideo\u003c/code\u003e capability to receive, the response will contain an HTTP 400 Bad Request status code. However, you can set your \u003ccode\u003evideo\u003c/code\u003e capability \n                    to receive and you set your \u003ccode\u003econtent\u003c/code\u003e capability to not receive.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eIf meeting features is defined as \u003ccode\u003eVideo:MaxResolution:None\u003c/code\u003e but\n                    \u003ccode\u003eContent:MaxResolution\u003c/code\u003e is defined as something other than\n                    \u003ccode\u003eNone\u003c/code\u003e and attendee capabilities are not defined in the API\n                    request, then the default attendee video capability is set to\n                    \u003ccode\u003eReceive\u003c/code\u003e and attendee content capability is set to\n                    \u003ccode\u003eSendReceive\u003c/code\u003e. This is because content \u003ccode\u003eSendReceive\u003c/code\u003e\n                    requires video to be at least \u003ccode\u003eReceive\u003c/code\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eWhen you change an \u003ccode\u003eaudio\u003c/code\u003e capability from \u003ccode\u003eNone\u003c/code\u003e or \u003ccode\u003eReceive\u003c/code\u003e to \u003ccode\u003eSend\u003c/code\u003e or \u003ccode\u003eSendReceive\u003c/code\u003e , \n                    and if the attendee left their microphone unmuted, audio will flow from the attendee to the other meeting participants.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eWhen you change a \u003ccode\u003evideo\u003c/code\u003e or \u003ccode\u003econtent\u003c/code\u003e capability from \u003ccode\u003eNone\u003c/code\u003e or \u003ccode\u003eReceive\u003c/code\u003e to \u003ccode\u003eSend\u003c/code\u003e or \u003ccode\u003eSendReceive\u003c/code\u003e , \n                    and if the attendee turned on their video or content streams, remote attendees can receive those streams, but only after media renegotiation between the client and the Amazon Chime back-end server.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e",
+          "smithy.api#http": {
+            "method": "PUT",
+            "uri": "/meetings/{MeetingId}/attendees/{AttendeeId}/capabilities",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#UpdateAttendeeCapabilitiesRequest": {
+        "type": "structure",
+        "members": {
+          "AttendeeId": {
+            "target": "com.amazonaws.chimesdkmeetings#GuidString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID of the attendee associated with the update request.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "Capabilities": {
+            "target": "com.amazonaws.chimesdkmeetings#AttendeeCapabilities",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe capabilities that you want to update.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "MeetingId": {
+            "target": "com.amazonaws.chimesdkmeetings#GuidString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID of the meeting associated with the update request.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#UpdateAttendeeCapabilitiesResponse": {
+        "type": "structure",
+        "members": {
+          "Attendee": {
+            "target": "com.amazonaws.chimesdkmeetings#Attendee",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe updated attendee data.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#VideoFeatures": {
+        "type": "structure",
+        "members": {
+          "MaxResolution": {
+            "target": "com.amazonaws.chimesdkmeetings#VideoResolution",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe maximum video resolution for the meeting. Applies to all attendees.\u003c/p\u003e\n         \u003cnote\u003e\n            \u003cp\u003eDefaults to \u003ccode\u003eHD\u003c/code\u003e. To use \u003ccode\u003eFHD\u003c/code\u003e, you must also provide a \u003ccode\u003eMeetingFeatures:Attendee:MaxCount\u003c/code\u003e value and override the default size \n            limit of 250 attendees.\u003c/p\u003e\n         \u003c/note\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe video features set for the meeting. Applies to all attendees.\u003c/p\u003e\n         \u003cnote\u003e\n            \u003cp\u003eIf you specify \u003ccode\u003eMeetingFeatures:Video:MaxResolution:None\u003c/code\u003e when you create a meeting, all API requests \n                that include \u003ccode\u003eSendReceive\u003c/code\u003e, \u003ccode\u003eSend\u003c/code\u003e, or \u003ccode\u003eReceive\u003c/code\u003e for \u003ccode\u003eAttendeeCapabilities:Video\u003c/code\u003e will be rejected with \u003ccode\u003eValidationError 400\u003c/code\u003e.\u003c/p\u003e\n         \u003c/note\u003e"
+        }
+      },
+      "com.amazonaws.chimesdkmeetings#VideoResolution": {
+        "type": "enum",
+        "members": {
+          "FHD": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "FHD"
+            }
+          },
+          "HD": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "HD"
+            }
+          },
+          "NONE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "None"
+            }
+          }
+        }
+      }
+    }
+  }
+}

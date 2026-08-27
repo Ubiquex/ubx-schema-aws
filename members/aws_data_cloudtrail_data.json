@@ -1,0 +1,1174 @@
+{
+  "schema_source": "smithy",
+  "mode": "data_source",
+  "auth": {
+    "Type": "",
+    "Params": null
+  },
+  "base_url": "https://aws.example.invalid",
+  "retry": {
+    "MaxAttempts": 0,
+    "InitialBackoff": "",
+    "MaxBackoff": "",
+    "Jitter": null,
+    "RespectRetryAfter": null,
+    "RateLimitResetHeader": ""
+  },
+  "timeouts": {
+    "Create": "",
+    "Read": "",
+    "Update": "",
+    "Delete": "",
+    "Default": ""
+  },
+  "wire_name": "aws",
+  "raw_spec": {
+    "smithy": "2.0",
+    "shapes": {
+      "com.amazonaws.cloudtraildata#AuditEvent": {
+        "type": "structure",
+        "members": {
+          "eventData": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe content of an audit event that comes from the event, such as \u003ccode\u003euserIdentity\u003c/code\u003e, \n         \u003ccode\u003euserAgent\u003c/code\u003e, and \u003ccode\u003eeventSource\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "eventDataChecksum": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA checksum is a base64-SHA256 algorithm that helps you verify that CloudTrail receives the event that matches \n         with the checksum. Calculate the checksum by running a command like the following:\u003c/p\u003e\n         \u003cp\u003e\n            \u003ccode\u003eprintf %s \u003ci\u003e$eventdata\u003c/i\u003e | openssl dgst -binary -sha256 | base64\u003c/code\u003e\n         \u003c/p\u003e"
+            }
+          },
+          "id": {
+            "target": "com.amazonaws.cloudtraildata#Uuid",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe original event ID from the source event.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eAn event from a source outside of Amazon Web Services that you want CloudTrail \n      to log.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.cloudtraildata#AuditEventResultEntries": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.cloudtraildata#AuditEventResultEntry"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 100
+          }
+        }
+      },
+      "com.amazonaws.cloudtraildata#AuditEventResultEntry": {
+        "type": "structure",
+        "members": {
+          "eventID": {
+            "target": "com.amazonaws.cloudtraildata#Uuid",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe event ID assigned by CloudTrail.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "id": {
+            "target": "com.amazonaws.cloudtraildata#Uuid",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe original event ID from the source event.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA response that includes successful and failed event results.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.cloudtraildata#AuditEvents": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.cloudtraildata#AuditEvent"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 100
+          }
+        }
+      },
+      "com.amazonaws.cloudtraildata#ChannelArn": {
+        "type": "string",
+        "traits": {
+          "aws.api#arnReference": {},
+          "smithy.api#pattern": "^arn:.*$"
+        }
+      },
+      "com.amazonaws.cloudtraildata#ChannelInsufficientPermission": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "smithy.api#String"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe caller's account ID must be the same as the channel owner's account ID.\u003c/p\u003e",
+          "smithy.api#error": "client"
+        }
+      },
+      "com.amazonaws.cloudtraildata#ChannelNotFound": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "smithy.api#String"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe channel could not be found.\u003c/p\u003e",
+          "smithy.api#error": "client"
+        }
+      },
+      "com.amazonaws.cloudtraildata#ChannelUnsupportedSchema": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "smithy.api#String"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe schema type of the event is not supported.\u003c/p\u003e",
+          "smithy.api#error": "client"
+        }
+      },
+      "com.amazonaws.cloudtraildata#CloudTrailDataService": {
+        "type": "service",
+        "version": "2021-08-11",
+        "operations": [
+          {
+            "target": "com.amazonaws.cloudtraildata#PutAuditEvents"
+          }
+        ],
+        "traits": {
+          "aws.api#service": {
+            "sdkId": "CloudTrail Data",
+            "endpointPrefix": "cloudtrail-data"
+          },
+          "aws.auth#sigv4": {
+            "name": "cloudtrail-data"
+          },
+          "aws.protocols#restJson1": {},
+          "smithy.api#cors": {},
+          "smithy.api#documentation": "\u003cp\u003eThe CloudTrail Data Service lets you ingest events into CloudTrail from any source in your\nhybrid environments, such as in-house or SaaS applications hosted on-premises or in the cloud,\nvirtual machines, or containers. You can store, access, analyze, troubleshoot and take action on\nthis data without maintaining multiple log aggregators and reporting tools. After you run \n\u003ccode\u003ePutAuditEvents\u003c/code\u003e to ingest your application activity into CloudTrail, you can use CloudTrail Lake to search, query, and analyze the data that is logged\nfrom your applications.\u003c/p\u003e",
+          "smithy.api#title": "AWS CloudTrail Data Service",
+          "smithy.rules#endpointBdd": {
+            "version": "1.1",
+            "parameters": {
+              "Region": {
+                "builtIn": "AWS::Region",
+                "required": false,
+                "documentation": "The AWS region used to dispatch the request.",
+                "type": "string"
+              },
+              "UseDualStack": {
+                "builtIn": "AWS::UseDualStack",
+                "required": true,
+                "default": false,
+                "documentation": "When true, use the dual-stack endpoint. If the configured endpoint does not support dual-stack, dispatching the request MAY return an error.",
+                "type": "boolean"
+              },
+              "UseFIPS": {
+                "builtIn": "AWS::UseFIPS",
+                "required": true,
+                "default": false,
+                "documentation": "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
+                "type": "boolean"
+              },
+              "Endpoint": {
+                "builtIn": "SDK::Endpoint",
+                "required": false,
+                "documentation": "Override the endpoint used to send this request",
+                "type": "string"
+              }
+            },
+            "conditions": [
+              {
+                "fn": "isSet",
+                "argv": [
+                  {
+                    "ref": "Endpoint"
+                  }
+                ]
+              },
+              {
+                "fn": "isSet",
+                "argv": [
+                  {
+                    "ref": "Region"
+                  }
+                ]
+              },
+              {
+                "fn": "aws.partition",
+                "argv": [
+                  {
+                    "ref": "Region"
+                  }
+                ],
+                "assign": "PartitionResult"
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "ref": "UseFIPS"
+                  },
+                  true
+                ]
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "ref": "UseDualStack"
+                  },
+                  true
+                ]
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "fn": "getAttr",
+                    "argv": [
+                      {
+                        "ref": "PartitionResult"
+                      },
+                      "supportsDualStack"
+                    ]
+                  },
+                  true
+                ]
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "fn": "getAttr",
+                    "argv": [
+                      {
+                        "ref": "PartitionResult"
+                      },
+                      "supportsFIPS"
+                    ]
+                  },
+                  true
+                ]
+              }
+            ],
+            "results": [
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: FIPS and custom endpoint are not supported",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: Dualstack and custom endpoint are not supported",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": {
+                    "ref": "Endpoint"
+                  },
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://cloudtrail-data-fips.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "FIPS and DualStack are enabled, but this partition does not support one or both",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://cloudtrail-data-fips.{Region}.{PartitionResult#dnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "FIPS is enabled but this partition does not support FIPS",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://cloudtrail-data.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "DualStack is enabled but this partition does not support DualStack",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://cloudtrail-data.{Region}.{PartitionResult#dnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: Missing Region",
+                "type": "error"
+              }
+            ],
+            "root": 2,
+            "nodeCount": 13,
+            "nodes": "/////wAAAAH/////AAAAAAAAAAwAAAADAAAAAQAAAAQF9eELAAAAAgAAAAUF9eELAAAAAwAAAAgAAAAGAAAABAAAAAcF9eEKAAAABQX14QgF9eEJAAAABAAAAAoAAAAJAAAABgX14QYF9eEHAAAABQAAAAsF9eEFAAAABgX14QQF9eEFAAAAAwX14QEAAAANAAAABAX14QIF9eED"
+          },
+          "smithy.rules#endpointRuleSet": {
+            "version": "1.0",
+            "parameters": {
+              "Region": {
+                "builtIn": "AWS::Region",
+                "required": false,
+                "documentation": "The AWS region used to dispatch the request.",
+                "type": "string"
+              },
+              "UseDualStack": {
+                "builtIn": "AWS::UseDualStack",
+                "required": true,
+                "default": false,
+                "documentation": "When true, use the dual-stack endpoint. If the configured endpoint does not support dual-stack, dispatching the request MAY return an error.",
+                "type": "boolean"
+              },
+              "UseFIPS": {
+                "builtIn": "AWS::UseFIPS",
+                "required": true,
+                "default": false,
+                "documentation": "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
+                "type": "boolean"
+              },
+              "Endpoint": {
+                "builtIn": "SDK::Endpoint",
+                "required": false,
+                "documentation": "Override the endpoint used to send this request",
+                "type": "string"
+              }
+            },
+            "rules": [
+              {
+                "conditions": [
+                  {
+                    "fn": "isSet",
+                    "argv": [
+                      {
+                        "ref": "Endpoint"
+                      }
+                    ]
+                  }
+                ],
+                "rules": [
+                  {
+                    "conditions": [
+                      {
+                        "fn": "booleanEquals",
+                        "argv": [
+                          {
+                            "ref": "UseFIPS"
+                          },
+                          true
+                        ]
+                      }
+                    ],
+                    "error": "Invalid Configuration: FIPS and custom endpoint are not supported",
+                    "type": "error"
+                  },
+                  {
+                    "conditions": [],
+                    "rules": [
+                      {
+                        "conditions": [
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseDualStack"
+                              },
+                              true
+                            ]
+                          }
+                        ],
+                        "error": "Invalid Configuration: Dualstack and custom endpoint are not supported",
+                        "type": "error"
+                      },
+                      {
+                        "conditions": [],
+                        "endpoint": {
+                          "url": {
+                            "ref": "Endpoint"
+                          },
+                          "properties": {},
+                          "headers": {}
+                        },
+                        "type": "endpoint"
+                      }
+                    ],
+                    "type": "tree"
+                  }
+                ],
+                "type": "tree"
+              },
+              {
+                "conditions": [],
+                "rules": [
+                  {
+                    "conditions": [
+                      {
+                        "fn": "isSet",
+                        "argv": [
+                          {
+                            "ref": "Region"
+                          }
+                        ]
+                      }
+                    ],
+                    "rules": [
+                      {
+                        "conditions": [
+                          {
+                            "fn": "aws.partition",
+                            "argv": [
+                              {
+                                "ref": "Region"
+                              }
+                            ],
+                            "assign": "PartitionResult"
+                          }
+                        ],
+                        "rules": [
+                          {
+                            "conditions": [
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  {
+                                    "ref": "UseFIPS"
+                                  },
+                                  true
+                                ]
+                              },
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  {
+                                    "ref": "UseDualStack"
+                                  },
+                                  true
+                                ]
+                              }
+                            ],
+                            "rules": [
+                              {
+                                "conditions": [
+                                  {
+                                    "fn": "booleanEquals",
+                                    "argv": [
+                                      true,
+                                      {
+                                        "fn": "getAttr",
+                                        "argv": [
+                                          {
+                                            "ref": "PartitionResult"
+                                          },
+                                          "supportsFIPS"
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "fn": "booleanEquals",
+                                    "argv": [
+                                      true,
+                                      {
+                                        "fn": "getAttr",
+                                        "argv": [
+                                          {
+                                            "ref": "PartitionResult"
+                                          },
+                                          "supportsDualStack"
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ],
+                                "rules": [
+                                  {
+                                    "conditions": [],
+                                    "rules": [
+                                      {
+                                        "conditions": [],
+                                        "endpoint": {
+                                          "url": "https://cloudtrail-data-fips.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                                          "properties": {},
+                                          "headers": {}
+                                        },
+                                        "type": "endpoint"
+                                      }
+                                    ],
+                                    "type": "tree"
+                                  }
+                                ],
+                                "type": "tree"
+                              },
+                              {
+                                "conditions": [],
+                                "error": "FIPS and DualStack are enabled, but this partition does not support one or both",
+                                "type": "error"
+                              }
+                            ],
+                            "type": "tree"
+                          },
+                          {
+                            "conditions": [
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  {
+                                    "ref": "UseFIPS"
+                                  },
+                                  true
+                                ]
+                              }
+                            ],
+                            "rules": [
+                              {
+                                "conditions": [
+                                  {
+                                    "fn": "booleanEquals",
+                                    "argv": [
+                                      {
+                                        "fn": "getAttr",
+                                        "argv": [
+                                          {
+                                            "ref": "PartitionResult"
+                                          },
+                                          "supportsFIPS"
+                                        ]
+                                      },
+                                      true
+                                    ]
+                                  }
+                                ],
+                                "rules": [
+                                  {
+                                    "conditions": [],
+                                    "rules": [
+                                      {
+                                        "conditions": [],
+                                        "endpoint": {
+                                          "url": "https://cloudtrail-data-fips.{Region}.{PartitionResult#dnsSuffix}",
+                                          "properties": {},
+                                          "headers": {}
+                                        },
+                                        "type": "endpoint"
+                                      }
+                                    ],
+                                    "type": "tree"
+                                  }
+                                ],
+                                "type": "tree"
+                              },
+                              {
+                                "conditions": [],
+                                "error": "FIPS is enabled but this partition does not support FIPS",
+                                "type": "error"
+                              }
+                            ],
+                            "type": "tree"
+                          },
+                          {
+                            "conditions": [
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  {
+                                    "ref": "UseDualStack"
+                                  },
+                                  true
+                                ]
+                              }
+                            ],
+                            "rules": [
+                              {
+                                "conditions": [
+                                  {
+                                    "fn": "booleanEquals",
+                                    "argv": [
+                                      true,
+                                      {
+                                        "fn": "getAttr",
+                                        "argv": [
+                                          {
+                                            "ref": "PartitionResult"
+                                          },
+                                          "supportsDualStack"
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ],
+                                "rules": [
+                                  {
+                                    "conditions": [],
+                                    "rules": [
+                                      {
+                                        "conditions": [],
+                                        "endpoint": {
+                                          "url": "https://cloudtrail-data.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                                          "properties": {},
+                                          "headers": {}
+                                        },
+                                        "type": "endpoint"
+                                      }
+                                    ],
+                                    "type": "tree"
+                                  }
+                                ],
+                                "type": "tree"
+                              },
+                              {
+                                "conditions": [],
+                                "error": "DualStack is enabled but this partition does not support DualStack",
+                                "type": "error"
+                              }
+                            ],
+                            "type": "tree"
+                          },
+                          {
+                            "conditions": [],
+                            "rules": [
+                              {
+                                "conditions": [],
+                                "endpoint": {
+                                  "url": "https://cloudtrail-data.{Region}.{PartitionResult#dnsSuffix}",
+                                  "properties": {},
+                                  "headers": {}
+                                },
+                                "type": "endpoint"
+                              }
+                            ],
+                            "type": "tree"
+                          }
+                        ],
+                        "type": "tree"
+                      }
+                    ],
+                    "type": "tree"
+                  },
+                  {
+                    "conditions": [],
+                    "error": "Invalid Configuration: Missing Region",
+                    "type": "error"
+                  }
+                ],
+                "type": "tree"
+              }
+            ]
+          },
+          "smithy.rules#endpointTests": {
+            "testCases": [
+              {
+                "documentation": "For region us-east-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://cloudtrail-data-fips.us-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://cloudtrail-data-fips.us-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://cloudtrail-data.us-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://cloudtrail-data.us-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://cloudtrail-data-fips.cn-north-1.api.amazonwebservices.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": true,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://cloudtrail-data-fips.cn-north-1.amazonaws.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://cloudtrail-data.cn-north-1.api.amazonwebservices.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://cloudtrail-data.cn-north-1.amazonaws.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://cloudtrail-data-fips.us-gov-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://cloudtrail-data-fips.us-gov-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://cloudtrail-data.us-gov-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://cloudtrail-data.us-gov-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-iso-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://cloudtrail-data-fips.us-iso-east-1.c2s.ic.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-iso-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-iso-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://cloudtrail-data.us-iso-east-1.c2s.ic.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-iso-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-isob-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://cloudtrail-data-fips.us-isob-east-1.sc2s.sgov.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-isob-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-isob-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://cloudtrail-data.us-isob-east-1.sc2s.sgov.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-isob-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For custom endpoint with region set and fips disabled and dualstack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://example.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "For custom endpoint with region not set and fips disabled and dualstack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://example.com"
+                  }
+                },
+                "params": {
+                  "UseFIPS": false,
+                  "UseDualStack": false,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "For custom endpoint with fips enabled and dualstack disabled",
+                "expect": {
+                  "error": "Invalid Configuration: FIPS and custom endpoint are not supported"
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "For custom endpoint with fips disabled and dualstack enabled",
+                "expect": {
+                  "error": "Invalid Configuration: Dualstack and custom endpoint are not supported"
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "Missing region",
+                "expect": {
+                  "error": "Invalid Configuration: Missing Region"
+                }
+              }
+            ],
+            "version": "1.0"
+          }
+        }
+      },
+      "com.amazonaws.cloudtraildata#DuplicatedAuditEventId": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "smithy.api#String"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eTwo or more entries in the request have the same event ID.\u003c/p\u003e",
+          "smithy.api#error": "client"
+        }
+      },
+      "com.amazonaws.cloudtraildata#ErrorCode": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 128
+          }
+        }
+      },
+      "com.amazonaws.cloudtraildata#ErrorMessage": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 1024
+          }
+        }
+      },
+      "com.amazonaws.cloudtraildata#ExternalId": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 2,
+            "max": 1224
+          },
+          "smithy.api#pattern": "^[\\w+=,.@:\\/-]*$"
+        }
+      },
+      "com.amazonaws.cloudtraildata#InvalidChannelARN": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "smithy.api#String"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe specified channel ARN is not a valid \n         channel ARN.\u003c/p\u003e",
+          "smithy.api#error": "client"
+        }
+      },
+      "com.amazonaws.cloudtraildata#PutAuditEvents": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.cloudtraildata#PutAuditEventsRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.cloudtraildata#PutAuditEventsResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.cloudtraildata#ChannelInsufficientPermission"
+          },
+          {
+            "target": "com.amazonaws.cloudtraildata#ChannelNotFound"
+          },
+          {
+            "target": "com.amazonaws.cloudtraildata#ChannelUnsupportedSchema"
+          },
+          {
+            "target": "com.amazonaws.cloudtraildata#DuplicatedAuditEventId"
+          },
+          {
+            "target": "com.amazonaws.cloudtraildata#InvalidChannelARN"
+          },
+          {
+            "target": "com.amazonaws.cloudtraildata#UnsupportedOperationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eIngests your application events into CloudTrail Lake. A required parameter,\n            \u003ccode\u003eauditEvents\u003c/code\u003e, accepts the JSON records (also called\n            \u003ci\u003epayload\u003c/i\u003e) of events that you want CloudTrail to ingest. You\n         can add up to 100 of these events (or up to 1 MB) per \u003ccode\u003ePutAuditEvents\u003c/code\u003e\n         request.\u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/PutAuditEvents",
+            "method": "POST"
+          }
+        }
+      },
+      "com.amazonaws.cloudtraildata#PutAuditEventsRequest": {
+        "type": "structure",
+        "members": {
+          "auditEvents": {
+            "target": "com.amazonaws.cloudtraildata#AuditEvents",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe JSON payload of events that you want to ingest. You can also point to the JSON event\n         payload in a file.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "channelArn": {
+            "target": "com.amazonaws.cloudtraildata#ChannelArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ARN or ID (the ARN suffix) of a channel.\u003c/p\u003e",
+              "smithy.api#httpQuery": "channelArn",
+              "smithy.api#required": {}
+            }
+          },
+          "externalId": {
+            "target": "com.amazonaws.cloudtraildata#ExternalId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA unique identifier that is conditionally required when the channel's resource policy includes an external \n         ID. This value can be any string, \n         such as a passphrase or account number.\u003c/p\u003e",
+              "smithy.api#httpQuery": "externalId"
+            }
+          }
+        }
+      },
+      "com.amazonaws.cloudtraildata#PutAuditEventsResponse": {
+        "type": "structure",
+        "members": {
+          "failed": {
+            "target": "com.amazonaws.cloudtraildata#ResultErrorEntries",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eLists events in the provided event payload that could not be \n         ingested into CloudTrail, and includes the error code and error message \n         returned for events that could not be ingested.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "successful": {
+            "target": "com.amazonaws.cloudtraildata#AuditEventResultEntries",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eLists events in the provided event payload that were successfully ingested \n      into CloudTrail.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        }
+      },
+      "com.amazonaws.cloudtraildata#ResultErrorEntries": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.cloudtraildata#ResultErrorEntry"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 100
+          }
+        }
+      },
+      "com.amazonaws.cloudtraildata#ResultErrorEntry": {
+        "type": "structure",
+        "members": {
+          "errorCode": {
+            "target": "com.amazonaws.cloudtraildata#ErrorCode",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe error code for events that could not be ingested by CloudTrail. Possible error codes include: \u003ccode\u003eFieldTooLong\u003c/code\u003e, \u003ccode\u003eFieldNotFound\u003c/code\u003e, \n         \u003ccode\u003eInvalidChecksum\u003c/code\u003e, \u003ccode\u003eInvalidData\u003c/code\u003e, \u003ccode\u003eInvalidRecipient\u003c/code\u003e, \u003ccode\u003eInvalidEventSource\u003c/code\u003e, \u003ccode\u003eAccountNotSubscribed\u003c/code\u003e, \n         \u003ccode\u003eThrottling\u003c/code\u003e, and \u003ccode\u003eInternalFailure\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "errorMessage": {
+            "target": "com.amazonaws.cloudtraildata#ErrorMessage",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe message that describes the error for events that could not be ingested by CloudTrail.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "id": {
+            "target": "com.amazonaws.cloudtraildata#Uuid",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe original event ID from the source event that could not be ingested by CloudTrail.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eIncludes the error code and error message for events that could not be ingested by CloudTrail.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.cloudtraildata#UnsupportedOperationException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "smithy.api#String"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe operation requested is not supported in this region or account.\u003c/p\u003e",
+          "smithy.api#error": "client"
+        }
+      },
+      "com.amazonaws.cloudtraildata#Uuid": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 128
+          },
+          "smithy.api#pattern": "^[-_A-Za-z0-9]+$"
+        }
+      }
+    }
+  }
+}

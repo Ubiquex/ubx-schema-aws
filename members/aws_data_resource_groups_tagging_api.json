@@ -1,0 +1,2542 @@
+{
+  "schema_source": "smithy",
+  "mode": "data_source",
+  "auth": {
+    "Type": "",
+    "Params": null
+  },
+  "base_url": "https://aws.example.invalid",
+  "retry": {
+    "MaxAttempts": 0,
+    "InitialBackoff": "",
+    "MaxBackoff": "",
+    "Jitter": null,
+    "RespectRetryAfter": null,
+    "RateLimitResetHeader": ""
+  },
+  "timeouts": {
+    "Create": "",
+    "Read": "",
+    "Update": "",
+    "Delete": "",
+    "Default": ""
+  },
+  "wire_name": "aws",
+  "raw_spec": {
+    "smithy": "2.0",
+    "metadata": {
+      "suppressions": [
+        {
+          "id": "HttpMethodSemantics",
+          "namespace": "*"
+        },
+        {
+          "id": "HttpResponseCodeSemantics",
+          "namespace": "*"
+        },
+        {
+          "id": "PaginatedTrait",
+          "namespace": "*"
+        },
+        {
+          "id": "HttpHeaderTrait",
+          "namespace": "*"
+        },
+        {
+          "id": "HttpUriConflict",
+          "namespace": "*"
+        },
+        {
+          "id": "Service",
+          "namespace": "*"
+        }
+      ]
+    },
+    "shapes": {
+      "com.amazonaws.resourcegroupstaggingapi#AmazonResourceType": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 256
+          },
+          "smithy.api#pattern": "^[\\s\\S]*$"
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#CloudFormationResourceType": {
+        "type": "string"
+      },
+      "com.amazonaws.resourcegroupstaggingapi#CloudFormationResourceTypes": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.resourcegroupstaggingapi#CloudFormationResourceType"
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#ComplianceDetails": {
+        "type": "structure",
+        "members": {
+          "ComplianceStatus": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#ComplianceStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eWhether a resource is compliant with the effective tag policy.\u003c/p\u003e"
+            }
+          },
+          "KeysWithNoncompliantValues": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#TagKeyList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThese are keys defined in the effective policy that are on the resource with either\n            incorrect case treatment or noncompliant values. \u003c/p\u003e"
+            }
+          },
+          "MissingTagKeys": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#TagKeyList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThese tag keys are defined as required in the\n            \u003ccode\u003ereport_required_tag_for\u003c/code\u003e block of the effective tag policy, but are\n            missing from the resource.\u003c/p\u003e"
+            }
+          },
+          "NoncompliantKeys": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#TagKeyList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThese tag keys on the resource are noncompliant with the effective tag policy.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eInformation that shows whether a resource is compliant with the effective tag policy,\n            including details on any noncompliant tag keys.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#ComplianceStatus": {
+        "type": "boolean"
+      },
+      "com.amazonaws.resourcegroupstaggingapi#ConcurrentModificationException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#ExceptionMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe request failed because the target of the operation is currently being modified by\n            a different request. Try again later.\u003c/p\u003e",
+          "smithy.api#error": "client"
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#ConstraintViolationException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#ExceptionMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe request failed because performing the operation would violate a constraint.\u003c/p\u003e\n         \u003cp\u003eSome of the reasons in the following list might not apply to this specific\n            operation.\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003eYou must meet the prerequisites for using tag policies. For information, see\n                        \u003ca href=\"https://docs.aws.amazon.com/tag-editor/latest/userguide/tag-policies-orgs.html#tag-policies-prereqs\"\u003ePrerequisites and permissions\u003c/a\u003e in the \u003ci\u003eTagging Amazon Web Services resources and Tag Editor\u003c/i\u003e user guide. \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eYou must enable the tag policies service principal\n                        (\u003ccode\u003etagpolicies.tag.amazonaws.com\u003c/code\u003e) to integrate with Organizations For\n                    information, see \u003ca href=\"https://docs.aws.amazon.com/organizations/latest/APIReference/API_EnableAWSServiceAccess.html\"\u003eEnableAWSServiceAccess\u003c/a\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eYou must have a tag policy attached to the organization root, an OU, or an\n                    account.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e",
+          "smithy.api#error": "client"
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#DescribeReportCreation": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.resourcegroupstaggingapi#DescribeReportCreationInput"
+        },
+        "output": {
+          "target": "com.amazonaws.resourcegroupstaggingapi#DescribeReportCreationOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.resourcegroupstaggingapi#ConstraintViolationException"
+          },
+          {
+            "target": "com.amazonaws.resourcegroupstaggingapi#InternalServiceException"
+          },
+          {
+            "target": "com.amazonaws.resourcegroupstaggingapi#InvalidParameterException"
+          },
+          {
+            "target": "com.amazonaws.resourcegroupstaggingapi#ThrottledException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eDescribes the status of the \u003ccode\u003eStartReportCreation\u003c/code\u003e operation. \u003c/p\u003e\n         \u003cp\u003eYou can call this operation only from the organization's \n    management account and from the us-east-1 Region.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/DescribeReportCreation",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#DescribeReportCreationInput": {
+        "type": "structure",
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#DescribeReportCreationOutput": {
+        "type": "structure",
+        "members": {
+          "ErrorMessage": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#ErrorMessage",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eDetails of the common errors that all operations return.\u003c/p\u003e"
+            }
+          },
+          "S3Location": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#S3Location",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe path to the Amazon S3 bucket where the report was stored on creation.\u003c/p\u003e"
+            }
+          },
+          "StartDate": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#StartDate",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe date and time that the report was started. \u003c/p\u003e"
+            }
+          },
+          "Status": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#Status",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eReports the status of the operation.\u003c/p\u003e\n         \u003cp\u003eThe operation status can be one of the following:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eRUNNING\u003c/code\u003e - Report creation is in progress.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eSUCCEEDED\u003c/code\u003e - Report creation is complete. You can open the report\n                    from the Amazon S3 bucket that you specified when you ran\n                        \u003ccode\u003eStartReportCreation\u003c/code\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eFAILED\u003c/code\u003e - Report creation timed out or the Amazon S3 bucket is not\n                    accessible. \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eNO REPORT\u003c/code\u003e - No report was generated in the last 90 days.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#ErrorCode": {
+        "type": "enum",
+        "members": {
+          "INTERNAL_SERVICE_EXCEPTION": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "InternalServiceException"
+            }
+          },
+          "INVALID_PARAMETER_EXCEPTION": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "InvalidParameterException"
+            }
+          }
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#ErrorMessage": {
+        "type": "string"
+      },
+      "com.amazonaws.resourcegroupstaggingapi#ExceptionMessage": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 2048
+          }
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#ExcludeCompliantResources": {
+        "type": "boolean"
+      },
+      "com.amazonaws.resourcegroupstaggingapi#FailedResourcesMap": {
+        "type": "map",
+        "key": {
+          "target": "com.amazonaws.resourcegroupstaggingapi#ResourceARN"
+        },
+        "value": {
+          "target": "com.amazonaws.resourcegroupstaggingapi#FailureInfo"
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#FailureInfo": {
+        "type": "structure",
+        "members": {
+          "ErrorCode": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#ErrorCode",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe code of the common error. Valid values include\n                \u003ccode\u003eInternalServiceException\u003c/code\u003e, \u003ccode\u003eInvalidParameterException\u003c/code\u003e, and\n            any valid error code returned by the Amazon Web Services service that hosts the resource that you want\n            to tag.\u003c/p\u003e"
+            }
+          },
+          "ErrorMessage": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#ErrorMessage",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe message of the common error.\u003c/p\u003e"
+            }
+          },
+          "StatusCode": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#StatusCode",
+            "traits": {
+              "smithy.api#default": 0,
+              "smithy.api#documentation": "\u003cp\u003eThe HTTP status code of the common error.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eInformation about the errors that are returned for each failed resource. This\n            information can include \u003ccode\u003eInternalServiceException\u003c/code\u003e and\n                \u003ccode\u003eInvalidParameterException\u003c/code\u003e errors. It can also include any valid error\n            code returned by the Amazon Web Services service that hosts the resource that the ARN key\n            represents.\u003c/p\u003e\n         \u003cp\u003eThe following are common error codes that you might receive from other Amazon Web Services\n            services:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003cb\u003eInternalServiceException\u003c/b\u003e \u2013 This can\n                    mean that the Resource Groups Tagging API didn't receive a response from another Amazon Web Services service. It\n                    can also mean that the resource type in the request is not supported by the\n                    Resource Groups Tagging API. In these cases, it's safe to retry the request and then call \u003ca href=\"https://docs.aws.amazon.com/resourcegroupstagging/latest/APIReference/API_GetResources.html\"\u003eGetResources\u003c/a\u003e to verify the changes.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003cb\u003eAccessDeniedException\u003c/b\u003e \u2013 This can mean\n                    that you need permission to call the tagging operations in the Amazon Web Services service\n                    that contains the resource. For example, to use the Resource Groups Tagging API to tag a Amazon CloudWatch\n                    alarm resource, you need permission to call both \u003ca href=\"https://docs.aws.amazon.com/resourcegroupstagging/latest/APIReference/API_TagResources.html\"\u003e\n                     \u003ccode\u003eTagResources\u003c/code\u003e\n                  \u003c/a\u003e\n                  \u003ci\u003eand\u003c/i\u003e\n                  \u003ca href=\"https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_TagResource.html\"\u003e\n                     \u003ccode\u003eTagResource\u003c/code\u003e\n                  \u003c/a\u003e in the CloudWatch API. \u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e\n         \u003cp\u003eFor more information on errors that are generated from other Amazon Web Services services, see the\n            documentation for that service. \u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#GetComplianceSummary": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.resourcegroupstaggingapi#GetComplianceSummaryInput"
+        },
+        "output": {
+          "target": "com.amazonaws.resourcegroupstaggingapi#GetComplianceSummaryOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.resourcegroupstaggingapi#ConstraintViolationException"
+          },
+          {
+            "target": "com.amazonaws.resourcegroupstaggingapi#InternalServiceException"
+          },
+          {
+            "target": "com.amazonaws.resourcegroupstaggingapi#InvalidParameterException"
+          },
+          {
+            "target": "com.amazonaws.resourcegroupstaggingapi#ThrottledException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eReturns a table that shows counts of resources that are noncompliant with their tag\n            policies.\u003c/p\u003e\n         \u003cp\u003eFor more information on tag policies, see \u003ca href=\"https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_tag-policies.html\"\u003eTag Policies\u003c/a\u003e in\n            the \u003ci\u003eOrganizations User Guide.\u003c/i\u003e\n         \u003c/p\u003e\n         \u003cp\u003eYou can call this operation only from the organization's \n    management account and from the us-east-1 Region.\u003c/p\u003e\n         \u003cp\u003eThis operation supports pagination, where the response can be sent in \n    multiple pages. You should check the \u003ccode\u003ePaginationToken\u003c/code\u003e response parameter to determine\n    if there are additional results available to return. Repeat the query, passing the\n    \u003ccode\u003ePaginationToken\u003c/code\u003e response parameter value as an input to the next request until you\n    recieve a \u003ccode\u003enull\u003c/code\u003e value. A null value for \u003ccode\u003ePaginationToken\u003c/code\u003e indicates that\n    there are no more results waiting to be returned.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/GetComplianceSummary",
+            "code": 200
+          },
+          "smithy.api#paginated": {
+            "inputToken": "PaginationToken",
+            "outputToken": "PaginationToken",
+            "items": "SummaryList",
+            "pageSize": "MaxResults"
+          }
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#GetComplianceSummaryInput": {
+        "type": "structure",
+        "members": {
+          "GroupBy": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#GroupBy",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies a list of attributes to group the counts of noncompliant resources by. If\n            supplied, the counts are sorted by those attributes.\u003c/p\u003e"
+            }
+          },
+          "MaxResults": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#MaxResultsGetComplianceSummary",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies the maximum number of results to be returned in each page. A \n    query can return fewer than this maximum, even if there are more results still to return. You\n    should always check the \u003ccode\u003ePaginationToken\u003c/code\u003e response value to see if there are more\n    results. You can specify a minimum of 1 and a maximum value of 100.\u003c/p\u003e"
+            }
+          },
+          "PaginationToken": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#PaginationToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies a \u003ccode\u003ePaginationToken\u003c/code\u003e response value from a \n    previous request to indicate that you want the next page of results. Leave this parameter empty \n    in your initial request.\u003c/p\u003e"
+            }
+          },
+          "RegionFilters": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#RegionFilterList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies a list of Amazon Web Services Regions to limit the output to. If you use this parameter,\n            the count of returned noncompliant resources includes only resources in the specified\n            Regions.\u003c/p\u003e"
+            }
+          },
+          "ResourceTypeFilters": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#ResourceTypeFilterList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies that you want the response to include information for only resources of the\n            specified types. The format of each resource type is\n            \u003ccode\u003eservice[:resourceType]\u003c/code\u003e. For example, specifying a resource type of\n                \u003ccode\u003eec2\u003c/code\u003e returns all Amazon EC2 resources (which includes EC2 instances).\n            Specifying a resource type of \u003ccode\u003eec2:instance\u003c/code\u003e returns only EC2\n            instances.\u003c/p\u003e\n         \u003cp\u003eThe string for each service name and resource type is the same as that embedded in a\n            resource's Amazon Resource Name (ARN). Consult the \u003ci\u003e\n               \u003ca href=\"https://docs.aws.amazon.com/general/latest/gr/\"\u003eAmazon Web Services General Reference\u003c/a\u003e\n            \u003c/i\u003e\n            for the following:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003eFor a list of service name strings, see \u003ca href=\"https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html#genref-aws-service-namespaces\"\u003eAmazon Web Services Service Namespaces\u003c/a\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eFor resource type strings, see \u003ca href=\"https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html#arns-syntax\"\u003eExample\n                        ARNs\u003c/a\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eFor more information about ARNs, see \u003ca href=\"https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html\"\u003eAmazon Resource Names\n                        (ARNs) and Amazon Web Services Service Namespaces\u003c/a\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e\n         \u003cnote\u003e\n            \u003cp\u003eFor the list of services whose resources you can tag using the Resource Groups Tagging API, see\n                    \u003ca href=\"https://docs.aws.amazon.com/resourcegroupstagging/latest/APIReference/supported-services.html\"\u003eServices that support the Resource Groups Tagging API\u003c/a\u003e. If an Amazon Web Services\n                service isn't listed on that page, you might still be able to tag that service's\n                resources by using that service's native tagging operations instead of using\n                Resource Groups Tagging API operations. All tagged resources, whether the tagging used the Resource Groups Tagging API\n                or not, are returned by the \u003ccode\u003eGet*\u003c/code\u003e operation.\u003c/p\u003e\n         \u003c/note\u003e\n         \u003cp\u003eYou can specify multiple resource types by using a comma separated array. The array\n            can include up to 100 items. Note that the length constraint requirement applies to each\n            resource type filter. \u003c/p\u003e"
+            }
+          },
+          "TagKeyFilters": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#TagKeyFilterList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies that you want the response to include information for only resources that\n            have tags with the specified tag keys. If you use this parameter, the count of returned\n            noncompliant resources includes only resources that have the specified tag keys.\u003c/p\u003e"
+            }
+          },
+          "TargetIdFilters": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#TargetIdFilterList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies target identifiers (usually, specific account IDs) to limit the output by.\n            If you use this parameter, the count of returned noncompliant resources includes only\n            resources with the specified target IDs.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#GetComplianceSummaryOutput": {
+        "type": "structure",
+        "members": {
+          "PaginationToken": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#PaginationToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA string that indicates that there is more data available than this\n    response contains. To receive the next part of the response, specify this response value \n    as the \u003ccode\u003ePaginationToken\u003c/code\u003e value in the request for the next page.\u003c/p\u003e"
+            }
+          },
+          "SummaryList": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#SummaryList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA table that shows counts of noncompliant resources.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#GetResources": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.resourcegroupstaggingapi#GetResourcesInput"
+        },
+        "output": {
+          "target": "com.amazonaws.resourcegroupstaggingapi#GetResourcesOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.resourcegroupstaggingapi#InternalServiceException"
+          },
+          {
+            "target": "com.amazonaws.resourcegroupstaggingapi#InvalidParameterException"
+          },
+          {
+            "target": "com.amazonaws.resourcegroupstaggingapi#PaginationTokenExpiredException"
+          },
+          {
+            "target": "com.amazonaws.resourcegroupstaggingapi#ThrottledException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eReturns all the tagged or previously tagged resources that are located in the\n            specified Amazon Web Services Region for the account. \u003c/p\u003e\n         \u003cp\u003eDepending on what information you want returned, you can also specify the\n            following:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ci\u003eFilters\u003c/i\u003e that specify what tags and resource types you\n                    want returned. The response includes all tags that are associated with the\n                    requested resources.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eInformation about compliance with the account's effective tag policy. For more\n                    information on tag policies, see \u003ca href=\"https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_tag-policies.html\"\u003eTag\n                        Policies\u003c/a\u003e in the \u003ci\u003eOrganizations User Guide.\u003c/i\u003e\n               \u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e\n         \u003cp\u003eThis operation supports pagination, where the response can be sent in \n    multiple pages. You should check the \u003ccode\u003ePaginationToken\u003c/code\u003e response parameter to determine\n    if there are additional results available to return. Repeat the query, passing the\n    \u003ccode\u003ePaginationToken\u003c/code\u003e response parameter value as an input to the next request until you\n    recieve a \u003ccode\u003enull\u003c/code\u003e value. A null value for \u003ccode\u003ePaginationToken\u003c/code\u003e indicates that\n    there are no more results waiting to be returned.\u003c/p\u003e\n         \u003cnote\u003e\n            \u003cp\u003e\n               \u003ccode\u003eGetResources\u003c/code\u003e does not return untagged resources. \u003c/p\u003e\n            \u003cp\u003eTo find untagged resources in your account, use Amazon Web Services Resource Explorer with a\n                query that uses \u003ccode\u003etag:none\u003c/code\u003e. For more information, see \u003ca href=\"https://docs.aws.amazon.com/resource-explorer/latest/userguide/using-search-query-syntax.html\"\u003e Search query syntax reference for Resource Explorer\u003c/a\u003e. \u003c/p\u003e\n         \u003c/note\u003e",
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/GetResources",
+            "code": 200
+          },
+          "smithy.api#paginated": {
+            "inputToken": "PaginationToken",
+            "outputToken": "PaginationToken",
+            "items": "ResourceTagMappingList",
+            "pageSize": "ResourcesPerPage"
+          }
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#GetResourcesInput": {
+        "type": "structure",
+        "members": {
+          "ExcludeCompliantResources": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#ExcludeCompliantResources",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies whether to exclude resources that are compliant with the tag policy. Set\n            this to \u003ccode\u003etrue\u003c/code\u003e if you are interested in retrieving information on\n            noncompliant resources only.\u003c/p\u003e\n         \u003cp\u003eYou can use this parameter only if the \u003ccode\u003eIncludeComplianceDetails\u003c/code\u003e parameter\n            is also set to \u003ccode\u003etrue\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "IncludeComplianceDetails": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#IncludeComplianceDetails",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies whether to include details regarding the compliance with the effective tag\n            policy. Set this to \u003ccode\u003etrue\u003c/code\u003e to determine whether resources are compliant with\n            the tag policy and to get details.\u003c/p\u003e"
+            }
+          },
+          "PaginationToken": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#PaginationToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies a \u003ccode\u003ePaginationToken\u003c/code\u003e response value from a \n    previous request to indicate that you want the next page of results. Leave this parameter empty \n    in your initial request.\u003c/p\u003e"
+            }
+          },
+          "ResourceARNList": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#ResourceARNListForGet",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies a list of ARNs of resources for which you want to retrieve tag data.\u003c/p\u003e\n         \u003cp\u003eYou can't specify both this parameter and the \u003ccode\u003eResourceTypeFilters\u003c/code\u003e\n            parameter in the same request. If you do, you get an \u003ccode\u003eInvalid Parameter\u003c/code\u003e\n            exception.\u003c/p\u003e\n         \u003cp\u003eYou can't specify both this parameter and the \u003ccode\u003eTagFilters\u003c/code\u003e parameter in the\n            same request. If you do, you get an \u003ccode\u003eInvalid Parameter\u003c/code\u003e exception.\u003c/p\u003e\n         \u003cp\u003eYou can't specify both this parameter and any of the pagination parameters\n                (\u003ccode\u003eResourcesPerPage\u003c/code\u003e, \u003ccode\u003eTagsPerPage\u003c/code\u003e,\n                \u003ccode\u003ePaginationToken\u003c/code\u003e) in the same request. If you do, you get an\n                \u003ccode\u003eInvalid Parameter\u003c/code\u003e exception.\u003c/p\u003e\n         \u003cp\u003eIf a resource specified by this parameter doesn't exist, it doesn't generate an error;\n            it simply isn't included in the response.\u003c/p\u003e\n         \u003cp\u003eAn ARN (Amazon Resource Name) uniquely identifies a resource. For more information,\n            see \u003ca href=\"https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html\"\u003eAmazon\n                Resource Names (ARNs) and Amazon Web Services Service Namespaces\u003c/a\u003e in the\n                \u003ci\u003eAmazon Web Services General Reference\u003c/i\u003e.\u003c/p\u003e"
+            }
+          },
+          "ResourceTypeFilters": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#ResourceTypeFilterList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies the resource types that you want included in the response. The format of\n            each resource type is \u003ccode\u003eservice[:resourceType]\u003c/code\u003e. For example, specifying a\n            service of \u003ccode\u003eec2\u003c/code\u003e returns all Amazon EC2 resources (which includes EC2 instances).\n            Specifying a resource type of \u003ccode\u003eec2:instance\u003c/code\u003e returns only EC2 instances. \u003c/p\u003e\n         \u003cp\u003eYou can't specify both this parameter and the \u003ccode\u003eResourceArnList\u003c/code\u003e parameter\n            in the same request. If you do, you get an \u003ccode\u003eInvalid Parameter\u003c/code\u003e\n            exception.\u003c/p\u003e\n         \u003cp\u003eThe string for each service name and resource type is the same as that embedded in a\n            resource's Amazon Resource Name (ARN).\u003c/p\u003e\n         \u003cnote\u003e\n            \u003cp\u003eFor the list of services whose resources you can tag using the Resource Groups Tagging API, see\n                    \u003ca href=\"https://docs.aws.amazon.com/resourcegroupstagging/latest/APIReference/supported-services.html\"\u003eServices that support the Resource Groups Tagging API\u003c/a\u003e. If an Amazon Web Services\n                service isn't listed on that page, you might still be able to tag that service's\n                resources by using that service's native tagging operations instead of using\n                Resource Groups Tagging API operations. All tagged resources, whether the tagging used the Resource Groups Tagging API\n                or not, are returned by the \u003ccode\u003eGet*\u003c/code\u003e operation.\u003c/p\u003e\n         \u003c/note\u003e\n         \u003cp\u003eYou can specify multiple resource types by using an array. The array can include up to\n            100 items. Note that the length constraint requirement applies to each resource type\n            filter. For example, the following string would limit the response to only Amazon EC2\n            instances, Amazon S3 buckets, or any Audit Manager resource:\u003c/p\u003e\n         \u003cp\u003e\n            \u003ccode\u003eec2:instance,s3:bucket,auditmanager\u003c/code\u003e\n         \u003c/p\u003e"
+            }
+          },
+          "ResourcesPerPage": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#ResourcesPerPage",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies the maximum number of results to be returned in each page. A \n    query can return fewer than this maximum, even if there are more results still to return. You\n    should always check the \u003ccode\u003ePaginationToken\u003c/code\u003e response value to see if there are more\n    results. You can specify a minimum of 1 and a maximum value of 100.\u003c/p\u003e"
+            }
+          },
+          "TagFilters": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#TagFilterList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies a list of TagFilters (keys and values) to restrict the output to only those\n            resources that have tags with the specified keys and, if included, the specified values.\n            Each \u003ccode\u003eTagFilter\u003c/code\u003e must contain a key with values optional. A request can\n            include up to 50 keys, and each key can include up to 20 values. \u003c/p\u003e\n         \u003cp\u003eYou can't specify both this parameter and the \u003ccode\u003eResourceArnList\u003c/code\u003e parameter\n            in the same request. If you do, you get an \u003ccode\u003eInvalid Parameter\u003c/code\u003e\n            exception.\u003c/p\u003e\n         \u003cp\u003eNote the following when deciding how to use TagFilters:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003eIf you \u003ci\u003edon't\u003c/i\u003e specify a \u003ccode\u003eTagFilter\u003c/code\u003e, the\n                    response includes all resources that are currently tagged or ever had a tag.\n                    Resources that were previously tagged, \u003ci\u003ebut do not currently\u003c/i\u003e\n                    have tags, are shown with an empty tag set, like this: \u003ccode\u003e\"Tags\":\n                    []\u003c/code\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eIf you specify more than one filter in a single request, the response returns\n                    only those resources that satisfy all filters.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eIf you specify a filter that contains more than one value for a key, the\n                    response returns resources that match \u003ci\u003eany\u003c/i\u003e of the specified\n                    values for that key.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eIf you don't specify a value for a key, the response returns all resources\n                    that are tagged with that key, with any or no value.\u003c/p\u003e\n               \u003cp\u003eFor example, for the following filters: \u003ccode\u003efilter1= {key1,{value1}}\u003c/code\u003e,\n                        \u003ccode\u003efilter2={key2,{value2,value3,value4}}\u003c/code\u003e, \u003ccode\u003efilter3=\n                        {key3}\u003c/code\u003e:\u003c/p\u003e\n               \u003cul\u003e\n                  \u003cli\u003e\n                     \u003cp\u003e\n                        \u003ccode\u003eGetResources({filter1})\u003c/code\u003e returns resources tagged with\n                                \u003ccode\u003ekey1=value1\u003c/code\u003e\n                     \u003c/p\u003e\n                  \u003c/li\u003e\n                  \u003cli\u003e\n                     \u003cp\u003e\n                        \u003ccode\u003eGetResources({filter2})\u003c/code\u003e returns resources tagged with\n                                \u003ccode\u003ekey2=value2\u003c/code\u003e or \u003ccode\u003ekey2=value3\u003c/code\u003e or\n                                \u003ccode\u003ekey2=value4\u003c/code\u003e\n                     \u003c/p\u003e\n                  \u003c/li\u003e\n                  \u003cli\u003e\n                     \u003cp\u003e\n                        \u003ccode\u003eGetResources({filter3})\u003c/code\u003e returns resources tagged with any\n                            tag with the key \u003ccode\u003ekey3\u003c/code\u003e, and with any or no value\u003c/p\u003e\n                  \u003c/li\u003e\n                  \u003cli\u003e\n                     \u003cp\u003e\n                        \u003ccode\u003eGetResources({filter1,filter2,filter3})\u003c/code\u003e returns resources\n                            tagged with \u003ccode\u003e(key1=value1) and (key2=value2 or key2=value3 or\n                                key2=value4) and (key3, any or no value)\u003c/code\u003e\n                     \u003c/p\u003e\n                  \u003c/li\u003e\n               \u003c/ul\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e"
+            }
+          },
+          "TagsPerPage": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#TagsPerPage",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAmazon Web Services recommends using \u003ccode\u003eResourcesPerPage\u003c/code\u003e instead of this parameter.\u003c/p\u003e\n         \u003cp\u003eA limit that restricts the number of tags (key and value pairs) returned by\n                \u003ccode\u003eGetResources\u003c/code\u003e in paginated output. A resource with no tags is counted as\n            having one tag (one key and value pair).\u003c/p\u003e\n         \u003cp\u003e\n            \u003ccode\u003eGetResources\u003c/code\u003e does not split a resource and its associated tags across\n            pages. If the specified \u003ccode\u003eTagsPerPage\u003c/code\u003e would cause such a break, a\n                \u003ccode\u003ePaginationToken\u003c/code\u003e is returned in place of the affected resource and its\n            tags. Use that token in another request to get the remaining data. For example, if you\n            specify a \u003ccode\u003eTagsPerPage\u003c/code\u003e of \u003ccode\u003e100\u003c/code\u003e and the account has 22 resources\n            with 10 tags each (meaning that each resource has 10 key and value pairs), the output\n            will consist of three pages. The first page displays the first 10 resources, each with\n            its 10 tags. The second page displays the next 10 resources, each with its 10 tags. The\n            third page displays the remaining 2 resources, each with its 10 tags.\u003c/p\u003e\n         \u003cp\u003eYou can set \u003ccode\u003eTagsPerPage\u003c/code\u003e to a minimum of 100 items up to a maximum of 500\n            items.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#GetResourcesOutput": {
+        "type": "structure",
+        "members": {
+          "PaginationToken": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#PaginationToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA string that indicates that there is more data available than this\n    response contains. To receive the next part of the response, specify this response value \n    as the \u003ccode\u003ePaginationToken\u003c/code\u003e value in the request for the next page.\u003c/p\u003e"
+            }
+          },
+          "ResourceTagMappingList": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#ResourceTagMappingList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of resource ARNs and the tags (keys and values) associated with \n    each.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#GetTagKeys": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.resourcegroupstaggingapi#GetTagKeysInput"
+        },
+        "output": {
+          "target": "com.amazonaws.resourcegroupstaggingapi#GetTagKeysOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.resourcegroupstaggingapi#InternalServiceException"
+          },
+          {
+            "target": "com.amazonaws.resourcegroupstaggingapi#InvalidParameterException"
+          },
+          {
+            "target": "com.amazonaws.resourcegroupstaggingapi#PaginationTokenExpiredException"
+          },
+          {
+            "target": "com.amazonaws.resourcegroupstaggingapi#ThrottledException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eReturns all tag keys currently in use in the specified Amazon Web Services Region for the calling\n            account.\u003c/p\u003e\n         \u003cp\u003eThis operation supports pagination, where the response can be sent in \n    multiple pages. You should check the \u003ccode\u003ePaginationToken\u003c/code\u003e response parameter to determine\n    if there are additional results available to return. Repeat the query, passing the\n    \u003ccode\u003ePaginationToken\u003c/code\u003e response parameter value as an input to the next request until you\n    recieve a \u003ccode\u003enull\u003c/code\u003e value. A null value for \u003ccode\u003ePaginationToken\u003c/code\u003e indicates that\n    there are no more results waiting to be returned.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/GetTagKeys",
+            "code": 200
+          },
+          "smithy.api#paginated": {
+            "inputToken": "PaginationToken",
+            "outputToken": "PaginationToken",
+            "items": "TagKeys"
+          }
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#GetTagKeysInput": {
+        "type": "structure",
+        "members": {
+          "PaginationToken": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#PaginationToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies a \u003ccode\u003ePaginationToken\u003c/code\u003e response value from a \n    previous request to indicate that you want the next page of results. Leave this parameter empty \n    in your initial request.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#GetTagKeysOutput": {
+        "type": "structure",
+        "members": {
+          "PaginationToken": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#PaginationToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA string that indicates that there is more data available than this\n    response contains. To receive the next part of the response, specify this response value \n    as the \u003ccode\u003ePaginationToken\u003c/code\u003e value in the request for the next page.\u003c/p\u003e"
+            }
+          },
+          "TagKeys": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#TagKeyList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of all tag keys in the Amazon Web Services account.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#GetTagValues": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.resourcegroupstaggingapi#GetTagValuesInput"
+        },
+        "output": {
+          "target": "com.amazonaws.resourcegroupstaggingapi#GetTagValuesOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.resourcegroupstaggingapi#InternalServiceException"
+          },
+          {
+            "target": "com.amazonaws.resourcegroupstaggingapi#InvalidParameterException"
+          },
+          {
+            "target": "com.amazonaws.resourcegroupstaggingapi#PaginationTokenExpiredException"
+          },
+          {
+            "target": "com.amazonaws.resourcegroupstaggingapi#ThrottledException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eReturns all tag values for the specified key that are used in the specified Amazon Web Services\n            Region for the calling account.\u003c/p\u003e\n         \u003cp\u003eThis operation supports pagination, where the response can be sent in \n    multiple pages. You should check the \u003ccode\u003ePaginationToken\u003c/code\u003e response parameter to determine\n    if there are additional results available to return. Repeat the query, passing the\n    \u003ccode\u003ePaginationToken\u003c/code\u003e response parameter value as an input to the next request until you\n    recieve a \u003ccode\u003enull\u003c/code\u003e value. A null value for \u003ccode\u003ePaginationToken\u003c/code\u003e indicates that\n    there are no more results waiting to be returned.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/GetTagValues",
+            "code": 200
+          },
+          "smithy.api#paginated": {
+            "inputToken": "PaginationToken",
+            "outputToken": "PaginationToken",
+            "items": "TagValues"
+          }
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#GetTagValuesInput": {
+        "type": "structure",
+        "members": {
+          "Key": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#TagKey",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies the tag key for which you want to list all existing values that are\n            currently used in the specified Amazon Web Services Region for the calling account.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "PaginationToken": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#PaginationToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies a \u003ccode\u003ePaginationToken\u003c/code\u003e response value from a \n    previous request to indicate that you want the next page of results. Leave this parameter empty \n    in your initial request.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#GetTagValuesOutput": {
+        "type": "structure",
+        "members": {
+          "PaginationToken": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#PaginationToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA string that indicates that there is more data available than this\n    response contains. To receive the next part of the response, specify this response value \n    as the \u003ccode\u003ePaginationToken\u003c/code\u003e value in the request for the next page.\u003c/p\u003e"
+            }
+          },
+          "TagValues": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#TagValuesOutputList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of all tag values for the specified key currently used in the specified Amazon Web Services\n            Region for the calling account.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#GroupBy": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.resourcegroupstaggingapi#GroupByAttribute"
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#GroupByAttribute": {
+        "type": "enum",
+        "members": {
+          "REGION": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "REGION"
+            }
+          },
+          "RESOURCE_TYPE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "RESOURCE_TYPE"
+            }
+          },
+          "TARGET_ID": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "TARGET_ID"
+            }
+          }
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#IncludeComplianceDetails": {
+        "type": "boolean"
+      },
+      "com.amazonaws.resourcegroupstaggingapi#InternalServiceException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#ExceptionMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe request processing failed because of an unknown error, exception, or failure. You\n            can retry the request.\u003c/p\u003e",
+          "smithy.api#error": "server"
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#InvalidParameterException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#ExceptionMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe request failed because of one of the following reasons:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003eA required parameter is missing.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eA provided string parameter is malformed.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eAn provided parameter value is out of range.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eThe target ID is invalid, unsupported, or doesn't exist.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eYou can't access the Amazon S3 bucket for report storage. For more information, see\n                        \u003ca href=\"https://docs.aws.amazon.com/tag-editor/latest/userguide/tag-policies-orgs.html#bucket-policy\"\u003eAmazon S3 bucket policy for report storage\u003c/a\u003e in the \u003ci\u003eTagging Amazon Web Services resources and Tag Editor\u003c/i\u003e user guide. \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eThe partition specified in an ARN parameter in the request doesn't match the\n                    partition where you invoked the operation. The partition is specified by the\n                    second field of the ARN.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e",
+          "smithy.api#error": "client"
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#LastUpdated": {
+        "type": "string"
+      },
+      "com.amazonaws.resourcegroupstaggingapi#ListRequiredTags": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.resourcegroupstaggingapi#ListRequiredTagsInput"
+        },
+        "output": {
+          "target": "com.amazonaws.resourcegroupstaggingapi#ListRequiredTagsOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.resourcegroupstaggingapi#InternalServiceException"
+          },
+          {
+            "target": "com.amazonaws.resourcegroupstaggingapi#InvalidParameterException"
+          },
+          {
+            "target": "com.amazonaws.resourcegroupstaggingapi#PaginationTokenExpiredException"
+          },
+          {
+            "target": "com.amazonaws.resourcegroupstaggingapi#ThrottledException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eLists the required tags for supported resource types in an Amazon Web Services account.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/ListRequiredTags",
+            "code": 200
+          },
+          "smithy.api#paginated": {
+            "inputToken": "NextToken",
+            "outputToken": "NextToken",
+            "items": "RequiredTags",
+            "pageSize": "MaxResults"
+          }
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#ListRequiredTagsInput": {
+        "type": "structure",
+        "members": {
+          "MaxResults": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#MaxResultsForListRequiredTags",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of required tags.\u003c/p\u003e"
+            }
+          },
+          "NextToken": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#PaginationToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA token for requesting another page of required tags if the \u003ccode\u003eNextToken\u003c/code\u003e response element\n            indicates that more required tags are available. Use the value of the returned \u003ccode\u003eNextToken\u003c/code\u003e\n            element in your request until the token comes back as null. Pass null if this is the\n            first call.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#ListRequiredTagsOutput": {
+        "type": "structure",
+        "members": {
+          "NextToken": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#PaginationToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA token for requesting another page of required tags if the \u003ccode\u003eNextToken\u003c/code\u003e response element\n            indicates that more required tags are available. Use the value of the returned \u003ccode\u003eNextToken\u003c/code\u003e\n            element in your request until the token comes back as null. Pass null if this is the\n            first call.\u003c/p\u003e"
+            }
+          },
+          "RequiredTags": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#RequiredTagsForListRequiredTags",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe required tags.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#MaxResultsForListRequiredTags": {
+        "type": "integer",
+        "traits": {
+          "smithy.api#range": {
+            "min": 1,
+            "max": 200
+          }
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#MaxResultsGetComplianceSummary": {
+        "type": "integer",
+        "traits": {
+          "smithy.api#range": {
+            "min": 1,
+            "max": 1000
+          }
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#NonCompliantResources": {
+        "type": "long",
+        "traits": {
+          "smithy.api#default": 0
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#PaginationToken": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 2048
+          },
+          "smithy.api#pattern": "^[\\s\\S]*$"
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#PaginationTokenExpiredException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#ExceptionMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe request failed because the specified \u003ccode\u003ePaginationToken\u003c/code\u003e has expired. A\n                \u003ccode\u003ePaginationToken\u003c/code\u003e is valid for a maximum of 15 minutes.\u003c/p\u003e",
+          "smithy.api#error": "client"
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#Region": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 256
+          },
+          "smithy.api#pattern": "^[\\s\\S]*$"
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#RegionFilterList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.resourcegroupstaggingapi#Region"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 100
+          }
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#ReportingTagKeys": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.resourcegroupstaggingapi#TagKey"
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#RequiredTag": {
+        "type": "structure",
+        "members": {
+          "CloudFormationResourceTypes": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#CloudFormationResourceTypes",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eDescribes the CloudFormation resource type assigned the required tag keys.\u003c/p\u003e"
+            }
+          },
+          "ReportingTagKeys": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#ReportingTagKeys",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThese tag keys are marked as \u003ccode\u003erequired\u003c/code\u003e in the \u003ccode\u003ereport_required_tag_for\u003c/code\u003e block of the effective tag policy.\u003c/p\u003e"
+            }
+          },
+          "ResourceType": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#ResourceType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eDescribes the resource type for the required tag keys.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eInformation that describes the required tags for a given resource type.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#RequiredTagsForListRequiredTags": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.resourcegroupstaggingapi#RequiredTag"
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#ResourceARN": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 1011
+          },
+          "smithy.api#pattern": "^[\\s\\S]*$"
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#ResourceARNListForGet": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.resourcegroupstaggingapi#ResourceARN"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 100
+          }
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#ResourceARNListForTagUntag": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.resourcegroupstaggingapi#ResourceARN"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 20
+          }
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#ResourceGroupsTaggingAPI_20170126": {
+        "type": "service",
+        "version": "2017-01-26",
+        "operations": [
+          {
+            "target": "com.amazonaws.resourcegroupstaggingapi#DescribeReportCreation"
+          },
+          {
+            "target": "com.amazonaws.resourcegroupstaggingapi#GetComplianceSummary"
+          },
+          {
+            "target": "com.amazonaws.resourcegroupstaggingapi#GetResources"
+          },
+          {
+            "target": "com.amazonaws.resourcegroupstaggingapi#GetTagKeys"
+          },
+          {
+            "target": "com.amazonaws.resourcegroupstaggingapi#GetTagValues"
+          },
+          {
+            "target": "com.amazonaws.resourcegroupstaggingapi#ListRequiredTags"
+          },
+          {
+            "target": "com.amazonaws.resourcegroupstaggingapi#StartReportCreation"
+          },
+          {
+            "target": "com.amazonaws.resourcegroupstaggingapi#TagResources"
+          },
+          {
+            "target": "com.amazonaws.resourcegroupstaggingapi#UntagResources"
+          }
+        ],
+        "traits": {
+          "aws.api#service": {
+            "sdkId": "Resource Groups Tagging API",
+            "arnNamespace": "tagging",
+            "cloudFormationName": "ResourceGroupsTaggingAPI",
+            "cloudTrailEventSource": "resourcegroupstaggingapi.amazonaws.com",
+            "docId": "resourcegroupstaggingapi-2017-01-26",
+            "endpointPrefix": "tagging"
+          },
+          "aws.auth#sigv4": {
+            "name": "tagging"
+          },
+          "aws.protocols#awsJson1_1": {},
+          "smithy.api#documentation": "\u003cfullname\u003eResource Groups Tagging API\u003c/fullname\u003e",
+          "smithy.api#title": "AWS Resource Groups Tagging API",
+          "smithy.rules#endpointBdd": {
+            "version": "1.1",
+            "parameters": {
+              "Region": {
+                "builtIn": "AWS::Region",
+                "required": false,
+                "documentation": "The AWS region used to dispatch the request.",
+                "type": "string"
+              },
+              "UseDualStack": {
+                "builtIn": "AWS::UseDualStack",
+                "required": true,
+                "default": false,
+                "documentation": "When true, use the dual-stack endpoint. If the configured endpoint does not support dual-stack, dispatching the request MAY return an error.",
+                "type": "boolean"
+              },
+              "UseFIPS": {
+                "builtIn": "AWS::UseFIPS",
+                "required": true,
+                "default": false,
+                "documentation": "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
+                "type": "boolean"
+              },
+              "Endpoint": {
+                "builtIn": "SDK::Endpoint",
+                "required": false,
+                "documentation": "Override the endpoint used to send this request",
+                "type": "string"
+              }
+            },
+            "conditions": [
+              {
+                "fn": "isSet",
+                "argv": [
+                  {
+                    "ref": "Endpoint"
+                  }
+                ]
+              },
+              {
+                "fn": "isSet",
+                "argv": [
+                  {
+                    "ref": "Region"
+                  }
+                ]
+              },
+              {
+                "fn": "aws.partition",
+                "argv": [
+                  {
+                    "ref": "Region"
+                  }
+                ],
+                "assign": "PartitionResult"
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "ref": "UseFIPS"
+                  },
+                  true
+                ]
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "ref": "UseDualStack"
+                  },
+                  true
+                ]
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "fn": "getAttr",
+                    "argv": [
+                      {
+                        "ref": "PartitionResult"
+                      },
+                      "supportsDualStack"
+                    ]
+                  },
+                  true
+                ]
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "fn": "getAttr",
+                    "argv": [
+                      {
+                        "ref": "PartitionResult"
+                      },
+                      "supportsFIPS"
+                    ]
+                  },
+                  true
+                ]
+              }
+            ],
+            "results": [
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: FIPS and custom endpoint are not supported",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: Dualstack and custom endpoint are not supported",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": {
+                    "ref": "Endpoint"
+                  },
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://tagging-fips.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "FIPS and DualStack are enabled, but this partition does not support one or both",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://tagging-fips.{Region}.{PartitionResult#dnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "FIPS is enabled but this partition does not support FIPS",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://tagging.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "DualStack is enabled but this partition does not support DualStack",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://tagging.{Region}.{PartitionResult#dnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: Missing Region",
+                "type": "error"
+              }
+            ],
+            "root": 2,
+            "nodeCount": 13,
+            "nodes": "/////wAAAAH/////AAAAAAAAAAwAAAADAAAAAQAAAAQF9eELAAAAAgAAAAUF9eELAAAAAwAAAAgAAAAGAAAABAAAAAcF9eEKAAAABQX14QgF9eEJAAAABAAAAAoAAAAJAAAABgX14QYF9eEHAAAABQAAAAsF9eEFAAAABgX14QQF9eEFAAAAAwX14QEAAAANAAAABAX14QIF9eED"
+          },
+          "smithy.rules#endpointRuleSet": {
+            "version": "1.0",
+            "parameters": {
+              "Region": {
+                "builtIn": "AWS::Region",
+                "required": false,
+                "documentation": "The AWS region used to dispatch the request.",
+                "type": "string"
+              },
+              "UseDualStack": {
+                "builtIn": "AWS::UseDualStack",
+                "required": true,
+                "default": false,
+                "documentation": "When true, use the dual-stack endpoint. If the configured endpoint does not support dual-stack, dispatching the request MAY return an error.",
+                "type": "boolean"
+              },
+              "UseFIPS": {
+                "builtIn": "AWS::UseFIPS",
+                "required": true,
+                "default": false,
+                "documentation": "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
+                "type": "boolean"
+              },
+              "Endpoint": {
+                "builtIn": "SDK::Endpoint",
+                "required": false,
+                "documentation": "Override the endpoint used to send this request",
+                "type": "string"
+              }
+            },
+            "rules": [
+              {
+                "conditions": [
+                  {
+                    "fn": "isSet",
+                    "argv": [
+                      {
+                        "ref": "Endpoint"
+                      }
+                    ]
+                  }
+                ],
+                "rules": [
+                  {
+                    "conditions": [
+                      {
+                        "fn": "booleanEquals",
+                        "argv": [
+                          {
+                            "ref": "UseFIPS"
+                          },
+                          true
+                        ]
+                      }
+                    ],
+                    "error": "Invalid Configuration: FIPS and custom endpoint are not supported",
+                    "type": "error"
+                  },
+                  {
+                    "conditions": [
+                      {
+                        "fn": "booleanEquals",
+                        "argv": [
+                          {
+                            "ref": "UseDualStack"
+                          },
+                          true
+                        ]
+                      }
+                    ],
+                    "error": "Invalid Configuration: Dualstack and custom endpoint are not supported",
+                    "type": "error"
+                  },
+                  {
+                    "conditions": [],
+                    "endpoint": {
+                      "url": {
+                        "ref": "Endpoint"
+                      },
+                      "properties": {},
+                      "headers": {}
+                    },
+                    "type": "endpoint"
+                  }
+                ],
+                "type": "tree"
+              },
+              {
+                "conditions": [
+                  {
+                    "fn": "isSet",
+                    "argv": [
+                      {
+                        "ref": "Region"
+                      }
+                    ]
+                  }
+                ],
+                "rules": [
+                  {
+                    "conditions": [
+                      {
+                        "fn": "aws.partition",
+                        "argv": [
+                          {
+                            "ref": "Region"
+                          }
+                        ],
+                        "assign": "PartitionResult"
+                      }
+                    ],
+                    "rules": [
+                      {
+                        "conditions": [
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseFIPS"
+                              },
+                              true
+                            ]
+                          },
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseDualStack"
+                              },
+                              true
+                            ]
+                          }
+                        ],
+                        "rules": [
+                          {
+                            "conditions": [
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  true,
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsFIPS"
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  true,
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsDualStack"
+                                    ]
+                                  }
+                                ]
+                              }
+                            ],
+                            "rules": [
+                              {
+                                "conditions": [],
+                                "endpoint": {
+                                  "url": "https://tagging-fips.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                                  "properties": {},
+                                  "headers": {}
+                                },
+                                "type": "endpoint"
+                              }
+                            ],
+                            "type": "tree"
+                          },
+                          {
+                            "conditions": [],
+                            "error": "FIPS and DualStack are enabled, but this partition does not support one or both",
+                            "type": "error"
+                          }
+                        ],
+                        "type": "tree"
+                      },
+                      {
+                        "conditions": [
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseFIPS"
+                              },
+                              true
+                            ]
+                          }
+                        ],
+                        "rules": [
+                          {
+                            "conditions": [
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsFIPS"
+                                    ]
+                                  },
+                                  true
+                                ]
+                              }
+                            ],
+                            "rules": [
+                              {
+                                "conditions": [],
+                                "endpoint": {
+                                  "url": "https://tagging-fips.{Region}.{PartitionResult#dnsSuffix}",
+                                  "properties": {},
+                                  "headers": {}
+                                },
+                                "type": "endpoint"
+                              }
+                            ],
+                            "type": "tree"
+                          },
+                          {
+                            "conditions": [],
+                            "error": "FIPS is enabled but this partition does not support FIPS",
+                            "type": "error"
+                          }
+                        ],
+                        "type": "tree"
+                      },
+                      {
+                        "conditions": [
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseDualStack"
+                              },
+                              true
+                            ]
+                          }
+                        ],
+                        "rules": [
+                          {
+                            "conditions": [
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  true,
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsDualStack"
+                                    ]
+                                  }
+                                ]
+                              }
+                            ],
+                            "rules": [
+                              {
+                                "conditions": [],
+                                "endpoint": {
+                                  "url": "https://tagging.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                                  "properties": {},
+                                  "headers": {}
+                                },
+                                "type": "endpoint"
+                              }
+                            ],
+                            "type": "tree"
+                          },
+                          {
+                            "conditions": [],
+                            "error": "DualStack is enabled but this partition does not support DualStack",
+                            "type": "error"
+                          }
+                        ],
+                        "type": "tree"
+                      },
+                      {
+                        "conditions": [],
+                        "endpoint": {
+                          "url": "https://tagging.{Region}.{PartitionResult#dnsSuffix}",
+                          "properties": {},
+                          "headers": {}
+                        },
+                        "type": "endpoint"
+                      }
+                    ],
+                    "type": "tree"
+                  }
+                ],
+                "type": "tree"
+              },
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: Missing Region",
+                "type": "error"
+              }
+            ]
+          },
+          "smithy.rules#endpointTests": {
+            "testCases": [
+              {
+                "documentation": "For region af-south-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://tagging.af-south-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "af-south-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region ap-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://tagging.ap-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ap-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region ap-northeast-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://tagging.ap-northeast-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ap-northeast-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region ap-northeast-2 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://tagging.ap-northeast-2.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ap-northeast-2",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region ap-northeast-3 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://tagging.ap-northeast-3.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ap-northeast-3",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region ap-south-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://tagging.ap-south-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ap-south-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region ap-southeast-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://tagging.ap-southeast-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ap-southeast-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region ap-southeast-2 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://tagging.ap-southeast-2.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ap-southeast-2",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region ap-southeast-3 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://tagging.ap-southeast-3.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ap-southeast-3",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region ca-central-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://tagging.ca-central-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ca-central-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region eu-central-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://tagging.eu-central-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "eu-central-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region eu-north-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://tagging.eu-north-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "eu-north-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region eu-south-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://tagging.eu-south-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "eu-south-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region eu-west-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://tagging.eu-west-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "eu-west-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region eu-west-2 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://tagging.eu-west-2.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "eu-west-2",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region eu-west-3 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://tagging.eu-west-3.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "eu-west-3",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region me-south-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://tagging.me-south-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "me-south-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region sa-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://tagging.sa-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "sa-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://tagging.us-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-east-2 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://tagging.us-east-2.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-2",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-west-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://tagging.us-west-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-west-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-west-2 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://tagging.us-west-2.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-west-2",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://tagging-fips.us-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://tagging-fips.us-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://tagging.us-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://tagging.cn-north-1.amazonaws.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region cn-northwest-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://tagging.cn-northwest-1.amazonaws.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-northwest-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://tagging-fips.cn-north-1.api.amazonwebservices.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": true,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://tagging-fips.cn-north-1.amazonaws.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://tagging.cn-north-1.api.amazonwebservices.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://tagging.us-gov-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-gov-west-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://tagging.us-gov-west-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-west-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://tagging-fips.us-gov-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://tagging-fips.us-gov-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://tagging.us-gov-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region us-iso-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://tagging.us-iso-east-1.c2s.ic.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-iso-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-iso-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://tagging-fips.us-iso-east-1.c2s.ic.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-iso-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-isob-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://tagging.us-isob-east-1.sc2s.sgov.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-isob-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-isob-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://tagging-fips.us-isob-east-1.sc2s.sgov.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-isob-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For custom endpoint with region set and fips disabled and dualstack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://example.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "For custom endpoint with region not set and fips disabled and dualstack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://example.com"
+                  }
+                },
+                "params": {
+                  "UseFIPS": false,
+                  "UseDualStack": false,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "For custom endpoint with fips enabled and dualstack disabled",
+                "expect": {
+                  "error": "Invalid Configuration: FIPS and custom endpoint are not supported"
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "For custom endpoint with fips disabled and dualstack enabled",
+                "expect": {
+                  "error": "Invalid Configuration: Dualstack and custom endpoint are not supported"
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "Missing region",
+                "expect": {
+                  "error": "Invalid Configuration: Missing Region"
+                }
+              }
+            ],
+            "version": "1.0"
+          }
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#ResourceTagMapping": {
+        "type": "structure",
+        "members": {
+          "ComplianceDetails": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#ComplianceDetails",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eInformation that shows whether a resource is compliant with the effective tag policy,\n            including details on any noncompliant tag keys.\u003c/p\u003e"
+            }
+          },
+          "ResourceARN": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#ResourceARN",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ARN of the resource.\u003c/p\u003e"
+            }
+          },
+          "Tags": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#TagList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe tags that have been applied to one or more Amazon Web Services resources.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA list of resource ARNs and the tags (keys and values) that are associated with\n            each.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#ResourceTagMappingList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.resourcegroupstaggingapi#ResourceTagMapping"
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#ResourceType": {
+        "type": "string"
+      },
+      "com.amazonaws.resourcegroupstaggingapi#ResourceTypeFilterList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.resourcegroupstaggingapi#AmazonResourceType"
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#ResourcesPerPage": {
+        "type": "integer"
+      },
+      "com.amazonaws.resourcegroupstaggingapi#S3Bucket": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 3,
+            "max": 63
+          },
+          "smithy.api#pattern": "^[a-z0-9.-]*$"
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#S3Location": {
+        "type": "string"
+      },
+      "com.amazonaws.resourcegroupstaggingapi#StartDate": {
+        "type": "string"
+      },
+      "com.amazonaws.resourcegroupstaggingapi#StartReportCreation": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.resourcegroupstaggingapi#StartReportCreationInput"
+        },
+        "output": {
+          "target": "com.amazonaws.resourcegroupstaggingapi#StartReportCreationOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.resourcegroupstaggingapi#ConcurrentModificationException"
+          },
+          {
+            "target": "com.amazonaws.resourcegroupstaggingapi#ConstraintViolationException"
+          },
+          {
+            "target": "com.amazonaws.resourcegroupstaggingapi#InternalServiceException"
+          },
+          {
+            "target": "com.amazonaws.resourcegroupstaggingapi#InvalidParameterException"
+          },
+          {
+            "target": "com.amazonaws.resourcegroupstaggingapi#ThrottledException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eGenerates a report that lists all tagged resources in the accounts across your\n            organization and tells whether each resource is compliant with the effective tag policy.\n            Compliance data is refreshed daily. The report is generated asynchronously.\u003c/p\u003e\n         \u003cp\u003eThe generated report is saved to the following location:\u003c/p\u003e\n         \u003cp\u003e\n            \u003ccode\u003es3://amzn-s3-demo-bucket/AwsTagPolicies/o-exampleorgid/YYYY-MM-ddTHH:mm:ssZ/report.csv\u003c/code\u003e\n         \u003c/p\u003e\n         \u003cp\u003eFor more information about evaluating resource compliance with tag policies, including\n            the required permissions, review \u003ca href=\"https://docs.aws.amazon.com/tag-editor/latest/userguide/tag-policies-orgs.html#tag-policies-permissions-org\"\u003ePermissions for evaluating organization-wide compliance\u003c/a\u003e in the\n                \u003ci\u003eTagging Amazon Web Services Resources and Tag Editor\u003c/i\u003e user guide. \u003c/p\u003e\n         \u003cp\u003eYou can call this operation only from the organization's \n    management account and from the us-east-1 Region.\u003c/p\u003e\n         \u003cp\u003eIf the account associated with the identity used to call\n                \u003ccode\u003eStartReportCreation\u003c/code\u003e is different from the account that owns the Amazon S3\n            bucket, there must be a bucket policy attached to the bucket to provide access. For more\n            information, review \u003ca href=\"https://docs.aws.amazon.com/tag-editor/latest/userguide/tag-policies-orgs.html#bucket-policy\"\u003eAmazon S3 bucket\n                policy for report storage\u003c/a\u003e in the \u003ci\u003eTagging Amazon Web Services Resources and Tag\n                Editor\u003c/i\u003e user guide.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/StartReportCreation",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#StartReportCreationInput": {
+        "type": "structure",
+        "members": {
+          "S3Bucket": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#S3Bucket",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the Amazon S3 bucket where the report will be stored; for example:\u003c/p\u003e\n         \u003cp\u003e\n            \u003ccode\u003eamzn-s3-demo-bucket\u003c/code\u003e\n         \u003c/p\u003e\n         \u003cp\u003eFor more information on S3 bucket requirements, including an example bucket policy,\n            see the example Amazon S3 bucket policy on this page.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#StartReportCreationOutput": {
+        "type": "structure",
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#Status": {
+        "type": "string"
+      },
+      "com.amazonaws.resourcegroupstaggingapi#StatusCode": {
+        "type": "integer",
+        "traits": {
+          "smithy.api#default": 0
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#Summary": {
+        "type": "structure",
+        "members": {
+          "LastUpdated": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#LastUpdated",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe timestamp that shows when this summary was generated in this Region. \u003c/p\u003e"
+            }
+          },
+          "NonCompliantResources": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#NonCompliantResources",
+            "traits": {
+              "smithy.api#default": 0,
+              "smithy.api#documentation": "\u003cp\u003eThe count of noncompliant resources.\u003c/p\u003e"
+            }
+          },
+          "Region": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#Region",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Web Services Region that the summary applies to.\u003c/p\u003e"
+            }
+          },
+          "ResourceType": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#AmazonResourceType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Web Services resource type.\u003c/p\u003e"
+            }
+          },
+          "TargetId": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#TargetId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe account identifier or the root identifier of the organization. If you don't know\n            the root ID, you can call the Organizations \u003ca href=\"https://docs.aws.amazon.com/organizations/latest/APIReference/API_ListRoots.html\"\u003eListRoots\u003c/a\u003e API.\u003c/p\u003e"
+            }
+          },
+          "TargetIdType": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#TargetIdType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eWhether the target is an account, an OU, or the organization root.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA count of noncompliant resources.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#SummaryList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.resourcegroupstaggingapi#Summary"
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#Tag": {
+        "type": "structure",
+        "members": {
+          "Key": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#TagKey",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eOne part of a key-value pair that makes up a tag. A key is a general label \n    that acts like a category for more specific tag values.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Value": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#TagValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eOne part of a key-value pair that make up a tag. A value acts as a \n    descriptor within a tag category (key). The value can be empty or null.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe metadata that you apply to Amazon Web Services resources to help you categorize and organize\n            them. Each tag consists of a key and a value, both of which you define. For more\n            information, see \u003ca href=\"https://docs.aws.amazon.com/general/latest/gr/aws_tagging.html\"\u003eTagging Amazon Web Services Resources\u003c/a\u003e in the \u003ci\u003eAmazon Web Services General Reference\u003c/i\u003e.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#TagFilter": {
+        "type": "structure",
+        "members": {
+          "Key": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#TagKey",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eOne part of a key-value pair that makes up a tag. A key is a general label \n    that acts like a category for more specific tag values.\u003c/p\u003e"
+            }
+          },
+          "Values": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#TagValueList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eOne part of a key-value pair that make up a tag. A value acts as a \n    descriptor within a tag category (key). The value can be empty or null.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA list of tags (keys and values) that are used to specify the associated\n            resources.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#TagFilterList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.resourcegroupstaggingapi#TagFilter"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 50
+          }
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#TagKey": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 128
+          },
+          "smithy.api#pattern": "^[\\s\\S]*$"
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#TagKeyFilterList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.resourcegroupstaggingapi#TagKey"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 50
+          }
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#TagKeyList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.resourcegroupstaggingapi#TagKey"
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#TagKeyListForUntag": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.resourcegroupstaggingapi#TagKey"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 50
+          }
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#TagList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.resourcegroupstaggingapi#Tag"
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#TagMap": {
+        "type": "map",
+        "key": {
+          "target": "com.amazonaws.resourcegroupstaggingapi#TagKey"
+        },
+        "value": {
+          "target": "com.amazonaws.resourcegroupstaggingapi#TagValue"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 50
+          }
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#TagResources": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.resourcegroupstaggingapi#TagResourcesInput"
+        },
+        "output": {
+          "target": "com.amazonaws.resourcegroupstaggingapi#TagResourcesOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.resourcegroupstaggingapi#InternalServiceException"
+          },
+          {
+            "target": "com.amazonaws.resourcegroupstaggingapi#InvalidParameterException"
+          },
+          {
+            "target": "com.amazonaws.resourcegroupstaggingapi#ThrottledException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eApplies one or more tags to the specified resources. Note the following:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003eNot all resources can have tags. For a list of services with resources that\n                    support tagging using this operation, see \u003ca href=\"https://docs.aws.amazon.com/resourcegroupstagging/latest/APIReference/supported-services.html\"\u003eServices that support the\n                        Resource Groups Tagging API\u003c/a\u003e. If the resource doesn't yet support\n                    this operation, the resource's service might support tagging using its own API\n                    operations. For more information, refer to the documentation for that\n                    service.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eEach resource can have up to 50 tags. For other limits, see \u003ca href=\"https://docs.aws.amazon.com/general/latest/gr/aws_tagging.html#tag-conventions\"\u003eTag Naming and Usage Conventions\u003c/a\u003e in the \u003ci\u003eAmazon Web Services General\n                        Reference.\u003c/i\u003e\n               \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eYou can only tag resources that are located in the specified Amazon Web Services Region for\n                    the Amazon Web Services account.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eTo add tags to a resource, you need the necessary permissions for the service\n                    that the resource belongs to as well as permissions for adding tags. For more\n                    information, see the documentation for each service.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eWhen you use the \u003ca href=\"https://docs.aws.amazon.com/resourcegroupstagging/latest/APIReference/overview.html\"\u003eAmazon Web Services Resource\n                        Groups Tagging API\u003c/a\u003e to update tags for Amazon Web Services CloudFormation stack\n                    sets, Amazon Web Services calls the \u003ca href=\"https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_UpdateStack.html\"\u003eAmazon Web Services\n                        CloudFormation \u003ccode\u003eUpdateStack\u003c/code\u003e\n                  \u003c/a\u003e operation. This operation\n                    may initiate additional resource property updates in addition to the desired tag\n                    updates. To avoid unexpected resource updates, Amazon Web Services recommends that you only\n                    apply or update tags to your CloudFormation stack sets using Amazon Web Services\n                    CloudFormation. \u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e\n         \u003cimportant\u003e\n            \u003cp\u003eDo not store personally identifiable information (PII) or other confidential or\n                sensitive information in tags. We use tags to provide you with billing and\n                administration services. Tags are not intended to be used for private or sensitive\n                data.\u003c/p\u003e\n         \u003c/important\u003e\n         \u003cp\u003e\n            \u003cb\u003eMinimum permissions\u003c/b\u003e\n         \u003c/p\u003e\n         \u003cp\u003eIn addition to the \u003ccode\u003etag:TagResources\u003c/code\u003e permission required by this\n            operation, you must also have the tagging permission defined by the service that created\n            the resource. For example, to tag an Amazon EC2 instance using the \u003ccode\u003eTagResources\u003c/code\u003e\n            operation, you must have both of the following permissions:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003etag:TagResources\u003c/code\u003e\n               \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eec2:CreateTags\u003c/code\u003e\n               \u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e\n         \u003cnote\u003e\n            \u003cp\u003eIn addition, some services might have specific requirements for tagging some types\n                of resources. For example, to tag an Amazon S3 bucket, you must also have the\n                    \u003ccode\u003es3:GetBucketTagging\u003c/code\u003e permission. If the expected minimum permissions\n                don't work, check the documentation for that service's tagging APIs for more\n                information.\u003c/p\u003e\n         \u003c/note\u003e",
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/TagResources",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#TagResourcesInput": {
+        "type": "structure",
+        "members": {
+          "ResourceARNList": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#ResourceARNListForTagUntag",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies the list of ARNs of the resources that you want to apply tags to.\u003c/p\u003e\n         \u003cp\u003eAn ARN (Amazon Resource Name) uniquely identifies a resource. For more information,\n            see \u003ca href=\"https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html\"\u003eAmazon\n                Resource Names (ARNs) and Amazon Web Services Service Namespaces\u003c/a\u003e in the \u003ci\u003eAmazon Web Services\n                General Reference\u003c/i\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Tags": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#TagMap",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies a list of tags that you want to add to the specified resources. A tag\n            consists of a key and a value that you define.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#TagResourcesOutput": {
+        "type": "structure",
+        "members": {
+          "FailedResourcesMap": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#FailedResourcesMap",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA map containing a key-value pair for each failed item that couldn't be tagged. The\n            key is the ARN of the failed resource. The value is a \u003ccode\u003eFailureInfo\u003c/code\u003e object\n            that contains an error code, a status code, and an error message. If there are no\n            errors, the \u003ccode\u003eFailedResourcesMap\u003c/code\u003e is empty.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#TagValue": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 256
+          },
+          "smithy.api#pattern": "^[\\s\\S]*$"
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#TagValueList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.resourcegroupstaggingapi#TagValue"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 20
+          }
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#TagValuesOutputList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.resourcegroupstaggingapi#TagValue"
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#TagsPerPage": {
+        "type": "integer"
+      },
+      "com.amazonaws.resourcegroupstaggingapi#TargetId": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 6,
+            "max": 68
+          },
+          "smithy.api#pattern": "^[a-zA-Z0-9-]*$"
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#TargetIdFilterList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.resourcegroupstaggingapi#TargetId"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 100
+          }
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#TargetIdType": {
+        "type": "enum",
+        "members": {
+          "ACCOUNT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ACCOUNT"
+            }
+          },
+          "OU": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "OU"
+            }
+          },
+          "ROOT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ROOT"
+            }
+          }
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#ThrottledException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#ExceptionMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe request failed because it exceeded the allowed frequency of submitted\n            requests.\u003c/p\u003e",
+          "smithy.api#error": "client"
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#UntagResources": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.resourcegroupstaggingapi#UntagResourcesInput"
+        },
+        "output": {
+          "target": "com.amazonaws.resourcegroupstaggingapi#UntagResourcesOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.resourcegroupstaggingapi#InternalServiceException"
+          },
+          {
+            "target": "com.amazonaws.resourcegroupstaggingapi#InvalidParameterException"
+          },
+          {
+            "target": "com.amazonaws.resourcegroupstaggingapi#ThrottledException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eRemoves the specified tags from the specified resources. When you specify a tag key,\n            the action removes both that key and its associated value. The operation succeeds even\n            if you attempt to remove tags from a resource that were already removed. Note the\n            following:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003eTo remove tags from a resource, you need the necessary permissions for the\n                    service that the resource belongs to as well as permissions for removing tags.\n                    For more information, see the documentation for the service whose resource you\n                    want to untag.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eYou can only tag resources that are located in the specified Amazon Web Services Region for\n                    the calling Amazon Web Services account.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e\n         \u003cp\u003e\n            \u003cb\u003eMinimum permissions\u003c/b\u003e\n         \u003c/p\u003e\n         \u003cp\u003eIn addition to the \u003ccode\u003etag:UntagResources\u003c/code\u003e permission required by this\n            operation, you must also have the remove tags permission defined by the service that\n            created the resource. For example, to remove the tags from an Amazon EC2 instance using the\n                \u003ccode\u003eUntagResources\u003c/code\u003e operation, you must have both of the following\n            permissions:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003etag:UntagResources\u003c/code\u003e\n               \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eec2:DeleteTags\u003c/code\u003e\n               \u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e\n         \u003cnote\u003e\n            \u003cp\u003eIn addition, some services might have specific requirements for untagging some\n                types of resources. For example, to untag Amazon Web Services Glue Connection, you must also have the\n                    \u003ccode\u003eglue:GetConnection\u003c/code\u003e permission. If the expected minimum permissions\n                don't work, check the documentation for that service's tagging APIs for more\n                information.\u003c/p\u003e\n         \u003c/note\u003e",
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/UntagResources",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#UntagResourcesInput": {
+        "type": "structure",
+        "members": {
+          "ResourceARNList": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#ResourceARNListForTagUntag",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies a list of ARNs of the resources that you want to remove tags from.\u003c/p\u003e\n         \u003cp\u003eAn ARN (Amazon Resource Name) uniquely identifies a resource. For more information,\n            see \u003ca href=\"https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html\"\u003eAmazon\n                Resource Names (ARNs) and Amazon Web Services Service Namespaces\u003c/a\u003e in the \u003ci\u003eAmazon Web Services\n                General Reference\u003c/i\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "TagKeys": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#TagKeyListForUntag",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies a list of tag keys that you want to remove from the specified\n            resources.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.resourcegroupstaggingapi#UntagResourcesOutput": {
+        "type": "structure",
+        "members": {
+          "FailedResourcesMap": {
+            "target": "com.amazonaws.resourcegroupstaggingapi#FailedResourcesMap",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA map containing a key-value pair for each failed item that couldn't be untagged. The\n            key is the ARN of the failed resource. The value is a \u003ccode\u003eFailureInfo\u003c/code\u003e object\n            that contains an error code, a status code, and an error message. If there are no\n            errors, the \u003ccode\u003eFailedResourcesMap\u003c/code\u003e is empty.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,2528 @@
+{
+  "schema_source": "smithy",
+  "mode": "data_source",
+  "auth": {
+    "Type": "",
+    "Params": null
+  },
+  "base_url": "https://aws.example.invalid",
+  "retry": {
+    "MaxAttempts": 0,
+    "InitialBackoff": "",
+    "MaxBackoff": "",
+    "Jitter": null,
+    "RespectRetryAfter": null,
+    "RateLimitResetHeader": ""
+  },
+  "timeouts": {
+    "Create": "",
+    "Read": "",
+    "Update": "",
+    "Delete": "",
+    "Default": ""
+  },
+  "wire_name": "aws",
+  "raw_spec": {
+    "smithy": "2.0",
+    "metadata": {
+      "suppressions": [
+        {
+          "id": "HttpMethodSemantics",
+          "namespace": "*"
+        },
+        {
+          "id": "HttpResponseCodeSemantics",
+          "namespace": "*"
+        },
+        {
+          "id": "PaginatedTrait",
+          "namespace": "*"
+        },
+        {
+          "id": "HttpHeaderTrait",
+          "namespace": "*"
+        },
+        {
+          "id": "HttpUriConflict",
+          "namespace": "*"
+        },
+        {
+          "id": "Service",
+          "namespace": "*"
+        }
+      ]
+    },
+    "shapes": {
+      "com.amazonaws.kinesisvideoarchivedmedia#AWSAcuityReader": {
+        "type": "service",
+        "version": "2017-09-30",
+        "operations": [
+          {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#GetClip"
+          },
+          {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#GetDASHStreamingSessionURL"
+          },
+          {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#GetHLSStreamingSessionURL"
+          },
+          {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#GetImages"
+          },
+          {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#GetMediaForFragmentList"
+          },
+          {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#ListFragments"
+          }
+        ],
+        "traits": {
+          "aws.api#service": {
+            "sdkId": "Kinesis Video Archived Media",
+            "arnNamespace": "kinesisvideo",
+            "cloudFormationName": "KinesisVideoArchivedMedia",
+            "cloudTrailEventSource": "kinesisvideoarchivedmedia.amazonaws.com",
+            "endpointPrefix": "kinesisvideo"
+          },
+          "aws.auth#sigv4": {
+            "name": "kinesisvideo"
+          },
+          "aws.protocols#restJson1": {},
+          "smithy.api#documentation": "\u003cp\u003e\u003c/p\u003e",
+          "smithy.api#title": "Amazon Kinesis Video Streams Archived Media",
+          "smithy.rules#endpointBdd": {
+            "version": "1.1",
+            "parameters": {
+              "Region": {
+                "builtIn": "AWS::Region",
+                "required": false,
+                "documentation": "The AWS region used to dispatch the request.",
+                "type": "string"
+              },
+              "UseDualStack": {
+                "builtIn": "AWS::UseDualStack",
+                "required": true,
+                "default": false,
+                "documentation": "When true, use the dual-stack endpoint. If the configured endpoint does not support dual-stack, dispatching the request MAY return an error.",
+                "type": "boolean"
+              },
+              "UseFIPS": {
+                "builtIn": "AWS::UseFIPS",
+                "required": true,
+                "default": false,
+                "documentation": "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
+                "type": "boolean"
+              },
+              "Endpoint": {
+                "builtIn": "SDK::Endpoint",
+                "required": false,
+                "documentation": "Override the endpoint used to send this request",
+                "type": "string"
+              }
+            },
+            "conditions": [
+              {
+                "fn": "isSet",
+                "argv": [
+                  {
+                    "ref": "Endpoint"
+                  }
+                ]
+              },
+              {
+                "fn": "isSet",
+                "argv": [
+                  {
+                    "ref": "Region"
+                  }
+                ]
+              },
+              {
+                "fn": "aws.partition",
+                "argv": [
+                  {
+                    "ref": "Region"
+                  }
+                ],
+                "assign": "PartitionResult"
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "ref": "UseFIPS"
+                  },
+                  true
+                ]
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "ref": "UseDualStack"
+                  },
+                  true
+                ]
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "fn": "getAttr",
+                    "argv": [
+                      {
+                        "ref": "PartitionResult"
+                      },
+                      "supportsDualStack"
+                    ]
+                  },
+                  true
+                ]
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "fn": "getAttr",
+                    "argv": [
+                      {
+                        "ref": "PartitionResult"
+                      },
+                      "supportsFIPS"
+                    ]
+                  },
+                  true
+                ]
+              }
+            ],
+            "results": [
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: FIPS and custom endpoint are not supported",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: Dualstack and custom endpoint are not supported",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": {
+                    "ref": "Endpoint"
+                  },
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://kinesisvideo-fips.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "FIPS and DualStack are enabled, but this partition does not support one or both",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://kinesisvideo-fips.{Region}.{PartitionResult#dnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "FIPS is enabled but this partition does not support FIPS",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://kinesisvideo.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "DualStack is enabled but this partition does not support DualStack",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://kinesisvideo.{Region}.{PartitionResult#dnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: Missing Region",
+                "type": "error"
+              }
+            ],
+            "root": 2,
+            "nodeCount": 13,
+            "nodes": "/////wAAAAH/////AAAAAAAAAAwAAAADAAAAAQAAAAQF9eELAAAAAgAAAAUF9eELAAAAAwAAAAgAAAAGAAAABAAAAAcF9eEKAAAABQX14QgF9eEJAAAABAAAAAoAAAAJAAAABgX14QYF9eEHAAAABQAAAAsF9eEFAAAABgX14QQF9eEFAAAAAwX14QEAAAANAAAABAX14QIF9eED"
+          },
+          "smithy.rules#endpointRuleSet": {
+            "version": "1.0",
+            "parameters": {
+              "Region": {
+                "builtIn": "AWS::Region",
+                "required": false,
+                "documentation": "The AWS region used to dispatch the request.",
+                "type": "string"
+              },
+              "UseDualStack": {
+                "builtIn": "AWS::UseDualStack",
+                "required": true,
+                "default": false,
+                "documentation": "When true, use the dual-stack endpoint. If the configured endpoint does not support dual-stack, dispatching the request MAY return an error.",
+                "type": "boolean"
+              },
+              "UseFIPS": {
+                "builtIn": "AWS::UseFIPS",
+                "required": true,
+                "default": false,
+                "documentation": "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
+                "type": "boolean"
+              },
+              "Endpoint": {
+                "builtIn": "SDK::Endpoint",
+                "required": false,
+                "documentation": "Override the endpoint used to send this request",
+                "type": "string"
+              }
+            },
+            "rules": [
+              {
+                "conditions": [
+                  {
+                    "fn": "isSet",
+                    "argv": [
+                      {
+                        "ref": "Endpoint"
+                      }
+                    ]
+                  }
+                ],
+                "rules": [
+                  {
+                    "conditions": [
+                      {
+                        "fn": "booleanEquals",
+                        "argv": [
+                          {
+                            "ref": "UseFIPS"
+                          },
+                          true
+                        ]
+                      }
+                    ],
+                    "error": "Invalid Configuration: FIPS and custom endpoint are not supported",
+                    "type": "error"
+                  },
+                  {
+                    "conditions": [
+                      {
+                        "fn": "booleanEquals",
+                        "argv": [
+                          {
+                            "ref": "UseDualStack"
+                          },
+                          true
+                        ]
+                      }
+                    ],
+                    "error": "Invalid Configuration: Dualstack and custom endpoint are not supported",
+                    "type": "error"
+                  },
+                  {
+                    "conditions": [],
+                    "endpoint": {
+                      "url": {
+                        "ref": "Endpoint"
+                      },
+                      "properties": {},
+                      "headers": {}
+                    },
+                    "type": "endpoint"
+                  }
+                ],
+                "type": "tree"
+              },
+              {
+                "conditions": [
+                  {
+                    "fn": "isSet",
+                    "argv": [
+                      {
+                        "ref": "Region"
+                      }
+                    ]
+                  }
+                ],
+                "rules": [
+                  {
+                    "conditions": [
+                      {
+                        "fn": "aws.partition",
+                        "argv": [
+                          {
+                            "ref": "Region"
+                          }
+                        ],
+                        "assign": "PartitionResult"
+                      }
+                    ],
+                    "rules": [
+                      {
+                        "conditions": [
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseFIPS"
+                              },
+                              true
+                            ]
+                          },
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseDualStack"
+                              },
+                              true
+                            ]
+                          }
+                        ],
+                        "rules": [
+                          {
+                            "conditions": [
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  true,
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsFIPS"
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  true,
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsDualStack"
+                                    ]
+                                  }
+                                ]
+                              }
+                            ],
+                            "rules": [
+                              {
+                                "conditions": [],
+                                "endpoint": {
+                                  "url": "https://kinesisvideo-fips.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                                  "properties": {},
+                                  "headers": {}
+                                },
+                                "type": "endpoint"
+                              }
+                            ],
+                            "type": "tree"
+                          },
+                          {
+                            "conditions": [],
+                            "error": "FIPS and DualStack are enabled, but this partition does not support one or both",
+                            "type": "error"
+                          }
+                        ],
+                        "type": "tree"
+                      },
+                      {
+                        "conditions": [
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseFIPS"
+                              },
+                              true
+                            ]
+                          }
+                        ],
+                        "rules": [
+                          {
+                            "conditions": [
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsFIPS"
+                                    ]
+                                  },
+                                  true
+                                ]
+                              }
+                            ],
+                            "rules": [
+                              {
+                                "conditions": [],
+                                "endpoint": {
+                                  "url": "https://kinesisvideo-fips.{Region}.{PartitionResult#dnsSuffix}",
+                                  "properties": {},
+                                  "headers": {}
+                                },
+                                "type": "endpoint"
+                              }
+                            ],
+                            "type": "tree"
+                          },
+                          {
+                            "conditions": [],
+                            "error": "FIPS is enabled but this partition does not support FIPS",
+                            "type": "error"
+                          }
+                        ],
+                        "type": "tree"
+                      },
+                      {
+                        "conditions": [
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseDualStack"
+                              },
+                              true
+                            ]
+                          }
+                        ],
+                        "rules": [
+                          {
+                            "conditions": [
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  true,
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsDualStack"
+                                    ]
+                                  }
+                                ]
+                              }
+                            ],
+                            "rules": [
+                              {
+                                "conditions": [],
+                                "endpoint": {
+                                  "url": "https://kinesisvideo.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                                  "properties": {},
+                                  "headers": {}
+                                },
+                                "type": "endpoint"
+                              }
+                            ],
+                            "type": "tree"
+                          },
+                          {
+                            "conditions": [],
+                            "error": "DualStack is enabled but this partition does not support DualStack",
+                            "type": "error"
+                          }
+                        ],
+                        "type": "tree"
+                      },
+                      {
+                        "conditions": [],
+                        "endpoint": {
+                          "url": "https://kinesisvideo.{Region}.{PartitionResult#dnsSuffix}",
+                          "properties": {},
+                          "headers": {}
+                        },
+                        "type": "endpoint"
+                      }
+                    ],
+                    "type": "tree"
+                  }
+                ],
+                "type": "tree"
+              },
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: Missing Region",
+                "type": "error"
+              }
+            ]
+          },
+          "smithy.rules#endpointTests": {
+            "testCases": [
+              {
+                "documentation": "For region af-south-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo.af-south-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "af-south-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region ap-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo.ap-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ap-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region ap-northeast-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo.ap-northeast-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ap-northeast-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region ap-northeast-2 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo.ap-northeast-2.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ap-northeast-2",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region ap-south-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo.ap-south-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ap-south-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region ap-southeast-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo.ap-southeast-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ap-southeast-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region ap-southeast-2 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo.ap-southeast-2.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ap-southeast-2",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region ca-central-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo.ca-central-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ca-central-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region eu-central-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo.eu-central-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "eu-central-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region eu-west-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo.eu-west-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "eu-west-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region eu-west-2 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo.eu-west-2.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "eu-west-2",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region eu-west-3 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo.eu-west-3.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "eu-west-3",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region sa-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo.sa-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "sa-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo.us-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-east-2 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo.us-east-2.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-2",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-west-2 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo.us-west-2.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-west-2",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo-fips.us-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo-fips.us-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo.us-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo-fips.cn-north-1.api.amazonwebservices.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": true,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo-fips.cn-north-1.amazonaws.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo.cn-north-1.api.amazonwebservices.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo.cn-north-1.amazonaws.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo-fips.us-gov-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo-fips.us-gov-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo.us-gov-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo.us-gov-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-iso-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo-fips.us-iso-east-1.c2s.ic.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-iso-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-iso-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo.us-iso-east-1.c2s.ic.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-iso-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-isob-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo-fips.us-isob-east-1.sc2s.sgov.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-isob-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-isob-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://kinesisvideo.us-isob-east-1.sc2s.sgov.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-isob-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For custom endpoint with region set and fips disabled and dualstack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://example.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "For custom endpoint with region not set and fips disabled and dualstack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://example.com"
+                  }
+                },
+                "params": {
+                  "UseFIPS": false,
+                  "UseDualStack": false,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "For custom endpoint with fips enabled and dualstack disabled",
+                "expect": {
+                  "error": "Invalid Configuration: FIPS and custom endpoint are not supported"
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "For custom endpoint with fips disabled and dualstack enabled",
+                "expect": {
+                  "error": "Invalid Configuration: Dualstack and custom endpoint are not supported"
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "Missing region",
+                "expect": {
+                  "error": "Invalid Configuration: Missing Region"
+                }
+              }
+            ],
+            "version": "1.0"
+          }
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#ClientLimitExceededException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eKinesis Video Streams has throttled the request because you have exceeded a limit. Try making the call later. For information about limits, see \u003ca href=\"http://docs.aws.amazon.com/kinesisvideostreams/latest/dg/limits.html\"\u003eKinesis Video Streams Limits\u003c/a\u003e.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#ClipFragmentSelector": {
+        "type": "structure",
+        "members": {
+          "FragmentSelectorType": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#ClipFragmentSelectorType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe origin of the timestamps to use (Server or Producer).\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "TimestampRange": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#ClipTimestampRange",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe range of timestamps to return.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eDescribes the timestamp range and timestamp origin of a range of fragments.\u003c/p\u003e\n         \u003cp\u003eFragments that have duplicate producer timestamps are deduplicated. This means that if\n            producers are producing a stream of fragments with producer timestamps that are\n            approximately equal to the true clock time, the clip will contain all of the fragments\n            within the requested timestamp range. If some fragments are ingested within the same\n            time range and very different points in time, only the oldest ingested collection of\n            fragments are returned.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#ClipFragmentSelectorType": {
+        "type": "enum",
+        "members": {
+          "PRODUCER_TIMESTAMP": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "PRODUCER_TIMESTAMP"
+            }
+          },
+          "SERVER_TIMESTAMP": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "SERVER_TIMESTAMP"
+            }
+          }
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#ClipTimestampRange": {
+        "type": "structure",
+        "members": {
+          "EndTimestamp": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe end of the timestamp range for the requested media.\u003c/p\u003e\n         \u003cp\u003eThis value must be within 24 hours of the specified \u003ccode\u003eStartTimestamp\u003c/code\u003e, and\n            it must be later than the \u003ccode\u003eStartTimestamp\u003c/code\u003e value. If\n                \u003ccode\u003eFragmentSelectorType\u003c/code\u003e for the request is \u003ccode\u003eSERVER_TIMESTAMP\u003c/code\u003e,\n            this value must be in the past. \u003c/p\u003e\n         \u003cp\u003eThis value is inclusive. The \u003ccode\u003eEndTimestamp\u003c/code\u003e is compared to the (starting)\n            timestamp of the fragment. Fragments that start before the \u003ccode\u003eEndTimestamp\u003c/code\u003e\n            value and continue past it are included in the session. \u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "StartTimestamp": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe starting timestamp in the range of timestamps for which to return fragments. \u003c/p\u003e\n         \u003cp\u003eOnly fragments that start exactly at or after \u003ccode\u003eStartTimestamp\u003c/code\u003e are included\n            in the session. Fragments that start before \u003ccode\u003eStartTimestamp\u003c/code\u003e and continue\n            past it aren't included in the session. If \u003ccode\u003eFragmentSelectorType\u003c/code\u003e is\n                \u003ccode\u003eSERVER_TIMESTAMP\u003c/code\u003e, the \u003ccode\u003eStartTimestamp\u003c/code\u003e must be later than\n            the stream head. \u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe range of timestamps for which to return fragments.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#ContainerFormat": {
+        "type": "enum",
+        "members": {
+          "FRAGMENTED_MP4": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "FRAGMENTED_MP4"
+            }
+          },
+          "MPEG_TS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "MPEG_TS"
+            }
+          }
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#ContentType": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 128
+          },
+          "smithy.api#pattern": "^[a-zA-Z0-9_\\.\\-]+$"
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#DASHDisplayFragmentNumber": {
+        "type": "enum",
+        "members": {
+          "ALWAYS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ALWAYS"
+            }
+          },
+          "NEVER": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "NEVER"
+            }
+          }
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#DASHDisplayFragmentTimestamp": {
+        "type": "enum",
+        "members": {
+          "ALWAYS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ALWAYS"
+            }
+          },
+          "NEVER": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "NEVER"
+            }
+          }
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#DASHFragmentSelector": {
+        "type": "structure",
+        "members": {
+          "FragmentSelectorType": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#DASHFragmentSelectorType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe source of the timestamps for the requested media.\u003c/p\u003e\n         \u003cp\u003eWhen \u003ccode\u003eFragmentSelectorType\u003c/code\u003e is set to \u003ccode\u003ePRODUCER_TIMESTAMP\u003c/code\u003e and\n                \u003ca\u003eGetDASHStreamingSessionURLInput$PlaybackMode\u003c/a\u003e is\n                \u003ccode\u003eON_DEMAND\u003c/code\u003e or \u003ccode\u003eLIVE_REPLAY\u003c/code\u003e, the first fragment ingested with\n            a producer timestamp within the specified \u003ca\u003eFragmentSelector$TimestampRange\u003c/a\u003e is included in the media playlist. In\n            addition, the fragments with producer timestamps within the \u003ccode\u003eTimestampRange\u003c/code\u003e\n            ingested immediately following the first fragment (up to the \u003ca\u003eGetDASHStreamingSessionURLInput$MaxManifestFragmentResults\u003c/a\u003e value) are\n            included. \u003c/p\u003e\n         \u003cp\u003eFragments that have duplicate producer timestamps are deduplicated. This means that if\n            producers are producing a stream of fragments with producer timestamps that are\n            approximately equal to the true clock time, the MPEG-DASH manifest will contain all of\n            the fragments within the requested timestamp range. If some fragments are ingested\n            within the same time range and very different points in time, only the oldest ingested\n            collection of fragments are returned.\u003c/p\u003e\n         \u003cp\u003eWhen \u003ccode\u003eFragmentSelectorType\u003c/code\u003e is set to \u003ccode\u003ePRODUCER_TIMESTAMP\u003c/code\u003e and\n                \u003ca\u003eGetDASHStreamingSessionURLInput$PlaybackMode\u003c/a\u003e is \u003ccode\u003eLIVE\u003c/code\u003e,\n            the producer timestamps are used in the MP4 fragments and for deduplication. But the\n            most recently ingested fragments based on server timestamps are included in the\n            MPEG-DASH manifest. This means that even if fragments ingested in the past have producer\n            timestamps with values now, they are not included in the HLS media playlist.\u003c/p\u003e\n         \u003cp\u003eThe default is \u003ccode\u003eSERVER_TIMESTAMP\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "TimestampRange": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#DASHTimestampRange",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe start and end of the timestamp range for the requested media.\u003c/p\u003e\n         \u003cp\u003eThis value should not be present if \u003ccode\u003ePlaybackType\u003c/code\u003e is\n            \u003ccode\u003eLIVE\u003c/code\u003e.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eContains the range of timestamps for the requested media, and the source of the\n            timestamps. \u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#DASHFragmentSelectorType": {
+        "type": "enum",
+        "members": {
+          "PRODUCER_TIMESTAMP": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "PRODUCER_TIMESTAMP"
+            }
+          },
+          "SERVER_TIMESTAMP": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "SERVER_TIMESTAMP"
+            }
+          }
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#DASHMaxResults": {
+        "type": "long",
+        "traits": {
+          "smithy.api#range": {
+            "min": 1,
+            "max": 5000
+          }
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#DASHPlaybackMode": {
+        "type": "enum",
+        "members": {
+          "LIVE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "LIVE"
+            }
+          },
+          "LIVE_REPLAY": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "LIVE_REPLAY"
+            }
+          },
+          "ON_DEMAND": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ON_DEMAND"
+            }
+          }
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#DASHStreamingSessionURL": {
+        "type": "string"
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#DASHTimestampRange": {
+        "type": "structure",
+        "members": {
+          "EndTimestamp": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe end of the timestamp range for the requested media. This value must be within 24\n            hours of the specified \u003ccode\u003eStartTimestamp\u003c/code\u003e, and it must be later than the\n                \u003ccode\u003eStartTimestamp\u003c/code\u003e value.\u003c/p\u003e\n         \u003cp\u003eIf \u003ccode\u003eFragmentSelectorType\u003c/code\u003e for the request is \u003ccode\u003eSERVER_TIMESTAMP\u003c/code\u003e,\n            this value must be in the past.\u003c/p\u003e\n         \u003cp\u003eThe \u003ccode\u003eEndTimestamp\u003c/code\u003e value is required for \u003ccode\u003eON_DEMAND\u003c/code\u003e mode, but\n            optional for \u003ccode\u003eLIVE_REPLAY\u003c/code\u003e mode. If the \u003ccode\u003eEndTimestamp\u003c/code\u003e is not set\n            for \u003ccode\u003eLIVE_REPLAY\u003c/code\u003e mode then the session will continue to include newly\n            ingested fragments until the session expires.\u003c/p\u003e\n         \u003cnote\u003e\n            \u003cp\u003eThis value is inclusive. The \u003ccode\u003eEndTimestamp\u003c/code\u003e is compared to the\n                (starting) timestamp of the fragment. Fragments that start before the\n                    \u003ccode\u003eEndTimestamp\u003c/code\u003e value and continue past it are included in the\n                session.\u003c/p\u003e\n         \u003c/note\u003e"
+            }
+          },
+          "StartTimestamp": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe start of the timestamp range for the requested media.\u003c/p\u003e\n         \u003cp\u003eIf the \u003ccode\u003eDASHTimestampRange\u003c/code\u003e value is specified, the\n                \u003ccode\u003eStartTimestamp\u003c/code\u003e value is required.\u003c/p\u003e\n         \u003cp\u003eOnly fragments that start exactly at or after \u003ccode\u003eStartTimestamp\u003c/code\u003e are included\n            in the session. Fragments that start before \u003ccode\u003eStartTimestamp\u003c/code\u003e and continue\n            past it aren't included in the session. If \u003ccode\u003eFragmentSelectorType\u003c/code\u003e is\n                \u003ccode\u003eSERVER_TIMESTAMP\u003c/code\u003e, the \u003ccode\u003eStartTimestamp\u003c/code\u003e must be later than\n            the stream head. \u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe start and end of the timestamp range for the requested media.\u003c/p\u003e\n         \u003cp\u003eThis value should not be present if \u003ccode\u003ePlaybackType\u003c/code\u003e is\n            \u003ccode\u003eLIVE\u003c/code\u003e.\u003c/p\u003e\n         \u003cp\u003eThe values in \u003ccode\u003eDASHimestampRange\u003c/code\u003e are inclusive. Fragments that start\n            exactly at or after the start time are included in the session. Fragments that start\n            before the start time and continue past it are not included in the session.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#ErrorMessage": {
+        "type": "string"
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#Expires": {
+        "type": "integer",
+        "traits": {
+          "smithy.api#range": {
+            "min": 300,
+            "max": 43200
+          }
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#Format": {
+        "type": "enum",
+        "members": {
+          "JPEG": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "JPEG"
+            }
+          },
+          "PNG": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "PNG"
+            }
+          }
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#FormatConfig": {
+        "type": "map",
+        "key": {
+          "target": "com.amazonaws.kinesisvideoarchivedmedia#FormatConfigKey"
+        },
+        "value": {
+          "target": "com.amazonaws.kinesisvideoarchivedmedia#FormatConfigValue"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 1
+          }
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#FormatConfigKey": {
+        "type": "enum",
+        "members": {
+          "JPEGQuality": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "JPEGQuality"
+            }
+          }
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#FormatConfigValue": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 256
+          },
+          "smithy.api#pattern": "^[a-zA-Z_0-9]+$"
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#Fragment": {
+        "type": "structure",
+        "members": {
+          "FragmentLengthInMilliseconds": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#Long",
+            "traits": {
+              "smithy.api#default": 0,
+              "smithy.api#documentation": "\u003cp\u003eThe playback duration or other time value associated with the fragment.\u003c/p\u003e"
+            }
+          },
+          "FragmentNumber": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#FragmentNumberString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the fragment. This value monotonically increases based on the\n            ingestion order.\u003c/p\u003e"
+            }
+          },
+          "FragmentSizeInBytes": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#Long",
+            "traits": {
+              "smithy.api#default": 0,
+              "smithy.api#documentation": "\u003cp\u003eThe total fragment size, including information about the fragment and contained media\n            data.\u003c/p\u003e"
+            }
+          },
+          "ProducerTimestamp": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe timestamp from the producer corresponding to the fragment.\u003c/p\u003e"
+            }
+          },
+          "ServerTimestamp": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe timestamp from the Amazon Web Services server corresponding to the fragment.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eRepresents a segment of video or other time-delimited data.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#FragmentList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.kinesisvideoarchivedmedia#Fragment"
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#FragmentNumberList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.kinesisvideoarchivedmedia#FragmentNumberString"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 1000
+          }
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#FragmentNumberString": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 128
+          },
+          "smithy.api#pattern": "^[0-9]+$"
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#FragmentSelector": {
+        "type": "structure",
+        "members": {
+          "FragmentSelectorType": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#FragmentSelectorType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe origin of the timestamps to use (Server or Producer).\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "TimestampRange": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#TimestampRange",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe range of timestamps to return.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eDescribes the timestamp range and timestamp origin of a range of fragments.\u003c/p\u003e\n         \u003cp\u003eOnly fragments with a start timestamp greater than or equal to the given start time\n            and less than or equal to the end time are returned. For example, if a stream contains\n            fragments with the following start timestamps: \u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e00:00:00\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e00:00:02\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e00:00:04\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e00:00:06\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e\n         \u003cp\u003e A fragment selector range with a start time of 00:00:01 and end time of 00:00:04\n            would return the fragments with start times of 00:00:02 and 00:00:04. \u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#FragmentSelectorType": {
+        "type": "enum",
+        "members": {
+          "PRODUCER_TIMESTAMP": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "PRODUCER_TIMESTAMP"
+            }
+          },
+          "SERVER_TIMESTAMP": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "SERVER_TIMESTAMP"
+            }
+          }
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#GetClip": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.kinesisvideoarchivedmedia#GetClipInput"
+        },
+        "output": {
+          "target": "com.amazonaws.kinesisvideoarchivedmedia#GetClipOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#ClientLimitExceededException"
+          },
+          {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#InvalidArgumentException"
+          },
+          {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#InvalidCodecPrivateDataException"
+          },
+          {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#InvalidMediaFrameException"
+          },
+          {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#MissingCodecPrivateDataException"
+          },
+          {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#NoDataRetentionException"
+          },
+          {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#NotAuthorizedException"
+          },
+          {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#UnsupportedStreamMediaTypeException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eDownloads an MP4 file (clip) containing the archived, on-demand media from the\n            specified video stream over the specified time range. \u003c/p\u003e\n         \u003cp\u003eBoth the StreamName and the StreamARN parameters are optional, but you must specify\n            either the StreamName or the StreamARN when invoking this API operation. \u003c/p\u003e\n         \u003cp\u003eAs a prerequisite to using GetCLip API, you must obtain an endpoint using\n                \u003ccode\u003eGetDataEndpoint\u003c/code\u003e, specifying GET_CLIP for\u003ccode\u003e\u003c/code\u003e the\n                \u003ccode\u003eAPIName\u003c/code\u003e parameter. \u003c/p\u003e\n         \u003cp\u003eAn Amazon Kinesis video stream has the following requirements for providing data\n            through MP4:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003eThe media must contain h.264 or h.265 encoded video and, optionally, AAC or\n                    G.711 encoded audio. Specifically, the codec ID of track 1 should be\n                        \u003ccode\u003eV_MPEG/ISO/AVC\u003c/code\u003e (for h.264) or V_MPEGH/ISO/HEVC (for H.265).\n                    Optionally, the codec ID of track 2 should be \u003ccode\u003eA_AAC\u003c/code\u003e (for AAC) or\n                    A_MS/ACM (for G.711).\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eData retention must be greater than 0.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eThe video track of each fragment must contain codec private data in the\n                    Advanced Video Coding (AVC) for H.264 format and HEVC for H.265 format. For more\n                    information, see \u003ca href=\"https://www.iso.org/standard/55980.html\"\u003eMPEG-4\n                        specification ISO/IEC 14496-15\u003c/a\u003e. For information about adapting\n                    stream data to a given format, see \u003ca href=\"http://docs.aws.amazon.com/kinesisvideostreams/latest/dg/producer-reference-nal.html\"\u003eNAL Adaptation Flags\u003c/a\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eThe audio track (if present) of each fragment must contain codec private data\n                    in the AAC format (\u003ca href=\"https://www.iso.org/standard/43345.html\"\u003eAAC\n                        specification ISO/IEC 13818-7\u003c/a\u003e) or the \u003ca href=\"http://www-mmsp.ece.mcgill.ca/Documents/AudioFormats/WAVE/WAVE.html\"\u003eMS\n                        Wave format\u003c/a\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e\n         \u003cp\u003eYou can monitor the amount of outgoing data by monitoring the\n                \u003ccode\u003eGetClip.OutgoingBytes\u003c/code\u003e Amazon CloudWatch metric. For information about\n            using CloudWatch to monitor Kinesis Video Streams, see \u003ca href=\"http://docs.aws.amazon.com/kinesisvideostreams/latest/dg/monitoring.html\"\u003eMonitoring Kinesis Video Streams\u003c/a\u003e. For pricing information, see \u003ca href=\"https://aws.amazon.com/kinesis/video-streams/pricing/\"\u003eAmazon Kinesis Video\n                    Streams Pricing\u003c/a\u003e and \u003ca href=\"https://aws.amazon.com/pricing/\"\u003e Amazon Web Services\n                Pricing\u003c/a\u003e. Charges for outgoing Amazon Web Services data apply.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/getClip",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#GetClipInput": {
+        "type": "structure",
+        "members": {
+          "ClipFragmentSelector": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#ClipFragmentSelector",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe time range of the requested clip and the source of the timestamps.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "StreamARN": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#ResourceARN",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the stream for which to retrieve the media clip. \u003c/p\u003e\n         \u003cp\u003eYou must specify either the StreamName or the StreamARN. \u003c/p\u003e"
+            }
+          },
+          "StreamName": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#StreamName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the stream for which to retrieve the media clip. \u003c/p\u003e\n         \u003cp\u003eYou must specify either the StreamName or the StreamARN. \u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#GetClipOutput": {
+        "type": "structure",
+        "members": {
+          "ContentType": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#ContentType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe content type of the media in the requested clip.\u003c/p\u003e",
+              "smithy.api#httpHeader": "Content-Type"
+            }
+          },
+          "Payload": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#Payload",
+            "traits": {
+              "smithy.api#default": "",
+              "smithy.api#documentation": "\u003cp\u003eTraditional MP4 file that contains the media clip from the specified video stream. The\n            output will contain the first 100 MB or the first 200 fragments from the specified start\n            timestamp. For more information, see \u003ca href=\"https://docs.aws.amazon.com/kinesisvideostreams/latest/dg/limits.html\"\u003eKinesis\n                Video Streams Limits\u003c/a\u003e. \u003c/p\u003e",
+              "smithy.api#httpPayload": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#GetDASHStreamingSessionURL": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.kinesisvideoarchivedmedia#GetDASHStreamingSessionURLInput"
+        },
+        "output": {
+          "target": "com.amazonaws.kinesisvideoarchivedmedia#GetDASHStreamingSessionURLOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#ClientLimitExceededException"
+          },
+          {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#InvalidArgumentException"
+          },
+          {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#InvalidCodecPrivateDataException"
+          },
+          {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#MissingCodecPrivateDataException"
+          },
+          {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#NoDataRetentionException"
+          },
+          {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#NotAuthorizedException"
+          },
+          {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#UnsupportedStreamMediaTypeException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eRetrieves an MPEG Dynamic Adaptive Streaming over HTTP (DASH) URL for the stream. You\n            can then open the URL in a media player to view the stream contents.\u003c/p\u003e\n         \u003cp\u003eBoth the \u003ccode\u003eStreamName\u003c/code\u003e and the \u003ccode\u003eStreamARN\u003c/code\u003e parameters are\n            optional, but you must specify either the \u003ccode\u003eStreamName\u003c/code\u003e or the\n                \u003ccode\u003eStreamARN\u003c/code\u003e when invoking this API operation.\u003c/p\u003e\n         \u003cp\u003eAn Amazon Kinesis video stream has the following requirements for providing data\n            through MPEG-DASH:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003eThe media must contain h.264 or h.265 encoded video and, optionally, AAC or\n                    G.711 encoded audio. Specifically, the codec ID of track 1 should be\n                        \u003ccode\u003eV_MPEG/ISO/AVC\u003c/code\u003e (for h.264) or V_MPEGH/ISO/HEVC (for H.265).\n                    Optionally, the codec ID of track 2 should be \u003ccode\u003eA_AAC\u003c/code\u003e (for AAC) or\n                    A_MS/ACM (for G.711).\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eData retention must be greater than 0.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eThe video track of each fragment must contain codec private data in the\n                    Advanced Video Coding (AVC) for H.264 format and HEVC for H.265 format. For more\n                    information, see \u003ca href=\"https://www.iso.org/standard/55980.html\"\u003eMPEG-4\n                        specification ISO/IEC 14496-15\u003c/a\u003e. For information about adapting\n                    stream data to a given format, see \u003ca href=\"http://docs.aws.amazon.com/kinesisvideostreams/latest/dg/producer-reference-nal.html\"\u003eNAL Adaptation Flags\u003c/a\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eThe audio track (if present) of each fragment must contain codec private data\n                    in the AAC format (\u003ca href=\"https://www.iso.org/standard/43345.html\"\u003eAAC\n                        specification ISO/IEC 13818-7\u003c/a\u003e) or the \u003ca href=\"http://www-mmsp.ece.mcgill.ca/Documents/AudioFormats/WAVE/WAVE.html\"\u003eMS\n                        Wave format\u003c/a\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e\n         \u003cp\u003eThe following procedure shows how to use MPEG-DASH with Kinesis Video Streams:\u003c/p\u003e\n         \u003col\u003e\n            \u003cli\u003e\n               \u003cp\u003eGet an endpoint using \u003ca href=\"http://docs.aws.amazon.com/kinesisvideostreams/latest/dg/API_GetDataEndpoint.html\"\u003eGetDataEndpoint\u003c/a\u003e, specifying\n                        \u003ccode\u003eGET_DASH_STREAMING_SESSION_URL\u003c/code\u003e for the \u003ccode\u003eAPIName\u003c/code\u003e\n                    parameter.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eRetrieve the MPEG-DASH URL using \u003ccode\u003eGetDASHStreamingSessionURL\u003c/code\u003e.\n                    Kinesis Video Streams creates an MPEG-DASH streaming session to be used for\n                    accessing content in a stream using the MPEG-DASH protocol.\n                        \u003ccode\u003eGetDASHStreamingSessionURL\u003c/code\u003e returns an authenticated URL (that\n                    includes an encrypted session token) for the session's MPEG-DASH\n                        \u003ci\u003emanifest\u003c/i\u003e (the root resource needed for streaming with\n                    MPEG-DASH).\u003c/p\u003e\n               \u003cnote\u003e\n                  \u003cp\u003eDon't share or store this token where an unauthorized entity can access\n                        it. The token provides access to the content of the stream. Safeguard the\n                        token with the same measures that you use with your Amazon Web Services credentials.\u003c/p\u003e\n               \u003c/note\u003e\n               \u003cp\u003eThe media that is made available through the manifest consists only of the\n                    requested stream, time range, and format. No other media data (such as frames\n                    outside the requested window or alternate bitrates) is made available.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eProvide the URL (containing the encrypted session token) for the MPEG-DASH\n                    manifest to a media player that supports the MPEG-DASH protocol. Kinesis Video\n                    Streams makes the initialization fragment and media fragments available through\n                    the manifest URL. The initialization fragment contains the codec private data\n                    for the stream, and other data needed to set up the video or audio decoder and\n                    renderer. The media fragments contain encoded video frames or encoded audio\n                    samples.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eThe media player receives the authenticated URL and requests stream metadata\n                    and media data normally. When the media player requests data, it calls the\n                    following actions:\u003c/p\u003e\n               \u003cul\u003e\n                  \u003cli\u003e\n                     \u003cp\u003e\n                        \u003cb\u003eGetDASHManifest:\u003c/b\u003e Retrieves an MPEG DASH\n                            manifest, which contains the metadata for the media that you want to\n                            playback.\u003c/p\u003e\n                  \u003c/li\u003e\n                  \u003cli\u003e\n                     \u003cp\u003e\n                        \u003cb\u003eGetMP4InitFragment:\u003c/b\u003e Retrieves the MP4\n                            initialization fragment. The media player typically loads the\n                            initialization fragment before loading any media fragments. This\n                            fragment contains the \"\u003ccode\u003efytp\u003c/code\u003e\" and \"\u003ccode\u003emoov\u003c/code\u003e\" MP4\n                            atoms, and the child atoms that are needed to initialize the media\n                            player decoder.\u003c/p\u003e\n                     \u003cp\u003eThe initialization fragment does not correspond to a fragment in a\n                            Kinesis video stream. It contains only the codec private data for the\n                            stream and respective track, which the media player needs to decode the\n                            media frames.\u003c/p\u003e\n                  \u003c/li\u003e\n                  \u003cli\u003e\n                     \u003cp\u003e\n                        \u003cb\u003eGetMP4MediaFragment:\u003c/b\u003e Retrieves MP4\n                            media fragments. These fragments contain the \"\u003ccode\u003emoof\u003c/code\u003e\" and\n                                \"\u003ccode\u003emdat\u003c/code\u003e\" MP4 atoms and their child atoms, containing the\n                            encoded fragment's media frames and their timestamps. \u003c/p\u003e\n                     \u003cnote\u003e\n                        \u003cp\u003eAfter the first media fragment is made available in a streaming\n                                session, any fragments that don't contain the same codec private\n                                data cause an error to be returned when those different media\n                                fragments are loaded. Therefore, the codec private data should not\n                                change between fragments in a session. This also means that the\n                                session fails if the fragments in a stream change from having only\n                                video to having both audio and video.\u003c/p\u003e\n                     \u003c/note\u003e\n                     \u003cp\u003eData retrieved with this action is billable. See \u003ca href=\"https://aws.amazon.com/kinesis/video-streams/pricing/\"\u003ePricing\u003c/a\u003e for details.\u003c/p\u003e\n                  \u003c/li\u003e\n               \u003c/ul\u003e\n            \u003c/li\u003e\n         \u003c/ol\u003e\n         \u003cnote\u003e\n            \u003cp\u003eFor restrictions that apply to MPEG-DASH sessions, see \u003ca href=\"http://docs.aws.amazon.com/kinesisvideostreams/latest/dg/limits.html\"\u003eKinesis Video Streams Limits\u003c/a\u003e.\u003c/p\u003e\n         \u003c/note\u003e\n         \u003cp\u003eYou can monitor the amount of data that the media player consumes by monitoring the\n                \u003ccode\u003eGetMP4MediaFragment.OutgoingBytes\u003c/code\u003e Amazon CloudWatch metric. For\n            information about using CloudWatch to monitor Kinesis Video Streams, see \u003ca href=\"http://docs.aws.amazon.com/kinesisvideostreams/latest/dg/monitoring.html\"\u003eMonitoring Kinesis Video Streams\u003c/a\u003e. For pricing information, see \u003ca href=\"https://aws.amazon.com/kinesis/video-streams/pricing/\"\u003eAmazon Kinesis Video\n                Streams Pricing\u003c/a\u003e and \u003ca href=\"https://aws.amazon.com/pricing/\"\u003eAmazon Web Services\n                Pricing\u003c/a\u003e. Charges for both HLS sessions and outgoing Amazon Web Services data apply.\u003c/p\u003e\n         \u003cp\u003eFor more information about HLS, see \u003ca href=\"https://developer.apple.com/streaming/\"\u003eHTTP Live Streaming\u003c/a\u003e on the\n                \u003ca href=\"https://developer.apple.com\"\u003eApple Developer site\u003c/a\u003e.\u003c/p\u003e\n         \u003cimportant\u003e\n            \u003cp\u003eIf an error is thrown after invoking a Kinesis Video Streams archived media API,\n                in addition to the HTTP status code and the response body, it includes the following\n                pieces of information: \u003c/p\u003e\n            \u003cul\u003e\n               \u003cli\u003e\n                  \u003cp\u003e\n                     \u003ccode\u003ex-amz-ErrorType\u003c/code\u003e HTTP header \u2013 contains a more specific error\n                        type in addition to what the HTTP status code provides. \u003c/p\u003e\n               \u003c/li\u003e\n               \u003cli\u003e\n                  \u003cp\u003e\n                     \u003ccode\u003ex-amz-RequestId\u003c/code\u003e HTTP header \u2013 if you want to report an issue to\n                        Amazon Web Services the support team can better diagnose the problem if given the Request\n                        Id.\u003c/p\u003e\n               \u003c/li\u003e\n            \u003c/ul\u003e\n            \u003cp\u003eBoth the HTTP status code and the ErrorType header can be utilized to make\n                programmatic decisions about whether errors are retry-able and under what\n                conditions, as well as provide information on what actions the client programmer\n                might need to take in order to successfully try again.\u003c/p\u003e\n            \u003cp\u003eFor more information, see the \u003cb\u003eErrors\u003c/b\u003e section at\n                the bottom of this topic, as well as \u003ca href=\"https://docs.aws.amazon.com/kinesisvideostreams/latest/dg/CommonErrors.html\"\u003eCommon Errors\u003c/a\u003e.\n            \u003c/p\u003e\n         \u003c/important\u003e",
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/getDASHStreamingSessionURL",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#GetDASHStreamingSessionURLInput": {
+        "type": "structure",
+        "members": {
+          "DASHFragmentSelector": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#DASHFragmentSelector",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe time range of the requested fragment and the source of the timestamps.\u003c/p\u003e\n         \u003cp\u003eThis parameter is required if \u003ccode\u003ePlaybackMode\u003c/code\u003e is \u003ccode\u003eON_DEMAND\u003c/code\u003e or\n                \u003ccode\u003eLIVE_REPLAY\u003c/code\u003e. This parameter is optional if PlaybackMode is\u003ccode\u003e\u003c/code\u003e\n            \u003ccode\u003eLIVE\u003c/code\u003e. If \u003ccode\u003ePlaybackMode\u003c/code\u003e is \u003ccode\u003eLIVE\u003c/code\u003e, the\n                \u003ccode\u003eFragmentSelectorType\u003c/code\u003e can be set, but the \u003ccode\u003eTimestampRange\u003c/code\u003e\n            should not be set. If \u003ccode\u003ePlaybackMode\u003c/code\u003e is \u003ccode\u003eON_DEMAND\u003c/code\u003e or\n                \u003ccode\u003eLIVE_REPLAY\u003c/code\u003e, both \u003ccode\u003eFragmentSelectorType\u003c/code\u003e and\n                \u003ccode\u003eTimestampRange\u003c/code\u003e must be set.\u003c/p\u003e"
+            }
+          },
+          "DisplayFragmentNumber": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#DASHDisplayFragmentNumber",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eFragments are identified in the manifest file based on their sequence number in the\n            session. If DisplayFragmentNumber is set to \u003ccode\u003eALWAYS\u003c/code\u003e, the Kinesis Video\n            Streams fragment number is added to each S element in the manifest file with the\n            attribute name \u201ckvs:fn\u201d. These fragment numbers can be used for logging or for use with\n            other APIs (e.g. \u003ccode\u003eGetMedia\u003c/code\u003e and \u003ccode\u003eGetMediaForFragmentList\u003c/code\u003e). A\n            custom MPEG-DASH media player is necessary to leverage these this custom\n            attribute.\u003c/p\u003e\n         \u003cp\u003eThe default value is \u003ccode\u003eNEVER\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "DisplayFragmentTimestamp": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#DASHDisplayFragmentTimestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003ePer the MPEG-DASH specification, the wall-clock time of fragments in the manifest file\n            can be derived using attributes in the manifest itself. However, typically, MPEG-DASH\n            compatible media players do not properly handle gaps in the media timeline. Kinesis\n            Video Streams adjusts the media timeline in the manifest file to enable playback of\n            media with discontinuities. Therefore, the wall-clock time derived from the manifest\n            file may be inaccurate. If DisplayFragmentTimestamp is set to \u003ccode\u003eALWAYS\u003c/code\u003e, the\n            accurate fragment timestamp is added to each S element in the manifest file with the\n            attribute name \u201ckvs:ts\u201d. A custom MPEG-DASH media player is necessary to leverage this\n            custom attribute.\u003c/p\u003e\n         \u003cp\u003eThe default value is \u003ccode\u003eNEVER\u003c/code\u003e. When \u003ca\u003eDASHFragmentSelector\u003c/a\u003e\n            is \u003ccode\u003eSERVER_TIMESTAMP\u003c/code\u003e, the timestamps will be the server start timestamps.\n            Similarly, when \u003ca\u003eDASHFragmentSelector\u003c/a\u003e is\n                \u003ccode\u003ePRODUCER_TIMESTAMP\u003c/code\u003e, the timestamps will be the producer start\n            timestamps. \u003c/p\u003e"
+            }
+          },
+          "Expires": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#Expires",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe time in seconds until the requested session expires. This value can be between 300\n            (5 minutes) and 43200 (12 hours).\u003c/p\u003e\n         \u003cp\u003eWhen a session expires, no new calls to \u003ccode\u003eGetDashManifest\u003c/code\u003e,\n                \u003ccode\u003eGetMP4InitFragment\u003c/code\u003e, or \u003ccode\u003eGetMP4MediaFragment\u003c/code\u003e can be made for\n            that session.\u003c/p\u003e\n         \u003cp\u003eThe default is 300 (5 minutes).\u003c/p\u003e"
+            }
+          },
+          "MaxManifestFragmentResults": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#DASHMaxResults",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of fragments that are returned in the MPEG-DASH manifest.\u003c/p\u003e\n         \u003cp\u003eWhen the \u003ccode\u003ePlaybackMode\u003c/code\u003e is \u003ccode\u003eLIVE\u003c/code\u003e, the most recent fragments are\n            returned up to this value. When the \u003ccode\u003ePlaybackMode\u003c/code\u003e is \u003ccode\u003eON_DEMAND\u003c/code\u003e,\n            the oldest fragments are returned, up to this maximum number.\u003c/p\u003e\n         \u003cp\u003eWhen there are a higher number of fragments available in a live MPEG-DASH manifest,\n            video players often buffer content before starting playback. Increasing the buffer size\n            increases the playback latency, but it decreases the likelihood that rebuffering will\n            occur during playback. We recommend that a live MPEG-DASH manifest have a minimum of 3\n            fragments and a maximum of 10 fragments.\u003c/p\u003e\n         \u003cp\u003eThe default is 5 fragments if \u003ccode\u003ePlaybackMode\u003c/code\u003e is \u003ccode\u003eLIVE\u003c/code\u003e or\n                \u003ccode\u003eLIVE_REPLAY\u003c/code\u003e, and 1,000 if \u003ccode\u003ePlaybackMode\u003c/code\u003e is\n                \u003ccode\u003eON_DEMAND\u003c/code\u003e. \u003c/p\u003e\n         \u003cp\u003eThe maximum value of 1,000 fragments corresponds to more than 16 minutes of video on\n            streams with 1-second fragments, and more than 2 1/2 hours of video on streams with\n            10-second fragments.\u003c/p\u003e"
+            }
+          },
+          "PlaybackMode": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#DASHPlaybackMode",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eWhether to retrieve live, live replay, or archived, on-demand data.\u003c/p\u003e\n         \u003cp\u003eFeatures of the three types of sessions include the following:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003cb\u003e\n                     \u003ccode\u003eLIVE\u003c/code\u003e\n                  \u003c/b\u003e: For sessions of this type, the MPEG-DASH manifest is continually\n                    updated with the latest fragments as they become available. We recommend that\n                    the media player retrieve a new manifest on a one-second interval. When this\n                    type of session is played in a media player, the user interface typically\n                    displays a \"live\" notification, with no scrubber control for choosing the\n                    position in the playback window to display.\u003c/p\u003e\n               \u003cnote\u003e\n                  \u003cp\u003eIn \u003ccode\u003eLIVE\u003c/code\u003e mode, the newest available fragments are included in\n                        an MPEG-DASH manifest, even if there is a gap between fragments (that is, if\n                        a fragment is missing). A gap like this might cause a media player to halt\n                        or cause a jump in playback. In this mode, fragments are not added to the\n                        MPEG-DASH manifest if they are older than the newest fragment in the\n                        playlist. If the missing fragment becomes available after a subsequent\n                        fragment is added to the manifest, the older fragment is not added, and the\n                        gap is not filled.\u003c/p\u003e\n               \u003c/note\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003cb\u003e\n                     \u003ccode\u003eLIVE_REPLAY\u003c/code\u003e\n                  \u003c/b\u003e: For sessions of this type, the MPEG-DASH manifest is updated\n                    similarly to how it is updated for \u003ccode\u003eLIVE\u003c/code\u003e mode except that it starts\n                    by including fragments from a given start time. Instead of fragments being added\n                    as they are ingested, fragments are added as the duration of the next fragment\n                    elapses. For example, if the fragments in the session are two seconds long, then\n                    a new fragment is added to the manifest every two seconds. This mode is useful\n                    to be able to start playback from when an event is detected and continue live\n                    streaming media that has not yet been ingested as of the time of the session\n                    creation. This mode is also useful to stream previously archived media without\n                    being limited by the 1,000 fragment limit in the \u003ccode\u003eON_DEMAND\u003c/code\u003e mode.\n                \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003cb\u003e\n                     \u003ccode\u003eON_DEMAND\u003c/code\u003e\n                  \u003c/b\u003e: For sessions of this type, the MPEG-DASH manifest contains all the\n                    fragments for the session, up to the number that is specified in\n                        \u003ccode\u003eMaxManifestFragmentResults\u003c/code\u003e. The manifest must be retrieved only\n                    once for each session. When this type of session is played in a media player,\n                    the user interface typically displays a scrubber control for choosing the\n                    position in the playback window to display.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e\n         \u003cp\u003eIn all playback modes, if \u003ccode\u003eFragmentSelectorType\u003c/code\u003e is\n                \u003ccode\u003ePRODUCER_TIMESTAMP\u003c/code\u003e, and if there are multiple fragments with the same\n            start timestamp, the fragment that has the larger fragment number (that is, the newer\n            fragment) is included in the MPEG-DASH manifest. The other fragments are not included.\n            Fragments that have different timestamps but have overlapping durations are still\n            included in the MPEG-DASH manifest. This can lead to unexpected behavior in the media\n            player.\u003c/p\u003e\n         \u003cp\u003eThe default is \u003ccode\u003eLIVE\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "StreamARN": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#ResourceARN",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the stream for which to retrieve the MPEG-DASH\n            manifest URL.\u003c/p\u003e\n         \u003cp\u003eYou must specify either the \u003ccode\u003eStreamName\u003c/code\u003e or the\n            \u003ccode\u003eStreamARN\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "StreamName": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#StreamName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the stream for which to retrieve the MPEG-DASH manifest URL.\u003c/p\u003e\n         \u003cp\u003eYou must specify either the \u003ccode\u003eStreamName\u003c/code\u003e or the\n            \u003ccode\u003eStreamARN\u003c/code\u003e.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#GetDASHStreamingSessionURLOutput": {
+        "type": "structure",
+        "members": {
+          "DASHStreamingSessionURL": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#DASHStreamingSessionURL",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe URL (containing the session token) that a media player can use to retrieve the\n            MPEG-DASH manifest.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#GetHLSStreamingSessionURL": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.kinesisvideoarchivedmedia#GetHLSStreamingSessionURLInput"
+        },
+        "output": {
+          "target": "com.amazonaws.kinesisvideoarchivedmedia#GetHLSStreamingSessionURLOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#ClientLimitExceededException"
+          },
+          {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#InvalidArgumentException"
+          },
+          {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#InvalidCodecPrivateDataException"
+          },
+          {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#MissingCodecPrivateDataException"
+          },
+          {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#NoDataRetentionException"
+          },
+          {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#NotAuthorizedException"
+          },
+          {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#UnsupportedStreamMediaTypeException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eRetrieves an HTTP Live Streaming (HLS) URL for the stream. You can then open the URL\n            in a browser or media player to view the stream contents.\u003c/p\u003e\n         \u003cp\u003eBoth the \u003ccode\u003eStreamName\u003c/code\u003e and the \u003ccode\u003eStreamARN\u003c/code\u003e parameters are\n            optional, but you must specify either the \u003ccode\u003eStreamName\u003c/code\u003e or the\n                \u003ccode\u003eStreamARN\u003c/code\u003e when invoking this API operation.\u003c/p\u003e\n         \u003cp\u003eAn Amazon Kinesis video stream has the following requirements for providing data\n            through HLS:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003eFor streaming video, the media must contain H.264 or H.265 encoded video and, optionally, AAC\n                    encoded audio. Specifically, the codec ID of track 1 should be\n                    \u003ccode\u003eV_MPEG/ISO/AVC\u003c/code\u003e (for H.264) or \u003ccode\u003eV_MPEG/ISO/HEVC\u003c/code\u003e (for\n                    H.265). Optionally, the codec ID of track 2 should be \u003ccode\u003eA_AAC\u003c/code\u003e. For audio only streaming, the codec ID of track 1 should be \n                    \u003ccode\u003eA_AAC\u003c/code\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eData retention must be greater than 0.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eThe video track of each fragment must contain codec private data in the\n                    Advanced Video Coding (AVC) for H.264 format or HEVC for H.265 format (\u003ca href=\"https://www.iso.org/standard/55980.html\"\u003eMPEG-4 specification ISO/IEC\n                        14496-15\u003c/a\u003e). For information about adapting stream data to a given\n                    format, see \u003ca href=\"http://docs.aws.amazon.com/kinesisvideostreams/latest/dg/producer-reference-nal.html\"\u003eNAL Adaptation Flags\u003c/a\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eThe audio track (if present) of each fragment must contain codec private data\n                    in the AAC format (\u003ca href=\"https://www.iso.org/standard/43345.html\"\u003eAAC\n                        specification ISO/IEC 13818-7\u003c/a\u003e).\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e\n         \u003cp\u003eKinesis Video Streams HLS sessions contain fragments in the fragmented MPEG-4 form\n            (also called fMP4 or CMAF) or the MPEG-2 form (also called TS chunks, which the HLS\n            specification also supports). For more information about HLS fragment types, see the\n                \u003ca href=\"https://tools.ietf.org/html/draft-pantos-http-live-streaming-23\"\u003eHLS\n                specification\u003c/a\u003e.\u003c/p\u003e\n         \u003cp\u003eThe following procedure shows how to use HLS with Kinesis Video Streams:\u003c/p\u003e\n         \u003col\u003e\n            \u003cli\u003e\n               \u003cp\u003eGet an endpoint using \u003ca href=\"http://docs.aws.amazon.com/kinesisvideostreams/latest/dg/API_GetDataEndpoint.html\"\u003eGetDataEndpoint\u003c/a\u003e, specifying\n                        \u003ccode\u003eGET_HLS_STREAMING_SESSION_URL\u003c/code\u003e for the \u003ccode\u003eAPIName\u003c/code\u003e\n                    parameter.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eRetrieve the HLS URL using \u003ccode\u003eGetHLSStreamingSessionURL\u003c/code\u003e. Kinesis\n                    Video Streams creates an HLS streaming session to be used for accessing content\n                    in a stream using the HLS protocol. \u003ccode\u003eGetHLSStreamingSessionURL\u003c/code\u003e\n                    returns an authenticated URL (that includes an encrypted session token) for the\n                    session's HLS \u003ci\u003emaster playlist\u003c/i\u003e (the root resource needed for\n                    streaming with HLS).\u003c/p\u003e\n               \u003cnote\u003e\n                  \u003cp\u003eDon't share or store this token where an unauthorized entity could access\n                        it. The token provides access to the content of the stream. Safeguard the\n                        token with the same measures that you would use with your Amazon Web Services\n                        credentials.\u003c/p\u003e\n               \u003c/note\u003e\n               \u003cp\u003eThe media that is made available through the playlist consists only of the\n                    requested stream, time range, and format. No other media data (such as frames\n                    outside the requested window or alternate bitrates) is made available.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eProvide the URL (containing the encrypted session token) for the HLS master\n                    playlist to a media player that supports the HLS protocol. Kinesis Video Streams\n                    makes the HLS media playlist, initialization fragment, and media fragments\n                    available through the master playlist URL. The initialization fragment contains\n                    the codec private data for the stream, and other data needed to set up the video\n                    or audio decoder and renderer. The media fragments contain H.264-encoded video\n                    frames or AAC-encoded audio samples.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eThe media player receives the authenticated URL and requests stream metadata\n                    and media data normally. When the media player requests data, it calls the\n                    following actions:\u003c/p\u003e\n               \u003cul\u003e\n                  \u003cli\u003e\n                     \u003cp\u003e\n                        \u003cb\u003eGetHLSMasterPlaylist:\u003c/b\u003e Retrieves an HLS\n                            master playlist, which contains a URL for the\n                                \u003ccode\u003eGetHLSMediaPlaylist\u003c/code\u003e action for each track, and\n                            additional metadata for the media player, including estimated bitrate\n                            and resolution.\u003c/p\u003e\n                  \u003c/li\u003e\n                  \u003cli\u003e\n                     \u003cp\u003e\n                        \u003cb\u003eGetHLSMediaPlaylist:\u003c/b\u003e Retrieves an HLS\n                            media playlist, which contains a URL to access the MP4 initialization\n                            fragment with the \u003ccode\u003eGetMP4InitFragment\u003c/code\u003e action, and URLs to\n                            access the MP4 media fragments with the \u003ccode\u003eGetMP4MediaFragment\u003c/code\u003e\n                            actions. The HLS media playlist also contains metadata about the stream\n                            that the player needs to play it, such as whether the\n                                \u003ccode\u003ePlaybackMode\u003c/code\u003e is \u003ccode\u003eLIVE\u003c/code\u003e or\n                                \u003ccode\u003eON_DEMAND\u003c/code\u003e. The HLS media playlist is typically static\n                            for sessions with a \u003ccode\u003ePlaybackType\u003c/code\u003e of \u003ccode\u003eON_DEMAND\u003c/code\u003e.\n                            The HLS media playlist is continually updated with new fragments for\n                            sessions with a \u003ccode\u003ePlaybackType\u003c/code\u003e of \u003ccode\u003eLIVE\u003c/code\u003e. There is\n                            a distinct HLS media playlist for the video track and the audio track\n                            (if applicable) that contains MP4 media URLs for the specific track.\n                        \u003c/p\u003e\n                  \u003c/li\u003e\n                  \u003cli\u003e\n                     \u003cp\u003e\n                        \u003cb\u003eGetMP4InitFragment:\u003c/b\u003e Retrieves the MP4\n                            initialization fragment. The media player typically loads the\n                            initialization fragment before loading any media fragments. This\n                            fragment contains the \"\u003ccode\u003efytp\u003c/code\u003e\" and \"\u003ccode\u003emoov\u003c/code\u003e\" MP4\n                            atoms, and the child atoms that are needed to initialize the media\n                            player decoder.\u003c/p\u003e\n                     \u003cp\u003eThe initialization fragment does not correspond to a fragment in a\n                            Kinesis video stream. It contains only the codec private data for the\n                            stream and respective track, which the media player needs to decode the\n                            media frames.\u003c/p\u003e\n                  \u003c/li\u003e\n                  \u003cli\u003e\n                     \u003cp\u003e\n                        \u003cb\u003eGetMP4MediaFragment:\u003c/b\u003e Retrieves MP4\n                            media fragments. These fragments contain the \"\u003ccode\u003emoof\u003c/code\u003e\" and\n                                \"\u003ccode\u003emdat\u003c/code\u003e\" MP4 atoms and their child atoms, containing the\n                            encoded fragment's media frames and their timestamps. \u003c/p\u003e\n                     \u003cnote\u003e\n                        \u003cp\u003eFor the HLS streaming session, in-track codec private data (CPD)\n                                changes are supported. After the first media fragment is made\n                                available in a streaming session, fragments can contain CPD changes\n                                for each track. Therefore, the fragments in a session can have a\n                                different resolution, bit rate, or other information in the CPD\n                                without interrupting playback. However, any change made in the track\n                                number or track codec format can return an error when those\n                                different media fragments are loaded. For example, streaming will\n                                fail if the fragments in the stream change from having only video to\n                                having both audio and video, or if an AAC audio track is changed to\n                                an ALAW audio track. For each streaming session, only 500 CPD\n                                changes are allowed.\u003c/p\u003e\n                     \u003c/note\u003e\n                     \u003cp\u003eData retrieved with this action is billable. For information, see\n                                \u003ca href=\"https://aws.amazon.com/kinesis/video-streams/pricing/\"\u003ePricing\u003c/a\u003e.\u003c/p\u003e\n                  \u003c/li\u003e\n                  \u003cli\u003e\n                     \u003cp\u003e\n                        \u003cb\u003eGetTSFragment:\u003c/b\u003e Retrieves MPEG TS\n                            fragments containing both initialization and media data for all tracks\n                            in the stream.\u003c/p\u003e\n                     \u003cnote\u003e\n                        \u003cp\u003eIf the \u003ccode\u003eContainerFormat\u003c/code\u003e is \u003ccode\u003eMPEG_TS\u003c/code\u003e, this\n                                API is used instead of \u003ccode\u003eGetMP4InitFragment\u003c/code\u003e and\n                                    \u003ccode\u003eGetMP4MediaFragment\u003c/code\u003e to retrieve stream\n                                media.\u003c/p\u003e\n                     \u003c/note\u003e\n                     \u003cp\u003eData retrieved with this action is billable. For more information, see\n                                \u003ca href=\"https://aws.amazon.com/kinesis/video-streams/pricing/\"\u003eKinesis Video Streams pricing\u003c/a\u003e.\u003c/p\u003e\n                  \u003c/li\u003e\n               \u003c/ul\u003e\n            \u003c/li\u003e\n         \u003c/ol\u003e\n         \u003cp\u003eA streaming session URL must not be shared between players. The service\n                        might throttle a session if multiple media players are sharing it. For\n                        connection limits, see \u003ca href=\"http://docs.aws.amazon.com/kinesisvideostreams/latest/dg/limits.html\"\u003eKinesis Video Streams Limits\u003c/a\u003e.\u003c/p\u003e\n         \u003cp\u003eYou can monitor the amount of data that the media player consumes by monitoring the\n                \u003ccode\u003eGetMP4MediaFragment.OutgoingBytes\u003c/code\u003e Amazon CloudWatch metric. For\n            information about using CloudWatch to monitor Kinesis Video Streams, see \u003ca href=\"http://docs.aws.amazon.com/kinesisvideostreams/latest/dg/monitoring.html\"\u003eMonitoring Kinesis Video Streams\u003c/a\u003e. For pricing information, see \u003ca href=\"https://aws.amazon.com/kinesis/video-streams/pricing/\"\u003eAmazon Kinesis Video\n                Streams Pricing\u003c/a\u003e and \u003ca href=\"https://aws.amazon.com/pricing/\"\u003eAmazon Web Services\n                Pricing\u003c/a\u003e. Charges for both HLS sessions and outgoing Amazon Web Services data apply.\u003c/p\u003e\n         \u003cp\u003eFor more information about HLS, see \u003ca href=\"https://developer.apple.com/streaming/\"\u003eHTTP Live Streaming\u003c/a\u003e on the\n                \u003ca href=\"https://developer.apple.com\"\u003eApple Developer site\u003c/a\u003e.\u003c/p\u003e\n         \u003cimportant\u003e\n            \u003cp\u003eIf an error is thrown after invoking a Kinesis Video Streams archived media API,\n                in addition to the HTTP status code and the response body, it includes the following\n                pieces of information: \u003c/p\u003e\n            \u003cul\u003e\n               \u003cli\u003e\n                  \u003cp\u003e\n                     \u003ccode\u003ex-amz-ErrorType\u003c/code\u003e HTTP header \u2013 contains a more specific error\n                        type in addition to what the HTTP status code provides. \u003c/p\u003e\n               \u003c/li\u003e\n               \u003cli\u003e\n                  \u003cp\u003e\n                     \u003ccode\u003ex-amz-RequestId\u003c/code\u003e HTTP header \u2013 if you want to report an issue to\n                        Amazon Web Services, the support team can better diagnose the problem if given the Request\n                        Id.\u003c/p\u003e\n               \u003c/li\u003e\n            \u003c/ul\u003e\n            \u003cp\u003eBoth the HTTP status code and the ErrorType header can be utilized to make\n                programmatic decisions about whether errors are retry-able and under what\n                conditions, as well as provide information on what actions the client programmer\n                might need to take in order to successfully try again.\u003c/p\u003e\n            \u003cp\u003eFor more information, see the \u003cb\u003eErrors\u003c/b\u003e section at\n                the bottom of this topic, as well as \u003ca href=\"https://docs.aws.amazon.com/kinesisvideostreams/latest/dg/CommonErrors.html\"\u003eCommon Errors\u003c/a\u003e.\n            \u003c/p\u003e\n         \u003c/important\u003e",
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/getHLSStreamingSessionURL",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#GetHLSStreamingSessionURLInput": {
+        "type": "structure",
+        "members": {
+          "ContainerFormat": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#ContainerFormat",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies which format should be used for packaging the media. Specifying the\n                \u003ccode\u003eFRAGMENTED_MP4\u003c/code\u003e container format packages the media into MP4 fragments\n            (fMP4 or CMAF). This is the recommended packaging because there is minimal packaging\n            overhead. The other container format option is \u003ccode\u003eMPEG_TS\u003c/code\u003e. HLS has supported\n            MPEG TS chunks since it was released and is sometimes the only supported packaging on\n            older HLS players. MPEG TS typically has a 5-25 percent packaging overhead. This means\n            MPEG TS typically requires 5-25 percent more bandwidth and cost than fMP4.\u003c/p\u003e\n         \u003cp\u003eThe default is \u003ccode\u003eFRAGMENTED_MP4\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "DiscontinuityMode": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#HLSDiscontinuityMode",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies when flags marking discontinuities between fragments are added to the media\n            playlists.\u003c/p\u003e\n         \u003cp\u003eMedia players typically build a timeline of media content to play, based on the\n            timestamps of each fragment. This means that if there is any overlap or gap between\n            fragments (as is typical if \u003ca\u003eHLSFragmentSelector\u003c/a\u003e is set to\n                \u003ccode\u003eSERVER_TIMESTAMP\u003c/code\u003e), the media player timeline will also have small gaps\n            between fragments in some places, and will overwrite frames in other places. Gaps in the\n            media player timeline can cause playback to stall and overlaps can cause playback to be\n            jittery. When there are discontinuity flags between fragments, the media player is\n            expected to reset the timeline, resulting in the next fragment being played immediately\n            after the previous fragment. \u003c/p\u003e\n         \u003cp\u003eThe following modes are supported:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eALWAYS\u003c/code\u003e: a discontinuity marker is placed between every fragment in\n                    the HLS media playlist. It is recommended to use a value of \u003ccode\u003eALWAYS\u003c/code\u003e\n                    if the fragment timestamps are not accurate.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eNEVER\u003c/code\u003e: no discontinuity markers are placed anywhere. It is\n                    recommended to use a value of \u003ccode\u003eNEVER\u003c/code\u003e to ensure the media player\n                    timeline most accurately maps to the producer timestamps. \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eON_DISCONTINUITY\u003c/code\u003e: a discontinuity marker is placed between\n                    fragments that have a gap or overlap of more than 50 milliseconds. For most\n                    playback scenarios, it is recommended to use a value of\n                        \u003ccode\u003eON_DISCONTINUITY\u003c/code\u003e so that the media player timeline is only\n                    reset when there is a significant issue with the media timeline (e.g. a missing\n                    fragment).\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e\n         \u003cp\u003eThe default is \u003ccode\u003eALWAYS\u003c/code\u003e when \u003ca\u003eHLSFragmentSelector\u003c/a\u003e is set\n            to \u003ccode\u003eSERVER_TIMESTAMP\u003c/code\u003e, and \u003ccode\u003eNEVER\u003c/code\u003e when it is set to\n                \u003ccode\u003ePRODUCER_TIMESTAMP\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "DisplayFragmentTimestamp": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#HLSDisplayFragmentTimestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies when the fragment start timestamps should be included in the HLS media\n            playlist. Typically, media players report the playhead position as a time relative to\n            the start of the first fragment in the playback session. However, when the start\n            timestamps are included in the HLS media playlist, some media players might report the\n            current playhead as an absolute time based on the fragment timestamps. This can be\n            useful for creating a playback experience that shows viewers the wall-clock time of the\n            media.\u003c/p\u003e\n         \u003cp\u003eThe default is \u003ccode\u003eNEVER\u003c/code\u003e. When \u003ca\u003eHLSFragmentSelector\u003c/a\u003e is\n                \u003ccode\u003eSERVER_TIMESTAMP\u003c/code\u003e, the timestamps will be the server start timestamps.\n            Similarly, when \u003ca\u003eHLSFragmentSelector\u003c/a\u003e is\n            \u003ccode\u003ePRODUCER_TIMESTAMP\u003c/code\u003e, the timestamps will be the producer start timestamps.\n        \u003c/p\u003e"
+            }
+          },
+          "Expires": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#Expires",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe time in seconds until the requested session expires. This value can be between 300\n            (5 minutes) and 43200 (12 hours).\u003c/p\u003e\n         \u003cp\u003eWhen a session expires, no new calls to \u003ccode\u003eGetHLSMasterPlaylist\u003c/code\u003e,\n                \u003ccode\u003eGetHLSMediaPlaylist\u003c/code\u003e, \u003ccode\u003eGetMP4InitFragment\u003c/code\u003e,\n                \u003ccode\u003eGetMP4MediaFragment\u003c/code\u003e, or \u003ccode\u003eGetTSFragment\u003c/code\u003e can be made for that\n            session.\u003c/p\u003e\n         \u003cp\u003eThe default is 300 (5 minutes).\u003c/p\u003e"
+            }
+          },
+          "HLSFragmentSelector": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#HLSFragmentSelector",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe time range of the requested fragment and the source of the timestamps.\u003c/p\u003e\n         \u003cp\u003eThis parameter is required if \u003ccode\u003ePlaybackMode\u003c/code\u003e is \u003ccode\u003eON_DEMAND\u003c/code\u003e or\n                \u003ccode\u003eLIVE_REPLAY\u003c/code\u003e. This parameter is optional if PlaybackMode is\u003ccode\u003e\u003c/code\u003e\n            \u003ccode\u003eLIVE\u003c/code\u003e. If \u003ccode\u003ePlaybackMode\u003c/code\u003e is \u003ccode\u003eLIVE\u003c/code\u003e, the\n                \u003ccode\u003eFragmentSelectorType\u003c/code\u003e can be set, but the \u003ccode\u003eTimestampRange\u003c/code\u003e\n            should not be set. If \u003ccode\u003ePlaybackMode\u003c/code\u003e is \u003ccode\u003eON_DEMAND\u003c/code\u003e or\n                \u003ccode\u003eLIVE_REPLAY\u003c/code\u003e, both \u003ccode\u003eFragmentSelectorType\u003c/code\u003e and\n                \u003ccode\u003eTimestampRange\u003c/code\u003e must be set.\u003c/p\u003e"
+            }
+          },
+          "MaxMediaPlaylistFragmentResults": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#HLSMaxResults",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of fragments that are returned in the HLS media playlists.\u003c/p\u003e\n         \u003cp\u003eWhen the \u003ccode\u003ePlaybackMode\u003c/code\u003e is \u003ccode\u003eLIVE\u003c/code\u003e, the most recent fragments are\n            returned up to this value. When the \u003ccode\u003ePlaybackMode\u003c/code\u003e is \u003ccode\u003eON_DEMAND\u003c/code\u003e,\n            the oldest fragments are returned, up to this maximum number.\u003c/p\u003e\n         \u003cp\u003eWhen there are a higher number of fragments available in a live HLS media playlist,\n            video players often buffer content before starting playback. Increasing the buffer size\n            increases the playback latency, but it decreases the likelihood that rebuffering will\n            occur during playback. We recommend that a live HLS media playlist have a minimum of 3\n            fragments and a maximum of 10 fragments.\u003c/p\u003e\n         \u003cp\u003eThe default is 5 fragments if \u003ccode\u003ePlaybackMode\u003c/code\u003e is \u003ccode\u003eLIVE\u003c/code\u003e or\n                \u003ccode\u003eLIVE_REPLAY\u003c/code\u003e, and 1,000 if \u003ccode\u003ePlaybackMode\u003c/code\u003e is\n                \u003ccode\u003eON_DEMAND\u003c/code\u003e. \u003c/p\u003e\n         \u003cp\u003eThe maximum value of 5,000 fragments corresponds to more than 80 minutes of video on\n            streams with 1-second fragments, and more than 13 hours of video on streams with\n            10-second fragments.\u003c/p\u003e"
+            }
+          },
+          "PlaybackMode": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#HLSPlaybackMode",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eWhether to retrieve live, live replay, or archived, on-demand data.\u003c/p\u003e\n         \u003cp\u003eFeatures of the three types of sessions include the following:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003cb\u003e\n                     \u003ccode\u003eLIVE\u003c/code\u003e\n                  \u003c/b\u003e: For sessions of this type, the HLS media playlist is continually\n                    updated with the latest fragments as they become available. We recommend that\n                    the media player retrieve a new playlist on a one-second interval. When this\n                    type of session is played in a media player, the user interface typically\n                    displays a \"live\" notification, with no scrubber control for choosing the\n                    position in the playback window to display.\u003c/p\u003e\n               \u003cnote\u003e\n                  \u003cp\u003eIn \u003ccode\u003eLIVE\u003c/code\u003e mode, the newest available fragments are included in\n                        an HLS media playlist, even if there is a gap between fragments (that is, if\n                        a fragment is missing). A gap like this might cause a media player to halt\n                        or cause a jump in playback. In this mode, fragments are not added to the\n                        HLS media playlist if they are older than the newest fragment in the\n                        playlist. If the missing fragment becomes available after a subsequent\n                        fragment is added to the playlist, the older fragment is not added, and the\n                        gap is not filled.\u003c/p\u003e\n               \u003c/note\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003cb\u003e\n                     \u003ccode\u003eLIVE_REPLAY\u003c/code\u003e\n                  \u003c/b\u003e: For sessions of this type, the HLS media playlist is updated\n                    similarly to how it is updated for \u003ccode\u003eLIVE\u003c/code\u003e mode except that it starts\n                    by including fragments from a given start time. Instead of fragments being added\n                    as they are ingested, fragments are added as the duration of the next fragment\n                    elapses. For example, if the fragments in the session are two seconds long, then\n                    a new fragment is added to the media playlist every two seconds. This mode is\n                    useful to be able to start playback from when an event is detected and continue\n                    live streaming media that has not yet been ingested as of the time of the\n                    session creation. This mode is also useful to stream previously archived media\n                    without being limited by the 1,000 fragment limit in the \u003ccode\u003eON_DEMAND\u003c/code\u003e\n                    mode. \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003cb\u003e\n                     \u003ccode\u003eON_DEMAND\u003c/code\u003e\n                  \u003c/b\u003e: For sessions of this type, the HLS media playlist contains all the\n                    fragments for the session, up to the number that is specified in\n                        \u003ccode\u003eMaxMediaPlaylistFragmentResults\u003c/code\u003e. The playlist must be retrieved\n                    only once for each session. When this type of session is played in a media\n                    player, the user interface typically displays a scrubber control for choosing\n                    the position in the playback window to display.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e\n         \u003cp\u003eIn all playback modes, if \u003ccode\u003eFragmentSelectorType\u003c/code\u003e is\n                \u003ccode\u003ePRODUCER_TIMESTAMP\u003c/code\u003e, and if there are multiple fragments with the same\n            start timestamp, the fragment that has the largest fragment number (that is, the newest\n            fragment) is included in the HLS media playlist. The other fragments are not included.\n            Fragments that have different timestamps but have overlapping durations are still\n            included in the HLS media playlist. This can lead to unexpected behavior in the media\n            player.\u003c/p\u003e\n         \u003cp\u003eThe default is \u003ccode\u003eLIVE\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "StreamARN": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#ResourceARN",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the stream for which to retrieve the HLS master\n            playlist URL.\u003c/p\u003e\n         \u003cp\u003eYou must specify either the \u003ccode\u003eStreamName\u003c/code\u003e or the\n            \u003ccode\u003eStreamARN\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "StreamName": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#StreamName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the stream for which to retrieve the HLS master playlist URL.\u003c/p\u003e\n         \u003cp\u003eYou must specify either the \u003ccode\u003eStreamName\u003c/code\u003e or the\n            \u003ccode\u003eStreamARN\u003c/code\u003e.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#GetHLSStreamingSessionURLOutput": {
+        "type": "structure",
+        "members": {
+          "HLSStreamingSessionURL": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#HLSStreamingSessionURL",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe URL (containing the session token) that a media player can use to retrieve the HLS\n            master playlist.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#GetImages": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.kinesisvideoarchivedmedia#GetImagesInput"
+        },
+        "output": {
+          "target": "com.amazonaws.kinesisvideoarchivedmedia#GetImagesOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#ClientLimitExceededException"
+          },
+          {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#InvalidArgumentException"
+          },
+          {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#NoDataRetentionException"
+          },
+          {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#NotAuthorizedException"
+          },
+          {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#ResourceNotFoundException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eRetrieves a list of images corresponding to each timestamp for a given time range,\n            sampling interval, and image format configuration.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/getImages",
+            "code": 200
+          },
+          "smithy.api#paginated": {
+            "inputToken": "NextToken",
+            "outputToken": "NextToken",
+            "items": "Images",
+            "pageSize": "MaxResults"
+          }
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#GetImagesInput": {
+        "type": "structure",
+        "members": {
+          "EndTimestamp": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe end timestamp for the range of images to be generated. If the time range between \u003ccode\u003eStartTimestamp\u003c/code\u003e and \u003ccode\u003eEndTimestamp\u003c/code\u003e is more than 300 seconds above \u003ccode\u003eStartTimestamp\u003c/code\u003e, you will receive an \u003ccode\u003eIllegalArgumentException\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Format": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#Format",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe format that will be used to encode the image.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "FormatConfig": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#FormatConfig",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe list of a key-value pair structure that contains extra parameters that can be applied when the image is generated. The \u003ccode\u003eFormatConfig\u003c/code\u003e key is the \u003ccode\u003eJPEGQuality\u003c/code\u003e, which indicates the JPEG quality key to be used to generate the image.\n            The \u003ccode\u003eFormatConfig\u003c/code\u003e value accepts ints from 1 to 100. If the value is 1, the image will be generated with less quality and the best compression. \n            If the value is 100, the image will be generated with the best quality and less compression. If no value is provided, the default value of the \u003ccode\u003eJPEGQuality\u003c/code\u003e key will be set to 80.\u003c/p\u003e"
+            }
+          },
+          "HeightPixels": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#HeightPixels",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe height of the output image that is used in conjunction with the \u003ccode\u003eWidthPixels\u003c/code\u003e parameter. When both \u003ccode\u003eHeightPixels\u003c/code\u003e and \u003ccode\u003eWidthPixels\u003c/code\u003e parameters are provided, the image will be stretched to fit the \n            specified aspect ratio. If only the \u003ccode\u003eHeightPixels\u003c/code\u003e parameter is provided, its original aspect ratio will be used to calculate the \u003ccode\u003eWidthPixels\u003c/code\u003e ratio. If neither parameter is provided, \n            the original image size will be returned.\u003c/p\u003e"
+            }
+          },
+          "ImageSelectorType": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#ImageSelectorType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe origin of the Server or Producer timestamps to use to generate the images.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "MaxResults": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#GetImagesMaxResults",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of images to be returned by the API. \u003c/p\u003e\n         \u003cnote\u003e\n            \u003cp\u003eThe default limit is 25 images per API response. Providing a \u003ccode\u003eMaxResults\u003c/code\u003e greater than this value will result in a page size of 25. Any additional results will be paginated. \u003c/p\u003e\n         \u003c/note\u003e"
+            }
+          },
+          "NextToken": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#NextToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA token that specifies where to start paginating the next set of Images. This is the \u003ccode\u003eGetImages:NextToken\u003c/code\u003e from a previously truncated response.\u003c/p\u003e"
+            }
+          },
+          "SamplingInterval": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#SamplingInterval",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe time interval in milliseconds (ms) at which the images need to be generated from the stream. The minimum value that can be provided is 200 ms (5 images per second). If the timestamp range is less than the sampling interval, the image from the \u003ccode\u003estartTimestamp\u003c/code\u003e will be returned if available.\n        \u003c/p\u003e"
+            }
+          },
+          "StartTimestamp": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe starting point from which the images should be generated. This \u003ccode\u003eStartTimestamp\u003c/code\u003e must be within an inclusive range of timestamps for an image to be returned.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "StreamARN": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#ResourceARN",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the stream from which to retrieve the images. You must specify either the \u003ccode\u003eStreamName\u003c/code\u003e or the \u003ccode\u003eStreamARN\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "StreamName": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#StreamName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the stream from which to retrieve the images. You must specify either the \u003ccode\u003eStreamName\u003c/code\u003e or the \u003ccode\u003eStreamARN\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "WidthPixels": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#WidthPixels",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe width of the output image that is used in conjunction with the \u003ccode\u003eHeightPixels\u003c/code\u003e parameter. When both \u003ccode\u003eWidthPixels\u003c/code\u003e and \u003ccode\u003eHeightPixels\u003c/code\u003e parameters are provided, \n            the image will be stretched to fit the specified aspect ratio. If only the \u003ccode\u003eWidthPixels\u003c/code\u003e parameter is provided or if only the \u003ccode\u003eHeightPixels\u003c/code\u003e is provided, a \u003ccode\u003eValidationException\u003c/code\u003e will be thrown. \n            If neither parameter is provided, the original image size from the stream will be returned.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#GetImagesMaxResults": {
+        "type": "long",
+        "traits": {
+          "smithy.api#range": {
+            "min": 1,
+            "max": 100
+          }
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#GetImagesOutput": {
+        "type": "structure",
+        "members": {
+          "Images": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#Images",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe list of images generated from the video stream. If there is no media available for the given timestamp, the \u003ccode\u003eNO_MEDIA\u003c/code\u003e error will be listed in the output.  \n            If an error occurs while the image is being generated, the \u003ccode\u003eMEDIA_ERROR\u003c/code\u003e will be listed in the output as the cause of the missing image. \u003c/p\u003e"
+            }
+          },
+          "NextToken": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#NextToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe encrypted token that was  used in the request to get more images.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#GetMediaForFragmentList": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.kinesisvideoarchivedmedia#GetMediaForFragmentListInput"
+        },
+        "output": {
+          "target": "com.amazonaws.kinesisvideoarchivedmedia#GetMediaForFragmentListOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#ClientLimitExceededException"
+          },
+          {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#InvalidArgumentException"
+          },
+          {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#NotAuthorizedException"
+          },
+          {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#ResourceNotFoundException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eGets media for a list of fragments (specified by fragment number) from the archived\n            data in an Amazon Kinesis video stream.\u003c/p\u003e\n         \u003cnote\u003e\n            \u003cp\u003eYou must first call the \u003ccode\u003eGetDataEndpoint\u003c/code\u003e API to get an endpoint.\n                Then send the \u003ccode\u003eGetMediaForFragmentList\u003c/code\u003e requests to this endpoint using\n                the \u003ca href=\"https://docs.aws.amazon.com/cli/latest/reference/\"\u003e--endpoint-url\n                    parameter\u003c/a\u003e. \u003c/p\u003e\n         \u003c/note\u003e\n         \u003cp\u003eFor limits, see \u003ca href=\"http://docs.aws.amazon.com/kinesisvideostreams/latest/dg/limits.html\"\u003eKinesis Video Streams Limits\u003c/a\u003e.\u003c/p\u003e\n         \u003cimportant\u003e\n            \u003cp\u003eIf an error is thrown after invoking a Kinesis Video Streams archived media API,\n                in addition to the HTTP status code and the response body, it includes the following\n                pieces of information: \u003c/p\u003e\n            \u003cul\u003e\n               \u003cli\u003e\n                  \u003cp\u003e\n                     \u003ccode\u003ex-amz-ErrorType\u003c/code\u003e HTTP header \u2013 contains a more specific error\n                        type in addition to what the HTTP status code provides. \u003c/p\u003e\n               \u003c/li\u003e\n               \u003cli\u003e\n                  \u003cp\u003e\n                     \u003ccode\u003ex-amz-RequestId\u003c/code\u003e HTTP header \u2013 if you want to report an issue to\n                        Amazon Web Services, the support team can better diagnose the problem if given the Request\n                        Id.\u003c/p\u003e\n               \u003c/li\u003e\n            \u003c/ul\u003e\n            \u003cp\u003eBoth the HTTP status code and the ErrorType header can be utilized to make\n                programmatic decisions about whether errors are retry-able and under what\n                conditions, as well as provide information on what actions the client programmer\n                might need to take in order to successfully try again.\u003c/p\u003e\n            \u003cp\u003eFor more information, see the \u003cb\u003eErrors\u003c/b\u003e section at\n                the bottom of this topic, as well as \u003ca href=\"https://docs.aws.amazon.com/kinesisvideostreams/latest/dg/CommonErrors.html\"\u003eCommon Errors\u003c/a\u003e.\n            \u003c/p\u003e\n         \u003c/important\u003e",
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/getMediaForFragmentList",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#GetMediaForFragmentListInput": {
+        "type": "structure",
+        "members": {
+          "Fragments": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#FragmentNumberList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of the numbers of fragments for which to retrieve media. You retrieve these\n            values with \u003ca\u003eListFragments\u003c/a\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "StreamARN": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#ResourceARN",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the stream from which to retrieve fragment media. Specify either this parameter or the \u003ccode\u003eStreamName\u003c/code\u003e parameter.\u003c/p\u003e"
+            }
+          },
+          "StreamName": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#StreamName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the stream from which to retrieve fragment media. Specify either this parameter or the \u003ccode\u003eStreamARN\u003c/code\u003e parameter.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#GetMediaForFragmentListOutput": {
+        "type": "structure",
+        "members": {
+          "ContentType": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#ContentType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe content type of the requested media.\u003c/p\u003e",
+              "smithy.api#httpHeader": "Content-Type"
+            }
+          },
+          "Payload": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#Payload",
+            "traits": {
+              "smithy.api#default": "",
+              "smithy.api#documentation": "\u003cp\u003eThe payload that Kinesis Video Streams returns is a sequence of chunks from the\n            specified stream. For information about the chunks, see \u003ca href=\"http://docs.aws.amazon.com/kinesisvideostreams/latest/dg/API_dataplane_PutMedia.html\"\u003ePutMedia\u003c/a\u003e. The chunks that Kinesis Video Streams returns in the\n                \u003ccode\u003eGetMediaForFragmentList\u003c/code\u003e call also include the following additional\n            Matroska (MKV) tags: \u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003eAWS_KINESISVIDEO_FRAGMENT_NUMBER - Fragment number returned in the\n                    chunk.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eAWS_KINESISVIDEO_SERVER_SIDE_TIMESTAMP - Server-side timestamp of the\n                    fragment.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eAWS_KINESISVIDEO_PRODUCER_SIDE_TIMESTAMP - Producer-side timestamp of the\n                    fragment.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e\n         \u003cp\u003eThe following tags will be included if an exception occurs:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003eAWS_KINESISVIDEO_FRAGMENT_NUMBER - The number of the fragment that threw the exception\n                    \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eAWS_KINESISVIDEO_EXCEPTION_ERROR_CODE - The integer code of the\n                    \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eAWS_KINESISVIDEO_EXCEPTION_MESSAGE - A text description of the exception\n                    \u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e",
+              "smithy.api#httpPayload": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#HLSDiscontinuityMode": {
+        "type": "enum",
+        "members": {
+          "ALWAYS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ALWAYS"
+            }
+          },
+          "NEVER": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "NEVER"
+            }
+          },
+          "ON_DISCONTINUITY": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ON_DISCONTINUITY"
+            }
+          }
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#HLSDisplayFragmentTimestamp": {
+        "type": "enum",
+        "members": {
+          "ALWAYS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ALWAYS"
+            }
+          },
+          "NEVER": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "NEVER"
+            }
+          }
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#HLSFragmentSelector": {
+        "type": "structure",
+        "members": {
+          "FragmentSelectorType": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#HLSFragmentSelectorType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe source of the timestamps for the requested media.\u003c/p\u003e\n         \u003cp\u003eWhen \u003ccode\u003eFragmentSelectorType\u003c/code\u003e is set to \u003ccode\u003ePRODUCER_TIMESTAMP\u003c/code\u003e and\n                \u003ca\u003eGetHLSStreamingSessionURLInput$PlaybackMode\u003c/a\u003e is\n                \u003ccode\u003eON_DEMAND\u003c/code\u003e or \u003ccode\u003eLIVE_REPLAY\u003c/code\u003e, the first fragment ingested with\n            a producer timestamp within the specified \u003ca\u003eFragmentSelector$TimestampRange\u003c/a\u003e is included in the media playlist. In\n            addition, the fragments with producer timestamps within the \u003ccode\u003eTimestampRange\u003c/code\u003e\n            ingested immediately following the first fragment (up to the \u003ca\u003eGetHLSStreamingSessionURLInput$MaxMediaPlaylistFragmentResults\u003c/a\u003e value)\n            are included. \u003c/p\u003e\n         \u003cp\u003eFragments that have duplicate producer timestamps are deduplicated. This means that if\n            producers are producing a stream of fragments with producer timestamps that are\n            approximately equal to the true clock time, the HLS media playlists will contain all of\n            the fragments within the requested timestamp range. If some fragments are ingested\n            within the same time range and very different points in time, only the oldest ingested\n            collection of fragments are returned.\u003c/p\u003e\n         \u003cp\u003eWhen \u003ccode\u003eFragmentSelectorType\u003c/code\u003e is set to \u003ccode\u003ePRODUCER_TIMESTAMP\u003c/code\u003e and\n                \u003ca\u003eGetHLSStreamingSessionURLInput$PlaybackMode\u003c/a\u003e is \u003ccode\u003eLIVE\u003c/code\u003e,\n            the producer timestamps are used in the MP4 fragments and for deduplication. But the\n            most recently ingested fragments based on server timestamps are included in the HLS\n            media playlist. This means that even if fragments ingested in the past have producer\n            timestamps with values now, they are not included in the HLS media playlist.\u003c/p\u003e\n         \u003cp\u003eThe default is \u003ccode\u003eSERVER_TIMESTAMP\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "TimestampRange": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#HLSTimestampRange",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe start and end of the timestamp range for the requested media.\u003c/p\u003e\n         \u003cp\u003eThis value should not be present if \u003ccode\u003ePlaybackType\u003c/code\u003e is\n            \u003ccode\u003eLIVE\u003c/code\u003e.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eContains the range of timestamps for the requested media, and the source of the\n            timestamps.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#HLSFragmentSelectorType": {
+        "type": "enum",
+        "members": {
+          "PRODUCER_TIMESTAMP": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "PRODUCER_TIMESTAMP"
+            }
+          },
+          "SERVER_TIMESTAMP": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "SERVER_TIMESTAMP"
+            }
+          }
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#HLSMaxResults": {
+        "type": "long",
+        "traits": {
+          "smithy.api#range": {
+            "min": 1,
+            "max": 5000
+          }
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#HLSPlaybackMode": {
+        "type": "enum",
+        "members": {
+          "LIVE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "LIVE"
+            }
+          },
+          "LIVE_REPLAY": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "LIVE_REPLAY"
+            }
+          },
+          "ON_DEMAND": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ON_DEMAND"
+            }
+          }
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#HLSStreamingSessionURL": {
+        "type": "string"
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#HLSTimestampRange": {
+        "type": "structure",
+        "members": {
+          "EndTimestamp": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe end of the timestamp range for the requested media. This value must be within 24\n            hours of the specified \u003ccode\u003eStartTimestamp\u003c/code\u003e, and it must be later than the\n                \u003ccode\u003eStartTimestamp\u003c/code\u003e value.\u003c/p\u003e\n         \u003cp\u003eIf \u003ccode\u003eFragmentSelectorType\u003c/code\u003e for the request is \u003ccode\u003eSERVER_TIMESTAMP\u003c/code\u003e,\n            this value must be in the past.\u003c/p\u003e\n         \u003cp\u003eThe \u003ccode\u003eEndTimestamp\u003c/code\u003e value is required for \u003ccode\u003eON_DEMAND\u003c/code\u003e mode, but\n            optional for \u003ccode\u003eLIVE_REPLAY\u003c/code\u003e mode. If the \u003ccode\u003eEndTimestamp\u003c/code\u003e is not set\n            for \u003ccode\u003eLIVE_REPLAY\u003c/code\u003e mode then the session will continue to include newly\n            ingested fragments until the session expires.\u003c/p\u003e\n         \u003cnote\u003e\n            \u003cp\u003eThis value is inclusive. The \u003ccode\u003eEndTimestamp\u003c/code\u003e is compared to the\n                (starting) timestamp of the fragment. Fragments that start before the\n                    \u003ccode\u003eEndTimestamp\u003c/code\u003e value and continue past it are included in the\n                session.\u003c/p\u003e\n         \u003c/note\u003e"
+            }
+          },
+          "StartTimestamp": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe start of the timestamp range for the requested media.\u003c/p\u003e\n         \u003cp\u003eIf the \u003ccode\u003eHLSTimestampRange\u003c/code\u003e value is specified, the\n                \u003ccode\u003eStartTimestamp\u003c/code\u003e value is required. \u003c/p\u003e\n         \u003cp\u003eOnly fragments that start exactly at or after \u003ccode\u003eStartTimestamp\u003c/code\u003e are included\n            in the session. Fragments that start before \u003ccode\u003eStartTimestamp\u003c/code\u003e and continue\n            past it aren't included in the session. If \u003ccode\u003eFragmentSelectorType\u003c/code\u003e is\n                \u003ccode\u003eSERVER_TIMESTAMP\u003c/code\u003e, the \u003ccode\u003eStartTimestamp\u003c/code\u003e must be later than\n            the stream head. \u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe start and end of the timestamp range for the requested media.\u003c/p\u003e\n         \u003cp\u003eThis value should not be present if \u003ccode\u003ePlaybackType\u003c/code\u003e is\n            \u003ccode\u003eLIVE\u003c/code\u003e.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#HeightPixels": {
+        "type": "integer",
+        "traits": {
+          "smithy.api#range": {
+            "min": 1,
+            "max": 2160
+          }
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#Image": {
+        "type": "structure",
+        "members": {
+          "Error": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#ImageError",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe error message shown when the image for the provided timestamp was not extracted due to a non-tryable error. An error will be returned if: \u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003eThere is no media that exists for the specified \u003ccode\u003eTimestamp\u003c/code\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003eThe media for the specified time does not allow an image to be extracted. In this case the media is audio only, or the incorrect\n            media has been ingested.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e"
+            }
+          },
+          "ImageContent": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#ImageContent",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn attribute of the \u003ccode\u003eImage\u003c/code\u003e object that is Base64 encoded.\u003c/p\u003e"
+            }
+          },
+          "TimeStamp": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn attribute of the \u003ccode\u003eImage\u003c/code\u003e object that is used to extract an image from the video stream. This field is used to manage gaps on images or to better understand the pagination\n        window.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA structure that contains the \u003ccode\u003eTimestamp\u003c/code\u003e, \u003ccode\u003eError\u003c/code\u003e, and \u003ccode\u003eImageContent\u003c/code\u003e.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#ImageContent": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 6291456
+          }
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#ImageError": {
+        "type": "enum",
+        "members": {
+          "MEDIA_ERROR": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "MEDIA_ERROR"
+            }
+          },
+          "NO_MEDIA": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "NO_MEDIA"
+            }
+          }
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#ImageSelectorType": {
+        "type": "enum",
+        "members": {
+          "PRODUCER_TIMESTAMP": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "PRODUCER_TIMESTAMP"
+            }
+          },
+          "SERVER_TIMESTAMP": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "SERVER_TIMESTAMP"
+            }
+          }
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#Images": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.kinesisvideoarchivedmedia#Image"
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#InvalidArgumentException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA specified parameter exceeds its restrictions, is not supported, or can't be\n            used.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#InvalidCodecPrivateDataException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe codec private data in at least one of the tracks of the video stream is not valid\n            for this operation.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#InvalidMediaFrameException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eOne or more frames in the requested clip could not be parsed based on the specified\n            codec.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#ListFragments": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.kinesisvideoarchivedmedia#ListFragmentsInput"
+        },
+        "output": {
+          "target": "com.amazonaws.kinesisvideoarchivedmedia#ListFragmentsOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#ClientLimitExceededException"
+          },
+          {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#InvalidArgumentException"
+          },
+          {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#NotAuthorizedException"
+          },
+          {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#ResourceNotFoundException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eReturns a list of \u003ca\u003eFragment\u003c/a\u003e objects from the specified stream and\n            timestamp range within the archived data.\u003c/p\u003e\n         \u003cp\u003eListing fragments is eventually consistent. This means that even if the producer\n            receives an acknowledgment that a fragment is persisted, the result might not be\n            returned immediately from a request to \u003ccode\u003eListFragments\u003c/code\u003e. However, results are\n            typically available in less than one second.\u003c/p\u003e\n         \u003cnote\u003e\n            \u003cp\u003eYou must first call the \u003ccode\u003eGetDataEndpoint\u003c/code\u003e API to get an endpoint.\n                Then send the \u003ccode\u003eListFragments\u003c/code\u003e requests to this endpoint using the \u003ca href=\"https://docs.aws.amazon.com/cli/latest/reference/\"\u003e--endpoint-url\n                    parameter\u003c/a\u003e. \u003c/p\u003e\n         \u003c/note\u003e\n         \u003cimportant\u003e\n            \u003cp\u003eIf an error is thrown after invoking a Kinesis Video Streams archived media API,\n                in addition to the HTTP status code and the response body, it includes the following\n                pieces of information: \u003c/p\u003e\n            \u003cul\u003e\n               \u003cli\u003e\n                  \u003cp\u003e\n                     \u003ccode\u003ex-amz-ErrorType\u003c/code\u003e HTTP header \u2013 contains a more specific error\n                        type in addition to what the HTTP status code provides. \u003c/p\u003e\n               \u003c/li\u003e\n               \u003cli\u003e\n                  \u003cp\u003e\n                     \u003ccode\u003ex-amz-RequestId\u003c/code\u003e HTTP header \u2013 if you want to report an issue to\n                        Amazon Web Services, the support team can better diagnose the problem if given the Request\n                        Id.\u003c/p\u003e\n               \u003c/li\u003e\n            \u003c/ul\u003e\n            \u003cp\u003eBoth the HTTP status code and the ErrorType header can be utilized to make\n                programmatic decisions about whether errors are retry-able and under what\n                conditions, as well as provide information on what actions the client programmer\n                might need to take in order to successfully try again.\u003c/p\u003e\n            \u003cp\u003eFor more information, see the \u003cb\u003eErrors\u003c/b\u003e section at\n                the bottom of this topic, as well as \u003ca href=\"https://docs.aws.amazon.com/kinesisvideostreams/latest/dg/CommonErrors.html\"\u003eCommon Errors\u003c/a\u003e.\n            \u003c/p\u003e\n         \u003c/important\u003e",
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/listFragments",
+            "code": 200
+          },
+          "smithy.api#paginated": {
+            "inputToken": "NextToken",
+            "outputToken": "NextToken",
+            "items": "Fragments",
+            "pageSize": "MaxResults"
+          }
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#ListFragmentsInput": {
+        "type": "structure",
+        "members": {
+          "FragmentSelector": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#FragmentSelector",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eDescribes the timestamp range and timestamp origin for the range of fragments to\n            return.\u003c/p\u003e\n         \u003cnote\u003e\n            \u003cp\u003eThis is only required when the \u003ccode\u003eNextToken\u003c/code\u003e isn't passed in the API.\u003c/p\u003e\n         \u003c/note\u003e"
+            }
+          },
+          "MaxResults": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#ListFragmentsMaxResults",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe total number of fragments to return. If the total number of fragments available is\n            more than the value specified in \u003ccode\u003emax-results\u003c/code\u003e, then a \u003ca\u003eListFragmentsOutput$NextToken\u003c/a\u003e is provided in the output that you can use\n            to resume pagination.\u003c/p\u003e"
+            }
+          },
+          "NextToken": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#NextToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA token to specify where to start paginating. This is the \u003ca\u003eListFragmentsOutput$NextToken\u003c/a\u003e from a previously truncated\n            response.\u003c/p\u003e"
+            }
+          },
+          "StreamARN": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#ResourceARN",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the stream from which to retrieve a fragment list. Specify either this parameter or the \u003ccode\u003eStreamName\u003c/code\u003e parameter.\u003c/p\u003e"
+            }
+          },
+          "StreamName": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#StreamName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the stream from which to retrieve a fragment list. Specify either this parameter or the \u003ccode\u003eStreamARN\u003c/code\u003e parameter.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#ListFragmentsMaxResults": {
+        "type": "long",
+        "traits": {
+          "smithy.api#range": {
+            "min": 1,
+            "max": 1000
+          }
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#ListFragmentsOutput": {
+        "type": "structure",
+        "members": {
+          "Fragments": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#FragmentList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of archived \u003ca\u003eFragment\u003c/a\u003e objects from the stream that meet the\n            selector criteria. Results are in no specific order, even across pages.\u003c/p\u003e"
+            }
+          },
+          "NextToken": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#NextToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIf the returned list is truncated, the operation returns this token to use to retrieve\n            the next page of results. This value is \u003ccode\u003enull\u003c/code\u003e when there are no more results\n            to return.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#Long": {
+        "type": "long",
+        "traits": {
+          "smithy.api#default": 0
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#MissingCodecPrivateDataException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eNo codec private data was found in at least one of tracks of the video stream.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#NextToken": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 4096
+          },
+          "smithy.api#pattern": "^[a-zA-Z0-9+/]+={0,2}$"
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#NoDataRetentionException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003e\n            \u003ccode\u003eGetImages\u003c/code\u003e was requested for a stream that does not retain data (that is, has\n            a \u003ccode\u003eDataRetentionInHours\u003c/code\u003e of 0). \u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#NotAuthorizedException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eStatus Code: 403, The caller is not authorized to perform an operation on the given\n            stream, or the token has expired.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 401
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#Payload": {
+        "type": "blob",
+        "traits": {
+          "smithy.api#streaming": {}
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#ResourceARN": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 1024
+          },
+          "smithy.api#pattern": "^arn:[a-z\\d-]+:kinesisvideo:[a-z0-9-]+:[0-9]+:[a-z]+/[a-zA-Z0-9_.-]+/[0-9]+$"
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#ResourceNotFoundException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003e\n            \u003ccode\u003eGetImages\u003c/code\u003e will throw this error when Kinesis Video Streams can't find the stream\n            that you specified.\u003c/p\u003e\n         \u003cp\u003e\n            \u003ccode\u003eGetHLSStreamingSessionURL\u003c/code\u003e and \u003ccode\u003eGetDASHStreamingSessionURL\u003c/code\u003e throw\n            this error if a session with a \u003ccode\u003ePlaybackMode\u003c/code\u003e of \u003ccode\u003eON_DEMAND\u003c/code\u003e or\n                \u003ccode\u003eLIVE_REPLAY\u003c/code\u003eis requested for a stream that has no fragments within the\n            requested time range, or if a session with a \u003ccode\u003ePlaybackMode\u003c/code\u003e of\n                \u003ccode\u003eLIVE\u003c/code\u003e is requested for a stream that has no fragments within the last 30\n            seconds.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 404
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#SamplingInterval": {
+        "type": "integer"
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#StreamName": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 256
+          },
+          "smithy.api#pattern": "^[a-zA-Z0-9_.-]+$"
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#Timestamp": {
+        "type": "timestamp"
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#TimestampRange": {
+        "type": "structure",
+        "members": {
+          "EndTimestamp": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ending timestamp in the range of timestamps for which to return fragments.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "StartTimestamp": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe starting timestamp in the range of timestamps for which to return\n            fragments.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe range of timestamps for which to return fragments.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#UnsupportedStreamMediaTypeException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.kinesisvideoarchivedmedia#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe type of the media (for example, h.264 or h.265 video or ACC or G.711 audio) could\n            not be determined from the codec IDs of the tracks in the first fragment for a playback\n            session. The codec ID for track 1 should be \u003ccode\u003eV_MPEG/ISO/AVC\u003c/code\u003e and, optionally,\n            the codec ID for track 2 should be \u003ccode\u003eA_AAC\u003c/code\u003e.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.kinesisvideoarchivedmedia#WidthPixels": {
+        "type": "integer",
+        "traits": {
+          "smithy.api#range": {
+            "min": 1,
+            "max": 3840
+          }
+        }
+      }
+    }
+  }
+}

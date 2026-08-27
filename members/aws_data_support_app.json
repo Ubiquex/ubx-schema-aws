@@ -1,0 +1,1799 @@
+{
+  "schema_source": "smithy",
+  "mode": "data_source",
+  "auth": {
+    "Type": "",
+    "Params": null
+  },
+  "base_url": "https://aws.example.invalid",
+  "retry": {
+    "MaxAttempts": 0,
+    "InitialBackoff": "",
+    "MaxBackoff": "",
+    "Jitter": null,
+    "RespectRetryAfter": null,
+    "RateLimitResetHeader": ""
+  },
+  "timeouts": {
+    "Create": "",
+    "Read": "",
+    "Update": "",
+    "Delete": "",
+    "Default": ""
+  },
+  "wire_name": "aws",
+  "raw_spec": {
+    "smithy": "2.0",
+    "shapes": {
+      "com.amazonaws.supportapp#AccessDeniedException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "com.amazonaws.supportapp#errorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eYou don't have sufficient permission to perform this action.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 403
+        }
+      },
+      "com.amazonaws.supportapp#AccountType": {
+        "type": "string",
+        "traits": {
+          "smithy.api#enum": [
+            {
+              "value": "management",
+              "name": "MANAGEMENT"
+            },
+            {
+              "value": "member",
+              "name": "MEMBER"
+            }
+          ]
+        }
+      },
+      "com.amazonaws.supportapp#ConflictException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "com.amazonaws.supportapp#errorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eYour request has a conflict. For example, you might receive this error if you try the\n      following:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003eAdd, update, or delete a Slack channel configuration before you add a Slack workspace\n          to your Amazon Web Services account.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eAdd a Slack channel configuration that already exists in your Amazon Web Services account.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eDelete a Slack channel configuration for a live chat channel.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eDelete a Slack workspace from your Amazon Web Services account that has an active live chat\n          channel.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eCall the \u003ccode\u003eRegisterSlackWorkspaceForOrganization\u003c/code\u003e API from an Amazon Web Services account\n          that doesn't belong to an organization.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eCall the \u003ccode\u003eRegisterSlackWorkspaceForOrganization\u003c/code\u003e API from a member account,\n          but the management account hasn't registered that workspace yet for the\n          organization.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 409
+        }
+      },
+      "com.amazonaws.supportapp#CreateSlackChannelConfiguration": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.supportapp#CreateSlackChannelConfigurationRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.supportapp#CreateSlackChannelConfigurationResult"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.supportapp#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.supportapp#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.supportapp#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.supportapp#ServiceQuotaExceededException"
+          },
+          {
+            "target": "com.amazonaws.supportapp#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eCreates a Slack channel configuration for your Amazon Web Services account.\u003c/p\u003e\n         \u003cnote\u003e\n            \u003cul\u003e\n               \u003cli\u003e\n                  \u003cp\u003eYou can add up to 5 Slack workspaces for your account.\u003c/p\u003e\n               \u003c/li\u003e\n               \u003cli\u003e\n                  \u003cp\u003eYou can add up to 20 Slack channels for your account.\u003c/p\u003e\n               \u003c/li\u003e\n            \u003c/ul\u003e\n         \u003c/note\u003e\n         \u003cp\u003eA Slack channel can have up to 100 Amazon Web Services accounts. This means that only 100 accounts can\n      add the same Slack channel to the Amazon Web Services Support App. We recommend that you only add the accounts that\n      you need to manage support cases for your organization. This can reduce the notifications\n      about case updates that you receive in the Slack channel.\u003c/p\u003e\n         \u003cnote\u003e\n            \u003cp\u003eWe recommend that you choose a private Slack channel so that only members in that\n        channel have read and write access to your support cases. Anyone in your Slack channel can\n        create, update, or resolve support cases for your account. Users require an invitation to\n        join private channels. \u003c/p\u003e\n         \u003c/note\u003e",
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/control/create-slack-channel-configuration",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.supportapp#CreateSlackChannelConfigurationRequest": {
+        "type": "structure",
+        "members": {
+          "channelId": {
+            "target": "com.amazonaws.supportapp#channelId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe channel ID in Slack. This ID identifies a channel within a Slack workspace.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "channelName": {
+            "target": "com.amazonaws.supportapp#channelName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the Slack channel that you configure for the Amazon Web Services Support App.\u003c/p\u003e"
+            }
+          },
+          "channelRoleArn": {
+            "target": "com.amazonaws.supportapp#roleArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of an IAM role that you want to\nuse to perform operations on Amazon Web Services. For more information, see \u003ca href=\"https://docs.aws.amazon.com/awssupport/latest/user/support-app-permissions.html\"\u003eManaging access to\nthe Amazon Web Services Support App\u003c/a\u003e in the \u003ci\u003eAmazon Web Services Support User Guide\u003c/i\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "notifyOnAddCorrespondenceToCase": {
+            "target": "com.amazonaws.supportapp#booleanValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eWhether you want to get notified when a support case has a new correspondence.\u003c/p\u003e"
+            }
+          },
+          "notifyOnCaseSeverity": {
+            "target": "com.amazonaws.supportapp#NotificationSeverityLevel",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe case severity for a support case that you want to receive notifications.\u003c/p\u003e\n         \u003cp\u003eIf you specify \u003ccode\u003ehigh\u003c/code\u003e or \u003ccode\u003eall\u003c/code\u003e, you must specify \u003ccode\u003etrue\u003c/code\u003e\n      for at least one of the following parameters:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003enotifyOnAddCorrespondenceToCase\u003c/code\u003e\n               \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003enotifyOnCreateOrReopenCase\u003c/code\u003e\n               \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003enotifyOnResolveCase\u003c/code\u003e\n               \u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e\n         \u003cp\u003eIf you specify \u003ccode\u003enone\u003c/code\u003e, the following parameters must be null or\n        \u003ccode\u003efalse\u003c/code\u003e:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003enotifyOnAddCorrespondenceToCase\u003c/code\u003e\n               \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003enotifyOnCreateOrReopenCase\u003c/code\u003e\n               \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003enotifyOnResolveCase\u003c/code\u003e\n               \u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e\n         \u003cnote\u003e\n            \u003cp\u003eIf you don't specify these parameters in your request, they default to\n          \u003ccode\u003efalse\u003c/code\u003e.\u003c/p\u003e\n         \u003c/note\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "notifyOnCreateOrReopenCase": {
+            "target": "com.amazonaws.supportapp#booleanValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eWhether you want to get notified when a support case is created or reopened.\u003c/p\u003e"
+            }
+          },
+          "notifyOnResolveCase": {
+            "target": "com.amazonaws.supportapp#booleanValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eWhether you want to get notified when a support case is resolved.\u003c/p\u003e"
+            }
+          },
+          "teamId": {
+            "target": "com.amazonaws.supportapp#teamId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe team ID in Slack. This ID uniquely identifies a Slack workspace, such as\n\u003ccode\u003eT012ABCDEFG\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        }
+      },
+      "com.amazonaws.supportapp#CreateSlackChannelConfigurationResult": {
+        "type": "structure"
+      },
+      "com.amazonaws.supportapp#DeleteAccountAlias": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.supportapp#DeleteAccountAliasRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.supportapp#DeleteAccountAliasResult"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.supportapp#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.supportapp#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.supportapp#ResourceNotFoundException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eDeletes an alias for an Amazon Web Services account ID. The alias appears in the Amazon Web Services Support App page of the\n      Amazon Web Services Support Center. The alias also appears in Slack messages from the Amazon Web Services Support App.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/control/delete-account-alias",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.supportapp#DeleteAccountAliasRequest": {
+        "type": "structure"
+      },
+      "com.amazonaws.supportapp#DeleteAccountAliasResult": {
+        "type": "structure"
+      },
+      "com.amazonaws.supportapp#DeleteSlackChannelConfiguration": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.supportapp#DeleteSlackChannelConfigurationRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.supportapp#DeleteSlackChannelConfigurationResult"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.supportapp#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.supportapp#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.supportapp#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.supportapp#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.supportapp#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eDeletes a Slack channel configuration from your Amazon Web Services account. This operation doesn't\n      delete your Slack channel.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/control/delete-slack-channel-configuration",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.supportapp#DeleteSlackChannelConfigurationRequest": {
+        "type": "structure",
+        "members": {
+          "channelId": {
+            "target": "com.amazonaws.supportapp#channelId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe channel ID in Slack. This ID identifies a channel within a Slack workspace.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "teamId": {
+            "target": "com.amazonaws.supportapp#teamId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe team ID in Slack. This ID uniquely identifies a Slack workspace, such as\n\u003ccode\u003eT012ABCDEFG\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        }
+      },
+      "com.amazonaws.supportapp#DeleteSlackChannelConfigurationResult": {
+        "type": "structure"
+      },
+      "com.amazonaws.supportapp#DeleteSlackWorkspaceConfiguration": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.supportapp#DeleteSlackWorkspaceConfigurationRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.supportapp#DeleteSlackWorkspaceConfigurationResult"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.supportapp#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.supportapp#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.supportapp#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.supportapp#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.supportapp#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eDeletes a Slack workspace configuration from your Amazon Web Services account. This operation doesn't\n      delete your Slack workspace.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/control/delete-slack-workspace-configuration",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.supportapp#DeleteSlackWorkspaceConfigurationRequest": {
+        "type": "structure",
+        "members": {
+          "teamId": {
+            "target": "com.amazonaws.supportapp#teamId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe team ID in Slack. This ID uniquely identifies a Slack workspace, such as\n\u003ccode\u003eT012ABCDEFG\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        }
+      },
+      "com.amazonaws.supportapp#DeleteSlackWorkspaceConfigurationResult": {
+        "type": "structure"
+      },
+      "com.amazonaws.supportapp#GetAccountAlias": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.supportapp#GetAccountAliasRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.supportapp#GetAccountAliasResult"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.supportapp#InternalServerException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eRetrieves the alias from an Amazon Web Services account ID. The alias appears in the Amazon Web Services Support App page of\n      the Amazon Web Services Support Center. The alias also appears in Slack messages from the Amazon Web Services Support App.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/control/get-account-alias",
+            "code": 200
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.supportapp#GetAccountAliasRequest": {
+        "type": "structure"
+      },
+      "com.amazonaws.supportapp#GetAccountAliasResult": {
+        "type": "structure",
+        "members": {
+          "accountAlias": {
+            "target": "com.amazonaws.supportapp#awsAccountAlias",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn alias or short name for an Amazon Web Services account.\u003c/p\u003e"
+            }
+          }
+        }
+      },
+      "com.amazonaws.supportapp#InternalServerException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "com.amazonaws.supportapp#errorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eWe can\u2019t process your request right now because of a server issue. Try again later.\u003c/p\u003e",
+          "smithy.api#error": "server",
+          "smithy.api#httpError": 500
+        }
+      },
+      "com.amazonaws.supportapp#ListSlackChannelConfigurations": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.supportapp#ListSlackChannelConfigurationsRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.supportapp#ListSlackChannelConfigurationsResult"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.supportapp#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.supportapp#InternalServerException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eLists the Slack channel configurations for an Amazon Web Services account.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/control/list-slack-channel-configurations",
+            "code": 200
+          },
+          "smithy.api#paginated": {
+            "inputToken": "nextToken",
+            "outputToken": "nextToken"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.supportapp#ListSlackChannelConfigurationsRequest": {
+        "type": "structure",
+        "members": {
+          "nextToken": {
+            "target": "com.amazonaws.supportapp#paginationToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIf the results of a search are large, the API only returns a portion of the results and \nincludes a \u003ccode\u003enextToken\u003c/code\u003e pagination token in the response. To retrieve the next batch of results, reissue the search request and include the returned token. \nWhen the API returns the last set of results, the response doesn't include a pagination token value.\u003c/p\u003e"
+            }
+          }
+        }
+      },
+      "com.amazonaws.supportapp#ListSlackChannelConfigurationsResult": {
+        "type": "structure",
+        "members": {
+          "nextToken": {
+            "target": "com.amazonaws.supportapp#paginationToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe point where pagination should resume when the response returns only partial\n      results.\u003c/p\u003e"
+            }
+          },
+          "slackChannelConfigurations": {
+            "target": "com.amazonaws.supportapp#slackChannelConfigurationList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe configurations for a Slack channel.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        }
+      },
+      "com.amazonaws.supportapp#ListSlackWorkspaceConfigurations": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.supportapp#ListSlackWorkspaceConfigurationsRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.supportapp#ListSlackWorkspaceConfigurationsResult"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.supportapp#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.supportapp#InternalServerException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eLists the Slack workspace configurations for an Amazon Web Services account.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/control/list-slack-workspace-configurations",
+            "code": 200
+          },
+          "smithy.api#paginated": {
+            "inputToken": "nextToken",
+            "outputToken": "nextToken"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.supportapp#ListSlackWorkspaceConfigurationsRequest": {
+        "type": "structure",
+        "members": {
+          "nextToken": {
+            "target": "com.amazonaws.supportapp#paginationToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIf the results of a search are large, the API only returns a portion of the results and \nincludes a \u003ccode\u003enextToken\u003c/code\u003e pagination token in the response. To retrieve the next batch of results, reissue the search request and include the returned token. \nWhen the API returns the last set of results, the response doesn't include a pagination token value.\u003c/p\u003e"
+            }
+          }
+        }
+      },
+      "com.amazonaws.supportapp#ListSlackWorkspaceConfigurationsResult": {
+        "type": "structure",
+        "members": {
+          "nextToken": {
+            "target": "com.amazonaws.supportapp#paginationToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe point where pagination should resume when the response returns only partial\n      results.\u003c/p\u003e"
+            }
+          },
+          "slackWorkspaceConfigurations": {
+            "target": "com.amazonaws.supportapp#SlackWorkspaceConfigurationList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe configurations for a Slack workspace.\u003c/p\u003e"
+            }
+          }
+        }
+      },
+      "com.amazonaws.supportapp#NotificationSeverityLevel": {
+        "type": "string",
+        "traits": {
+          "smithy.api#enum": [
+            {
+              "value": "none",
+              "name": "NONE"
+            },
+            {
+              "value": "all",
+              "name": "ALL"
+            },
+            {
+              "value": "high",
+              "name": "HIGH"
+            }
+          ]
+        }
+      },
+      "com.amazonaws.supportapp#PutAccountAlias": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.supportapp#PutAccountAliasRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.supportapp#PutAccountAliasResult"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.supportapp#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.supportapp#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.supportapp#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eCreates or updates an individual alias for each Amazon Web Services account ID. The alias appears in the\n      Amazon Web Services Support App page of the Amazon Web Services Support Center. The alias also appears in Slack messages from the\n      Amazon Web Services Support App.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/control/put-account-alias",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.supportapp#PutAccountAliasRequest": {
+        "type": "structure",
+        "members": {
+          "accountAlias": {
+            "target": "com.amazonaws.supportapp#awsAccountAlias",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn alias or short name for an Amazon Web Services account.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        }
+      },
+      "com.amazonaws.supportapp#PutAccountAliasResult": {
+        "type": "structure"
+      },
+      "com.amazonaws.supportapp#RegisterSlackWorkspaceForOrganization": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.supportapp#RegisterSlackWorkspaceForOrganizationRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.supportapp#RegisterSlackWorkspaceForOrganizationResult"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.supportapp#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.supportapp#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.supportapp#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.supportapp#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.supportapp#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eRegisters a Slack workspace for your Amazon Web Services account. To call this API, your account must be\n      part of an organization in Organizations.\u003c/p\u003e\n         \u003cp\u003eIf you're the \u003ci\u003emanagement account\u003c/i\u003e and you want to register Slack\n      workspaces for your organization, you must complete the following tasks:\u003c/p\u003e\n         \u003col\u003e\n            \u003cli\u003e\n               \u003cp\u003eSign in to the \u003ca href=\"https://console.aws.amazon.com/support/app\"\u003eAmazon Web Services Support Center\u003c/a\u003e and\n          authorize the Slack workspaces where you want your organization to have access to. See\n            \u003ca href=\"https://docs.aws.amazon.com/awssupport/latest/user/authorize-slack-workspace.html\"\u003eAuthorize a Slack workspace\u003c/a\u003e in the \u003ci\u003eAmazon Web Services Support User\n          Guide\u003c/i\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eCall the \u003ccode\u003eRegisterSlackWorkspaceForOrganization\u003c/code\u003e API to authorize each\n          Slack workspace for the organization.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ol\u003e\n         \u003cp\u003eAfter the management account authorizes the Slack workspace, member accounts can call this\n      API to authorize the same Slack workspace for their individual accounts. Member accounts don't\n      need to authorize the Slack workspace manually through the \u003ca href=\"https://console.aws.amazon.com/support/app\"\u003eAmazon Web Services Support Center\u003c/a\u003e.\u003c/p\u003e\n         \u003cp\u003eTo use the Amazon Web Services Support App, each account must then complete the following tasks:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003eCreate an Identity and Access Management (IAM) role with the required permission. For more information,\n          see \u003ca href=\"https://docs.aws.amazon.com/awssupport/latest/user/support-app-permissions.html\"\u003eManaging access to the Amazon Web Services Support App\u003c/a\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eConfigure a Slack channel to use the Amazon Web Services Support App for support cases for that account. For\n          more information, see \u003ca href=\"https://docs.aws.amazon.com/awssupport/latest/user/add-your-slack-channel.html\"\u003eConfiguring a Slack channel\u003c/a\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e",
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/control/register-slack-workspace-for-organization",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.supportapp#RegisterSlackWorkspaceForOrganizationRequest": {
+        "type": "structure",
+        "members": {
+          "teamId": {
+            "target": "com.amazonaws.supportapp#teamId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe team ID in Slack. This ID uniquely identifies a Slack workspace, such as\n\u003ccode\u003eT012ABCDEFG\u003c/code\u003e. Specify the Slack workspace that you want to use for your organization.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        }
+      },
+      "com.amazonaws.supportapp#RegisterSlackWorkspaceForOrganizationResult": {
+        "type": "structure",
+        "members": {
+          "accountType": {
+            "target": "com.amazonaws.supportapp#AccountType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eWhether the Amazon Web Services account is a management or member account that's part of an organization\n      in Organizations.\u003c/p\u003e"
+            }
+          },
+          "teamId": {
+            "target": "com.amazonaws.supportapp#teamId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe team ID in Slack. This ID uniquely identifies a Slack workspace, such as\n\u003ccode\u003eT012ABCDEFG\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "teamName": {
+            "target": "com.amazonaws.supportapp#teamName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the Slack workspace.\u003c/p\u003e"
+            }
+          }
+        }
+      },
+      "com.amazonaws.supportapp#ResourceNotFoundException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "com.amazonaws.supportapp#errorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe specified resource is missing or doesn't exist, such as an account alias, Slack\n      channel configuration, or Slack workspace configuration.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 404
+        }
+      },
+      "com.amazonaws.supportapp#ServiceQuotaExceededException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "com.amazonaws.supportapp#errorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eYour Service Quotas request exceeds the quota for the service. For example, your Service Quotas request to\n      Amazon Web Services Support App might exceed the maximum number of workspaces or channels per account, or the maximum\n      number of accounts per Slack channel.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 402
+        }
+      },
+      "com.amazonaws.supportapp#SlackChannelConfiguration": {
+        "type": "structure",
+        "members": {
+          "channelId": {
+            "target": "com.amazonaws.supportapp#channelId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe channel ID in Slack. This ID identifies a channel within a Slack workspace.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "channelName": {
+            "target": "com.amazonaws.supportapp#channelName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the Slack channel that you configured with the Amazon Web Services Support App for your\n      Amazon Web Services account.\u003c/p\u003e"
+            }
+          },
+          "channelRoleArn": {
+            "target": "com.amazonaws.supportapp#roleArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of an IAM role that you want to\nuse to perform operations on Amazon Web Services. For more information, see \u003ca href=\"https://docs.aws.amazon.com/awssupport/latest/user/support-app-permissions.html\"\u003eManaging access to\nthe Amazon Web Services Support App\u003c/a\u003e in the \u003ci\u003eAmazon Web Services Support User Guide\u003c/i\u003e.\u003c/p\u003e"
+            }
+          },
+          "notifyOnAddCorrespondenceToCase": {
+            "target": "com.amazonaws.supportapp#booleanValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eWhether you want to get notified when a support case has a new correspondence.\u003c/p\u003e"
+            }
+          },
+          "notifyOnCaseSeverity": {
+            "target": "com.amazonaws.supportapp#NotificationSeverityLevel",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe case severity for a support case that you want to receive notifications.\u003c/p\u003e"
+            }
+          },
+          "notifyOnCreateOrReopenCase": {
+            "target": "com.amazonaws.supportapp#booleanValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eWhether you want to get notified when a support case is created or reopened.\u003c/p\u003e"
+            }
+          },
+          "notifyOnResolveCase": {
+            "target": "com.amazonaws.supportapp#booleanValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eWhether you want to get notified when a support case is resolved.\u003c/p\u003e"
+            }
+          },
+          "teamId": {
+            "target": "com.amazonaws.supportapp#teamId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe team ID in Slack. This ID uniquely identifies a Slack workspace, such as\n\u003ccode\u003eT012ABCDEFG\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe configuration for a Slack channel that you added for your Amazon Web Services account.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.supportapp#SlackWorkspaceConfiguration": {
+        "type": "structure",
+        "members": {
+          "allowOrganizationMemberAccount": {
+            "target": "com.amazonaws.supportapp#booleanValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eWhether to allow member accounts to authorize Slack workspaces. Member accounts must be\n      part of an organization in Organizations.\u003c/p\u003e"
+            }
+          },
+          "teamId": {
+            "target": "com.amazonaws.supportapp#teamId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe team ID in Slack. This ID uniquely identifies a Slack workspace, such as\n\u003ccode\u003eT012ABCDEFG\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "teamName": {
+            "target": "com.amazonaws.supportapp#teamName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the Slack workspace.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe configuration for a Slack workspace that you added to an Amazon Web Services account.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.supportapp#SlackWorkspaceConfigurationList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.supportapp#SlackWorkspaceConfiguration"
+        }
+      },
+      "com.amazonaws.supportapp#SupportApp": {
+        "type": "service",
+        "version": "2021-08-20",
+        "operations": [
+          {
+            "target": "com.amazonaws.supportapp#CreateSlackChannelConfiguration"
+          },
+          {
+            "target": "com.amazonaws.supportapp#DeleteAccountAlias"
+          },
+          {
+            "target": "com.amazonaws.supportapp#DeleteSlackChannelConfiguration"
+          },
+          {
+            "target": "com.amazonaws.supportapp#DeleteSlackWorkspaceConfiguration"
+          },
+          {
+            "target": "com.amazonaws.supportapp#GetAccountAlias"
+          },
+          {
+            "target": "com.amazonaws.supportapp#ListSlackChannelConfigurations"
+          },
+          {
+            "target": "com.amazonaws.supportapp#ListSlackWorkspaceConfigurations"
+          },
+          {
+            "target": "com.amazonaws.supportapp#PutAccountAlias"
+          },
+          {
+            "target": "com.amazonaws.supportapp#RegisterSlackWorkspaceForOrganization"
+          },
+          {
+            "target": "com.amazonaws.supportapp#UpdateSlackChannelConfiguration"
+          }
+        ],
+        "traits": {
+          "aws.api#service": {
+            "sdkId": "Support App",
+            "arnNamespace": "supportapp"
+          },
+          "aws.auth#sigv4": {
+            "name": "supportapp"
+          },
+          "aws.protocols#restJson1": {},
+          "smithy.api#cors": {
+            "additionalAllowedHeaders": [
+              "*",
+              "Authorization",
+              "Date",
+              "X-Amz-Date",
+              "X-Amz-Security-Token",
+              "X-Amz-Target",
+              "content-type",
+              "x-amz-content-sha256",
+              "x-amz-user-agent",
+              "x-amzn-platform-id",
+              "x-amzn-trace-id"
+            ],
+            "additionalExposedHeaders": [
+              "x-amzn-errortype",
+              "x-amzn-requestid",
+              "x-amzn-errormessage",
+              "x-amzn-trace-id",
+              "x-amz-apigw-id,date"
+            ],
+            "maxAge": 86400
+          },
+          "smithy.api#documentation": "\u003cfullname\u003eAmazon Web Services Support App in Slack\u003c/fullname\u003e\n         \u003cp\u003eYou can use the Amazon Web Services Support App in Slack API to manage your support cases in Slack for your\n      Amazon Web Services account. After you configure your Slack workspace and channel with the Amazon Web Services Support App, you can\n      perform the following tasks directly in your Slack channel:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003eCreate, search, update, and resolve your support cases\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eRequest service quota increases for your account\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eInvite Amazon Web Services Support agents to your channel so that you can chat directly about your\n          support cases\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e\n         \u003cp\u003eFor more information about how to perform these actions in Slack, see the following\n      documentation in the \u003ci\u003eAmazon Web Services Support User Guide\u003c/i\u003e:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ca href=\"https://docs.aws.amazon.com/awssupport/latest/user/aws-support-app-for-slack.html\"\u003eAmazon Web Services Support App in Slack\u003c/a\u003e\n               \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ca href=\"https://docs.aws.amazon.com/awssupport/latest/user/joining-a-live-chat-session.html\"\u003eJoining a live chat session with Amazon Web Services Support\u003c/a\u003e\n               \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ca href=\"https://docs.aws.amazon.com/awssupport/latest/user/service-quota-increase.html\"\u003eRequesting service quota increases\u003c/a\u003e\n               \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ca href=\"https://docs.aws.amazon.com/awssupport/latest/user/support-app-commands.html\"\u003eAmazon Web Services Support App commands in Slack\u003c/a\u003e\n               \u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e\n         \u003cp\u003eYou can also use the Amazon Web Services Management Console instead of the Amazon Web Services Support App API to manage your Slack\n      configurations. For more information, see \u003ca href=\"https://docs.aws.amazon.com/awssupport/latest/user/authorize-slack-workspace.html\"\u003eAuthorize a\n        Slack workspace to enable the Amazon Web Services Support App\u003c/a\u003e.\u003c/p\u003e\n         \u003cnote\u003e\n            \u003cul\u003e\n               \u003cli\u003e\n                  \u003cp\u003eYou must have a Business or Enterprise Support plan to use the Amazon Web Services Support App API. \u003c/p\u003e\n               \u003c/li\u003e\n               \u003cli\u003e\n                  \u003cp\u003eFor more information about the Amazon Web Services Support App endpoints, see the \u003ca href=\"https://docs.aws.amazon.com/general/latest/gr/awssupport.html#awssupport_app_region\"\u003eAmazon Web Services Support App in Slack endpoints\u003c/a\u003e in the \u003ci\u003eAmazon Web Services General\n              Reference\u003c/i\u003e.\u003c/p\u003e\n               \u003c/li\u003e\n            \u003c/ul\u003e\n         \u003c/note\u003e",
+          "smithy.api#title": "AWS Support App",
+          "smithy.rules#endpointBdd": {
+            "version": "1.1",
+            "parameters": {
+              "Region": {
+                "builtIn": "AWS::Region",
+                "required": false,
+                "documentation": "The AWS region used to dispatch the request.",
+                "type": "string"
+              },
+              "UseDualStack": {
+                "builtIn": "AWS::UseDualStack",
+                "required": true,
+                "default": false,
+                "documentation": "When true, use the dual-stack endpoint. If the configured endpoint does not support dual-stack, dispatching the request MAY return an error.",
+                "type": "boolean"
+              },
+              "UseFIPS": {
+                "builtIn": "AWS::UseFIPS",
+                "required": true,
+                "default": false,
+                "documentation": "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
+                "type": "boolean"
+              },
+              "Endpoint": {
+                "builtIn": "SDK::Endpoint",
+                "required": false,
+                "documentation": "Override the endpoint used to send this request",
+                "type": "string"
+              }
+            },
+            "conditions": [
+              {
+                "fn": "isSet",
+                "argv": [
+                  {
+                    "ref": "Endpoint"
+                  }
+                ]
+              },
+              {
+                "fn": "isSet",
+                "argv": [
+                  {
+                    "ref": "Region"
+                  }
+                ]
+              },
+              {
+                "fn": "aws.partition",
+                "argv": [
+                  {
+                    "ref": "Region"
+                  }
+                ],
+                "assign": "PartitionResult"
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "ref": "UseFIPS"
+                  },
+                  true
+                ]
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "ref": "UseDualStack"
+                  },
+                  true
+                ]
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "fn": "getAttr",
+                    "argv": [
+                      {
+                        "ref": "PartitionResult"
+                      },
+                      "supportsDualStack"
+                    ]
+                  },
+                  true
+                ]
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "fn": "getAttr",
+                    "argv": [
+                      {
+                        "ref": "PartitionResult"
+                      },
+                      "supportsFIPS"
+                    ]
+                  },
+                  true
+                ]
+              }
+            ],
+            "results": [
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: FIPS and custom endpoint are not supported",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: Dualstack and custom endpoint are not supported",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": {
+                    "ref": "Endpoint"
+                  },
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://supportapp-fips.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "FIPS and DualStack are enabled, but this partition does not support one or both",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://supportapp-fips.{Region}.{PartitionResult#dnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "FIPS is enabled but this partition does not support FIPS",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://supportapp.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "DualStack is enabled but this partition does not support DualStack",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://supportapp.{Region}.{PartitionResult#dnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: Missing Region",
+                "type": "error"
+              }
+            ],
+            "root": 2,
+            "nodeCount": 13,
+            "nodes": "/////wAAAAH/////AAAAAAAAAAwAAAADAAAAAQAAAAQF9eELAAAAAgAAAAUF9eELAAAAAwAAAAgAAAAGAAAABAAAAAcF9eEKAAAABQX14QgF9eEJAAAABAAAAAoAAAAJAAAABgX14QYF9eEHAAAABQAAAAsF9eEFAAAABgX14QQF9eEFAAAAAwX14QEAAAANAAAABAX14QIF9eED"
+          },
+          "smithy.rules#endpointRuleSet": {
+            "version": "1.0",
+            "parameters": {
+              "Region": {
+                "builtIn": "AWS::Region",
+                "required": false,
+                "documentation": "The AWS region used to dispatch the request.",
+                "type": "string"
+              },
+              "UseDualStack": {
+                "builtIn": "AWS::UseDualStack",
+                "required": true,
+                "default": false,
+                "documentation": "When true, use the dual-stack endpoint. If the configured endpoint does not support dual-stack, dispatching the request MAY return an error.",
+                "type": "boolean"
+              },
+              "UseFIPS": {
+                "builtIn": "AWS::UseFIPS",
+                "required": true,
+                "default": false,
+                "documentation": "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
+                "type": "boolean"
+              },
+              "Endpoint": {
+                "builtIn": "SDK::Endpoint",
+                "required": false,
+                "documentation": "Override the endpoint used to send this request",
+                "type": "string"
+              }
+            },
+            "rules": [
+              {
+                "conditions": [
+                  {
+                    "fn": "isSet",
+                    "argv": [
+                      {
+                        "ref": "Endpoint"
+                      }
+                    ]
+                  }
+                ],
+                "rules": [
+                  {
+                    "conditions": [
+                      {
+                        "fn": "booleanEquals",
+                        "argv": [
+                          {
+                            "ref": "UseFIPS"
+                          },
+                          true
+                        ]
+                      }
+                    ],
+                    "error": "Invalid Configuration: FIPS and custom endpoint are not supported",
+                    "type": "error"
+                  },
+                  {
+                    "conditions": [
+                      {
+                        "fn": "booleanEquals",
+                        "argv": [
+                          {
+                            "ref": "UseDualStack"
+                          },
+                          true
+                        ]
+                      }
+                    ],
+                    "error": "Invalid Configuration: Dualstack and custom endpoint are not supported",
+                    "type": "error"
+                  },
+                  {
+                    "conditions": [],
+                    "endpoint": {
+                      "url": {
+                        "ref": "Endpoint"
+                      },
+                      "properties": {},
+                      "headers": {}
+                    },
+                    "type": "endpoint"
+                  }
+                ],
+                "type": "tree"
+              },
+              {
+                "conditions": [
+                  {
+                    "fn": "isSet",
+                    "argv": [
+                      {
+                        "ref": "Region"
+                      }
+                    ]
+                  }
+                ],
+                "rules": [
+                  {
+                    "conditions": [
+                      {
+                        "fn": "aws.partition",
+                        "argv": [
+                          {
+                            "ref": "Region"
+                          }
+                        ],
+                        "assign": "PartitionResult"
+                      }
+                    ],
+                    "rules": [
+                      {
+                        "conditions": [
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseFIPS"
+                              },
+                              true
+                            ]
+                          },
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseDualStack"
+                              },
+                              true
+                            ]
+                          }
+                        ],
+                        "rules": [
+                          {
+                            "conditions": [
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  true,
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsFIPS"
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  true,
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsDualStack"
+                                    ]
+                                  }
+                                ]
+                              }
+                            ],
+                            "rules": [
+                              {
+                                "conditions": [],
+                                "endpoint": {
+                                  "url": "https://supportapp-fips.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                                  "properties": {},
+                                  "headers": {}
+                                },
+                                "type": "endpoint"
+                              }
+                            ],
+                            "type": "tree"
+                          },
+                          {
+                            "conditions": [],
+                            "error": "FIPS and DualStack are enabled, but this partition does not support one or both",
+                            "type": "error"
+                          }
+                        ],
+                        "type": "tree"
+                      },
+                      {
+                        "conditions": [
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseFIPS"
+                              },
+                              true
+                            ]
+                          }
+                        ],
+                        "rules": [
+                          {
+                            "conditions": [
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsFIPS"
+                                    ]
+                                  },
+                                  true
+                                ]
+                              }
+                            ],
+                            "rules": [
+                              {
+                                "conditions": [],
+                                "endpoint": {
+                                  "url": "https://supportapp-fips.{Region}.{PartitionResult#dnsSuffix}",
+                                  "properties": {},
+                                  "headers": {}
+                                },
+                                "type": "endpoint"
+                              }
+                            ],
+                            "type": "tree"
+                          },
+                          {
+                            "conditions": [],
+                            "error": "FIPS is enabled but this partition does not support FIPS",
+                            "type": "error"
+                          }
+                        ],
+                        "type": "tree"
+                      },
+                      {
+                        "conditions": [
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseDualStack"
+                              },
+                              true
+                            ]
+                          }
+                        ],
+                        "rules": [
+                          {
+                            "conditions": [
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  true,
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsDualStack"
+                                    ]
+                                  }
+                                ]
+                              }
+                            ],
+                            "rules": [
+                              {
+                                "conditions": [],
+                                "endpoint": {
+                                  "url": "https://supportapp.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                                  "properties": {},
+                                  "headers": {}
+                                },
+                                "type": "endpoint"
+                              }
+                            ],
+                            "type": "tree"
+                          },
+                          {
+                            "conditions": [],
+                            "error": "DualStack is enabled but this partition does not support DualStack",
+                            "type": "error"
+                          }
+                        ],
+                        "type": "tree"
+                      },
+                      {
+                        "conditions": [],
+                        "endpoint": {
+                          "url": "https://supportapp.{Region}.{PartitionResult#dnsSuffix}",
+                          "properties": {},
+                          "headers": {}
+                        },
+                        "type": "endpoint"
+                      }
+                    ],
+                    "type": "tree"
+                  }
+                ],
+                "type": "tree"
+              },
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: Missing Region",
+                "type": "error"
+              }
+            ]
+          },
+          "smithy.rules#endpointTests": {
+            "testCases": [
+              {
+                "documentation": "For region us-east-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://supportapp-fips.us-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://supportapp-fips.us-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://supportapp.us-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://supportapp.us-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://supportapp-fips.cn-north-1.api.amazonwebservices.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": true,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://supportapp-fips.cn-north-1.amazonaws.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://supportapp.cn-north-1.api.amazonwebservices.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://supportapp.cn-north-1.amazonaws.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://supportapp-fips.us-gov-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://supportapp-fips.us-gov-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://supportapp.us-gov-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://supportapp.us-gov-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-iso-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://supportapp-fips.us-iso-east-1.c2s.ic.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-iso-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-iso-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://supportapp.us-iso-east-1.c2s.ic.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-iso-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-isob-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://supportapp-fips.us-isob-east-1.sc2s.sgov.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-isob-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-isob-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://supportapp.us-isob-east-1.sc2s.sgov.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-isob-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For custom endpoint with region set and fips disabled and dualstack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://example.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "For custom endpoint with region not set and fips disabled and dualstack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://example.com"
+                  }
+                },
+                "params": {
+                  "UseFIPS": false,
+                  "UseDualStack": false,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "For custom endpoint with fips enabled and dualstack disabled",
+                "expect": {
+                  "error": "Invalid Configuration: FIPS and custom endpoint are not supported"
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "For custom endpoint with fips disabled and dualstack enabled",
+                "expect": {
+                  "error": "Invalid Configuration: Dualstack and custom endpoint are not supported"
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "Missing region",
+                "expect": {
+                  "error": "Invalid Configuration: Missing Region"
+                }
+              }
+            ],
+            "version": "1.0"
+          }
+        }
+      },
+      "com.amazonaws.supportapp#UpdateSlackChannelConfiguration": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.supportapp#UpdateSlackChannelConfigurationRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.supportapp#UpdateSlackChannelConfigurationResult"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.supportapp#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.supportapp#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.supportapp#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.supportapp#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.supportapp#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eUpdates the configuration for a Slack channel, such as case update notifications.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/control/update-slack-channel-configuration",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.supportapp#UpdateSlackChannelConfigurationRequest": {
+        "type": "structure",
+        "members": {
+          "channelId": {
+            "target": "com.amazonaws.supportapp#channelId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe channel ID in Slack. This ID identifies a channel within a Slack workspace.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "channelName": {
+            "target": "com.amazonaws.supportapp#channelName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Slack channel name that you want to update.\u003c/p\u003e"
+            }
+          },
+          "channelRoleArn": {
+            "target": "com.amazonaws.supportapp#roleArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of an IAM role that you want to\nuse to perform operations on Amazon Web Services. For more information, see \u003ca href=\"https://docs.aws.amazon.com/awssupport/latest/user/support-app-permissions.html\"\u003eManaging access to\nthe Amazon Web Services Support App\u003c/a\u003e in the \u003ci\u003eAmazon Web Services Support User Guide\u003c/i\u003e.\u003c/p\u003e"
+            }
+          },
+          "notifyOnAddCorrespondenceToCase": {
+            "target": "com.amazonaws.supportapp#booleanValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eWhether you want to get notified when a support case has a new correspondence.\u003c/p\u003e"
+            }
+          },
+          "notifyOnCaseSeverity": {
+            "target": "com.amazonaws.supportapp#NotificationSeverityLevel",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe case severity for a support case that you want to receive notifications.\u003c/p\u003e\n         \u003cp\u003eIf you specify \u003ccode\u003ehigh\u003c/code\u003e or \u003ccode\u003eall\u003c/code\u003e, at least one of the following\n      parameters must be \u003ccode\u003etrue\u003c/code\u003e:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003enotifyOnAddCorrespondenceToCase\u003c/code\u003e\n               \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003enotifyOnCreateOrReopenCase\u003c/code\u003e\n               \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003enotifyOnResolveCase\u003c/code\u003e\n               \u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e\n         \u003cp\u003eIf you specify \u003ccode\u003enone\u003c/code\u003e, any of the following parameters that you specify in your\n      request must be \u003ccode\u003efalse\u003c/code\u003e:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003enotifyOnAddCorrespondenceToCase\u003c/code\u003e\n               \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003enotifyOnCreateOrReopenCase\u003c/code\u003e\n               \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003enotifyOnResolveCase\u003c/code\u003e\n               \u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e\n         \u003cnote\u003e\n            \u003cp\u003eIf you don't specify these parameters in your request, the Amazon Web Services Support App uses the current\n        values by default.\u003c/p\u003e\n         \u003c/note\u003e"
+            }
+          },
+          "notifyOnCreateOrReopenCase": {
+            "target": "com.amazonaws.supportapp#booleanValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eWhether you want to get notified when a support case is created or reopened.\u003c/p\u003e"
+            }
+          },
+          "notifyOnResolveCase": {
+            "target": "com.amazonaws.supportapp#booleanValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eWhether you want to get notified when a support case is resolved.\u003c/p\u003e"
+            }
+          },
+          "teamId": {
+            "target": "com.amazonaws.supportapp#teamId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe team ID in Slack. This ID uniquely identifies a Slack workspace, such as\n\u003ccode\u003eT012ABCDEFG\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        }
+      },
+      "com.amazonaws.supportapp#UpdateSlackChannelConfigurationResult": {
+        "type": "structure",
+        "members": {
+          "channelId": {
+            "target": "com.amazonaws.supportapp#channelId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe channel ID in Slack. This ID identifies a channel within a Slack workspace.\u003c/p\u003e"
+            }
+          },
+          "channelName": {
+            "target": "com.amazonaws.supportapp#channelName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the Slack channel that you configure for the Amazon Web Services Support App.\u003c/p\u003e"
+            }
+          },
+          "channelRoleArn": {
+            "target": "com.amazonaws.supportapp#roleArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of an IAM role that you want to\nuse to perform operations on Amazon Web Services. For more information, see \u003ca href=\"https://docs.aws.amazon.com/awssupport/latest/user/support-app-permissions.html\"\u003eManaging access to\nthe Amazon Web Services Support App\u003c/a\u003e in the \u003ci\u003eAmazon Web Services Support User Guide\u003c/i\u003e.\u003c/p\u003e"
+            }
+          },
+          "notifyOnAddCorrespondenceToCase": {
+            "target": "com.amazonaws.supportapp#booleanValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eWhether you want to get notified when a support case has a new correspondence.\u003c/p\u003e"
+            }
+          },
+          "notifyOnCaseSeverity": {
+            "target": "com.amazonaws.supportapp#NotificationSeverityLevel",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe case severity for a support case that you want to receive notifications.\u003c/p\u003e"
+            }
+          },
+          "notifyOnCreateOrReopenCase": {
+            "target": "com.amazonaws.supportapp#booleanValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eWhether you want to get notified when a support case is created or reopened.\u003c/p\u003e"
+            }
+          },
+          "notifyOnResolveCase": {
+            "target": "com.amazonaws.supportapp#booleanValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eWhether you want to get notified when a support case is resolved.\u003c/p\u003e"
+            }
+          },
+          "teamId": {
+            "target": "com.amazonaws.supportapp#teamId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe team ID in Slack. This ID uniquely identifies a Slack workspace, such as\n\u003ccode\u003eT012ABCDEFG\u003c/code\u003e.\u003c/p\u003e"
+            }
+          }
+        }
+      },
+      "com.amazonaws.supportapp#ValidationException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "com.amazonaws.supportapp#errorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eYour request input doesn't meet the constraints that the Amazon Web Services Support App specifies.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.supportapp#awsAccountAlias": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 30
+          },
+          "smithy.api#pattern": "^[\\w\\- ]+$"
+        }
+      },
+      "com.amazonaws.supportapp#booleanValue": {
+        "type": "boolean"
+      },
+      "com.amazonaws.supportapp#channelId": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 256
+          },
+          "smithy.api#pattern": "^\\S+$"
+        }
+      },
+      "com.amazonaws.supportapp#channelName": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 256
+          },
+          "smithy.api#pattern": "^.+$"
+        }
+      },
+      "com.amazonaws.supportapp#errorMessage": {
+        "type": "string"
+      },
+      "com.amazonaws.supportapp#paginationToken": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 256
+          },
+          "smithy.api#pattern": "^\\S+$"
+        }
+      },
+      "com.amazonaws.supportapp#roleArn": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 31,
+            "max": 2048
+          },
+          "smithy.api#pattern": "^arn:aws:iam::[0-9]{12}:role/(.+)$"
+        }
+      },
+      "com.amazonaws.supportapp#slackChannelConfigurationList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.supportapp#SlackChannelConfiguration"
+        }
+      },
+      "com.amazonaws.supportapp#teamId": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 256
+          },
+          "smithy.api#pattern": "^\\S+$"
+        }
+      },
+      "com.amazonaws.supportapp#teamName": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 256
+          },
+          "smithy.api#pattern": "^.+$"
+        }
+      }
+    }
+  }
+}

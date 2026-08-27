@@ -1,0 +1,3437 @@
+{
+  "schema_source": "smithy",
+  "mode": "data_source",
+  "auth": {
+    "Type": "",
+    "Params": null
+  },
+  "base_url": "https://aws.example.invalid",
+  "retry": {
+    "MaxAttempts": 0,
+    "InitialBackoff": "",
+    "MaxBackoff": "",
+    "Jitter": null,
+    "RespectRetryAfter": null,
+    "RateLimitResetHeader": ""
+  },
+  "timeouts": {
+    "Create": "",
+    "Read": "",
+    "Update": "",
+    "Delete": "",
+    "Default": ""
+  },
+  "wire_name": "aws",
+  "raw_spec": {
+    "smithy": "2.0",
+    "shapes": {
+      "com.amazonaws.mwaaserverless#AccessDeniedException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.mwaaserverless#ErrorMessage",
+            "traits": {
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eYou do not have sufficient permission to perform this action.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 403
+        }
+      },
+      "com.amazonaws.mwaaserverless#AmazonMWAAServerless": {
+        "type": "service",
+        "version": "2024-07-26",
+        "operations": [
+          {
+            "target": "com.amazonaws.mwaaserverless#ListTagsForResource"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#TagResource"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#UntagResource"
+          }
+        ],
+        "resources": [
+          {
+            "target": "com.amazonaws.mwaaserverless#TaskInstanceResource"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#WorkflowResource"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#WorkflowRunResource"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#WorkflowVersionResource"
+          }
+        ],
+        "traits": {
+          "aws.api#service": {
+            "sdkId": "MWAA Serverless",
+            "arnNamespace": "airflow-serverless",
+            "endpointPrefix": "airflow-serverless"
+          },
+          "aws.auth#sigv4": {
+            "name": "airflow-serverless"
+          },
+          "aws.endpoints#dualStackOnlyEndpoints": {},
+          "aws.endpoints#standardRegionalEndpoints": {},
+          "aws.protocols#awsJson1_0": {},
+          "smithy.api#documentation": "\u003cp\u003eAmazon Managed Workflows for Apache Airflow Serverless provides a managed workflow orchestration platform for running Apache Airflow workflows in a serverless environment. You can use Amazon Managed Workflows for Apache Airflow Serverless to create, manage, and run data processing workflows without managing the underlying infrastructure, Airflow clusters, metadata databases, or scheduling overhead. The service provides secure multi-tenant run environments with automatic scaling, comprehensive logging, and integration with multiple Amazon Web Services services for orchestrating complex analytics workloads.\u003c/p\u003e",
+          "smithy.api#title": "AmazonMWAAServerless",
+          "smithy.rules#endpointBdd": {
+            "version": "1.1",
+            "parameters": {
+              "UseFIPS": {
+                "builtIn": "AWS::UseFIPS",
+                "required": true,
+                "default": false,
+                "documentation": "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
+                "type": "boolean"
+              },
+              "Endpoint": {
+                "builtIn": "SDK::Endpoint",
+                "required": false,
+                "documentation": "Override the endpoint used to send this request",
+                "type": "string"
+              },
+              "Region": {
+                "builtIn": "AWS::Region",
+                "required": false,
+                "documentation": "The AWS region used to dispatch the request.",
+                "type": "string"
+              }
+            },
+            "conditions": [
+              {
+                "fn": "isSet",
+                "argv": [
+                  {
+                    "ref": "Endpoint"
+                  }
+                ]
+              },
+              {
+                "fn": "isSet",
+                "argv": [
+                  {
+                    "ref": "Region"
+                  }
+                ]
+              },
+              {
+                "fn": "aws.partition",
+                "argv": [
+                  {
+                    "ref": "Region"
+                  }
+                ],
+                "assign": "PartitionResult"
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "ref": "UseFIPS"
+                  },
+                  true
+                ]
+              }
+            ],
+            "results": [
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: FIPS and custom endpoint are not supported",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": {
+                    "ref": "Endpoint"
+                  },
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://airflow-serverless-fips.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://airflow-serverless.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: Missing Region",
+                "type": "error"
+              }
+            ],
+            "root": 2,
+            "nodeCount": 6,
+            "nodes": "/////wAAAAH/////AAAAAAAAAAYAAAADAAAAAQAAAAQF9eEFAAAAAgAAAAUF9eEFAAAAAwX14QMF9eEEAAAAAwX14QEF9eEC"
+          },
+          "smithy.rules#endpointRuleSet": {
+            "version": "1.0",
+            "parameters": {
+              "UseFIPS": {
+                "builtIn": "AWS::UseFIPS",
+                "required": true,
+                "default": false,
+                "documentation": "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
+                "type": "boolean"
+              },
+              "Endpoint": {
+                "builtIn": "SDK::Endpoint",
+                "required": false,
+                "documentation": "Override the endpoint used to send this request",
+                "type": "string"
+              },
+              "Region": {
+                "builtIn": "AWS::Region",
+                "required": false,
+                "documentation": "The AWS region used to dispatch the request.",
+                "type": "string"
+              }
+            },
+            "rules": [
+              {
+                "conditions": [
+                  {
+                    "fn": "isSet",
+                    "argv": [
+                      {
+                        "ref": "Endpoint"
+                      }
+                    ]
+                  }
+                ],
+                "rules": [
+                  {
+                    "conditions": [
+                      {
+                        "fn": "booleanEquals",
+                        "argv": [
+                          {
+                            "ref": "UseFIPS"
+                          },
+                          true
+                        ]
+                      }
+                    ],
+                    "error": "Invalid Configuration: FIPS and custom endpoint are not supported",
+                    "type": "error"
+                  },
+                  {
+                    "conditions": [],
+                    "endpoint": {
+                      "url": {
+                        "ref": "Endpoint"
+                      },
+                      "properties": {},
+                      "headers": {}
+                    },
+                    "type": "endpoint"
+                  }
+                ],
+                "type": "tree"
+              },
+              {
+                "conditions": [],
+                "rules": [
+                  {
+                    "conditions": [
+                      {
+                        "fn": "isSet",
+                        "argv": [
+                          {
+                            "ref": "Region"
+                          }
+                        ]
+                      }
+                    ],
+                    "rules": [
+                      {
+                        "conditions": [
+                          {
+                            "fn": "aws.partition",
+                            "argv": [
+                              {
+                                "ref": "Region"
+                              }
+                            ],
+                            "assign": "PartitionResult"
+                          }
+                        ],
+                        "rules": [
+                          {
+                            "conditions": [
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  {
+                                    "ref": "UseFIPS"
+                                  },
+                                  true
+                                ]
+                              }
+                            ],
+                            "endpoint": {
+                              "url": "https://airflow-serverless-fips.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                              "properties": {},
+                              "headers": {}
+                            },
+                            "type": "endpoint"
+                          },
+                          {
+                            "conditions": [],
+                            "endpoint": {
+                              "url": "https://airflow-serverless.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                              "properties": {},
+                              "headers": {}
+                            },
+                            "type": "endpoint"
+                          }
+                        ],
+                        "type": "tree"
+                      }
+                    ],
+                    "type": "tree"
+                  },
+                  {
+                    "conditions": [],
+                    "error": "Invalid Configuration: Missing Region",
+                    "type": "error"
+                  }
+                ],
+                "type": "tree"
+              }
+            ]
+          },
+          "smithy.rules#endpointTests": {
+            "testCases": [
+              {
+                "documentation": "For custom endpoint with region not set and fips disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://example.com"
+                  }
+                },
+                "params": {
+                  "Endpoint": "https://example.com",
+                  "UseFIPS": false
+                }
+              },
+              {
+                "documentation": "For custom endpoint with fips enabled",
+                "expect": {
+                  "error": "Invalid Configuration: FIPS and custom endpoint are not supported"
+                },
+                "params": {
+                  "Endpoint": "https://example.com",
+                  "UseFIPS": true
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://airflow-serverless-fips.us-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": true
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://airflow-serverless.us-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false
+                }
+              },
+              {
+                "documentation": "For region cn-northwest-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://airflow-serverless-fips.cn-northwest-1.api.amazonwebservices.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-northwest-1",
+                  "UseFIPS": true
+                }
+              },
+              {
+                "documentation": "For region cn-northwest-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://airflow-serverless.cn-northwest-1.api.amazonwebservices.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-northwest-1",
+                  "UseFIPS": false
+                }
+              },
+              {
+                "documentation": "For region us-gov-west-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://airflow-serverless-fips.us-gov-west-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-west-1",
+                  "UseFIPS": true
+                }
+              },
+              {
+                "documentation": "For region us-gov-west-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://airflow-serverless.us-gov-west-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-west-1",
+                  "UseFIPS": false
+                }
+              },
+              {
+                "documentation": "Missing region",
+                "expect": {
+                  "error": "Invalid Configuration: Missing Region"
+                }
+              }
+            ],
+            "version": "1.0"
+          }
+        }
+      },
+      "com.amazonaws.mwaaserverless#Code": {
+        "type": "union",
+        "members": {
+          "S3Location": {
+            "target": "com.amazonaws.mwaaserverless#S3Location",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon S3 location of the code artifacts that your workflow tasks use during execution.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eSpecifies the Amazon S3 location of code artifacts that workflows use during execution.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.mwaaserverless#ConflictException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.mwaaserverless#ErrorMessage",
+            "traits": {
+              "smithy.api#required": {}
+            }
+          },
+          "ResourceId": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the resource.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "ResourceType": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe type of the resource.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eYou cannot create a resource that already exists, or the resource is in a state that prevents the requested operation.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 409
+        }
+      },
+      "com.amazonaws.mwaaserverless#CreateWorkflow": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.mwaaserverless#CreateWorkflowRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.mwaaserverless#CreateWorkflowResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.mwaaserverless#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#OperationTimeoutException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#ServiceQuotaExceededException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eCreates a new workflow in Amazon Managed Workflows for Apache Airflow Serverless. This operation initializes a workflow with the specified configuration including the workflow definition, execution role, and optional settings for encryption, logging, and networking. You must provide the workflow definition as a YAML file stored in Amazon S3 that defines the DAG structure using supported Amazon Web Services operators. Amazon Managed Workflows for Apache Airflow Serverless automatically creates the first version of the workflow and sets up the necessary execution environment with multi-tenant isolation and security controls.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/workflows"
+          },
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.mwaaserverless#CreateWorkflowRequest": {
+        "type": "structure",
+        "members": {
+          "ClientToken": {
+            "target": "com.amazonaws.mwaaserverless#IdempotencyTokenString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA unique, case-sensitive identifier that you provide to ensure the idempotency of the request. This token prevents duplicate workflow creation requests.\u003c/p\u003e",
+              "smithy.api#idempotencyToken": {}
+            }
+          },
+          "Code": {
+            "target": "com.amazonaws.mwaaserverless#Code",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe location of code artifacts in Amazon S3 for the workflow. The service copies the code from this location at the time of the request.\u003c/p\u003e"
+            }
+          },
+          "DefinitionS3Location": {
+            "target": "com.amazonaws.mwaaserverless#DefinitionS3Location",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon S3 location where the workflow definition file is stored. This must point to a valid YAML file that defines the workflow structure using supported Amazon Web Services operators and tasks. Amazon Managed Workflows for Apache Airflow Serverless takes a snapshot of the definition at creation time, so subsequent changes to the Amazon S3 object will not affect the workflow unless you create a new version. In your YAML definition, include task dependencies, scheduling information, and operator configurations that are compatible with the Amazon Managed Workflows for Apache Airflow Serverless execution environment.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Description": {
+            "target": "com.amazonaws.mwaaserverless#DescriptionString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn optional description of the workflow that you can use to provide additional context about the workflow's purpose and functionality.\u003c/p\u003e"
+            }
+          },
+          "EncryptionConfiguration": {
+            "target": "com.amazonaws.mwaaserverless#EncryptionConfiguration",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe configuration for encrypting workflow data at rest and in transit. Specifies the encryption type and optional KMS key for customer-managed encryption.\u003c/p\u003e"
+            }
+          },
+          "EngineVersion": {
+            "target": "com.amazonaws.mwaaserverless#EngineVersion",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe version of the Amazon Managed Workflows for Apache Airflow Serverless engine that you want to use for this workflow. This determines the feature set, supported operators, and execution environment capabilities available to your workflow. Amazon Managed Workflows for Apache Airflow Serverless maintains backward compatibility across versions while introducing new features and improvements. Currently supports version 1 with plans for additional versions as the service evolves.\u003c/p\u003e"
+            }
+          },
+          "LoggingConfiguration": {
+            "target": "com.amazonaws.mwaaserverless#LoggingConfiguration",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe configuration for workflow logging. Specifies the CloudWatch log group where workflow execution logs are stored. Amazon Managed Workflows for Apache Airflow Serverless automatically exports worker logs and task-level information to the specified log group in your account using remote logging functionality. This provides comprehensive observability for debugging and monitoring workflow execution across the distributed, serverless environment.\u003c/p\u003e"
+            }
+          },
+          "Name": {
+            "target": "com.amazonaws.mwaaserverless#NameString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the workflow. You must use unique workflow names within your Amazon Web Services account. The service generates a unique identifier that is appended to ensure temporal uniqueness across the account lifecycle.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "NetworkConfiguration": {
+            "target": "com.amazonaws.mwaaserverless#NetworkConfiguration",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eNetwork configuration for the workflow execution environment, including VPC security groups and subnets for secure network access. When specified, Amazon Managed Workflows for Apache Airflow Serverless deploys ECS worker tasks in your customer VPC to provide secure connectivity to your resources. If not specified, tasks run in the service's default worker VPC with network isolation from other customers. This configuration enables secure access to VPC-only resources like RDS databases or private endpoints.\u003c/p\u003e"
+            }
+          },
+          "RoleArn": {
+            "target": "com.amazonaws.mwaaserverless#RoleARN",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the IAM role that Amazon Managed Workflows for Apache Airflow Serverless assumes when executing the workflow. This role must have the necessary permissions to access the required Amazon Web Services services and resources that your workflow tasks will interact with. The role is used for task execution in the isolated, multi-tenant environment and should follow the principle of least privilege. Amazon Managed Workflows for Apache Airflow Serverless validates role access during workflow creation but runtime permission checks are performed by the target services.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Tags": {
+            "target": "com.amazonaws.mwaaserverless#Tags",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA map of tags to assign to the workflow resource. Tags are key-value pairs that are used for resource organization and cost allocation.\u003c/p\u003e"
+            }
+          },
+          "TriggerMode": {
+            "target": "com.amazonaws.mwaaserverless#GenericString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe trigger mode for the workflow execution.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.mwaaserverless#CreateWorkflowResponse": {
+        "type": "structure",
+        "members": {
+          "CreatedAt": {
+            "target": "com.amazonaws.mwaaserverless#TimestampValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe timestamp when the workflow was created, in ISO 8601 date-time format.\u003c/p\u003e"
+            }
+          },
+          "IsLatestVersion": {
+            "target": "com.amazonaws.mwaaserverless#IsLatestVersion",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA Boolean flag that indicates whether this workflow version is the latest version of the workflow.\u003c/p\u003e"
+            }
+          },
+          "RevisionId": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA unique identifier for this revision of the workflow configuration. This ID changes when the workflow is updated and you can use it for optimistic concurrency control in update operations. The revision ID helps prevent conflicting updates and ensures that updates are applied to the expected version of the workflow configuration.\u003c/p\u003e"
+            }
+          },
+          "Warnings": {
+            "target": "com.amazonaws.mwaaserverless#WarningMessages",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eWarning messages generated during workflow creation.\u003c/p\u003e",
+              "smithy.api#notProperty": {}
+            }
+          },
+          "WorkflowArn": {
+            "target": "com.amazonaws.mwaaserverless#WorkflowArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the newly created workflow. This ARN uniquely identifies the workflow resource.\u003c/p\u003e",
+              "smithy.api#required": {},
+              "smithy.api#suppress": [
+                "MemberShouldReferenceResource"
+              ]
+            }
+          },
+          "WorkflowStatus": {
+            "target": "com.amazonaws.mwaaserverless#WorkflowStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe current status of the workflow. Possible values are \u003ccode\u003eREADY\u003c/code\u003e (workflow is ready to run) and \u003ccode\u003eDELETING\u003c/code\u003e (workflow is being deleted).\u003c/p\u003e"
+            }
+          },
+          "WorkflowVersion": {
+            "target": "com.amazonaws.mwaaserverless#WorkflowVersion",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe version identifier of the workflow. This is a service-generated alphanumeric string that uniquely identifies this version of the workflow. Amazon Managed Workflows for Apache Airflow Serverless uses a version-first approach where each workflow can have multiple immutable versions, which allows you to maintain different configurations and roll back to previous versions as needed. The version identifier is used in ARNs and API operations to reference specific workflow versions.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.mwaaserverless#DefinitionS3Location": {
+        "type": "structure",
+        "members": {
+          "Bucket": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the Amazon S3 bucket that contains the workflow definition file.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "ObjectKey": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe key (name) of the workflow definition file within the S3 bucket.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "VersionId": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eOptional. The version ID of the workflow definition file in Amazon S3. If not specified, the latest version is used.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eSpecifies the Amazon S3 location of a workflow definition file. This structure contains the bucket name, object key, and optional version ID for the workflow definition. Amazon Managed Workflows for Apache Airflow Serverless takes a snapshot of the definition file at the time of workflow creation or update, ensuring that the workflow behavior remains consistent even if the source file is modified. The definition must be a valid YAML file that uses supported Amazon Web Services operators and Amazon Managed Workflows for Apache Airflow Serverless syntax.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.mwaaserverless#DeleteWorkflow": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.mwaaserverless#DeleteWorkflowRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.mwaaserverless#DeleteWorkflowResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.mwaaserverless#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#OperationTimeoutException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eDeletes a workflow and all its versions. This operation permanently removes the workflow and cannot be undone. Amazon Managed Workflows for Apache Airflow Serverless ensures that all associated resources are properly cleaned up, including stopping any running executions, removing scheduled triggers, and cleaning up execution history. The deletion process respects the multi-tenant isolation boundaries and ensures that no residual data or configurations remain that could affect other customers or workflows.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "DELETE",
+            "uri": "/workflows/{WorkflowArn}"
+          },
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.mwaaserverless#DeleteWorkflowRequest": {
+        "type": "structure",
+        "members": {
+          "WorkflowArn": {
+            "target": "com.amazonaws.mwaaserverless#WorkflowArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the workflow you want to delete.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {},
+              "smithy.api#suppress": [
+                "MemberShouldReferenceResource"
+              ]
+            }
+          },
+          "WorkflowVersion": {
+            "target": "com.amazonaws.mwaaserverless#WorkflowVersion",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eOptional. The specific version of the workflow to delete. If not specified, all versions of the workflow are deleted.\u003c/p\u003e",
+              "smithy.api#httpQuery": "workflowVersion"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.mwaaserverless#DeleteWorkflowResponse": {
+        "type": "structure",
+        "members": {
+          "WorkflowArn": {
+            "target": "com.amazonaws.mwaaserverless#WorkflowArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the deleted workflow.\u003c/p\u003e",
+              "smithy.api#required": {},
+              "smithy.api#suppress": [
+                "MemberShouldReferenceResource"
+              ]
+            }
+          },
+          "WorkflowVersion": {
+            "target": "com.amazonaws.mwaaserverless#WorkflowVersion",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe version of the workflow that was deleted.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.mwaaserverless#DescriptionString": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 1024
+          },
+          "smithy.api#pattern": "^.+$"
+        }
+      },
+      "com.amazonaws.mwaaserverless#EncryptionConfiguration": {
+        "type": "structure",
+        "members": {
+          "KmsKeyId": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID or ARN of the Amazon Web Services KMS key to use for encryption. Required when \u003ccode\u003eType\u003c/code\u003e is \u003ccode\u003eCUSTOMER_MANAGED_KEY\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "Type": {
+            "target": "com.amazonaws.mwaaserverless#EncryptionType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe type of encryption to use. Values are \u003ccode\u003eAWS_MANAGED_KEY\u003c/code\u003e (Amazon Web Services manages the encryption key) or \u003ccode\u003eCUSTOMER_MANAGED_KEY\u003c/code\u003e (you provide a KMS key).\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eConfiguration for encrypting workflow data at rest and in transit. Amazon Managed Workflows for Apache Airflow Serverless provides comprehensive encryption capabilities to protect sensitive workflow data, parameters, and execution logs. When using customer-managed keys, the service integrates with Amazon Web Services KMS to provide fine-grained access control and audit capabilities. Encryption is applied consistently across the distributed execution environment including task containers, metadata storage, and log streams.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.mwaaserverless#EncryptionType": {
+        "type": "enum",
+        "members": {
+          "AWS_MANAGED_KEY": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "AWS_MANAGED_KEY"
+            }
+          },
+          "CUSTOMER_MANAGED_KEY": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "CUSTOMER_MANAGED_KEY"
+            }
+          }
+        }
+      },
+      "com.amazonaws.mwaaserverless#EngineVersion": {
+        "type": "intEnum",
+        "members": {
+          "ONE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eEngine version 1 of Amazon Managed Workflows for Apache Airflow Serverless\u003c/p\u003e",
+              "smithy.api#enumValue": 1
+            }
+          }
+        }
+      },
+      "com.amazonaws.mwaaserverless#ErrorMessage": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 2048
+          },
+          "smithy.api#pattern": "^.*$"
+        }
+      },
+      "com.amazonaws.mwaaserverless#GenericMap": {
+        "type": "map",
+        "key": {
+          "target": "com.amazonaws.mwaaserverless#GenericString"
+        },
+        "value": {
+          "target": "com.amazonaws.mwaaserverless#GenericString"
+        }
+      },
+      "com.amazonaws.mwaaserverless#GenericString": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 255
+          },
+          "smithy.api#pattern": "^.*$"
+        }
+      },
+      "com.amazonaws.mwaaserverless#GetTaskInstance": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.mwaaserverless#GetTaskInstanceRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.mwaaserverless#GetTaskInstanceResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.mwaaserverless#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#OperationTimeoutException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eRetrieves detailed information about a specific task instance within a workflow run. Task instances represent individual tasks that are executed as part of a workflow in the Amazon Managed Workflows for Apache Airflow Serverless environment. Each task instance runs in an isolated ECS container with dedicated resources and security boundaries. The service tracks task execution state, retry attempts, and provides detailed timing and error information for troubleshooting and monitoring purposes.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "GET",
+            "uri": "/workflows/{WorkflowArn}/runs/{RunId}/tasks/{TaskInstanceId}"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.mwaaserverless#GetTaskInstanceRequest": {
+        "type": "structure",
+        "members": {
+          "RunId": {
+            "target": "com.amazonaws.mwaaserverless#IdString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the workflow run that contains the task instance.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {},
+              "smithy.api#suppress": [
+                "MemberShouldReferenceResource"
+              ]
+            }
+          },
+          "TaskInstanceId": {
+            "target": "com.amazonaws.mwaaserverless#IdString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the task instance to retrieve.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "WorkflowArn": {
+            "target": "com.amazonaws.mwaaserverless#WorkflowArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the workflow that contains the task instance.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {},
+              "smithy.api#suppress": [
+                "MemberShouldReferenceResource"
+              ]
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.mwaaserverless#GetTaskInstanceResponse": {
+        "type": "structure",
+        "members": {
+          "AttemptNumber": {
+            "target": "smithy.api#Integer",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe attempt number for this task instance.\u003c/p\u003e"
+            }
+          },
+          "DurationInSeconds": {
+            "target": "smithy.api#Integer",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe duration of the task instance execution in seconds. This value is null if the task is not complete.\u003c/p\u003e"
+            }
+          },
+          "EndedAt": {
+            "target": "com.amazonaws.mwaaserverless#TimestampValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe timestamp when the task instance completed execution, in ISO 8601 date-time format. This value is null if the task is not complete.\u003c/p\u003e"
+            }
+          },
+          "ErrorMessage": {
+            "target": "com.amazonaws.mwaaserverless#GenericString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe error message if the task instance failed. This value is null if the task completed successfully.\u003c/p\u003e"
+            }
+          },
+          "LogStream": {
+            "target": "com.amazonaws.mwaaserverless#IdString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe CloudWatch log stream name for this task instance execution.\u003c/p\u003e"
+            }
+          },
+          "ModifiedAt": {
+            "target": "com.amazonaws.mwaaserverless#TimestampValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe timestamp when the task instance was last modified, in ISO 8601 date-time format.\u003c/p\u003e"
+            }
+          },
+          "OperatorName": {
+            "target": "com.amazonaws.mwaaserverless#GenericString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the Apache Airflow operator used for this task instance.\u003c/p\u003e"
+            }
+          },
+          "RunId": {
+            "target": "com.amazonaws.mwaaserverless#IdString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the workflow run that contains this task instance.\u003c/p\u003e",
+              "smithy.api#required": {},
+              "smithy.api#suppress": [
+                "MemberShouldReferenceResource"
+              ]
+            }
+          },
+          "StartedAt": {
+            "target": "com.amazonaws.mwaaserverless#TimestampValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe timestamp when the task instance started execution, in ISO 8601 date-time format. This value is null if the task has not started.\u003c/p\u003e"
+            }
+          },
+          "Status": {
+            "target": "com.amazonaws.mwaaserverless#TaskInstanceStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe current status of the task instance.\u003c/p\u003e"
+            }
+          },
+          "TaskId": {
+            "target": "com.amazonaws.mwaaserverless#IdString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the task definition within the workflow.\u003c/p\u003e"
+            }
+          },
+          "TaskInstanceId": {
+            "target": "com.amazonaws.mwaaserverless#IdString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of this task instance.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "WorkflowArn": {
+            "target": "com.amazonaws.mwaaserverless#WorkflowArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the workflow that contains this task instance.\u003c/p\u003e",
+              "smithy.api#required": {},
+              "smithy.api#suppress": [
+                "MemberShouldReferenceResource"
+              ]
+            }
+          },
+          "WorkflowVersion": {
+            "target": "com.amazonaws.mwaaserverless#VersionId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe version of the workflow that contains this task instance.\u003c/p\u003e"
+            }
+          },
+          "Xcom": {
+            "target": "com.amazonaws.mwaaserverless#GenericMap",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eCross-communication data exchanged between tasks in the workflow execution.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.mwaaserverless#GetWorkflow": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.mwaaserverless#GetWorkflowRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.mwaaserverless#GetWorkflowResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.mwaaserverless#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#OperationTimeoutException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eRetrieves detailed information about a workflow, including its configuration, status, and metadata.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "GET",
+            "uri": "/workflows/{WorkflowArn}"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.mwaaserverless#GetWorkflowRequest": {
+        "type": "structure",
+        "members": {
+          "WorkflowArn": {
+            "target": "com.amazonaws.mwaaserverless#WorkflowArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the workflow you want to retrieve.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {},
+              "smithy.api#suppress": [
+                "MemberShouldReferenceResource"
+              ]
+            }
+          },
+          "WorkflowVersion": {
+            "target": "com.amazonaws.mwaaserverless#WorkflowVersion",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eOptional. The specific version of the workflow to retrieve. If not specified, the latest version is returned.\u003c/p\u003e",
+              "smithy.api#httpQuery": "workflowVersion"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.mwaaserverless#GetWorkflowResponse": {
+        "type": "structure",
+        "members": {
+          "Code": {
+            "target": "com.amazonaws.mwaaserverless#Code",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon S3 location of the code artifacts provided during workflow creation or update.\u003c/p\u003e"
+            }
+          },
+          "CodeSnapshottedAt": {
+            "target": "com.amazonaws.mwaaserverless#TimestampValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe time at which the code artifacts were copied for this workflow, in ISO 8601 date-time format.\u003c/p\u003e"
+            }
+          },
+          "CreatedAt": {
+            "target": "com.amazonaws.mwaaserverless#TimestampValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe timestamp when the workflow was created, in ISO 8601 date-time format.\u003c/p\u003e"
+            }
+          },
+          "DefinitionS3Location": {
+            "target": "com.amazonaws.mwaaserverless#DefinitionS3Location",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon S3 location of the workflow definition file.\u003c/p\u003e"
+            }
+          },
+          "Description": {
+            "target": "com.amazonaws.mwaaserverless#DescriptionString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe description of the workflow.\u003c/p\u003e"
+            }
+          },
+          "EncryptionConfiguration": {
+            "target": "com.amazonaws.mwaaserverless#EncryptionConfiguration",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe encryption configuration for the workflow.\u003c/p\u003e"
+            }
+          },
+          "EngineVersion": {
+            "target": "com.amazonaws.mwaaserverless#EngineVersion",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe version of the Amazon Managed Workflows for Apache Airflow Serverless engine that this workflow uses.\u003c/p\u003e"
+            }
+          },
+          "LoggingConfiguration": {
+            "target": "com.amazonaws.mwaaserverless#LoggingConfiguration",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe logging configuration for the workflow.\u003c/p\u003e"
+            }
+          },
+          "ModifiedAt": {
+            "target": "com.amazonaws.mwaaserverless#TimestampValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe timestamp when the workflow was last modified, in ISO 8601 date-time format.\u003c/p\u003e"
+            }
+          },
+          "Name": {
+            "target": "com.amazonaws.mwaaserverless#NameString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the workflow.\u003c/p\u003e"
+            }
+          },
+          "NetworkConfiguration": {
+            "target": "com.amazonaws.mwaaserverless#NetworkConfiguration",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe network configuration for the workflow execution environment.\u003c/p\u003e"
+            }
+          },
+          "RoleArn": {
+            "target": "com.amazonaws.mwaaserverless#RoleARN",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the IAM role used for workflow execution.\u003c/p\u003e"
+            }
+          },
+          "ScheduleConfiguration": {
+            "target": "com.amazonaws.mwaaserverless#ScheduleConfiguration",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe schedule configuration for the workflow, including cron expressions for automated execution. Amazon Managed Workflows for Apache Airflow Serverless uses EventBridge Scheduler for cost-effective, timezone-aware scheduling. When a workflow includes schedule information in its YAML definition, the service automatically configures the appropriate triggers for automated execution. Only one version of a workflow can have an active schedule at any given time.\u003c/p\u003e"
+            }
+          },
+          "TriggerMode": {
+            "target": "com.amazonaws.mwaaserverless#GenericString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe trigger mode for the workflow execution.\u003c/p\u003e"
+            }
+          },
+          "WorkflowArn": {
+            "target": "com.amazonaws.mwaaserverless#WorkflowArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the workflow.\u003c/p\u003e",
+              "smithy.api#required": {},
+              "smithy.api#suppress": [
+                "MemberShouldReferenceResource"
+              ]
+            }
+          },
+          "WorkflowDefinition": {
+            "target": "com.amazonaws.mwaaserverless#GenericString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe workflow definition content.\u003c/p\u003e"
+            }
+          },
+          "WorkflowStatus": {
+            "target": "com.amazonaws.mwaaserverless#WorkflowStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe current status of the workflow.\u003c/p\u003e"
+            }
+          },
+          "WorkflowVersion": {
+            "target": "com.amazonaws.mwaaserverless#WorkflowVersion",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe version identifier of the workflow.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.mwaaserverless#GetWorkflowRun": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.mwaaserverless#GetWorkflowRunRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.mwaaserverless#GetWorkflowRunResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.mwaaserverless#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#OperationTimeoutException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eRetrieves detailed information about a specific workflow run, including its status, execution details, and task instances.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "GET",
+            "uri": "/workflows/{WorkflowArn}/runs/{RunId}"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.mwaaserverless#GetWorkflowRunRequest": {
+        "type": "structure",
+        "members": {
+          "RunId": {
+            "target": "com.amazonaws.mwaaserverless#IdString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the workflow run to retrieve.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {},
+              "smithy.api#suppress": [
+                "MemberShouldReferenceResource"
+              ]
+            }
+          },
+          "WorkflowArn": {
+            "target": "com.amazonaws.mwaaserverless#WorkflowArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the workflow that contains the run.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {},
+              "smithy.api#suppress": [
+                "MemberShouldReferenceResource"
+              ]
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.mwaaserverless#GetWorkflowRunResponse": {
+        "type": "structure",
+        "members": {
+          "OverrideParameters": {
+            "target": "com.amazonaws.mwaaserverless#ObjectMap",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eParameters that were overridden for this specific workflow run.\u003c/p\u003e"
+            }
+          },
+          "RunDetail": {
+            "target": "com.amazonaws.mwaaserverless#WorkflowRunDetail",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eDetailed information about the workflow run execution, including timing, status, and task instances.\u003c/p\u003e"
+            }
+          },
+          "RunId": {
+            "target": "com.amazonaws.mwaaserverless#IdString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of this workflow run.\u003c/p\u003e",
+              "smithy.api#suppress": [
+                "MemberShouldReferenceResource"
+              ]
+            }
+          },
+          "RunType": {
+            "target": "com.amazonaws.mwaaserverless#RunType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe type of workflow run. Values are \u003ccode\u003eON_DEMAND\u003c/code\u003e (manually triggered) or \u003ccode\u003eSCHEDULED\u003c/code\u003e (automatically triggered by schedule).\u003c/p\u003e"
+            }
+          },
+          "WorkflowArn": {
+            "target": "com.amazonaws.mwaaserverless#WorkflowArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the workflow that contains this run.\u003c/p\u003e",
+              "smithy.api#suppress": [
+                "MemberShouldReferenceResource"
+              ]
+            }
+          },
+          "WorkflowVersion": {
+            "target": "com.amazonaws.mwaaserverless#VersionId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe version of the workflow that is used for this run.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.mwaaserverless#IdString": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 255
+          },
+          "smithy.api#pattern": "^[a-zA-Z0-9]+[a-zA-Z0-9\\.\\-_]*$"
+        }
+      },
+      "com.amazonaws.mwaaserverless#IdempotencyTokenString": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 128
+          },
+          "smithy.api#pattern": "^[\\x21-\\x7E]+$"
+        }
+      },
+      "com.amazonaws.mwaaserverless#InternalServerException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.mwaaserverless#ErrorMessage",
+            "traits": {
+              "smithy.api#required": {}
+            }
+          },
+          "RetryAfterSeconds": {
+            "target": "smithy.api#Integer",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe number of seconds to wait before retrying the operation.\u003c/p\u003e",
+              "smithy.api#httpHeader": "Retry-After"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eAn unexpected server-side error occurred during request processing.\u003c/p\u003e",
+          "smithy.api#error": "server",
+          "smithy.api#httpError": 500,
+          "smithy.api#retryable": {}
+        }
+      },
+      "com.amazonaws.mwaaserverless#IsLatestVersion": {
+        "type": "boolean"
+      },
+      "com.amazonaws.mwaaserverless#ListTagsForResource": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.mwaaserverless#ListTagsForResourceRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.mwaaserverless#ListTagsForResourceResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.mwaaserverless#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#OperationTimeoutException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eLists all tags that are associated with a specified Amazon Managed Workflows for Apache Airflow Serverless resource.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "GET",
+            "uri": "/tags/{ResourceArn}"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.mwaaserverless#ListTagsForResourceRequest": {
+        "type": "structure",
+        "members": {
+          "ResourceArn": {
+            "target": "com.amazonaws.mwaaserverless#TaggableResourceArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the resource for which to list tags.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.mwaaserverless#ListTagsForResourceResponse": {
+        "type": "structure",
+        "members": {
+          "Tags": {
+            "target": "com.amazonaws.mwaaserverless#Tags",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA map of tags that are associated with the resource, where each tag consists of a key-value pair.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.mwaaserverless#ListTaskInstances": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.mwaaserverless#ListTaskInstancesRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.mwaaserverless#ListTaskInstancesResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.mwaaserverless#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#OperationTimeoutException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eLists all task instances for a specific workflow run, with optional pagination support.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "GET",
+            "uri": "/workflows/{WorkflowArn}/runs/{RunId}/tasks"
+          },
+          "smithy.api#paginated": {
+            "inputToken": "NextToken",
+            "outputToken": "NextToken",
+            "pageSize": "MaxResults",
+            "items": "TaskInstances"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.mwaaserverless#ListTaskInstancesRequest": {
+        "type": "structure",
+        "members": {
+          "MaxResults": {
+            "target": "smithy.api#Integer",
+            "traits": {
+              "smithy.api#default": 20,
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of task instances to return in a single response.\u003c/p\u003e",
+              "smithy.api#httpQuery": "maxResults",
+              "smithy.api#range": {
+                "min": 1,
+                "max": 100
+              }
+            }
+          },
+          "NextToken": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe pagination token you need to use to retrieve the next set of results. This value is returned from a previous call to \u003ccode\u003eListTaskInstances\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#httpQuery": "nextToken"
+            }
+          },
+          "RunId": {
+            "target": "com.amazonaws.mwaaserverless#IdString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the workflow run for which you want a list of task instances.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {},
+              "smithy.api#suppress": [
+                "MemberShouldReferenceResource"
+              ]
+            }
+          },
+          "WorkflowArn": {
+            "target": "com.amazonaws.mwaaserverless#WorkflowArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the workflow that contains the run.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {},
+              "smithy.api#suppress": [
+                "MemberShouldReferenceResource"
+              ]
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.mwaaserverless#ListTaskInstancesResponse": {
+        "type": "structure",
+        "members": {
+          "NextToken": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe pagination token you need to use to retrieve the next set of results. This value is null if there are no more results.\u003c/p\u003e"
+            }
+          },
+          "TaskInstances": {
+            "target": "com.amazonaws.mwaaserverless#TaskInstanceSummaries",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of task instance summaries for the specified workflow run.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.mwaaserverless#ListWorkflowRuns": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.mwaaserverless#ListWorkflowRunsRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.mwaaserverless#ListWorkflowRunsResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.mwaaserverless#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#OperationTimeoutException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eLists all runs for a specified workflow, with optional pagination and filtering support.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "GET",
+            "uri": "/workflows/{WorkflowArn}/runs"
+          },
+          "smithy.api#paginated": {
+            "inputToken": "NextToken",
+            "outputToken": "NextToken",
+            "pageSize": "MaxResults",
+            "items": "WorkflowRuns"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.mwaaserverless#ListWorkflowRunsRequest": {
+        "type": "structure",
+        "members": {
+          "MaxResults": {
+            "target": "smithy.api#Integer",
+            "traits": {
+              "smithy.api#default": 20,
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of workflow runs to return in a single response.\u003c/p\u003e",
+              "smithy.api#httpQuery": "maxResults",
+              "smithy.api#range": {
+                "min": 1,
+                "max": 100
+              }
+            }
+          },
+          "NextToken": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe pagination token you need to use to retrieve the next set of results. This value is returned from a previous call to \u003ccode\u003eListWorkflowRuns\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#httpQuery": "nextToken"
+            }
+          },
+          "WorkflowArn": {
+            "target": "com.amazonaws.mwaaserverless#WorkflowArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the workflow for which you want a list of runs.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {},
+              "smithy.api#suppress": [
+                "MemberShouldReferenceResource"
+              ]
+            }
+          },
+          "WorkflowVersion": {
+            "target": "com.amazonaws.mwaaserverless#VersionId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eOptional. The specific version of the workflow for which you want a list of runs. If not specified, runs for all versions are returned.\u003c/p\u003e",
+              "smithy.api#httpQuery": "workflowVersion"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.mwaaserverless#ListWorkflowRunsResponse": {
+        "type": "structure",
+        "members": {
+          "NextToken": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe pagination token you need to use to retrieve the next set of results. This value is null if there are no more results.\u003c/p\u003e"
+            }
+          },
+          "WorkflowRuns": {
+            "target": "com.amazonaws.mwaaserverless#WorkflowRunSummaries",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of workflow run summaries for the specified workflow.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.mwaaserverless#ListWorkflowVersions": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.mwaaserverless#ListWorkflowVersionsRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.mwaaserverless#ListWorkflowVersionsResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.mwaaserverless#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#OperationTimeoutException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eLists all versions of a specified workflow, with optional pagination support.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "GET",
+            "uri": "/workflows/{WorkflowArn}/versions"
+          },
+          "smithy.api#paginated": {
+            "inputToken": "NextToken",
+            "outputToken": "NextToken",
+            "pageSize": "MaxResults",
+            "items": "WorkflowVersions"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.mwaaserverless#ListWorkflowVersionsRequest": {
+        "type": "structure",
+        "members": {
+          "MaxResults": {
+            "target": "smithy.api#Integer",
+            "traits": {
+              "smithy.api#default": 20,
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of workflow versions to return in a single response.\u003c/p\u003e",
+              "smithy.api#httpQuery": "maxResults",
+              "smithy.api#range": {
+                "min": 1,
+                "max": 100
+              }
+            }
+          },
+          "NextToken": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe pagination token you need to use to retrieve the next set of results. This value is returned from a previous call to \u003ccode\u003eListWorkflowVersions\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#httpQuery": "nextToken"
+            }
+          },
+          "WorkflowArn": {
+            "target": "com.amazonaws.mwaaserverless#WorkflowArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the workflow for which you want to list versions.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {},
+              "smithy.api#suppress": [
+                "MemberShouldReferenceResource"
+              ]
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {},
+          "smithy.api#references": [
+            {
+              "resource": "com.amazonaws.mwaaserverless#WorkflowResource"
+            }
+          ]
+        }
+      },
+      "com.amazonaws.mwaaserverless#ListWorkflowVersionsResponse": {
+        "type": "structure",
+        "members": {
+          "NextToken": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe pagination token you need to use to retrieve the next set of results. This value is null if there are no more results.\u003c/p\u003e"
+            }
+          },
+          "WorkflowVersions": {
+            "target": "com.amazonaws.mwaaserverless#WorkflowVersionSummaries",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of workflow version summaries for the specified workflow.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.mwaaserverless#ListWorkflows": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.mwaaserverless#ListWorkflowsRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.mwaaserverless#ListWorkflowsResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.mwaaserverless#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#OperationTimeoutException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eLists all workflows in your account, with optional pagination support. This operation returns summary information for workflows, showing only the most recently created version of each workflow. Amazon Managed Workflows for Apache Airflow Serverless maintains workflow metadata in a highly available, distributed storage system that enables efficient querying and filtering. The service implements proper access controls to ensure you can only view workflows that you have permissions to access, supporting both individual and team-based workflow management scenarios.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "GET",
+            "uri": "/workflows"
+          },
+          "smithy.api#paginated": {
+            "inputToken": "NextToken",
+            "outputToken": "NextToken",
+            "pageSize": "MaxResults",
+            "items": "Workflows"
+          },
+          "smithy.api#readonly": {},
+          "smithy.test#smokeTests": [
+            {
+              "id": "ListWorkflowsSuccess",
+              "params": {},
+              "expect": {
+                "success": {}
+              },
+              "vendorParamsShape": "aws.test#AwsVendorParams",
+              "vendorParams": {
+                "region": "us-east-1"
+              }
+            },
+            {
+              "id": "ListWorkflowsWithMaxResultsSuccess",
+              "params": {
+                "MaxResults": 10
+              },
+              "expect": {
+                "success": {}
+              },
+              "vendorParamsShape": "aws.test#AwsVendorParams",
+              "vendorParams": {
+                "region": "us-east-1"
+              }
+            },
+            {
+              "id": "ListWorkflowsInvalidPaginationToken",
+              "params": {
+                "NextToken": "123"
+              },
+              "expect": {
+                "failure": {
+                  "errorId": "com.amazonaws.mwaaserverless#ValidationException"
+                }
+              },
+              "vendorParamsShape": "aws.test#AwsVendorParams",
+              "vendorParams": {
+                "region": "us-east-1"
+              }
+            }
+          ]
+        }
+      },
+      "com.amazonaws.mwaaserverless#ListWorkflowsRequest": {
+        "type": "structure",
+        "members": {
+          "MaxResults": {
+            "target": "smithy.api#Integer",
+            "traits": {
+              "smithy.api#default": 20,
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of workflows you want to return in a single response.\u003c/p\u003e",
+              "smithy.api#httpQuery": "maxResults",
+              "smithy.api#range": {
+                "min": 1,
+                "max": 100
+              }
+            }
+          },
+          "NextToken": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe pagination token you need to use to retrieve the next set of results. This value is returned from a previous call to \u003ccode\u003eListWorkflows\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#httpQuery": "nextToken"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.mwaaserverless#ListWorkflowsResponse": {
+        "type": "structure",
+        "members": {
+          "NextToken": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe pagination token you need to use to retrieve the next set of results. This value is null if there are no more results.\u003c/p\u003e"
+            }
+          },
+          "Workflows": {
+            "target": "com.amazonaws.mwaaserverless#WorkflowSummaries",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of workflow summaries for all workflows in your account.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.mwaaserverless#LoggingConfiguration": {
+        "type": "structure",
+        "members": {
+          "LogGroupName": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the CloudWatch log group where workflow execution logs are stored.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eConfiguration for workflow logging that specifies where you should store your workflow execution logs. Amazon Managed Workflows for Apache Airflow Serverless provides comprehensive logging capabilities that capture workflow execution details, task-level information, and system events. Logs are automatically exported to your specified CloudWatch log group using remote logging functionality, providing centralized observability across the distributed, multi-tenant execution environment. This enables effective debugging, monitoring, and compliance auditing of workflow executions.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.mwaaserverless#NameString": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 255
+          },
+          "smithy.api#pattern": "^[a-zA-Z0-9]+[a-zA-Z0-9\\.\\-_]*$"
+        }
+      },
+      "com.amazonaws.mwaaserverless#NetworkConfiguration": {
+        "type": "structure",
+        "members": {
+          "SecurityGroupIds": {
+            "target": "com.amazonaws.mwaaserverless#SecurityGroupIds",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of VPC security group IDs to associate with the workflow execution environment.\u003c/p\u003e"
+            }
+          },
+          "SubnetIds": {
+            "target": "com.amazonaws.mwaaserverless#SubnetIds",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of VPC subnet IDs where the workflow execution environment is deployed.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eNetwork configuration for workflow execution. Specifies VPC security groups and subnets for secure network access. When provided, Amazon Managed Workflows for Apache Airflow Serverless deploys ECS worker tasks in your specified VPC configuration, enabling secure access to VPC-only resources. The service uses a proxy API container architecture where one container handles external communication while the worker container connects to your VPC for task execution. This design provides both security isolation and connectivity flexibility.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.mwaaserverless#ObjectMap": {
+        "type": "map",
+        "key": {
+          "target": "smithy.api#String"
+        },
+        "value": {
+          "target": "smithy.api#Document"
+        },
+        "traits": {
+          "smithy.api#sensitive": {}
+        }
+      },
+      "com.amazonaws.mwaaserverless#OperationTimeoutException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.mwaaserverless#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe operation timed out.\u003c/p\u003e",
+          "smithy.api#error": "server",
+          "smithy.api#httpError": 504
+        }
+      },
+      "com.amazonaws.mwaaserverless#ResourceNotFoundException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.mwaaserverless#ErrorMessage",
+            "traits": {
+              "smithy.api#required": {}
+            }
+          },
+          "ResourceId": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the resource.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "ResourceType": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe type of the resource.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe specified resource was not found. You can only access or modify a resource that already exists.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 404
+        }
+      },
+      "com.amazonaws.mwaaserverless#RoleARN": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 2048
+          },
+          "smithy.api#pattern": "^arn:aws(?:-(?:cn|us-gov|iso|iso-b|iso-e|iso-f))?:iam::[0-9]{12}:role(/[a-zA-Z0-9+=,.@_\\-]{1,512})*?/[a-zA-Z0-9+=,.@_\\-]{1,64}$"
+        }
+      },
+      "com.amazonaws.mwaaserverless#RunDetailSummary": {
+        "type": "structure",
+        "members": {
+          "CreatedOn": {
+            "target": "com.amazonaws.mwaaserverless#TimestampValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe timestamp when the workflow run was created, in ISO 8601 date-time format.\u003c/p\u003e"
+            }
+          },
+          "EndedAt": {
+            "target": "com.amazonaws.mwaaserverless#TimestampValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe timestamp when the workflow run completed execution, in ISO 8601 date-time format. This value is null if the run is not complete.\u003c/p\u003e"
+            }
+          },
+          "StartedAt": {
+            "target": "com.amazonaws.mwaaserverless#TimestampValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe timestamp when the workflow run started execution, in ISO 8601 date-time format.\u003c/p\u003e"
+            }
+          },
+          "Status": {
+            "target": "com.amazonaws.mwaaserverless#WorkflowRunStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe current status of the workflow run.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eSummary information about a workflow run's execution details, including status and timing information.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.mwaaserverless#RunType": {
+        "type": "enum",
+        "members": {
+          "ON_DEMAND": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ON_DEMAND"
+            }
+          },
+          "SCHEDULED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "SCHEDULED"
+            }
+          }
+        }
+      },
+      "com.amazonaws.mwaaserverless#S3Location": {
+        "type": "structure",
+        "members": {
+          "Bucket": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the Amazon S3 bucket.\u003c/p\u003e",
+              "smithy.api#length": {
+                "min": 3,
+                "max": 63
+              },
+              "smithy.api#required": {}
+            }
+          },
+          "ObjectKey": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe key of the code artifact within the Amazon S3 bucket.\u003c/p\u003e",
+              "smithy.api#length": {
+                "min": 1,
+                "max": 1024
+              },
+              "smithy.api#required": {}
+            }
+          },
+          "VersionId": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe version ID of the object in Amazon S3. If not specified, the latest version is used.\u003c/p\u003e",
+              "smithy.api#length": {
+                "min": 1,
+                "max": 1024
+              }
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eSpecifies the Amazon S3 location of code artifacts that workflows use during execution.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.mwaaserverless#ScheduleConfiguration": {
+        "type": "structure",
+        "members": {
+          "CronExpression": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA cron expression that defines when the workflow is automatically executed. Uses standard cron syntax.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe configuration to use to schedule automated workflow execution using cron expressions. Amazon Managed Workflows for Apache Airflow Serverless integrates with EventBridge Scheduler to provide cost-effective, timezone-aware scheduling capabilities. The service supports both time-based and event-based scheduling (event-based scheduling available post-GA). When a workflow definition includes scheduling information, Amazon Managed Workflows for Apache Airflow Serverless automatically configures the appropriate triggers and ensures only one version of a workflow has an active schedule at any time.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.mwaaserverless#SecurityGroupIds": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.mwaaserverless#SecurityGroupString"
+        }
+      },
+      "com.amazonaws.mwaaserverless#SecurityGroupString": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 255
+          },
+          "smithy.api#pattern": "^sg-[a-z0-9]*$"
+        }
+      },
+      "com.amazonaws.mwaaserverless#ServiceQuotaExceededException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.mwaaserverless#ErrorMessage",
+            "traits": {
+              "smithy.api#required": {}
+            }
+          },
+          "QuotaCode": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe code of the quota.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "ResourceId": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the resource.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "ResourceType": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe type of resource affected.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "ServiceCode": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe code for the service.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe request exceeds the service quota for Amazon Managed Workflows for Apache Airflow Serverless resources. This can occur when you attempt to create more workflows than allowed, exceed concurrent workflow run limits, or surpass task execution limits. Amazon Managed Workflows for Apache Airflow Serverless implements admission control using DynamoDB-based counters to manage resource utilization across the multi-tenant environment. Contact Amazon Web Services Support to request quota increases if you need higher limits for your use case.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 402
+        }
+      },
+      "com.amazonaws.mwaaserverless#StartWorkflowRun": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.mwaaserverless#StartWorkflowRunRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.mwaaserverless#StartWorkflowRunResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.mwaaserverless#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#OperationTimeoutException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#ServiceQuotaExceededException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eStarts a new execution of a workflow. This operation creates a workflow run that executes the tasks that are defined in the workflow. Amazon Managed Workflows for Apache Airflow Serverless schedules the workflow execution across its managed Airflow environment, automatically scaling ECS worker tasks based on the workload. The service handles task isolation, dependency resolution, and provides comprehensive monitoring and logging throughout the execution lifecycle.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/workflows/{WorkflowArn}/runs"
+          },
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.mwaaserverless#StartWorkflowRunRequest": {
+        "type": "structure",
+        "members": {
+          "ClientToken": {
+            "target": "com.amazonaws.mwaaserverless#IdempotencyTokenString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA unique, case-sensitive identifier that you provide to ensure the idempotency of the request. This token prevents duplicate workflow run requests.\u003c/p\u003e",
+              "smithy.api#idempotencyToken": {}
+            }
+          },
+          "OverrideParameters": {
+            "target": "com.amazonaws.mwaaserverless#ObjectMap",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eOptional parameters to override default workflow parameters for this specific run. These parameters are passed to the workflow during execution and can be used to customize behavior without modifying the workflow definition. Parameters are made available as environment variables to tasks and you can reference them within the YAML workflow definition using standard parameter substitution syntax.\u003c/p\u003e"
+            }
+          },
+          "WorkflowArn": {
+            "target": "com.amazonaws.mwaaserverless#WorkflowArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the workflow you want to run.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {},
+              "smithy.api#suppress": [
+                "MemberShouldReferenceResource"
+              ]
+            }
+          },
+          "WorkflowVersion": {
+            "target": "com.amazonaws.mwaaserverless#VersionId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eOptional. The specific version of the workflow to execute. If not specified, the latest version is used.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.mwaaserverless#StartWorkflowRunResponse": {
+        "type": "structure",
+        "members": {
+          "RunId": {
+            "target": "com.amazonaws.mwaaserverless#IdString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the newly started workflow run.\u003c/p\u003e",
+              "smithy.api#suppress": [
+                "MemberShouldReferenceResource"
+              ]
+            }
+          },
+          "StartedAt": {
+            "target": "com.amazonaws.mwaaserverless#TimestampValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe timestamp when the workflow run was started, in ISO 8601 date-time format.\u003c/p\u003e"
+            }
+          },
+          "Status": {
+            "target": "com.amazonaws.mwaaserverless#WorkflowRunStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe initial status of the workflow run. This is typically \u003ccode\u003eSTARTING\u003c/code\u003e when you first create the run.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.mwaaserverless#StopWorkflowRun": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.mwaaserverless#StopWorkflowRunRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.mwaaserverless#StopWorkflowRunResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.mwaaserverless#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#OperationTimeoutException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eStops a running workflow execution. This operation terminates all running tasks and prevents new tasks from starting. Amazon Managed Workflows for Apache Airflow Serverless gracefully shuts down the workflow execution by stopping task scheduling and terminating active ECS worker containers. The operation transitions the workflow run to a \u003ccode\u003eSTOPPING\u003c/code\u003e state and then to \u003ccode\u003eSTOPPED\u003c/code\u003e once all cleanup is complete. In-flight tasks may complete or be terminated depending on their current execution state.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "DELETE",
+            "uri": "/workflows/{WorkflowArn}/runs/{RunId}"
+          },
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.mwaaserverless#StopWorkflowRunRequest": {
+        "type": "structure",
+        "members": {
+          "RunId": {
+            "target": "com.amazonaws.mwaaserverless#IdString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the workflow run to stop.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {},
+              "smithy.api#suppress": [
+                "MemberShouldReferenceResource"
+              ]
+            }
+          },
+          "WorkflowArn": {
+            "target": "com.amazonaws.mwaaserverless#WorkflowArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the workflow that contains the run you want to stop.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {},
+              "smithy.api#suppress": [
+                "MemberShouldReferenceResource"
+              ]
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.mwaaserverless#StopWorkflowRunResponse": {
+        "type": "structure",
+        "members": {
+          "RunId": {
+            "target": "com.amazonaws.mwaaserverless#IdString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the stopped workflow run.\u003c/p\u003e",
+              "smithy.api#suppress": [
+                "MemberShouldReferenceResource"
+              ]
+            }
+          },
+          "Status": {
+            "target": "com.amazonaws.mwaaserverless#WorkflowRunStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe status of the workflow run after the stop operation. This is typically \u003ccode\u003eSTOPPING\u003c/code\u003e or \u003ccode\u003eSTOPPED\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "WorkflowArn": {
+            "target": "com.amazonaws.mwaaserverless#WorkflowArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the workflow that contains the stopped run.\u003c/p\u003e",
+              "smithy.api#suppress": [
+                "MemberShouldReferenceResource"
+              ]
+            }
+          },
+          "WorkflowVersion": {
+            "target": "com.amazonaws.mwaaserverless#VersionId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe version of the workflow that was stopped.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.mwaaserverless#SubnetIds": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.mwaaserverless#SubnetString"
+        }
+      },
+      "com.amazonaws.mwaaserverless#SubnetString": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 255
+          },
+          "smithy.api#pattern": "^subnet-[a-z0-9]*$"
+        }
+      },
+      "com.amazonaws.mwaaserverless#TagKey": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 128
+          },
+          "smithy.api#pattern": "^.*$"
+        }
+      },
+      "com.amazonaws.mwaaserverless#TagKeys": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.mwaaserverless#TagKey"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 50
+          }
+        }
+      },
+      "com.amazonaws.mwaaserverless#TagResource": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.mwaaserverless#TagResourceRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.mwaaserverless#TagResourceResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.mwaaserverless#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#OperationTimeoutException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eAdds tags to an Amazon Managed Workflows for Apache Airflow Serverless resource. Tags are key-value pairs that help you organize and categorize your resources.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/tags/{ResourceArn}"
+          }
+        }
+      },
+      "com.amazonaws.mwaaserverless#TagResourceRequest": {
+        "type": "structure",
+        "members": {
+          "ResourceArn": {
+            "target": "com.amazonaws.mwaaserverless#TaggableResourceArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the resource to which to add tags.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "Tags": {
+            "target": "com.amazonaws.mwaaserverless#Tags",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA map of tags to add to the resource. Each tag consists of a key-value pair.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.mwaaserverless#TagResourceResponse": {
+        "type": "structure",
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.mwaaserverless#TagValue": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 256
+          },
+          "smithy.api#pattern": "^.*$"
+        }
+      },
+      "com.amazonaws.mwaaserverless#TaggableResourceArn": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 1011
+          },
+          "smithy.api#pattern": "^arn:aws(?:-(?:cn|us-gov|iso|iso-b|iso-e|iso-f))?:airflow-serverless:([a-z]{2}-[a-z]+-[0-9]{1}):([0-9]{12}):workflow/([a-zA-Z0-9][a-zA-Z0-9\\.\\-_]{0,254}-[a-zA-Z0-9]{10})$"
+        }
+      },
+      "com.amazonaws.mwaaserverless#Tags": {
+        "type": "map",
+        "key": {
+          "target": "com.amazonaws.mwaaserverless#TagKey"
+        },
+        "value": {
+          "target": "com.amazonaws.mwaaserverless#TagValue"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 50
+          }
+        }
+      },
+      "com.amazonaws.mwaaserverless#TaskInstanceIds": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.mwaaserverless#IdString"
+        }
+      },
+      "com.amazonaws.mwaaserverless#TaskInstanceResource": {
+        "type": "resource"
+      },
+      "com.amazonaws.mwaaserverless#TaskInstanceStatus": {
+        "type": "enum",
+        "members": {
+          "CANCELLED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "CANCELLED"
+            }
+          },
+          "DEFERRED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "DEFERRED"
+            }
+          },
+          "FAILED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "FAILED"
+            }
+          },
+          "NONE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "NONE"
+            }
+          },
+          "QUEUED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "QUEUED"
+            }
+          },
+          "REMOVED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "REMOVED"
+            }
+          },
+          "RESTARTING": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "RESTARTING"
+            }
+          },
+          "RUNNING": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "RUNNING"
+            }
+          },
+          "SCHEDULED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "SCHEDULED"
+            }
+          },
+          "SUCCESS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "SUCCESS"
+            }
+          },
+          "TIMEOUT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "TIMEOUT"
+            }
+          },
+          "UPSTREAM_FAILED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "UPSTREAM_FAILED"
+            }
+          },
+          "UP_FOR_RESCHEDULE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "UP_FOR_RESCHEDULE"
+            }
+          },
+          "UP_FOR_RETRY": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "UP_FOR_RETRY"
+            }
+          }
+        }
+      },
+      "com.amazonaws.mwaaserverless#TaskInstanceSummaries": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.mwaaserverless#TaskInstanceSummary"
+        }
+      },
+      "com.amazonaws.mwaaserverless#TaskInstanceSummary": {
+        "type": "structure",
+        "members": {
+          "DurationInSeconds": {
+            "target": "smithy.api#Integer",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe duration of the task instance execution in seconds. This value is null if the task is not complete.\u003c/p\u003e"
+            }
+          },
+          "OperatorName": {
+            "target": "com.amazonaws.mwaaserverless#GenericString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the Apache Airflow operator used for this task instance.\u003c/p\u003e"
+            }
+          },
+          "RunId": {
+            "target": "com.amazonaws.mwaaserverless#IdString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the workflow run that contains this task instance.\u003c/p\u003e",
+              "smithy.api#suppress": [
+                "MemberShouldReferenceResource"
+              ]
+            }
+          },
+          "Status": {
+            "target": "com.amazonaws.mwaaserverless#TaskInstanceStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe current status of the task instance.\u003c/p\u003e"
+            }
+          },
+          "TaskInstanceId": {
+            "target": "com.amazonaws.mwaaserverless#IdString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of this task instance.\u003c/p\u003e"
+            }
+          },
+          "WorkflowArn": {
+            "target": "com.amazonaws.mwaaserverless#WorkflowArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the workflow that contains this task instance.\u003c/p\u003e",
+              "smithy.api#suppress": [
+                "MemberShouldReferenceResource"
+              ]
+            }
+          },
+          "WorkflowVersion": {
+            "target": "com.amazonaws.mwaaserverless#VersionId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe version of the workflow that contains this task instance.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eSummary information about a task instance within a workflow run, including its status and execution details.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.mwaaserverless#ThrottlingException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.mwaaserverless#ErrorMessage",
+            "traits": {
+              "smithy.api#required": {}
+            }
+          },
+          "QuotaCode": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe code of the quota.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "RetryAfterSeconds": {
+            "target": "smithy.api#Integer",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe number of seconds to wait before retrying the operation.\u003c/p\u003e",
+              "smithy.api#httpHeader": "Retry-After"
+            }
+          },
+          "ServiceCode": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe code for the service.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe request was denied because too many requests were made in a short period, exceeding the service rate limits. Amazon Managed Workflows for Apache Airflow Serverless implements throttling controls to ensure fair resource allocation across all customers in the multi-tenant environment. This helps maintain service stability and performance. If you encounter throttling, implement exponential backoff and retry logic in your applications, or consider distributing your API calls over a longer time period.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 429,
+          "smithy.api#retryable": {
+            "throttling": true
+          }
+        }
+      },
+      "com.amazonaws.mwaaserverless#TimestampValue": {
+        "type": "timestamp",
+        "traits": {
+          "smithy.api#timestampFormat": "date-time"
+        }
+      },
+      "com.amazonaws.mwaaserverless#UntagResource": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.mwaaserverless#UntagResourceRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.mwaaserverless#UntagResourceResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.mwaaserverless#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#OperationTimeoutException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eRemoves tags from an Amazon Managed Workflows for Apache Airflow Serverless resource. This operation removes the specified tags from the resource.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "DELETE",
+            "uri": "/tags/{ResourceArn}"
+          },
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.mwaaserverless#UntagResourceRequest": {
+        "type": "structure",
+        "members": {
+          "ResourceArn": {
+            "target": "com.amazonaws.mwaaserverless#TaggableResourceArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the resource from which to remove tags.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "TagKeys": {
+            "target": "com.amazonaws.mwaaserverless#TagKeys",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of tag keys to remove from the resource. Only the keys are required; the values are ignored.\u003c/p\u003e",
+              "smithy.api#httpQuery": "tagKeys",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.mwaaserverless#UntagResourceResponse": {
+        "type": "structure",
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.mwaaserverless#UpdateWorkflow": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.mwaaserverless#UpdateWorkflowRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.mwaaserverless#UpdateWorkflowResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.mwaaserverless#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#OperationTimeoutException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#ServiceQuotaExceededException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.mwaaserverless#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eUpdates an existing workflow with new configuration settings. This operation allows you to modify the workflow definition, role, and other settings. When you update a workflow, Amazon Managed Workflows for Apache Airflow Serverless automatically creates a new version with the updated configuration and disables scheduling on all previous versions to ensure only one version is actively scheduled at a time. The update operation maintains workflow history while providing a clean transition to the new configuration.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "PUT",
+            "uri": "/workflows/{WorkflowArn}"
+          }
+        }
+      },
+      "com.amazonaws.mwaaserverless#UpdateWorkflowRequest": {
+        "type": "structure",
+        "members": {
+          "Code": {
+            "target": "com.amazonaws.mwaaserverless#Code",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe location of code artifacts in Amazon S3 for the updated workflow. The service copies the code from this location at the time of the request.\u003c/p\u003e"
+            }
+          },
+          "DefinitionS3Location": {
+            "target": "com.amazonaws.mwaaserverless#DefinitionS3Location",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon S3 location where the updated workflow definition file is stored.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Description": {
+            "target": "com.amazonaws.mwaaserverless#DescriptionString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn updated description for the workflow.\u003c/p\u003e"
+            }
+          },
+          "EngineVersion": {
+            "target": "com.amazonaws.mwaaserverless#EngineVersion",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe version of the Amazon Managed Workflows for Apache Airflow Serverless engine that you want to use for the updated workflow.\u003c/p\u003e"
+            }
+          },
+          "LoggingConfiguration": {
+            "target": "com.amazonaws.mwaaserverless#LoggingConfiguration",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eUpdated logging configuration for the workflow.\u003c/p\u003e"
+            }
+          },
+          "NetworkConfiguration": {
+            "target": "com.amazonaws.mwaaserverless#NetworkConfiguration",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eUpdated network configuration for the workflow execution environment.\u003c/p\u003e"
+            }
+          },
+          "RoleArn": {
+            "target": "com.amazonaws.mwaaserverless#RoleARN",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the IAM role that Amazon Managed Workflows for Apache Airflow Serverless assumes when it executes the updated workflow.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "TriggerMode": {
+            "target": "com.amazonaws.mwaaserverless#GenericString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe trigger mode for the workflow execution.\u003c/p\u003e"
+            }
+          },
+          "WorkflowArn": {
+            "target": "com.amazonaws.mwaaserverless#WorkflowArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the workflow you want to update.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {},
+              "smithy.api#suppress": [
+                "MemberShouldReferenceResource"
+              ]
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.mwaaserverless#UpdateWorkflowResponse": {
+        "type": "structure",
+        "members": {
+          "ModifiedAt": {
+            "target": "com.amazonaws.mwaaserverless#TimestampValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe timestamp when the workflow was last modified, in ISO 8601 date-time format.\u003c/p\u003e"
+            }
+          },
+          "Warnings": {
+            "target": "com.amazonaws.mwaaserverless#WarningMessages",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eWarning messages generated during workflow update.\u003c/p\u003e",
+              "smithy.api#notProperty": {}
+            }
+          },
+          "WorkflowArn": {
+            "target": "com.amazonaws.mwaaserverless#WorkflowArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the updated workflow.\u003c/p\u003e",
+              "smithy.api#required": {},
+              "smithy.api#suppress": [
+                "MemberShouldReferenceResource"
+              ]
+            }
+          },
+          "WorkflowVersion": {
+            "target": "com.amazonaws.mwaaserverless#WorkflowVersion",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe version identifier of the updated workflow.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.mwaaserverless#ValidationException": {
+        "type": "structure",
+        "members": {
+          "FieldList": {
+            "target": "com.amazonaws.mwaaserverless#ValidationExceptionFields",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe fields that failed validation.\u003c/p\u003e"
+            }
+          },
+          "Message": {
+            "target": "com.amazonaws.mwaaserverless#ErrorMessage",
+            "traits": {
+              "smithy.api#required": {}
+            }
+          },
+          "Reason": {
+            "target": "com.amazonaws.mwaaserverless#ValidationExceptionReason",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe reason the request failed validation.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe specified request parameters are invalid, missing, or inconsistent with Amazon Managed Workflows for Apache Airflow Serverless service requirements. This can occur when workflow definitions contain unsupported operators, when required IAM permissions are missing, when S3 locations are inaccessible, or when network configurations are invalid. The service validates workflow definitions, execution roles, and resource configurations to ensure compatibility with the managed Airflow environment and security requirements.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.mwaaserverless#ValidationExceptionField": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.mwaaserverless#ErrorMessage",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA message that describes why the field failed validation.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Name": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the field that failed validation.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eContains information about a field that failed validation, including the field name and a descriptive error message.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.mwaaserverless#ValidationExceptionFields": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.mwaaserverless#ValidationExceptionField"
+        }
+      },
+      "com.amazonaws.mwaaserverless#ValidationExceptionReason": {
+        "type": "enum",
+        "members": {
+          "CANNOT_PARSE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "cannotParse"
+            }
+          },
+          "FIELD_VALIDATION_FAILED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "fieldValidationFailed"
+            }
+          },
+          "OTHER": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "other"
+            }
+          },
+          "UNKNOWN_OPERATION": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "unknownOperation"
+            }
+          }
+        }
+      },
+      "com.amazonaws.mwaaserverless#VersionId": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 2048
+          },
+          "smithy.api#pattern": "^.+$"
+        }
+      },
+      "com.amazonaws.mwaaserverless#WarningMessages": {
+        "type": "list",
+        "member": {
+          "target": "smithy.api#String"
+        }
+      },
+      "com.amazonaws.mwaaserverless#WorkflowArn": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 2048
+          },
+          "smithy.api#pattern": "^arn:aws(?:-(?:cn|us-gov|iso|iso-b|iso-e|iso-f))?:airflow-serverless:([a-z]{2}-[a-z]+-[0-9]{1}):([0-9]{12}):workflow/([a-zA-Z0-9][a-zA-Z0-9\\.\\-_]{0,254}-[a-zA-Z0-9]{10})$"
+        }
+      },
+      "com.amazonaws.mwaaserverless#WorkflowResource": {
+        "type": "resource"
+      },
+      "com.amazonaws.mwaaserverless#WorkflowRunDetail": {
+        "type": "structure",
+        "members": {
+          "CompletedOn": {
+            "target": "com.amazonaws.mwaaserverless#TimestampValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe timestamp when the workflow run completed execution, in ISO 8601 date-time format. This value is null if the run is not complete.\u003c/p\u003e"
+            }
+          },
+          "CreatedAt": {
+            "target": "com.amazonaws.mwaaserverless#TimestampValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe timestamp when the workflow run was created, in ISO 8601 date-time format.\u003c/p\u003e"
+            }
+          },
+          "Duration": {
+            "target": "smithy.api#Integer",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe total duration of the workflow run execution in seconds. This value is null if the run is not complete.\u003c/p\u003e"
+            }
+          },
+          "ErrorMessage": {
+            "target": "com.amazonaws.mwaaserverless#GenericString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe error message if the workflow run failed. This value is null if the run completed successfully.\u003c/p\u003e"
+            }
+          },
+          "ModifiedAt": {
+            "target": "com.amazonaws.mwaaserverless#TimestampValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe timestamp when the workflow run was last modified, in ISO 8601 date-time format.\u003c/p\u003e"
+            }
+          },
+          "RunId": {
+            "target": "com.amazonaws.mwaaserverless#IdString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of this workflow run.\u003c/p\u003e",
+              "smithy.api#suppress": [
+                "MemberShouldReferenceResource"
+              ]
+            }
+          },
+          "RunState": {
+            "target": "com.amazonaws.mwaaserverless#WorkflowRunStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe current execution state of the workflow run.\u003c/p\u003e"
+            }
+          },
+          "RunType": {
+            "target": "com.amazonaws.mwaaserverless#RunType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe type of workflow run.\u003c/p\u003e"
+            }
+          },
+          "StartedOn": {
+            "target": "com.amazonaws.mwaaserverless#TimestampValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe timestamp when the workflow run started execution, in ISO 8601 date-time format.\u003c/p\u003e"
+            }
+          },
+          "TaskInstances": {
+            "target": "com.amazonaws.mwaaserverless#TaskInstanceIds",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of task instance IDs that are part of this workflow run.\u003c/p\u003e"
+            }
+          },
+          "WorkflowArn": {
+            "target": "com.amazonaws.mwaaserverless#WorkflowArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the workflow that contains this run.\u003c/p\u003e",
+              "smithy.api#suppress": [
+                "MemberShouldReferenceResource"
+              ]
+            }
+          },
+          "WorkflowVersion": {
+            "target": "com.amazonaws.mwaaserverless#VersionId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe version of the workflow used for this run.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eDetailed information about a workflow run execution, including timing, status, error information, and associated task instances. This structure provides comprehensive visibility into the workflow execution lifecycle within the Amazon Managed Workflows for Apache Airflow Serverless serverless environment. The service tracks execution across distributed ECS worker tasks and provides detailed timing information, error diagnostics, and task instance relationships to support effective monitoring and troubleshooting of complex workflow executions.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.mwaaserverless#WorkflowRunResource": {
+        "type": "resource"
+      },
+      "com.amazonaws.mwaaserverless#WorkflowRunStatus": {
+        "type": "enum",
+        "members": {
+          "FAILED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "FAILED"
+            }
+          },
+          "QUEUED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "QUEUED"
+            }
+          },
+          "RUNNING": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "RUNNING"
+            }
+          },
+          "STARTING": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "STARTING"
+            }
+          },
+          "STOPPED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "STOPPED"
+            }
+          },
+          "STOPPING": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "STOPPING"
+            }
+          },
+          "SUCCESS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "SUCCESS"
+            }
+          },
+          "TIMEOUT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "TIMEOUT"
+            }
+          }
+        }
+      },
+      "com.amazonaws.mwaaserverless#WorkflowRunSummaries": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.mwaaserverless#WorkflowRunSummary"
+        }
+      },
+      "com.amazonaws.mwaaserverless#WorkflowRunSummary": {
+        "type": "structure",
+        "members": {
+          "RunDetailSummary": {
+            "target": "com.amazonaws.mwaaserverless#RunDetailSummary",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSummary details about the workflow run execution.\u003c/p\u003e"
+            }
+          },
+          "RunId": {
+            "target": "com.amazonaws.mwaaserverless#IdString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the workflow run.\u003c/p\u003e",
+              "smithy.api#suppress": [
+                "MemberShouldReferenceResource"
+              ]
+            }
+          },
+          "RunType": {
+            "target": "com.amazonaws.mwaaserverless#RunType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe type of workflow run.\u003c/p\u003e"
+            }
+          },
+          "WorkflowArn": {
+            "target": "com.amazonaws.mwaaserverless#WorkflowArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the workflow that contains this run.\u003c/p\u003e",
+              "smithy.api#suppress": [
+                "MemberShouldReferenceResource"
+              ]
+            }
+          },
+          "WorkflowVersion": {
+            "target": "com.amazonaws.mwaaserverless#VersionId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe version of the workflow used for this run.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eSummary information about a workflow run, including basic identification and status information.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.mwaaserverless#WorkflowStatus": {
+        "type": "enum",
+        "members": {
+          "DELETING": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "DELETING"
+            }
+          },
+          "READY": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "READY"
+            }
+          }
+        }
+      },
+      "com.amazonaws.mwaaserverless#WorkflowSummaries": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.mwaaserverless#WorkflowSummary"
+        }
+      },
+      "com.amazonaws.mwaaserverless#WorkflowSummary": {
+        "type": "structure",
+        "members": {
+          "CreatedAt": {
+            "target": "com.amazonaws.mwaaserverless#TimestampValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe timestamp when the workflow was created, in ISO 8601 date-time format.\u003c/p\u003e"
+            }
+          },
+          "Description": {
+            "target": "com.amazonaws.mwaaserverless#DescriptionString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe description of the workflow.\u003c/p\u003e"
+            }
+          },
+          "ModifiedAt": {
+            "target": "com.amazonaws.mwaaserverless#TimestampValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe timestamp when the workflow was last modified, in ISO 8601 date-time format.\u003c/p\u003e"
+            }
+          },
+          "Name": {
+            "target": "com.amazonaws.mwaaserverless#NameString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the workflow.\u003c/p\u003e"
+            }
+          },
+          "TriggerMode": {
+            "target": "com.amazonaws.mwaaserverless#GenericString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe trigger mode for the workflow execution.\u003c/p\u003e"
+            }
+          },
+          "WorkflowArn": {
+            "target": "com.amazonaws.mwaaserverless#WorkflowArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the workflow.\u003c/p\u003e",
+              "smithy.api#required": {},
+              "smithy.api#suppress": [
+                "MemberShouldReferenceResource"
+              ]
+            }
+          },
+          "WorkflowStatus": {
+            "target": "com.amazonaws.mwaaserverless#WorkflowStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe current status of the workflow.\u003c/p\u003e"
+            }
+          },
+          "WorkflowVersion": {
+            "target": "com.amazonaws.mwaaserverless#WorkflowVersion",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe version identifier of the workflow.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eSummary information about a workflow, including basic identification and metadata.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.mwaaserverless#WorkflowVersion": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 32,
+            "max": 32
+          },
+          "smithy.api#pattern": "^[a-z0-9]{32}$"
+        }
+      },
+      "com.amazonaws.mwaaserverless#WorkflowVersionArn": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 2048
+          },
+          "smithy.api#pattern": "^.+$"
+        }
+      },
+      "com.amazonaws.mwaaserverless#WorkflowVersionResource": {
+        "type": "resource"
+      },
+      "com.amazonaws.mwaaserverless#WorkflowVersionSummaries": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.mwaaserverless#WorkflowVersionSummary"
+        }
+      },
+      "com.amazonaws.mwaaserverless#WorkflowVersionSummary": {
+        "type": "structure",
+        "members": {
+          "CreatedAt": {
+            "target": "com.amazonaws.mwaaserverless#TimestampValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe timestamp when the workflow version was created, in ISO 8601 date-time format.\u003c/p\u003e"
+            }
+          },
+          "DefinitionS3Location": {
+            "target": "com.amazonaws.mwaaserverless#DefinitionS3Location",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon S3 location of the workflow definition file for this version.\u003c/p\u003e"
+            }
+          },
+          "IsLatestVersion": {
+            "target": "com.amazonaws.mwaaserverless#IsLatestVersion",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eBoolean flag that indicates whether this is the latest version of the workflow.\u003c/p\u003e"
+            }
+          },
+          "ModifiedAt": {
+            "target": "com.amazonaws.mwaaserverless#TimestampValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe timestamp when the workflow version was last modified, in ISO 8601 date-time format.\u003c/p\u003e"
+            }
+          },
+          "ScheduleConfiguration": {
+            "target": "com.amazonaws.mwaaserverless#ScheduleConfiguration",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe schedule configuration for this workflow version.\u003c/p\u003e"
+            }
+          },
+          "TriggerMode": {
+            "target": "com.amazonaws.mwaaserverless#GenericString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe trigger mode for the workflow execution.\u003c/p\u003e"
+            }
+          },
+          "WorkflowArn": {
+            "target": "com.amazonaws.mwaaserverless#WorkflowArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the workflow that contains this version.\u003c/p\u003e",
+              "smithy.api#required": {},
+              "smithy.api#suppress": [
+                "MemberShouldReferenceResource"
+              ]
+            }
+          },
+          "WorkflowVersion": {
+            "target": "com.amazonaws.mwaaserverless#WorkflowVersion",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe version identifier of the workflow version.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eSummary information about a workflow version, including identification and configuration details.\u003c/p\u003e",
+          "smithy.api#references": [
+            {
+              "resource": "com.amazonaws.mwaaserverless#WorkflowResource"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

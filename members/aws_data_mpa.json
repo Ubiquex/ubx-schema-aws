@@ -1,0 +1,4714 @@
+{
+  "schema_source": "smithy",
+  "mode": "data_source",
+  "auth": {
+    "Type": "",
+    "Params": null
+  },
+  "base_url": "https://aws.example.invalid",
+  "retry": {
+    "MaxAttempts": 0,
+    "InitialBackoff": "",
+    "MaxBackoff": "",
+    "Jitter": null,
+    "RespectRetryAfter": null,
+    "RateLimitResetHeader": ""
+  },
+  "timeouts": {
+    "Create": "",
+    "Read": "",
+    "Update": "",
+    "Delete": "",
+    "Default": ""
+  },
+  "wire_name": "aws",
+  "raw_spec": {
+    "smithy": "2.0",
+    "shapes": {
+      "com.amazonaws.mpa#AWSFluffyCoreService": {
+        "type": "service",
+        "version": "2022-07-26",
+        "operations": [
+          {
+            "target": "com.amazonaws.mpa#GetPolicyVersion"
+          },
+          {
+            "target": "com.amazonaws.mpa#GetResourcePolicy"
+          },
+          {
+            "target": "com.amazonaws.mpa#ListPolicies"
+          },
+          {
+            "target": "com.amazonaws.mpa#ListPolicyVersions"
+          },
+          {
+            "target": "com.amazonaws.mpa#ListResourcePolicies"
+          },
+          {
+            "target": "com.amazonaws.mpa#ListTagsForResource"
+          },
+          {
+            "target": "com.amazonaws.mpa#TagResource"
+          },
+          {
+            "target": "com.amazonaws.mpa#UntagResource"
+          }
+        ],
+        "resources": [
+          {
+            "target": "com.amazonaws.mpa#ApprovalTeam"
+          },
+          {
+            "target": "com.amazonaws.mpa#IdentitySource"
+          },
+          {
+            "target": "com.amazonaws.mpa#Session"
+          }
+        ],
+        "traits": {
+          "aws.api#service": {
+            "sdkId": "MPA",
+            "arnNamespace": "mpa"
+          },
+          "aws.auth#sigv4": {
+            "name": "mpa"
+          },
+          "aws.endpoints#dualStackOnlyEndpoints": {},
+          "aws.endpoints#standardRegionalEndpoints": {},
+          "aws.iam#defineConditionKeys": {
+            "aws:ResourceTag/${TagKey}": {
+              "type": "String",
+              "documentation": "Filters access by a tag key and value pair of a resource",
+              "externalDocumentation": "${DocHomeURL}IAM/latest/UserGuide/reference_policies_condition-keys.html#condition-keys-resourcetag"
+            },
+            "aws:RequestTag/${TagKey}": {
+              "type": "String",
+              "documentation": "Filters access by a tag key and value pair that is allowed in the request",
+              "externalDocumentation": "${DocHomeURL}IAM/latest/UserGuide/reference_policies_condition-keys.html#condition-keys-requesttag"
+            },
+            "aws:TagKeys": {
+              "type": "ArrayOfString",
+              "documentation": "Filters access by a list of tag keys that are allowed in the request",
+              "externalDocumentation": "${DocHomeURL}IAM/latest/UserGuide/reference_policies_condition-keys.html#condition-keys-tagkeys"
+            },
+            "mpa:RequestedOperation": {
+              "type": "String",
+              "documentation": "Filters access by the requested operation that requires team approval before it can be executed",
+              "externalDocumentation": "${DocHomeURL}mpa/latest/userguide/mpa-concepts.html"
+            },
+            "mpa:ProtectedResourceAccount": {
+              "type": "String",
+              "documentation": "Filters access by the account that owns the resource that is the target of the operation that requires approval",
+              "externalDocumentation": "${DocHomeURL}mpa/latest/userguide/mpa-concepts.html"
+            }
+          },
+          "aws.iam#disableConditionKeyInference": {},
+          "aws.iam#supportedPrincipalTypes": [
+            "Root",
+            "IAMUser",
+            "IAMRole",
+            "FederatedUser"
+          ],
+          "aws.protocols#restJson1": {},
+          "smithy.api#documentation": "\u003cp\u003eMulti-party approval is a capability of \u003ca href=\"http://aws.amazon.com/organizations\"\u003eOrganizations\u003c/a\u003e that allows you to protect a predefined list of operations through a distributed approval process. Use Multi-party approval to establish approval workflows and transform security processes into team-based decisions.\u003c/p\u003e \u003cp\u003e \u003cb\u003eWhen to use Multi-party approval\u003c/b\u003e:\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003eYou need to align with the Zero Trust principle of \"never trust, always verify\"\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003eYou need to make sure that the right humans have access to the right things in the right way\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003eYou need distributed decision-making for sensitive or critical operations\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003eYou need to protect against unintended operations on sensitive or critical resources\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003eYou need formal reviews and approvals for auditing or compliance reasons\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e \u003cp\u003eFor more information, see \u003ca href=\"https://docs.aws.amazon.com/mpa/latest/userguide/what-is.html\"\u003eWhat is Multi-party approval\u003c/a\u003e in the \u003ci\u003eMulti-party approval User Guide\u003c/i\u003e.\u003c/p\u003e",
+          "smithy.api#title": "AWS Multi-party Approval",
+          "smithy.rules#endpointBdd": {
+            "version": "1.1",
+            "parameters": {
+              "UseFIPS": {
+                "builtIn": "AWS::UseFIPS",
+                "required": true,
+                "default": false,
+                "documentation": "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
+                "type": "boolean"
+              },
+              "Endpoint": {
+                "builtIn": "SDK::Endpoint",
+                "required": false,
+                "documentation": "Override the endpoint used to send this request",
+                "type": "string"
+              },
+              "Region": {
+                "builtIn": "AWS::Region",
+                "required": false,
+                "documentation": "The AWS region used to dispatch the request.",
+                "type": "string"
+              }
+            },
+            "conditions": [
+              {
+                "fn": "isSet",
+                "argv": [
+                  {
+                    "ref": "Endpoint"
+                  }
+                ]
+              },
+              {
+                "fn": "isSet",
+                "argv": [
+                  {
+                    "ref": "Region"
+                  }
+                ]
+              },
+              {
+                "fn": "aws.partition",
+                "argv": [
+                  {
+                    "ref": "Region"
+                  }
+                ],
+                "assign": "PartitionResult"
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "ref": "UseFIPS"
+                  },
+                  true
+                ]
+              }
+            ],
+            "results": [
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: FIPS and custom endpoint are not supported",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": {
+                    "ref": "Endpoint"
+                  },
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://mpa-fips.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://mpa.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: Missing Region",
+                "type": "error"
+              }
+            ],
+            "root": 2,
+            "nodeCount": 6,
+            "nodes": "/////wAAAAH/////AAAAAAAAAAYAAAADAAAAAQAAAAQF9eEFAAAAAgAAAAUF9eEFAAAAAwX14QMF9eEEAAAAAwX14QEF9eEC"
+          },
+          "smithy.rules#endpointRuleSet": {
+            "version": "1.0",
+            "parameters": {
+              "UseFIPS": {
+                "builtIn": "AWS::UseFIPS",
+                "required": true,
+                "default": false,
+                "documentation": "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
+                "type": "boolean"
+              },
+              "Endpoint": {
+                "builtIn": "SDK::Endpoint",
+                "required": false,
+                "documentation": "Override the endpoint used to send this request",
+                "type": "string"
+              },
+              "Region": {
+                "builtIn": "AWS::Region",
+                "required": false,
+                "documentation": "The AWS region used to dispatch the request.",
+                "type": "string"
+              }
+            },
+            "rules": [
+              {
+                "conditions": [
+                  {
+                    "fn": "isSet",
+                    "argv": [
+                      {
+                        "ref": "Endpoint"
+                      }
+                    ]
+                  }
+                ],
+                "rules": [
+                  {
+                    "conditions": [
+                      {
+                        "fn": "booleanEquals",
+                        "argv": [
+                          {
+                            "ref": "UseFIPS"
+                          },
+                          true
+                        ]
+                      }
+                    ],
+                    "error": "Invalid Configuration: FIPS and custom endpoint are not supported",
+                    "type": "error"
+                  },
+                  {
+                    "conditions": [],
+                    "endpoint": {
+                      "url": {
+                        "ref": "Endpoint"
+                      },
+                      "properties": {},
+                      "headers": {}
+                    },
+                    "type": "endpoint"
+                  }
+                ],
+                "type": "tree"
+              },
+              {
+                "conditions": [],
+                "rules": [
+                  {
+                    "conditions": [
+                      {
+                        "fn": "isSet",
+                        "argv": [
+                          {
+                            "ref": "Region"
+                          }
+                        ]
+                      }
+                    ],
+                    "rules": [
+                      {
+                        "conditions": [
+                          {
+                            "fn": "aws.partition",
+                            "argv": [
+                              {
+                                "ref": "Region"
+                              }
+                            ],
+                            "assign": "PartitionResult"
+                          }
+                        ],
+                        "rules": [
+                          {
+                            "conditions": [
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  {
+                                    "ref": "UseFIPS"
+                                  },
+                                  true
+                                ]
+                              }
+                            ],
+                            "endpoint": {
+                              "url": "https://mpa-fips.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                              "properties": {},
+                              "headers": {}
+                            },
+                            "type": "endpoint"
+                          },
+                          {
+                            "conditions": [],
+                            "endpoint": {
+                              "url": "https://mpa.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                              "properties": {},
+                              "headers": {}
+                            },
+                            "type": "endpoint"
+                          }
+                        ],
+                        "type": "tree"
+                      }
+                    ],
+                    "type": "tree"
+                  },
+                  {
+                    "conditions": [],
+                    "error": "Invalid Configuration: Missing Region",
+                    "type": "error"
+                  }
+                ],
+                "type": "tree"
+              }
+            ]
+          },
+          "smithy.rules#endpointTests": {
+            "testCases": [
+              {
+                "documentation": "For custom endpoint with region not set and fips disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://example.com"
+                  }
+                },
+                "params": {
+                  "Endpoint": "https://example.com",
+                  "UseFIPS": false
+                }
+              },
+              {
+                "documentation": "For custom endpoint with fips enabled",
+                "expect": {
+                  "error": "Invalid Configuration: FIPS and custom endpoint are not supported"
+                },
+                "params": {
+                  "Endpoint": "https://example.com",
+                  "UseFIPS": true
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://mpa-fips.us-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": true
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://mpa.us-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false
+                }
+              },
+              {
+                "documentation": "For region cn-northwest-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://mpa-fips.cn-northwest-1.api.amazonwebservices.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-northwest-1",
+                  "UseFIPS": true
+                }
+              },
+              {
+                "documentation": "For region cn-northwest-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://mpa.cn-northwest-1.api.amazonwebservices.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-northwest-1",
+                  "UseFIPS": false
+                }
+              },
+              {
+                "documentation": "For region us-gov-west-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://mpa-fips.us-gov-west-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-west-1",
+                  "UseFIPS": true
+                }
+              },
+              {
+                "documentation": "For region us-gov-west-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://mpa.us-gov-west-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-west-1",
+                  "UseFIPS": false
+                }
+              },
+              {
+                "documentation": "Missing region",
+                "expect": {
+                  "error": "Invalid Configuration: Missing Region"
+                }
+              }
+            ],
+            "version": "1.0"
+          }
+        }
+      },
+      "com.amazonaws.mpa#AccessDeniedException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.mpa#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eMessage for the \u003ccode\u003eAccessDeniedException\u003c/code\u003e error.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eYou do not have sufficient access to perform this action. Check your permissions, and try again.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 403
+        }
+      },
+      "com.amazonaws.mpa#AccountId": {
+        "type": "string",
+        "traits": {
+          "aws.api#data": "account",
+          "smithy.api#length": {
+            "max": 12
+          },
+          "smithy.api#pattern": "^\\d{12}$"
+        }
+      },
+      "com.amazonaws.mpa#ActionCompletionStrategy": {
+        "type": "enum",
+        "members": {
+          "AUTO_COMPLETION_UPON_APPROVAL": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "AUTO_COMPLETION_UPON_APPROVAL"
+            }
+          }
+        }
+      },
+      "com.amazonaws.mpa#ActionName": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "max": 500
+          }
+        }
+      },
+      "com.amazonaws.mpa#AdditionalSecurityRequirement": {
+        "type": "enum",
+        "members": {
+          "APPROVER_VERIFICATION_REQUIRED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "APPROVER_VERIFICATION_REQUIRED"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eAdditional security requirements applied to a session or invitation\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAPPROVER_VERIFICATION_REQUIRED\u003c/code\u003e: Approvers will be required to perform an MFA challenge to vote\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e"
+        }
+      },
+      "com.amazonaws.mpa#AdditionalSecurityRequirements": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.mpa#AdditionalSecurityRequirement"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 100
+          }
+        }
+      },
+      "com.amazonaws.mpa#ApprovalStrategy": {
+        "type": "union",
+        "members": {
+          "MofN": {
+            "target": "com.amazonaws.mpa#MofNApprovalStrategy",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eMinimum number of approvals (M) required for a total number of approvers (N).\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eStrategy for how an approval team grants approval.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.mpa#ApprovalStrategyResponse": {
+        "type": "union",
+        "members": {
+          "MofN": {
+            "target": "com.amazonaws.mpa#MofNApprovalStrategy",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eMinimum number of approvals (M) required for a total number of approvers (N).\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eContains details for how an approval team grants approval.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.mpa#ApprovalTeam": {
+        "type": "resource",
+        "operations": [
+          {
+            "target": "com.amazonaws.mpa#StartActiveApprovalTeamDeletion"
+          },
+          {
+            "target": "com.amazonaws.mpa#StartApprovalTeamBaseline"
+          }
+        ],
+        "traits": {
+          "aws.api#arn": {
+            "template": "approval-team/{Arn}"
+          },
+          "aws.iam#conditionKeys": [
+            "aws:ResourceTag/${TagKey}"
+          ],
+          "aws.iam#iamResource": {
+            "name": "approval-team",
+            "relativeDocumentation": "mpa-concepts.html"
+          },
+          "smithy.api#documentation": "Represents a team that is responsible for approving protected operations"
+        }
+      },
+      "com.amazonaws.mpa#ApprovalTeamArn": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 20,
+            "max": 2048
+          },
+          "smithy.api#pattern": "^arn:aws(-[^:]+)?:mpa:[a-z0-9-]{1,20}:[0-9]{12}:approval-team/[a-zA-Z0-9._-]+$"
+        }
+      },
+      "com.amazonaws.mpa#ApprovalTeamName": {
+        "type": "string",
+        "traits": {
+          "aws.api#data": "usage",
+          "smithy.api#length": {
+            "max": 64
+          },
+          "smithy.api#pattern": "^[a-zA-Z0-9._-]+$"
+        }
+      },
+      "com.amazonaws.mpa#ApprovalTeamRequestApprover": {
+        "type": "structure",
+        "members": {
+          "PrimaryIdentityId": {
+            "target": "com.amazonaws.mpa#IdentityId",
+            "traits": {
+              "aws.api#data": "usage",
+              "smithy.api#documentation": "\u003cp\u003eID for the user.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "PrimaryIdentitySourceArn": {
+            "target": "com.amazonaws.mpa#String",
+            "traits": {
+              "aws.api#data": "usage",
+              "smithy.api#documentation": "\u003cp\u003eAmazon Resource Name (ARN) for the identity source. The identity source manages the user authentication for approvers.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "aws.api#data": "usage",
+          "smithy.api#documentation": "\u003cp\u003eContains details for an approver.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.mpa#ApprovalTeamRequestApprovers": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.mpa#ApprovalTeamRequestApprover"
+        },
+        "traits": {
+          "aws.api#data": "usage",
+          "smithy.api#length": {
+            "min": 1,
+            "max": 20
+          }
+        }
+      },
+      "com.amazonaws.mpa#ApprovalTeamStatus": {
+        "type": "enum",
+        "members": {
+          "ACTIVE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ACTIVE"
+            }
+          },
+          "DELETING": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "DELETING"
+            }
+          },
+          "INACTIVE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "INACTIVE"
+            }
+          },
+          "PENDING": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "PENDING"
+            }
+          }
+        }
+      },
+      "com.amazonaws.mpa#ApprovalTeamStatusCode": {
+        "type": "enum",
+        "members": {
+          "DELETE_FAILED_APPROVAL": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "DELETE_FAILED_APPROVAL"
+            }
+          },
+          "DELETE_FAILED_VALIDATION": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "DELETE_FAILED_VALIDATION"
+            }
+          },
+          "DELETE_PENDING_APPROVAL": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "DELETE_PENDING_APPROVAL"
+            }
+          },
+          "FAILED_ACTIVATION": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "FAILED_ACTIVATION"
+            }
+          },
+          "FAILED_VALIDATION": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "FAILED_VALIDATION"
+            }
+          },
+          "PENDING_ACTIVATION": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "PENDING_ACTIVATION"
+            }
+          },
+          "UPDATE_FAILED_ACTIVATION": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "UPDATE_FAILED_ACTIVATION"
+            }
+          },
+          "UPDATE_FAILED_APPROVAL": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "UPDATE_FAILED_APPROVAL"
+            }
+          },
+          "UPDATE_FAILED_VALIDATION": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "UPDATE_FAILED_VALIDATION"
+            }
+          },
+          "UPDATE_PENDING_ACTIVATION": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "UPDATE_PENDING_ACTIVATION"
+            }
+          },
+          "UPDATE_PENDING_APPROVAL": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "UPDATE_PENDING_APPROVAL"
+            }
+          },
+          "VALIDATING": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "VALIDATING"
+            }
+          }
+        }
+      },
+      "com.amazonaws.mpa#ApproverLastActivity": {
+        "type": "enum",
+        "members": {
+          "BASELINED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "BASELINED"
+            }
+          },
+          "RESPONDED_TO_INVITATION": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "RESPONDED_TO_INVITATION"
+            }
+          },
+          "VOTED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "VOTED"
+            }
+          }
+        }
+      },
+      "com.amazonaws.mpa#CancelSession": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.mpa#CancelSessionRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.mpa#CancelSessionResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.mpa#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.mpa#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#conditionKeys": [
+            "aws:ResourceTag/${TagKey}",
+            "mpa:RequestedOperation",
+            "mpa:ProtectedResourceAccount"
+          ],
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to cancel an approval session"
+          },
+          "smithy.api#documentation": "\u003cp\u003eCancels an approval session. For more information, see \u003ca href=\"https://docs.aws.amazon.com/mpa/latest/userguide/mpa-concepts.html\"\u003eSession\u003c/a\u003e in the \u003ci\u003eMulti-party approval User Guide\u003c/i\u003e.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "PUT",
+            "uri": "/sessions/{SessionArn}"
+          },
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.mpa#CancelSessionRequest": {
+        "type": "structure",
+        "members": {
+          "SessionArn": {
+            "target": "com.amazonaws.mpa#SessionArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAmazon Resource Name (ARN) for the session.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.mpa#CancelSessionResponse": {
+        "type": "structure",
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.mpa#ConflictException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.mpa#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eMessage for the \u003ccode\u003eConflictException\u003c/code\u003e error.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe request cannot be completed because it conflicts with the current state of a resource.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 409
+        }
+      },
+      "com.amazonaws.mpa#CreateApprovalTeam": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.mpa#CreateApprovalTeamRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.mpa#CreateApprovalTeamResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.mpa#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.mpa#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ServiceQuotaExceededException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#conditionKeys": [
+            "aws:ResourceTag/${TagKey}",
+            "aws:RequestTag/${TagKey}",
+            "aws:TagKeys"
+          ],
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to create an approval team"
+          },
+          "smithy.api#documentation": "\u003cp\u003eCreates a new approval team. For more information, see \u003ca href=\"https://docs.aws.amazon.com/mpa/latest/userguide/mpa-concepts.html\"\u003eApproval team\u003c/a\u003e in the \u003ci\u003eMulti-party approval User Guide\u003c/i\u003e.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "POST",
+            "uri": "/approval-teams"
+          },
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.mpa#CreateApprovalTeamRequest": {
+        "type": "structure",
+        "members": {
+          "ApprovalStrategy": {
+            "target": "com.amazonaws.mpa#ApprovalStrategy",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn \u003ccode\u003eApprovalStrategy\u003c/code\u003e object. Contains details for how the team grants approval.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Approvers": {
+            "target": "com.amazonaws.mpa#ApprovalTeamRequestApprovers",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn array of \u003ccode\u003eApprovalTeamRequesterApprovers\u003c/code\u003e objects. Contains details for the approvers in the team.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "ClientToken": {
+            "target": "com.amazonaws.mpa#Token",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eUnique, case-sensitive identifier that you provide to ensure the idempotency of the request. If not provided, the Amazon Web Services populates this field.\u003c/p\u003e \u003cnote\u003e \u003cp\u003e \u003cb\u003eWhat is idempotency?\u003c/b\u003e \u003c/p\u003e \u003cp\u003eWhen you make a mutating API request, the request typically returns a result before the operation's asynchronous workflows have completed. Operations might also time out or encounter other server issues before they complete, even though the request has already returned a result. This could make it difficult to determine whether the request succeeded or not, and could lead to multiple retries to ensure that the operation completes successfully. However, if the original request and the subsequent retries are successful, the operation is completed multiple times. This means that you might create more resources than you intended.\u003c/p\u003e \u003cp\u003e \u003ci\u003eIdempotency\u003c/i\u003e ensures that an API request completes no more than one time. With an idempotent request, if the original request completes successfully, any subsequent retries complete successfully without performing any further actions.\u003c/p\u003e \u003c/note\u003e",
+              "smithy.api#idempotencyToken": {}
+            }
+          },
+          "Description": {
+            "target": "com.amazonaws.mpa#Description",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eDescription for the team.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Name": {
+            "target": "com.amazonaws.mpa#ApprovalTeamName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eName of the team.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Policies": {
+            "target": "com.amazonaws.mpa#PoliciesReferences",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn array of \u003ccode\u003ePolicyReference\u003c/code\u003e objects. Contains a list of policies that define the permissions for team resources.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Tags": {
+            "target": "com.amazonaws.mpa#Tags",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eTags you want to attach to the team.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.mpa#CreateApprovalTeamResponse": {
+        "type": "structure",
+        "members": {
+          "Arn": {
+            "target": "com.amazonaws.mpa#ApprovalTeamArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAmazon Resource Name (ARN) for the team that was created.\u003c/p\u003e"
+            }
+          },
+          "CreationTime": {
+            "target": "com.amazonaws.mpa#IsoTimestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eTimestamp when the team was created.\u003c/p\u003e"
+            }
+          },
+          "Name": {
+            "target": "com.amazonaws.mpa#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eName of the team that was created.\u003c/p\u003e"
+            }
+          },
+          "VersionId": {
+            "target": "com.amazonaws.mpa#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eVersion ID for the team that was created. When a team is updated, the version ID changes.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.mpa#CreateIdentitySource": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.mpa#CreateIdentitySourceRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.mpa#CreateIdentitySourceResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.mpa#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.mpa#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ServiceQuotaExceededException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#conditionKeys": [
+            "aws:ResourceTag/${TagKey}",
+            "aws:RequestTag/${TagKey}",
+            "aws:TagKeys"
+          ],
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to create an identity source"
+          },
+          "smithy.api#documentation": "\u003cp\u003eCreates a new identity source. For more information, see \u003ca href=\"https://docs.aws.amazon.com/mpa/latest/userguide/mpa-concepts.html\"\u003eIdentity Source\u003c/a\u003e in the \u003ci\u003eMulti-party approval User Guide\u003c/i\u003e.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "POST",
+            "uri": "/identity-sources"
+          },
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.mpa#CreateIdentitySourceRequest": {
+        "type": "structure",
+        "members": {
+          "ClientToken": {
+            "target": "com.amazonaws.mpa#Token",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eUnique, case-sensitive identifier that you provide to ensure the idempotency of the request. If not provided, the Amazon Web Services populates this field.\u003c/p\u003e \u003cnote\u003e \u003cp\u003e \u003cb\u003eWhat is idempotency?\u003c/b\u003e \u003c/p\u003e \u003cp\u003eWhen you make a mutating API request, the request typically returns a result before the operation's asynchronous workflows have completed. Operations might also time out or encounter other server issues before they complete, even though the request has already returned a result. This could make it difficult to determine whether the request succeeded or not, and could lead to multiple retries to ensure that the operation completes successfully. However, if the original request and the subsequent retries are successful, the operation is completed multiple times. This means that you might create more resources than you intended.\u003c/p\u003e \u003cp\u003e \u003ci\u003eIdempotency\u003c/i\u003e ensures that an API request completes no more than one time. With an idempotent request, if the original request completes successfully, any subsequent retries complete successfully without performing any further actions.\u003c/p\u003e \u003c/note\u003e",
+              "smithy.api#idempotencyToken": {}
+            }
+          },
+          "IdentitySourceParameters": {
+            "target": "com.amazonaws.mpa#IdentitySourceParameters",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA \u003ccode\u003e IdentitySourceParameters\u003c/code\u003e object. Contains details for the resource that provides identities to the identity source. For example, an IAM Identity Center instance.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Tags": {
+            "target": "com.amazonaws.mpa#Tags",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eTag you want to attach to the identity source.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.mpa#CreateIdentitySourceResponse": {
+        "type": "structure",
+        "members": {
+          "CreationTime": {
+            "target": "com.amazonaws.mpa#IsoTimestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eTimestamp when the identity source was created.\u003c/p\u003e"
+            }
+          },
+          "IdentitySourceArn": {
+            "target": "com.amazonaws.mpa#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAmazon Resource Name (ARN) for the identity source that was created.\u003c/p\u003e"
+            }
+          },
+          "IdentitySourceType": {
+            "target": "com.amazonaws.mpa#IdentitySourceType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe type of resource that provided identities to the identity source. For example, an IAM Identity Center instance.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.mpa#DeleteIdentitySource": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.mpa#DeleteIdentitySourceRequest"
+        },
+        "output": {
+          "target": "smithy.api#Unit"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.mpa#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.mpa#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#conditionKeys": [
+            "aws:ResourceTag/${TagKey}"
+          ],
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to delete an identity source"
+          },
+          "smithy.api#documentation": "\u003cp\u003eDeletes an identity source. For more information, see \u003ca href=\"https://docs.aws.amazon.com/mpa/latest/userguide/mpa-concepts.html\"\u003eIdentity Source\u003c/a\u003e in the \u003ci\u003eMulti-party approval User Guide\u003c/i\u003e.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "DELETE",
+            "uri": "/identity-sources/{IdentitySourceArn}"
+          },
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.mpa#DeleteIdentitySourceRequest": {
+        "type": "structure",
+        "members": {
+          "IdentitySourceArn": {
+            "target": "com.amazonaws.mpa#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAmazon Resource Name (ARN) for identity source.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.mpa#DeleteInactiveApprovalTeamVersion": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.mpa#DeleteInactiveApprovalTeamVersionRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.mpa#DeleteInactiveApprovalTeamVersionResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.mpa#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.mpa#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#conditionKeys": [
+            "aws:ResourceTag/${TagKey}"
+          ],
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to delete an inactive approval team"
+          },
+          "smithy.api#documentation": "\u003cp\u003eDeletes an inactive approval team. For more information, see \u003ca href=\"https://docs.aws.amazon.com/mpa/latest/userguide/mpa-health.html\"\u003eTeam health\u003c/a\u003e in the \u003ci\u003eMulti-party approval User Guide\u003c/i\u003e.\u003c/p\u003e \u003cp\u003eYou can also use this operation to delete a team draft. For more information, see \u003ca href=\"https://docs.aws.amazon.com/mpa/latest/userguide/update-team.html#update-team-draft-status\"\u003eInteracting with drafts\u003c/a\u003e in the \u003ci\u003eMulti-party approval User Guide\u003c/i\u003e.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "DELETE",
+            "uri": "/approval-teams/{Arn}/{VersionId}"
+          },
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.mpa#DeleteInactiveApprovalTeamVersionRequest": {
+        "type": "structure",
+        "members": {
+          "Arn": {
+            "target": "com.amazonaws.mpa#ApprovalTeamArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAmaazon Resource Name (ARN) for the team.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "VersionId": {
+            "target": "com.amazonaws.mpa#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eVersion ID for the team.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.mpa#DeleteInactiveApprovalTeamVersionResponse": {
+        "type": "structure",
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.mpa#Description": {
+        "type": "string",
+        "traits": {
+          "aws.api#data": "usage",
+          "smithy.api#length": {
+            "min": 1,
+            "max": 256
+          },
+          "smithy.api#sensitive": {}
+        }
+      },
+      "com.amazonaws.mpa#Filter": {
+        "type": "structure",
+        "members": {
+          "FieldName": {
+            "target": "com.amazonaws.mpa#FilterField",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eName of the filter to use.\u003c/p\u003e \u003cnote\u003e \u003cp\u003e \u003cb\u003eSupported filters\u003c/b\u003e \u003c/p\u003e \u003cp\u003eThe supported filters for \u003ca\u003eListSessions\u003c/a\u003e are: \u003ccode\u003eActionName\u003c/code\u003e, \u003ccode\u003eSessionStatus\u003c/code\u003e, and \u003ccode\u003eInitationTime\u003c/code\u003e.\u003c/p\u003e \u003c/note\u003e"
+            }
+          },
+          "Operator": {
+            "target": "com.amazonaws.mpa#Operator",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eOperator to use for filtering.\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eEQ\u003c/code\u003e: Equal to the specified value\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eNE\u003c/code\u003e: Not equal to the specified value\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eGT\u003c/code\u003e: Greater than the specified value\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eLT\u003c/code\u003e: Less than the specified value\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eGTE\u003c/code\u003e: Greater than or equal to the specified value\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eLTE\u003c/code\u003e: Less than or equal to the specified value\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eCONTAINS\u003c/code\u003e: Contains the specified value\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eNOT_CONTAINS\u003c/code\u003e: Does not contain the specified value\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eBETWEEN\u003c/code\u003e: Between two values, inclusive of the specified values.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e \u003cnote\u003e \u003cp\u003e \u003cb\u003eSupported operators for each filter\u003c/b\u003e:\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eActionName\u003c/code\u003e: \u003ccode\u003eEQ\u003c/code\u003e | \u003ccode\u003eNE\u003c/code\u003e | \u003ccode\u003eCONTAINS\u003c/code\u003e | \u003ccode\u003eNOT_CONTAINS\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eSessionStatus\u003c/code\u003e: \u003ccode\u003eEQ\u003c/code\u003e | \u003ccode\u003eNE\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eInitiationTime\u003c/code\u003e: \u003ccode\u003eGT\u003c/code\u003e | \u003ccode\u003eLT\u003c/code\u003e | \u003ccode\u003eGTE\u003c/code\u003e | \u003ccode\u003eLTE\u003c/code\u003e | \u003ccode\u003eBETWEEN\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e \u003c/note\u003e"
+            }
+          },
+          "Value": {
+            "target": "com.amazonaws.mpa#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eValue to use for filtering. For the \u003ccode\u003eBETWEEN\u003c/code\u003e operator, specify values in the format \u003ccode\u003ea AND b\u003c/code\u003e (\u003ccode\u003eAND\u003c/code\u003e is case-insensitive).\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eContains the filter to apply to requests. You can specify up to 10 filters for a request.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.mpa#FilterField": {
+        "type": "enum",
+        "members": {
+          "ACTION_NAME": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ActionName"
+            }
+          },
+          "APPROVAL_TEAM_NAME": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ApprovalTeamName"
+            }
+          },
+          "INITIATION_TIME": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "InitiationTime"
+            }
+          },
+          "SESSION_STATUS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "SessionStatus"
+            }
+          },
+          "VOTE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Vote"
+            }
+          },
+          "VOTING_TIME": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "VotingTime"
+            }
+          }
+        }
+      },
+      "com.amazonaws.mpa#Filters": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.mpa#Filter"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 10
+          }
+        }
+      },
+      "com.amazonaws.mpa#GetApprovalTeam": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.mpa#GetApprovalTeamRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.mpa#GetApprovalTeamResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.mpa#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.mpa#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#conditionKeys": [
+            "aws:ResourceTag/${TagKey}"
+          ],
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to retrieve details for an approval team"
+          },
+          "smithy.api#documentation": "\u003cp\u003eReturns details for an approval team.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "GET",
+            "uri": "/approval-teams/{Arn}"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.mpa#GetApprovalTeamRequest": {
+        "type": "structure",
+        "members": {
+          "Arn": {
+            "target": "com.amazonaws.mpa#ApprovalTeamArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAmazon Resource Name (ARN) for the team.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.mpa#GetApprovalTeamResponse": {
+        "type": "structure",
+        "members": {
+          "ApprovalStrategy": {
+            "target": "com.amazonaws.mpa#ApprovalStrategyResponse",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn \u003ccode\u003eApprovalStrategyResponse\u003c/code\u003e object. Contains details for how the team grants approval.\u003c/p\u003e"
+            }
+          },
+          "Approvers": {
+            "target": "com.amazonaws.mpa#GetApprovalTeamResponseApprovers",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn array of \u003ccode\u003eGetApprovalTeamResponseApprover \u003c/code\u003e objects. Contains details for the approvers in the team.\u003c/p\u003e"
+            }
+          },
+          "Arn": {
+            "target": "com.amazonaws.mpa#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAmazon Resource Name (ARN) for the team.\u003c/p\u003e"
+            }
+          },
+          "CreationTime": {
+            "target": "com.amazonaws.mpa#IsoTimestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eTimestamp when the team was created.\u003c/p\u003e"
+            }
+          },
+          "Description": {
+            "target": "com.amazonaws.mpa#Description",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eDescription for the team.\u003c/p\u003e"
+            }
+          },
+          "LastUpdateTime": {
+            "target": "com.amazonaws.mpa#IsoTimestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eTimestamp when the team was last updated.\u003c/p\u003e"
+            }
+          },
+          "Name": {
+            "target": "com.amazonaws.mpa#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eName of the approval team.\u003c/p\u003e"
+            }
+          },
+          "NumberOfApprovers": {
+            "target": "smithy.api#Integer",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eTotal number of approvers in the team.\u003c/p\u003e"
+            }
+          },
+          "PendingUpdate": {
+            "target": "com.amazonaws.mpa#PendingUpdate",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA \u003ccode\u003ePendingUpdate\u003c/code\u003e object. Contains details for the pending updates for the team, if applicable.\u003c/p\u003e"
+            }
+          },
+          "Policies": {
+            "target": "com.amazonaws.mpa#PoliciesReferences",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn array of \u003ccode\u003ePolicyReference\u003c/code\u003e objects. Contains a list of policies that define the permissions for team resources.\u003c/p\u003e"
+            }
+          },
+          "Status": {
+            "target": "com.amazonaws.mpa#ApprovalTeamStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eStatus for the team. For more information, see \u003ca href=\"https://docs.aws.amazon.com/mpa/latest/userguide/mpa-health.html\"\u003eTeam health\u003c/a\u003e in the \u003ci\u003eMulti-party approval User Guide\u003c/i\u003e.\u003c/p\u003e"
+            }
+          },
+          "StatusCode": {
+            "target": "com.amazonaws.mpa#ApprovalTeamStatusCode",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eStatus code for the approval team. For more information, see \u003ca href=\"https://docs.aws.amazon.com/mpa/latest/userguide/mpa-health.html\"\u003eTeam health\u003c/a\u003e in the \u003ci\u003eMulti-party approval User Guide\u003c/i\u003e.\u003c/p\u003e"
+            }
+          },
+          "StatusMessage": {
+            "target": "com.amazonaws.mpa#Message",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eMessage describing the status for the team.\u003c/p\u003e"
+            }
+          },
+          "UpdateSessionArn": {
+            "target": "com.amazonaws.mpa#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAmazon Resource Name (ARN) for the session.\u003c/p\u003e"
+            }
+          },
+          "VersionId": {
+            "target": "com.amazonaws.mpa#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eVersion ID for the team.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.mpa#GetApprovalTeamResponseApprover": {
+        "type": "structure",
+        "members": {
+          "ApproverId": {
+            "target": "com.amazonaws.mpa#ParticipantId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eID for the approver.\u003c/p\u003e"
+            }
+          },
+          "LastActivity": {
+            "target": "com.amazonaws.mpa#ApproverLastActivity",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eLast Activity performed by the approver.\u003c/p\u003e"
+            }
+          },
+          "LastActivityTime": {
+            "target": "com.amazonaws.mpa#IsoTimestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eTimestamp when the approver last responded to an operation or invitation request.\u003c/p\u003e"
+            }
+          },
+          "MfaMethods": {
+            "target": "com.amazonaws.mpa#MfaMethods",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eMulti-factor authentication configuration for the approver\u003c/p\u003e"
+            }
+          },
+          "PendingBaselineSessionArn": {
+            "target": "com.amazonaws.mpa#SessionArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAmazon Resource Name (ARN) for the pending baseline session.\u003c/p\u003e"
+            }
+          },
+          "PrimaryIdentityId": {
+            "target": "com.amazonaws.mpa#IdentityId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eID for the user.\u003c/p\u003e"
+            }
+          },
+          "PrimaryIdentitySourceArn": {
+            "target": "com.amazonaws.mpa#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAmazon Resource Name (ARN) for the identity source. The identity source manages the user authentication for approvers.\u003c/p\u003e"
+            }
+          },
+          "PrimaryIdentityStatus": {
+            "target": "com.amazonaws.mpa#IdentityStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eStatus for the identity source. For example, if an approver has accepted a team invitation with a user authentication method managed by the identity source.\u003c/p\u003e"
+            }
+          },
+          "ResponseTime": {
+            "target": "com.amazonaws.mpa#IsoTimestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eTimestamp when the approver responded to an approval team invitation.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eContains details for an approver.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.mpa#GetApprovalTeamResponseApprovers": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.mpa#GetApprovalTeamResponseApprover"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "max": 20
+          }
+        }
+      },
+      "com.amazonaws.mpa#GetIdentitySource": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.mpa#GetIdentitySourceRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.mpa#GetIdentitySourceResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.mpa#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.mpa#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#conditionKeys": [
+            "aws:ResourceTag/${TagKey}"
+          ],
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to retrieve details for an identity source"
+          },
+          "smithy.api#documentation": "\u003cp\u003eReturns details for an identity source. For more information, see \u003ca href=\"https://docs.aws.amazon.com/mpa/latest/userguide/mpa-concepts.html\"\u003eIdentity Source\u003c/a\u003e in the \u003ci\u003eMulti-party approval User Guide\u003c/i\u003e.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "GET",
+            "uri": "/identity-sources/{IdentitySourceArn}"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.mpa#GetIdentitySourceRequest": {
+        "type": "structure",
+        "members": {
+          "IdentitySourceArn": {
+            "target": "com.amazonaws.mpa#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAmazon Resource Name (ARN) for the identity source.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.mpa#GetIdentitySourceResponse": {
+        "type": "structure",
+        "members": {
+          "CreationTime": {
+            "target": "com.amazonaws.mpa#IsoTimestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eTimestamp when the identity source was created.\u003c/p\u003e"
+            }
+          },
+          "IdentitySourceArn": {
+            "target": "com.amazonaws.mpa#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAmazon Resource Name (ARN) for the identity source.\u003c/p\u003e"
+            }
+          },
+          "IdentitySourceParameters": {
+            "target": "com.amazonaws.mpa#IdentitySourceParametersForGet",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA \u003ccode\u003e IdentitySourceParameters\u003c/code\u003e object. Contains details for the resource that provides identities to the identity source. For example, an IAM Identity Center instance.\u003c/p\u003e"
+            }
+          },
+          "IdentitySourceType": {
+            "target": "com.amazonaws.mpa#IdentitySourceType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe type of resource that provided identities to the identity source. For example, an IAM Identity Center instance.\u003c/p\u003e"
+            }
+          },
+          "Status": {
+            "target": "com.amazonaws.mpa#IdentitySourceStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eStatus for the identity source. For example, if the identity source is \u003ccode\u003eACTIVE\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "StatusCode": {
+            "target": "com.amazonaws.mpa#IdentitySourceStatusCode",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eStatus code of the identity source.\u003c/p\u003e"
+            }
+          },
+          "StatusMessage": {
+            "target": "com.amazonaws.mpa#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eMessage describing the status for the identity source.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.mpa#GetPolicyVersion": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.mpa#GetPolicyVersionRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.mpa#GetPolicyVersionResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.mpa#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.mpa#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to retrieve details for a policy"
+          },
+          "smithy.api#documentation": "\u003cp\u003eReturns details for the version of a policy. Policies define the permissions for team resources.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "GET",
+            "uri": "/policy-versions/{PolicyVersionArn}"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.mpa#GetPolicyVersionRequest": {
+        "type": "structure",
+        "members": {
+          "PolicyVersionArn": {
+            "target": "com.amazonaws.mpa#QualifiedPolicyArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAmazon Resource Name (ARN) for the policy.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.mpa#GetPolicyVersionResponse": {
+        "type": "structure",
+        "members": {
+          "PolicyVersion": {
+            "target": "com.amazonaws.mpa#PolicyVersion",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA \u003ccode\u003ePolicyVersion\u003c/code\u003e object. Contains details for the version of the policy. Policies define the permissions for team resources.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.mpa#GetResourcePolicy": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.mpa#GetResourcePolicyRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.mpa#GetResourcePolicyResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.mpa#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.mpa#InvalidParameterException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to retrieve details for a specific resource"
+          },
+          "smithy.api#documentation": "\u003cp\u003eReturns details about a policy for a resource.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "POST",
+            "uri": "/GetResourcePolicy"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.mpa#GetResourcePolicyRequest": {
+        "type": "structure",
+        "members": {
+          "PolicyName": {
+            "target": "com.amazonaws.mpa#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eName of the policy.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "PolicyType": {
+            "target": "com.amazonaws.mpa#PolicyType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe type of policy.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "ResourceArn": {
+            "target": "com.amazonaws.mpa#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAmazon Resource Name (ARN) for the resource.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.mpa#GetResourcePolicyResponse": {
+        "type": "structure",
+        "members": {
+          "PolicyDocument": {
+            "target": "com.amazonaws.mpa#PolicyDocument",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eDocument that contains the contents for the policy.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "PolicyName": {
+            "target": "com.amazonaws.mpa#PolicyName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eName of the policy.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "PolicyType": {
+            "target": "com.amazonaws.mpa#PolicyType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe type of policy\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "PolicyVersionArn": {
+            "target": "com.amazonaws.mpa#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAmazon Resource Name (ARN) for the policy version.\u003c/p\u003e"
+            }
+          },
+          "ResourceArn": {
+            "target": "com.amazonaws.mpa#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAmazon Resource Name (ARN) for the resource.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.mpa#GetSession": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.mpa#GetSessionRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.mpa#GetSessionResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.mpa#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.mpa#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#conditionKeys": [
+            "aws:ResourceTag/${TagKey}",
+            "mpa:RequestedOperation",
+            "mpa:ProtectedResourceAccount"
+          ],
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to retrieve details for an approval session"
+          },
+          "smithy.api#documentation": "\u003cp\u003eReturns details for an approval session. For more information, see \u003ca href=\"https://docs.aws.amazon.com/mpa/latest/userguide/mpa-concepts.html\"\u003eSession\u003c/a\u003e in the \u003ci\u003eMulti-party approval User Guide\u003c/i\u003e.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "GET",
+            "uri": "/sessions/{SessionArn}"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.mpa#GetSessionRequest": {
+        "type": "structure",
+        "members": {
+          "SessionArn": {
+            "target": "com.amazonaws.mpa#SessionArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAmazon Resource Name (ARN) for the session.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.mpa#GetSessionResponse": {
+        "type": "structure",
+        "members": {
+          "ActionCompletionStrategy": {
+            "target": "com.amazonaws.mpa#ActionCompletionStrategy",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eStrategy for executing the protected operation. \u003ccode\u003eAUTO_COMPLETION_UPON_APPROVAL\u003c/code\u003e means the operation is automatically executed using the requester's permissions, if approved.\u003c/p\u003e"
+            }
+          },
+          "ActionName": {
+            "target": "com.amazonaws.mpa#ActionName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eName of the protected operation.\u003c/p\u003e"
+            }
+          },
+          "AdditionalSecurityRequirements": {
+            "target": "com.amazonaws.mpa#AdditionalSecurityRequirements",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of \u003ccode\u003eAdditionalSecurityRequirement\u003c/code\u003e applied to the session.\u003c/p\u003e"
+            }
+          },
+          "ApprovalStrategy": {
+            "target": "com.amazonaws.mpa#ApprovalStrategyResponse",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn \u003ccode\u003eApprovalStrategyResponse\u003c/code\u003e object. Contains details for how the team grants approval\u003c/p\u003e"
+            }
+          },
+          "ApprovalTeamArn": {
+            "target": "com.amazonaws.mpa#ApprovalTeamArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAmazon Resource Name (ARN) for the approval team.\u003c/p\u003e"
+            }
+          },
+          "ApprovalTeamName": {
+            "target": "com.amazonaws.mpa#ApprovalTeamName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eName of the approval team.\u003c/p\u003e"
+            }
+          },
+          "ApproverResponses": {
+            "target": "com.amazonaws.mpa#GetSessionResponseApproverResponses",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn array of \u003ccode\u003eGetSessionResponseApproverResponse\u003c/code\u003e objects. Contains details for approver responses in the session.\u003c/p\u003e"
+            }
+          },
+          "CompletionTime": {
+            "target": "com.amazonaws.mpa#IsoTimestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eTimestamp when the session completed.\u003c/p\u003e"
+            }
+          },
+          "Description": {
+            "target": "com.amazonaws.mpa#Description",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eDescription for the session.\u003c/p\u003e"
+            }
+          },
+          "ExecutionStatus": {
+            "target": "com.amazonaws.mpa#SessionExecutionStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eStatus for the protected operation. For example, if the operation is \u003ccode\u003ePENDING\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "ExpirationTime": {
+            "target": "com.amazonaws.mpa#IsoTimestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eTimestamp when the session will expire.\u003c/p\u003e"
+            }
+          },
+          "InitiationTime": {
+            "target": "com.amazonaws.mpa#IsoTimestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eTimestamp when the session was initiated.\u003c/p\u003e"
+            }
+          },
+          "Metadata": {
+            "target": "com.amazonaws.mpa#SessionMetadata",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eMetadata for the session.\u003c/p\u003e"
+            }
+          },
+          "NumberOfApprovers": {
+            "target": "smithy.api#Integer",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eTotal number of approvers in the session.\u003c/p\u003e"
+            }
+          },
+          "ProtectedResourceArn": {
+            "target": "com.amazonaws.mpa#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAmazon Resource Name (ARN) for the protected operation.\u003c/p\u003e"
+            }
+          },
+          "RequesterAccountId": {
+            "target": "com.amazonaws.mpa#AccountId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eID for the account that made the operation request.\u003c/p\u003e"
+            }
+          },
+          "RequesterComment": {
+            "target": "com.amazonaws.mpa#RequesterComment",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eMessage from the account that made the operation request\u003c/p\u003e"
+            }
+          },
+          "RequesterPrincipalArn": {
+            "target": "com.amazonaws.mpa#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003e \u003ca href=\"https://docs.aws.amazon.com/IAM/latest/UserGuide/intro-structure.html#intro-structure-request\"\u003eIAM principal\u003c/a\u003e that made the operation request.\u003c/p\u003e"
+            }
+          },
+          "RequesterRegion": {
+            "target": "com.amazonaws.mpa#Region",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAmazon Web Services Region where the operation request originated.\u003c/p\u003e"
+            }
+          },
+          "RequesterServicePrincipal": {
+            "target": "com.amazonaws.mpa#ServicePrincipal",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003e \u003ca href=\"https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_principal.html#principal-services\"\u003eService principal\u003c/a\u003e for the service associated with the protected operation.\u003c/p\u003e"
+            }
+          },
+          "SessionArn": {
+            "target": "com.amazonaws.mpa#SessionArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAmazon Resource Name (ARN) for the session.\u003c/p\u003e"
+            }
+          },
+          "Status": {
+            "target": "com.amazonaws.mpa#SessionStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eStatus for the session. For example, if the team has approved the requested operation.\u003c/p\u003e"
+            }
+          },
+          "StatusCode": {
+            "target": "com.amazonaws.mpa#SessionStatusCode",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eStatus code of the session.\u003c/p\u003e"
+            }
+          },
+          "StatusMessage": {
+            "target": "com.amazonaws.mpa#Message",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eMessage describing the status for session.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.mpa#GetSessionResponseApproverResponse": {
+        "type": "structure",
+        "members": {
+          "ApproverId": {
+            "target": "com.amazonaws.mpa#ParticipantId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eID for the approver.\u003c/p\u003e"
+            }
+          },
+          "IdentityId": {
+            "target": "com.amazonaws.mpa#IdentityId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eID for the identity source. The identity source manages the user authentication for approvers.\u003c/p\u003e"
+            }
+          },
+          "IdentitySourceArn": {
+            "target": "com.amazonaws.mpa#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAmazon Resource Name (ARN) for the identity source. The identity source manages the user authentication for approvers.\u003c/p\u003e"
+            }
+          },
+          "Response": {
+            "target": "com.amazonaws.mpa#SessionResponse",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eResponse to the operation request.\u003c/p\u003e"
+            }
+          },
+          "ResponseTime": {
+            "target": "com.amazonaws.mpa#IsoTimestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eTimestamp when a approver responded to the operation request.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eContains details for an approver response in an approval session.\u003c/p\u003e",
+          "smithy.api#references": [
+            {
+              "resource": "com.amazonaws.mpa#IdentitySource"
+            }
+          ]
+        }
+      },
+      "com.amazonaws.mpa#GetSessionResponseApproverResponses": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.mpa#GetSessionResponseApproverResponse"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "max": 20
+          }
+        }
+      },
+      "com.amazonaws.mpa#IamIdentityCenter": {
+        "type": "structure",
+        "members": {
+          "InstanceArn": {
+            "target": "com.amazonaws.mpa#IdcInstanceArn",
+            "traits": {
+              "aws.api#data": "usage",
+              "smithy.api#documentation": "\u003cp\u003eAmazon Resource Name (ARN) for the IAM Identity Center instance.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Region": {
+            "target": "com.amazonaws.mpa#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAmazon Web Services Region where the IAM Identity Center instance is located.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "aws.api#data": "usage",
+          "smithy.api#documentation": "\u003cp\u003eIAM Identity Center credentials. For more information see, \u003ca href=\"http://aws.amazon.com/identity-center/\"\u003eIAM Identity Center\u003c/a\u003e .\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.mpa#IamIdentityCenterForGet": {
+        "type": "structure",
+        "members": {
+          "ApprovalPortalUrl": {
+            "target": "com.amazonaws.mpa#String",
+            "traits": {
+              "aws.api#data": "usage",
+              "smithy.api#documentation": "\u003cp\u003eURL for the approval portal associated with the IAM Identity Center instance.\u003c/p\u003e"
+            }
+          },
+          "InstanceArn": {
+            "target": "com.amazonaws.mpa#String",
+            "traits": {
+              "aws.api#data": "usage",
+              "smithy.api#documentation": "\u003cp\u003eAmazon Resource Name (ARN) for the IAM Identity Center instance.\u003c/p\u003e"
+            }
+          },
+          "Region": {
+            "target": "com.amazonaws.mpa#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAmazon Web Services Region where the IAM Identity Center instance is located.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "aws.api#data": "usage",
+          "smithy.api#documentation": "\u003cp\u003eIAM Identity Center credentials. For more information see, \u003ca href=\"http://aws.amazon.com/identity-center/\"\u003eIAM Identity Center\u003c/a\u003e .\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.mpa#IamIdentityCenterForList": {
+        "type": "structure",
+        "members": {
+          "ApprovalPortalUrl": {
+            "target": "com.amazonaws.mpa#String",
+            "traits": {
+              "aws.api#data": "usage",
+              "smithy.api#documentation": "\u003cp\u003eURL for the approval portal associated with the IAM Identity Center instance.\u003c/p\u003e"
+            }
+          },
+          "InstanceArn": {
+            "target": "com.amazonaws.mpa#String",
+            "traits": {
+              "aws.api#data": "usage",
+              "smithy.api#documentation": "\u003cp\u003eAmazon Resource Name (ARN) for the IAM Identity Center instance.\u003c/p\u003e"
+            }
+          },
+          "Region": {
+            "target": "com.amazonaws.mpa#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAmazon Web Services Region where the IAM Identity Center instance is located.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "aws.api#data": "usage",
+          "smithy.api#documentation": "\u003cp\u003eIAM Identity Center credentials. For more information see, \u003ca href=\"http://aws.amazon.com/identity-center/\"\u003eIAM Identity Center\u003c/a\u003e .\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.mpa#IdcInstanceArn": {
+        "type": "string",
+        "traits": {
+          "aws.api#data": "usage",
+          "smithy.api#length": {
+            "min": 20,
+            "max": 2048
+          },
+          "smithy.api#pattern": "^arn:.+:sso:::instance/(?:sso)?ins-[a-zA-Z0-9-.]{16}$"
+        }
+      },
+      "com.amazonaws.mpa#IdentityId": {
+        "type": "string",
+        "traits": {
+          "aws.api#data": "usage",
+          "smithy.api#length": {
+            "min": 1,
+            "max": 100
+          }
+        }
+      },
+      "com.amazonaws.mpa#IdentitySource": {
+        "type": "resource",
+        "traits": {
+          "aws.api#arn": {
+            "template": "identity-source/{IdentitySourceArn}"
+          },
+          "aws.iam#conditionKeys": [
+            "aws:ResourceTag/${TagKey}"
+          ],
+          "aws.iam#iamResource": {
+            "name": "identity-source",
+            "relativeDocumentation": "mpa-concepts.html"
+          },
+          "smithy.api#documentation": "Represents an association with an IAM Identity Center instance that manages the user authentication for approvers"
+        }
+      },
+      "com.amazonaws.mpa#IdentitySourceForList": {
+        "type": "structure",
+        "members": {
+          "CreationTime": {
+            "target": "com.amazonaws.mpa#IsoTimestamp",
+            "traits": {
+              "aws.api#data": "usage",
+              "smithy.api#documentation": "\u003cp\u003eTimestamp when the identity source was created.\u003c/p\u003e"
+            }
+          },
+          "IdentitySourceArn": {
+            "target": "com.amazonaws.mpa#String",
+            "traits": {
+              "aws.api#data": "usage",
+              "smithy.api#documentation": "\u003cp\u003eAmazon Resource Name (ARN) for the identity source.\u003c/p\u003e"
+            }
+          },
+          "IdentitySourceParameters": {
+            "target": "com.amazonaws.mpa#IdentitySourceParametersForList",
+            "traits": {
+              "aws.api#data": "usage",
+              "smithy.api#documentation": "\u003cp\u003eA \u003ccode\u003eIdentitySourceParametersForList\u003c/code\u003e object. Contains details for the resource that provides identities to the identity source. For example, an IAM Identity Center instance.\u003c/p\u003e"
+            }
+          },
+          "IdentitySourceType": {
+            "target": "com.amazonaws.mpa#IdentitySourceType",
+            "traits": {
+              "aws.api#data": "usage",
+              "smithy.api#documentation": "\u003cp\u003eThe type of resource that provided identities to the identity source. For example, an IAM Identity Center instance.\u003c/p\u003e"
+            }
+          },
+          "Status": {
+            "target": "com.amazonaws.mpa#IdentitySourceStatus",
+            "traits": {
+              "aws.api#data": "usage",
+              "smithy.api#documentation": "\u003cp\u003eStatus for the identity source. For example, if the identity source is \u003ccode\u003eACTIVE\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "StatusCode": {
+            "target": "com.amazonaws.mpa#IdentitySourceStatusCode",
+            "traits": {
+              "aws.api#data": "usage",
+              "smithy.api#documentation": "\u003cp\u003eStatus code of the identity source.\u003c/p\u003e"
+            }
+          },
+          "StatusMessage": {
+            "target": "com.amazonaws.mpa#String",
+            "traits": {
+              "aws.api#data": "usage",
+              "smithy.api#documentation": "\u003cp\u003eMessage describing the status for the identity source.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "aws.api#data": "usage",
+          "smithy.api#documentation": "\u003cp\u003eContains details for an identity source. For more information, see \u003ca href=\"https://docs.aws.amazon.com/mpa/latest/userguide/mpa-concepts.html\"\u003eIdentity source\u003c/a\u003e in the \u003ci\u003eMulti-party approval User Guide\u003c/i\u003e.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.mpa#IdentitySourceParameters": {
+        "type": "structure",
+        "members": {
+          "IamIdentityCenter": {
+            "target": "com.amazonaws.mpa#IamIdentityCenter",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIAM Identity Center credentials.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eContains details for the resource that provides identities to the identity source. For example, an IAM Identity Center instance.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.mpa#IdentitySourceParametersForGet": {
+        "type": "union",
+        "members": {
+          "IamIdentityCenter": {
+            "target": "com.amazonaws.mpa#IamIdentityCenterForGet",
+            "traits": {
+              "aws.api#data": "usage",
+              "smithy.api#documentation": "\u003cp\u003eIAM Identity Center credentials.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "aws.api#data": "usage",
+          "smithy.api#documentation": "\u003cp\u003eContains details for the resource that provides identities to the identity source. For example, an IAM Identity Center instance. For more information, see \u003ca href=\"https://docs.aws.amazon.com/mpa/latest/userguide/mpa-concepts.html\"\u003eIdentity source\u003c/a\u003e in the \u003ci\u003eMulti-party approval User Guide\u003c/i\u003e.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.mpa#IdentitySourceParametersForList": {
+        "type": "union",
+        "members": {
+          "IamIdentityCenter": {
+            "target": "com.amazonaws.mpa#IamIdentityCenterForList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIAM Identity Center credentials.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eContains details for the resource that provides identities to the identity source. For example, an IAM Identity Center instance. For more information, see \u003ca href=\"https://docs.aws.amazon.com/mpa/latest/userguide/mpa-concepts.html\"\u003eIdentity source\u003c/a\u003e in the \u003ci\u003eMulti-party approval User Guide\u003c/i\u003e.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.mpa#IdentitySourceStatus": {
+        "type": "enum",
+        "members": {
+          "ACTIVE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ACTIVE"
+            }
+          },
+          "CREATING": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "CREATING"
+            }
+          },
+          "DELETING": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "DELETING"
+            }
+          },
+          "ERROR": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ERROR"
+            }
+          }
+        }
+      },
+      "com.amazonaws.mpa#IdentitySourceStatusCode": {
+        "type": "enum",
+        "members": {
+          "ACCESS_DENIED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ACCESS_DENIED"
+            }
+          },
+          "DELETION_FAILED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "DELETION_FAILED"
+            }
+          },
+          "IDC_INSTANCE_NOT_FOUND": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "IDC_INSTANCE_NOT_FOUND"
+            }
+          },
+          "IDC_INSTANCE_NOT_VALID": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "IDC_INSTANCE_NOT_VALID"
+            }
+          }
+        }
+      },
+      "com.amazonaws.mpa#IdentitySourceType": {
+        "type": "enum",
+        "members": {
+          "IAM_IDENTITY_CENTER": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "IAM_IDENTITY_CENTER"
+            }
+          }
+        }
+      },
+      "com.amazonaws.mpa#IdentitySources": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.mpa#IdentitySourceForList",
+          "traits": {
+            "aws.api#data": "usage"
+          }
+        },
+        "traits": {
+          "aws.api#data": "usage",
+          "smithy.api#length": {
+            "max": 20
+          }
+        }
+      },
+      "com.amazonaws.mpa#IdentityStatus": {
+        "type": "enum",
+        "members": {
+          "ACCEPTED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ACCEPTED"
+            }
+          },
+          "INVALID": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "INVALID"
+            }
+          },
+          "PENDING": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "PENDING"
+            }
+          },
+          "REJECTED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "REJECTED"
+            }
+          }
+        }
+      },
+      "com.amazonaws.mpa#InternalServerException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.mpa#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eMessage for the \u003ccode\u003eInternalServerException\u003c/code\u003e error.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe service encountered an internal error. Try your request again. If the problem persists, contact Amazon Web Services Support.\u003c/p\u003e",
+          "smithy.api#error": "server",
+          "smithy.api#httpError": 500,
+          "smithy.api#retryable": {}
+        }
+      },
+      "com.amazonaws.mpa#InvalidParameterException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.mpa#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eMessage for the \u003ccode\u003eInvalidParameterException\u003c/code\u003e error.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe request contains an invalid parameter value.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.mpa#IsoTimestamp": {
+        "type": "timestamp",
+        "traits": {
+          "smithy.api#timestampFormat": "date-time"
+        }
+      },
+      "com.amazonaws.mpa#ListApprovalTeams": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.mpa#ListApprovalTeamsRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.mpa#ListApprovalTeamsResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.mpa#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.mpa#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to list approval teams"
+          },
+          "smithy.api#documentation": "\u003cp\u003eReturns a list of approval teams.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "POST",
+            "uri": "/approval-teams/?List"
+          },
+          "smithy.api#paginated": {
+            "inputToken": "NextToken",
+            "outputToken": "NextToken",
+            "pageSize": "MaxResults",
+            "items": "ApprovalTeams"
+          },
+          "smithy.api#readonly": {},
+          "smithy.test#smokeTests": [
+            {
+              "id": "ListApprovalTeamsSuccess",
+              "params": {},
+              "expect": {
+                "success": {}
+              },
+              "vendorParamsShape": "aws.test#AwsVendorParams",
+              "vendorParams": {
+                "region": "us-east-1"
+              }
+            }
+          ]
+        }
+      },
+      "com.amazonaws.mpa#ListApprovalTeamsRequest": {
+        "type": "structure",
+        "members": {
+          "MaxResults": {
+            "target": "com.amazonaws.mpa#MaxResults",
+            "traits": {
+              "smithy.api#default": 20,
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of items to return in the response. If more results exist than the specified \u003ccode\u003eMaxResults\u003c/code\u003e value, a token is included in the response so that you can retrieve the remaining results.\u003c/p\u003e",
+              "smithy.api#httpQuery": "MaxResults"
+            }
+          },
+          "NextToken": {
+            "target": "com.amazonaws.mpa#Token",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIf present, indicates that more output is available than is included in the current response. Use this value in the \u003ccode\u003eNextToken\u003c/code\u003e request parameter in a next call to the operation to get more output. You can repeat this until the \u003ccode\u003eNextToken\u003c/code\u003e response element returns \u003ccode\u003enull\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#httpQuery": "NextToken"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.mpa#ListApprovalTeamsResponse": {
+        "type": "structure",
+        "members": {
+          "ApprovalTeams": {
+            "target": "com.amazonaws.mpa#ListApprovalTeamsResponseApprovalTeams",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn array of \u003ccode\u003eListApprovalTeamsResponseApprovalTeam\u003c/code\u003e objects. Contains details for approval teams.\u003c/p\u003e"
+            }
+          },
+          "NextToken": {
+            "target": "com.amazonaws.mpa#Token",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIf present, indicates that more output is available than is included in the current response. Use this value in the \u003ccode\u003eNextToken\u003c/code\u003e request parameter in a next call to the operation to get more output. You can repeat this until the \u003ccode\u003eNextToken\u003c/code\u003e response element returns \u003ccode\u003enull\u003c/code\u003e.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.mpa#ListApprovalTeamsResponseApprovalTeam": {
+        "type": "structure",
+        "members": {
+          "ApprovalStrategy": {
+            "target": "com.amazonaws.mpa#ApprovalStrategyResponse",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn \u003ccode\u003eApprovalStrategyResponse\u003c/code\u003e object. Contains details for how an approval team grants approval.\u003c/p\u003e"
+            }
+          },
+          "Arn": {
+            "target": "com.amazonaws.mpa#ApprovalTeamArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAmazon Resource Name (ARN) for the team.\u003c/p\u003e"
+            }
+          },
+          "CreationTime": {
+            "target": "com.amazonaws.mpa#IsoTimestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eTimestamp when the team was created.\u003c/p\u003e"
+            }
+          },
+          "Description": {
+            "target": "com.amazonaws.mpa#Description",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eDescription for the team.\u003c/p\u003e"
+            }
+          },
+          "Name": {
+            "target": "com.amazonaws.mpa#ApprovalTeamName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eName of the team.\u003c/p\u003e"
+            }
+          },
+          "NumberOfApprovers": {
+            "target": "smithy.api#Integer",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eTotal number of approvers in the team.\u003c/p\u003e"
+            }
+          },
+          "Status": {
+            "target": "com.amazonaws.mpa#ApprovalTeamStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eStatus for the team. For more information, see \u003ca href=\"https://docs.aws.amazon.com/mpa/latest/userguide/mpa-health.html\"\u003eTeam health\u003c/a\u003e in the \u003ci\u003eMulti-party approval User Guide\u003c/i\u003e.\u003c/p\u003e"
+            }
+          },
+          "StatusCode": {
+            "target": "com.amazonaws.mpa#ApprovalTeamStatusCode",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eStatus code for the team. For more information, see \u003ca href=\"https://docs.aws.amazon.com/mpa/latest/userguide/mpa-health.html\"\u003eTeam health\u003c/a\u003e in the \u003ci\u003eMulti-party approval User Guide\u003c/i\u003e.\u003c/p\u003e"
+            }
+          },
+          "StatusMessage": {
+            "target": "com.amazonaws.mpa#Message",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eMessage describing the status for the team.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eContains details for an approval team\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.mpa#ListApprovalTeamsResponseApprovalTeams": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.mpa#ListApprovalTeamsResponseApprovalTeam"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "max": 20
+          }
+        }
+      },
+      "com.amazonaws.mpa#ListIdentitySources": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.mpa#ListIdentitySourcesRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.mpa#ListIdentitySourcesResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.mpa#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.mpa#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to list identity sources"
+          },
+          "smithy.api#documentation": "\u003cp\u003eReturns a list of identity sources. For more information, see \u003ca href=\"https://docs.aws.amazon.com/mpa/latest/userguide/mpa-concepts.html\"\u003eIdentity Source\u003c/a\u003e in the \u003ci\u003eMulti-party approval User Guide\u003c/i\u003e.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "POST",
+            "uri": "/identity-sources/?List"
+          },
+          "smithy.api#paginated": {
+            "inputToken": "NextToken",
+            "outputToken": "NextToken",
+            "pageSize": "MaxResults",
+            "items": "IdentitySources"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.mpa#ListIdentitySourcesRequest": {
+        "type": "structure",
+        "members": {
+          "MaxResults": {
+            "target": "com.amazonaws.mpa#MaxResults",
+            "traits": {
+              "smithy.api#default": 20,
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of items to return in the response. If more results exist than the specified \u003ccode\u003eMaxResults\u003c/code\u003e value, a token is included in the response so that you can retrieve the remaining results.\u003c/p\u003e",
+              "smithy.api#httpQuery": "MaxResults"
+            }
+          },
+          "NextToken": {
+            "target": "com.amazonaws.mpa#Token",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIf present, indicates that more output is available than is included in the current response. Use this value in the \u003ccode\u003eNextToken\u003c/code\u003e request parameter in a next call to the operation to get more output. You can repeat this until the \u003ccode\u003eNextToken\u003c/code\u003e response element returns \u003ccode\u003enull\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#httpQuery": "NextToken"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.mpa#ListIdentitySourcesResponse": {
+        "type": "structure",
+        "members": {
+          "IdentitySources": {
+            "target": "com.amazonaws.mpa#IdentitySources",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA \u003ccode\u003eIdentitySources\u003c/code\u003e. Contains details for identity sources.\u003c/p\u003e"
+            }
+          },
+          "NextToken": {
+            "target": "com.amazonaws.mpa#Token",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIf present, indicates that more output is available than is included in the current response. Use this value in the \u003ccode\u003eNextToken\u003c/code\u003e request parameter in a next call to the operation to get more output. You can repeat this until the \u003ccode\u003eNextToken\u003c/code\u003e response element returns \u003ccode\u003enull\u003c/code\u003e.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.mpa#ListPolicies": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.mpa#ListPoliciesRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.mpa#ListPoliciesResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.mpa#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.mpa#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to list policies"
+          },
+          "smithy.api#documentation": "\u003cp\u003eReturns a list of policies. Policies define the permissions for team resources.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "POST",
+            "uri": "/policies/?List"
+          },
+          "smithy.api#paginated": {
+            "inputToken": "NextToken",
+            "outputToken": "NextToken",
+            "pageSize": "MaxResults",
+            "items": "Policies"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.mpa#ListPoliciesRequest": {
+        "type": "structure",
+        "members": {
+          "MaxResults": {
+            "target": "com.amazonaws.mpa#MaxResults",
+            "traits": {
+              "smithy.api#default": 20,
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of items to return in the response. If more results exist than the specified \u003ccode\u003eMaxResults\u003c/code\u003e value, a token is included in the response so that you can retrieve the remaining results.\u003c/p\u003e",
+              "smithy.api#httpQuery": "MaxResults"
+            }
+          },
+          "NextToken": {
+            "target": "com.amazonaws.mpa#Token",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIf present, indicates that more output is available than is included in the current response. Use this value in the \u003ccode\u003eNextToken\u003c/code\u003e request parameter in a next call to the operation to get more output. You can repeat this until the \u003ccode\u003eNextToken\u003c/code\u003e response element returns \u003ccode\u003enull\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#httpQuery": "NextToken"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.mpa#ListPoliciesResponse": {
+        "type": "structure",
+        "members": {
+          "NextToken": {
+            "target": "com.amazonaws.mpa#Token",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIf present, indicates that more output is available than is included in the current response. Use this value in the \u003ccode\u003eNextToken\u003c/code\u003e request parameter in a next call to the operation to get more output. You can repeat this until the \u003ccode\u003eNextToken\u003c/code\u003e response element returns \u003ccode\u003enull\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "Policies": {
+            "target": "com.amazonaws.mpa#Policies",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn array of \u003ccode\u003ePolicy\u003c/code\u003e objects. Contains a list of policies that define the permissions for team resources.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.mpa#ListPolicyVersions": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.mpa#ListPolicyVersionsRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.mpa#ListPolicyVersionsResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.mpa#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.mpa#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to list the versions for policies"
+          },
+          "smithy.api#documentation": "\u003cp\u003eReturns a list of the versions for policies. Policies define the permissions for team resources.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "POST",
+            "uri": "/policies/{PolicyArn}/?List"
+          },
+          "smithy.api#paginated": {
+            "inputToken": "NextToken",
+            "outputToken": "NextToken",
+            "pageSize": "MaxResults",
+            "items": "PolicyVersions"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.mpa#ListPolicyVersionsRequest": {
+        "type": "structure",
+        "members": {
+          "MaxResults": {
+            "target": "com.amazonaws.mpa#MaxResults",
+            "traits": {
+              "smithy.api#default": 20,
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of items to return in the response. If more results exist than the specified \u003ccode\u003eMaxResults\u003c/code\u003e value, a token is included in the response so that you can retrieve the remaining results.\u003c/p\u003e",
+              "smithy.api#httpQuery": "MaxResults"
+            }
+          },
+          "NextToken": {
+            "target": "com.amazonaws.mpa#Token",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIf present, indicates that more output is available than is included in the current response. Use this value in the \u003ccode\u003eNextToken\u003c/code\u003e request parameter in a next call to the operation to get more output. You can repeat this until the \u003ccode\u003eNextToken\u003c/code\u003e response element returns \u003ccode\u003enull\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#httpQuery": "NextToken"
+            }
+          },
+          "PolicyArn": {
+            "target": "com.amazonaws.mpa#UnqualifiedPolicyArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAmazon Resource Name (ARN) for the policy.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.mpa#ListPolicyVersionsResponse": {
+        "type": "structure",
+        "members": {
+          "NextToken": {
+            "target": "com.amazonaws.mpa#Token",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIf present, indicates that more output is available than is included in the current response. Use this value in the \u003ccode\u003eNextToken\u003c/code\u003e request parameter in a next call to the operation to get more output. You can repeat this until the \u003ccode\u003eNextToken\u003c/code\u003e response element returns \u003ccode\u003enull\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "PolicyVersions": {
+            "target": "com.amazonaws.mpa#PolicyVersions",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn array of \u003ccode\u003ePolicyVersionSummary\u003c/code\u003e objects. Contains details for the version of the policies that define the permissions for team resources.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.mpa#ListResourcePolicies": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.mpa#ListResourcePoliciesRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.mpa#ListResourcePoliciesResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.mpa#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.mpa#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to list policies for a resource"
+          },
+          "smithy.api#documentation": "\u003cp\u003eReturns a list of policies for a resource.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "POST",
+            "uri": "/resource-policies/{ResourceArn}/?List"
+          },
+          "smithy.api#paginated": {
+            "inputToken": "NextToken",
+            "outputToken": "NextToken",
+            "pageSize": "MaxResults",
+            "items": "ResourcePolicies"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.mpa#ListResourcePoliciesRequest": {
+        "type": "structure",
+        "members": {
+          "MaxResults": {
+            "target": "com.amazonaws.mpa#MaxResults",
+            "traits": {
+              "smithy.api#default": 20,
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of items to return in the response. If more results exist than the specified \u003ccode\u003eMaxResults\u003c/code\u003e value, a token is included in the response so that you can retrieve the remaining results.\u003c/p\u003e",
+              "smithy.api#httpQuery": "MaxResults"
+            }
+          },
+          "NextToken": {
+            "target": "com.amazonaws.mpa#Token",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIf present, indicates that more output is available than is included in the current response. Use this value in the \u003ccode\u003eNextToken\u003c/code\u003e request parameter in a next call to the operation to get more output. You can repeat this until the \u003ccode\u003eNextToken\u003c/code\u003e response element returns \u003ccode\u003enull\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#httpQuery": "NextToken"
+            }
+          },
+          "ResourceArn": {
+            "target": "com.amazonaws.mpa#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAmazon Resource Name (ARN) for the resource.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.mpa#ListResourcePoliciesResponse": {
+        "type": "structure",
+        "members": {
+          "NextToken": {
+            "target": "com.amazonaws.mpa#Token",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIf present, indicates that more output is available than is included in the current response. Use this value in the \u003ccode\u003eNextToken\u003c/code\u003e request parameter in a next call to the operation to get more output. You can repeat this until the \u003ccode\u003eNextToken\u003c/code\u003e response element returns \u003ccode\u003enull\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "ResourcePolicies": {
+            "target": "com.amazonaws.mpa#ListResourcePoliciesResponseResourcePolicies",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn array of \u003ccode\u003eListResourcePoliciesResponseResourcePolicy\u003c/code\u003e objects. Contains details about the policy for the resource.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.mpa#ListResourcePoliciesResponseResourcePolicies": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.mpa#ListResourcePoliciesResponseResourcePolicy"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "max": 100
+          }
+        }
+      },
+      "com.amazonaws.mpa#ListResourcePoliciesResponseResourcePolicy": {
+        "type": "structure",
+        "members": {
+          "PolicyArn": {
+            "target": "com.amazonaws.mpa#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAmazon Resource Name (ARN) for policy.\u003c/p\u003e"
+            }
+          },
+          "PolicyName": {
+            "target": "com.amazonaws.mpa#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eName of the policy.\u003c/p\u003e"
+            }
+          },
+          "PolicyType": {
+            "target": "com.amazonaws.mpa#PolicyType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe type of policy.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eContains details about a policy for a resource.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.mpa#ListSessions": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.mpa#ListSessionsRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.mpa#ListSessionsResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.mpa#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.mpa#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to list approval sessions"
+          },
+          "smithy.api#documentation": "\u003cp\u003eReturns a list of approval sessions. For more information, see \u003ca href=\"https://docs.aws.amazon.com/mpa/latest/userguide/mpa-concepts.html\"\u003eSession\u003c/a\u003e in the \u003ci\u003eMulti-party approval User Guide\u003c/i\u003e.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "POST",
+            "uri": "/approval-teams/{ApprovalTeamArn}/sessions/?List"
+          },
+          "smithy.api#paginated": {
+            "inputToken": "NextToken",
+            "outputToken": "NextToken",
+            "pageSize": "MaxResults",
+            "items": "Sessions"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.mpa#ListSessionsRequest": {
+        "type": "structure",
+        "members": {
+          "ApprovalTeamArn": {
+            "target": "com.amazonaws.mpa#ApprovalTeamArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAmazon Resource Name (ARN) for the approval team.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "Filters": {
+            "target": "com.amazonaws.mpa#Filters",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn array of \u003ccode\u003eFilter\u003c/code\u003e objects. Contains the filter to apply when listing sessions.\u003c/p\u003e"
+            }
+          },
+          "MaxResults": {
+            "target": "com.amazonaws.mpa#MaxResults",
+            "traits": {
+              "smithy.api#default": 20,
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of items to return in the response. If more results exist than the specified \u003ccode\u003eMaxResults\u003c/code\u003e value, a token is included in the response so that you can retrieve the remaining results.\u003c/p\u003e"
+            }
+          },
+          "NextToken": {
+            "target": "com.amazonaws.mpa#Token",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIf present, indicates that more output is available than is included in the current response. Use this value in the \u003ccode\u003eNextToken\u003c/code\u003e request parameter in a next call to the operation to get more output. You can repeat this until the \u003ccode\u003eNextToken\u003c/code\u003e response element returns \u003ccode\u003enull\u003c/code\u003e.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.mpa#ListSessionsResponse": {
+        "type": "structure",
+        "members": {
+          "NextToken": {
+            "target": "com.amazonaws.mpa#Token",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIf present, indicates that more output is available than is included in the current response. Use this value in the \u003ccode\u003eNextToken\u003c/code\u003e request parameter in a next call to the operation to get more output. You can repeat this until the \u003ccode\u003eNextToken\u003c/code\u003e response element returns \u003ccode\u003enull\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "Sessions": {
+            "target": "com.amazonaws.mpa#ListSessionsResponseSessions",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn array of \u003ccode\u003eListSessionsResponseSession\u003c/code\u003e objects. Contains details for the sessions.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.mpa#ListSessionsResponseSession": {
+        "type": "structure",
+        "members": {
+          "ActionCompletionStrategy": {
+            "target": "com.amazonaws.mpa#ActionCompletionStrategy",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eStrategy for executing the protected operation. \u003ccode\u003eAUTO_COMPLETION_UPON_APPROVAL\u003c/code\u003e means the operation is executed automatically using the requester's permissions, if approved.\u003c/p\u003e"
+            }
+          },
+          "ActionName": {
+            "target": "com.amazonaws.mpa#ActionName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eName of the protected operation.\u003c/p\u003e"
+            }
+          },
+          "AdditionalSecurityRequirements": {
+            "target": "com.amazonaws.mpa#AdditionalSecurityRequirements",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of \u003ccode\u003eAdditionalSecurityRequirement\u003c/code\u003e applied to the session.\u003c/p\u003e"
+            }
+          },
+          "ApprovalTeamArn": {
+            "target": "com.amazonaws.mpa#ApprovalTeamArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAmazon Resource Name (ARN) for the approval team.\u003c/p\u003e"
+            }
+          },
+          "ApprovalTeamName": {
+            "target": "com.amazonaws.mpa#ApprovalTeamName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eName of the approval team.\u003c/p\u003e"
+            }
+          },
+          "CompletionTime": {
+            "target": "com.amazonaws.mpa#IsoTimestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eTimestamp when the session was completed.\u003c/p\u003e"
+            }
+          },
+          "Description": {
+            "target": "com.amazonaws.mpa#Description",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eDescription for the team.\u003c/p\u003e"
+            }
+          },
+          "ExpirationTime": {
+            "target": "com.amazonaws.mpa#IsoTimestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eTimestamp when the session was expire.\u003c/p\u003e"
+            }
+          },
+          "InitiationTime": {
+            "target": "com.amazonaws.mpa#IsoTimestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eTimestamp when the session was initiated.\u003c/p\u003e"
+            }
+          },
+          "ProtectedResourceArn": {
+            "target": "com.amazonaws.mpa#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAmazon Resource Name (ARN) for the protected operation.\u003c/p\u003e"
+            }
+          },
+          "RequesterAccountId": {
+            "target": "com.amazonaws.mpa#AccountId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eID for the account that made the operation request.\u003c/p\u003e"
+            }
+          },
+          "RequesterPrincipalArn": {
+            "target": "com.amazonaws.mpa#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003e \u003ca href=\"https://docs.aws.amazon.com/IAM/latest/UserGuide/intro-structure.html#intro-structure-request\"\u003eIAM principal\u003c/a\u003e that made the operation request.\u003c/p\u003e"
+            }
+          },
+          "RequesterRegion": {
+            "target": "com.amazonaws.mpa#Region",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAmazon Web Services Region where the operation request originated.\u003c/p\u003e"
+            }
+          },
+          "RequesterServicePrincipal": {
+            "target": "com.amazonaws.mpa#ServicePrincipal",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003e \u003ca href=\"https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_principal.html#principal-services\"\u003eService principal\u003c/a\u003e for the service associated with the protected operation.\u003c/p\u003e"
+            }
+          },
+          "SessionArn": {
+            "target": "com.amazonaws.mpa#SessionArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAmazon Resource Name (ARN) for the session.\u003c/p\u003e"
+            }
+          },
+          "Status": {
+            "target": "com.amazonaws.mpa#SessionStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eStatus for the protected operation. For example, if the operation is \u003ccode\u003ePENDING\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "StatusCode": {
+            "target": "com.amazonaws.mpa#SessionStatusCode",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eStatus code of the session.\u003c/p\u003e"
+            }
+          },
+          "StatusMessage": {
+            "target": "com.amazonaws.mpa#Message",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eMessage describing the status for session.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eContains details for an approval session. For more information, see \u003ca href=\"https://docs.aws.amazon.com/mpa/latest/userguide/mpa-health.html\"\u003eSession\u003c/a\u003e in the \u003ci\u003eMulti-party approval User Guide\u003c/i\u003e \u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.mpa#ListSessionsResponseSessions": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.mpa#ListSessionsResponseSession"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "max": 20
+          }
+        }
+      },
+      "com.amazonaws.mpa#ListTagsForResource": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.mpa#ListTagsForResourceRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.mpa#ListTagsForResourceResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.mpa#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.mpa#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to list tags for a resource"
+          },
+          "smithy.api#documentation": "\u003cp\u003eReturns a list of the tags for a resource.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "GET",
+            "uri": "/tags/{ResourceArn}"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.mpa#ListTagsForResourceRequest": {
+        "type": "structure",
+        "members": {
+          "ResourceArn": {
+            "target": "com.amazonaws.mpa#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAmazon Resource Name (ARN) for the resource.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.mpa#ListTagsForResourceResponse": {
+        "type": "structure",
+        "members": {
+          "Tags": {
+            "target": "com.amazonaws.mpa#Tags",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eTags attached to the resource.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.mpa#MaxResults": {
+        "type": "integer",
+        "traits": {
+          "smithy.api#range": {
+            "min": 1,
+            "max": 20
+          }
+        }
+      },
+      "com.amazonaws.mpa#Message": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "max": 500
+          }
+        }
+      },
+      "com.amazonaws.mpa#MfaMethod": {
+        "type": "structure",
+        "members": {
+          "SyncStatus": {
+            "target": "com.amazonaws.mpa#MfaSyncStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIndicates if the approver's MFA device is in-sync with the Identity Source\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Type": {
+            "target": "com.amazonaws.mpa#MfaType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe type of MFA configuration used by the approver\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eMFA configuration and sycnronization status for an approver\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.mpa#MfaMethods": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.mpa#MfaMethod"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "max": 5
+          }
+        }
+      },
+      "com.amazonaws.mpa#MfaSyncStatus": {
+        "type": "enum",
+        "members": {
+          "IN_SYNC": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "IN_SYNC"
+            }
+          },
+          "OUT_OF_SYNC": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "OUT_OF_SYNC"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eIndicates if the approver's MFA device is in-sync with the Identity Source\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eIN_SYNC\u003c/code\u003e: The approver's MFA device is in-sync with the Identity Source\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eOUT_OF_SYNC\u003c/code\u003e: The approver's MFA device is out-of-sync with the Identity Source\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e"
+        }
+      },
+      "com.amazonaws.mpa#MfaType": {
+        "type": "enum",
+        "members": {
+          "EMAIL_OTP": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "EMAIL_OTP"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe type of MFA device used by the approver\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eEMAIL_OTP\u003c/code\u003e: The approver will receive emailed one-time passwords to their primary email\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e"
+        }
+      },
+      "com.amazonaws.mpa#MofNApprovalStrategy": {
+        "type": "structure",
+        "members": {
+          "MinApprovalsRequired": {
+            "target": "smithy.api#Integer",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eMinimum number of approvals (M) required for a total number of approvers (N).\u003c/p\u003e",
+              "smithy.api#range": {
+                "min": 1
+              },
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eStrategy for how an approval team grants approval.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.mpa#Operator": {
+        "type": "enum",
+        "members": {
+          "BETWEEN": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "BETWEEN"
+            }
+          },
+          "CONTAINS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "CONTAINS"
+            }
+          },
+          "DOES_NOT_CONTAIN": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "NOT_CONTAINS"
+            }
+          },
+          "EQUALS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "EQ"
+            }
+          },
+          "GREATER_THAN": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "GT"
+            }
+          },
+          "GREATER_THAN_OR_EQUAL_TO": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "GTE"
+            }
+          },
+          "LESS_THAN": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "LT"
+            }
+          },
+          "LESS_THAN_OR_EQUAL_TO": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "LTE"
+            }
+          },
+          "NOT_EQUALS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "NE"
+            }
+          }
+        }
+      },
+      "com.amazonaws.mpa#ParticipantId": {
+        "type": "string",
+        "traits": {
+          "aws.api#data": "usage",
+          "smithy.api#length": {
+            "min": 1,
+            "max": 100
+          }
+        }
+      },
+      "com.amazonaws.mpa#PendingUpdate": {
+        "type": "structure",
+        "members": {
+          "ApprovalStrategy": {
+            "target": "com.amazonaws.mpa#ApprovalStrategyResponse",
+            "traits": {
+              "aws.api#data": "usage",
+              "smithy.api#documentation": "\u003cp\u003eAn \u003ccode\u003eApprovalStrategyResponse\u003c/code\u003e object. Contains details for how the team grants approval.\u003c/p\u003e"
+            }
+          },
+          "Approvers": {
+            "target": "com.amazonaws.mpa#GetApprovalTeamResponseApprovers",
+            "traits": {
+              "aws.api#data": "usage",
+              "smithy.api#documentation": "\u003cp\u003eAn array of \u003ccode\u003eGetApprovalTeamResponseApprover \u003c/code\u003e objects. Contains details for the approvers in the team.\u003c/p\u003e"
+            }
+          },
+          "Description": {
+            "target": "com.amazonaws.mpa#String",
+            "traits": {
+              "aws.api#data": "usage",
+              "smithy.api#documentation": "\u003cp\u003eDescription for the team.\u003c/p\u003e"
+            }
+          },
+          "NumberOfApprovers": {
+            "target": "smithy.api#Integer",
+            "traits": {
+              "aws.api#data": "usage",
+              "smithy.api#documentation": "\u003cp\u003eTotal number of approvers in the team.\u003c/p\u003e"
+            }
+          },
+          "Status": {
+            "target": "com.amazonaws.mpa#ApprovalTeamStatus",
+            "traits": {
+              "aws.api#data": "usage",
+              "smithy.api#documentation": "\u003cp\u003eStatus for the team. For more information, see \u003ca href=\"https://docs.aws.amazon.com/mpa/latest/userguide/mpa-health.html\"\u003eTeam health\u003c/a\u003e in the \u003ci\u003eMulti-party approval User Guide\u003c/i\u003e.\u003c/p\u003e"
+            }
+          },
+          "StatusCode": {
+            "target": "com.amazonaws.mpa#ApprovalTeamStatusCode",
+            "traits": {
+              "aws.api#data": "usage",
+              "smithy.api#documentation": "\u003cp\u003eStatus code for the update. For more information, see \u003ca href=\"https://docs.aws.amazon.com/mpa/latest/userguide/mpa-health.html\"\u003eTeam health\u003c/a\u003e in the \u003ci\u003eMulti-party approval User Guide\u003c/i\u003e.\u003c/p\u003e"
+            }
+          },
+          "StatusMessage": {
+            "target": "com.amazonaws.mpa#Message",
+            "traits": {
+              "aws.api#data": "usage",
+              "smithy.api#documentation": "\u003cp\u003eMessage describing the status for the team.\u003c/p\u003e"
+            }
+          },
+          "UpdateInitiationTime": {
+            "target": "com.amazonaws.mpa#IsoTimestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eTimestamp when the update request was initiated.\u003c/p\u003e"
+            }
+          },
+          "VersionId": {
+            "target": "com.amazonaws.mpa#String",
+            "traits": {
+              "aws.api#data": "usage",
+              "smithy.api#documentation": "\u003cp\u003eVersion ID for the team.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "aws.api#data": "usage",
+          "smithy.api#documentation": "\u003cp\u003eContains details for the pending updates for an approval team, if applicable.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.mpa#Policies": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.mpa#Policy",
+          "traits": {
+            "aws.api#data": "usage"
+          }
+        },
+        "traits": {
+          "aws.api#data": "usage",
+          "smithy.api#length": {
+            "max": 20
+          }
+        }
+      },
+      "com.amazonaws.mpa#PoliciesReferences": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.mpa#PolicyReference"
+        },
+        "traits": {
+          "aws.api#data": "usage",
+          "smithy.api#length": {
+            "min": 1,
+            "max": 10
+          }
+        }
+      },
+      "com.amazonaws.mpa#Policy": {
+        "type": "structure",
+        "members": {
+          "Arn": {
+            "target": "com.amazonaws.mpa#UnqualifiedPolicyArn",
+            "traits": {
+              "aws.api#data": "usage",
+              "smithy.api#documentation": "\u003cp\u003eAmazon Resource Name (ARN) for the policy.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "DefaultVersion": {
+            "target": "com.amazonaws.mpa#PolicyVersionId",
+            "traits": {
+              "aws.api#data": "usage",
+              "smithy.api#documentation": "\u003cp\u003eDetermines if the specified policy is the default for the team.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Name": {
+            "target": "com.amazonaws.mpa#PolicyName",
+            "traits": {
+              "aws.api#data": "usage",
+              "smithy.api#documentation": "\u003cp\u003eName of the policy.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "PolicyType": {
+            "target": "com.amazonaws.mpa#PolicyType",
+            "traits": {
+              "aws.api#data": "usage",
+              "smithy.api#documentation": "\u003cp\u003eThe type of policy.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "aws.api#data": "usage",
+          "smithy.api#documentation": "\u003cp\u003eContains details for a policy. Policies define what operations a team that define the permissions for team resources.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.mpa#PolicyDocument": {
+        "type": "string",
+        "traits": {
+          "aws.api#data": "usage",
+          "smithy.api#length": {
+            "max": 400000
+          },
+          "smithy.api#sensitive": {}
+        }
+      },
+      "com.amazonaws.mpa#PolicyName": {
+        "type": "string",
+        "traits": {
+          "aws.api#data": "usage",
+          "smithy.api#length": {
+            "max": 64
+          }
+        }
+      },
+      "com.amazonaws.mpa#PolicyReference": {
+        "type": "structure",
+        "members": {
+          "PolicyArn": {
+            "target": "com.amazonaws.mpa#QualifiedPolicyArn",
+            "traits": {
+              "aws.api#data": "usage",
+              "smithy.api#documentation": "\u003cp\u003eAmazon Resource Name (ARN) for the policy.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "aws.api#data": "usage",
+          "smithy.api#documentation": "\u003cp\u003eContains the Amazon Resource Name (ARN) for a policy. Policies define what operations a team that define the permissions for team resources.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.mpa#PolicyStatus": {
+        "type": "enum",
+        "members": {
+          "ATTACHABLE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ATTACHABLE"
+            }
+          },
+          "DEPRECATED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "DEPRECATED"
+            }
+          }
+        }
+      },
+      "com.amazonaws.mpa#PolicyType": {
+        "type": "enum",
+        "members": {
+          "AWS_MANAGED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "AWS_MANAGED"
+            }
+          },
+          "AWS_RAM": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "AWS_RAM"
+            }
+          }
+        }
+      },
+      "com.amazonaws.mpa#PolicyVersion": {
+        "type": "structure",
+        "members": {
+          "Arn": {
+            "target": "com.amazonaws.mpa#QualifiedPolicyArn",
+            "traits": {
+              "aws.api#data": "usage",
+              "smithy.api#documentation": "\u003cp\u003eAmazon Resource Name (ARN) for the team.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "CreationTime": {
+            "target": "com.amazonaws.mpa#IsoTimestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eTimestamp when the policy was created.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Document": {
+            "target": "com.amazonaws.mpa#PolicyDocument",
+            "traits": {
+              "aws.api#data": "usage",
+              "smithy.api#documentation": "\u003cp\u003eDocument that contains the policy contents.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "IsDefault": {
+            "target": "smithy.api#Boolean",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eDetermines if the specified policy is the default for the team.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "LastUpdatedTime": {
+            "target": "com.amazonaws.mpa#IsoTimestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eTimestamp when the policy was last updated.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Name": {
+            "target": "com.amazonaws.mpa#PolicyName",
+            "traits": {
+              "aws.api#data": "usage",
+              "smithy.api#documentation": "\u003cp\u003eName of the policy.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "PolicyArn": {
+            "target": "com.amazonaws.mpa#UnqualifiedPolicyArn",
+            "traits": {
+              "aws.api#data": "usage",
+              "smithy.api#documentation": "\u003cp\u003eAmazon Resource Name (ARN) for the policy.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "PolicyType": {
+            "target": "com.amazonaws.mpa#PolicyType",
+            "traits": {
+              "aws.api#data": "usage",
+              "smithy.api#documentation": "\u003cp\u003eThe type of policy.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Status": {
+            "target": "com.amazonaws.mpa#PolicyStatus",
+            "traits": {
+              "aws.api#data": "usage",
+              "smithy.api#documentation": "\u003cp\u003eStatus for the policy. For example, if the policy is \u003ca href=\"https://docs.aws.amazon.com/IAM/latest/UserGuide/id_groups_manage_attach-policy.html\"\u003eattachable\u003c/a\u003e or \u003ca href=\"https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_managed-deprecated.html\"\u003edeprecated\u003c/a\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "VersionId": {
+            "target": "com.amazonaws.mpa#PolicyVersionId",
+            "traits": {
+              "aws.api#data": "usage",
+              "smithy.api#documentation": "\u003cp\u003eVerison ID\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "aws.api#data": "usage",
+          "smithy.api#documentation": "\u003cp\u003eContains details for the version of a policy. Policies define what operations a team that define the permissions for team resources.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.mpa#PolicyVersionId": {
+        "type": "integer",
+        "traits": {
+          "smithy.api#range": {
+            "min": 1
+          }
+        }
+      },
+      "com.amazonaws.mpa#PolicyVersionSummary": {
+        "type": "structure",
+        "members": {
+          "Arn": {
+            "target": "com.amazonaws.mpa#QualifiedPolicyArn",
+            "traits": {
+              "aws.api#data": "usage",
+              "smithy.api#documentation": "\u003cp\u003eAmazon Resource Name (ARN) for the team.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "CreationTime": {
+            "target": "com.amazonaws.mpa#IsoTimestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eTimestamp when the policy was created.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "IsDefault": {
+            "target": "smithy.api#Boolean",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eDetermines if the specified policy is the default for the team.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "LastUpdatedTime": {
+            "target": "com.amazonaws.mpa#IsoTimestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eTimestamp when the policy was last updated.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Name": {
+            "target": "com.amazonaws.mpa#PolicyName",
+            "traits": {
+              "aws.api#data": "usage",
+              "smithy.api#documentation": "\u003cp\u003eName of the policy\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "PolicyArn": {
+            "target": "com.amazonaws.mpa#UnqualifiedPolicyArn",
+            "traits": {
+              "aws.api#data": "usage",
+              "smithy.api#documentation": "\u003cp\u003eAmazon Resource Name (ARN) for the policy.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "PolicyType": {
+            "target": "com.amazonaws.mpa#PolicyType",
+            "traits": {
+              "aws.api#data": "usage",
+              "smithy.api#documentation": "\u003cp\u003eThe type of policy.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Status": {
+            "target": "com.amazonaws.mpa#PolicyStatus",
+            "traits": {
+              "aws.api#data": "usage",
+              "smithy.api#documentation": "\u003cp\u003eStatus for the policy. For example, if the policy is \u003ca href=\"https://docs.aws.amazon.com/IAM/latest/UserGuide/id_groups_manage_attach-policy.html\"\u003eattachable\u003c/a\u003e or \u003ca href=\"https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_managed-deprecated.html\"\u003edeprecated\u003c/a\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "VersionId": {
+            "target": "com.amazonaws.mpa#PolicyVersionId",
+            "traits": {
+              "aws.api#data": "usage",
+              "smithy.api#documentation": "\u003cp\u003eVersion ID for the policy.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "aws.api#data": "usage",
+          "smithy.api#documentation": "\u003cp\u003eContains details for the version of a policy. Policies define what operations a team that define the permissions for team resources.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.mpa#PolicyVersions": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.mpa#PolicyVersionSummary",
+          "traits": {
+            "aws.api#data": "usage"
+          }
+        },
+        "traits": {
+          "aws.api#data": "usage",
+          "smithy.api#length": {
+            "max": 20
+          }
+        }
+      },
+      "com.amazonaws.mpa#QualifiedPolicyArn": {
+        "type": "string",
+        "traits": {
+          "aws.api#data": "usage",
+          "smithy.api#length": {
+            "max": 1224
+          },
+          "smithy.api#pattern": "^arn:.{1,63}:mpa:::aws:policy/[a-zA-Z0-9_\\.-]{1,1023}/[a-zA-Z0-9_\\.-]{1,1023}/(?:[\\d]+|\\$DEFAULT)$"
+        }
+      },
+      "com.amazonaws.mpa#Region": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "max": 100
+          }
+        }
+      },
+      "com.amazonaws.mpa#RequesterComment": {
+        "type": "string",
+        "traits": {
+          "aws.api#data": "usage",
+          "smithy.api#length": {
+            "max": 200
+          },
+          "smithy.api#sensitive": {}
+        }
+      },
+      "com.amazonaws.mpa#ResourceNotFoundException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.mpa#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eMessage for the \u003ccode\u003eResourceNotFoundException\u003c/code\u003e error.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe specified resource doesn't exist. Check the resource ID, and try again.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 404
+        }
+      },
+      "com.amazonaws.mpa#ServicePrincipal": {
+        "type": "string",
+        "traits": {
+          "aws.api#data": "usage",
+          "smithy.api#length": {
+            "min": 1,
+            "max": 100
+          }
+        }
+      },
+      "com.amazonaws.mpa#ServiceQuotaExceededException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.mpa#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eMessage for the \u003ccode\u003eServiceQuotaExceededException\u003c/code\u003e error.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe request exceeds the service quota for your account. Request a quota increase or reduce your request size.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 402
+        }
+      },
+      "com.amazonaws.mpa#Session": {
+        "type": "resource",
+        "traits": {
+          "aws.api#arn": {
+            "template": "session/{SessionArn}"
+          },
+          "aws.iam#conditionKeys": [
+            "aws:ResourceTag/${TagKey}"
+          ],
+          "aws.iam#iamResource": {
+            "name": "session",
+            "relativeDocumentation": "mpa-concepts.html"
+          },
+          "smithy.api#documentation": "Represents an approval workflow that is initiated when a request is made to execute a protected operation"
+        }
+      },
+      "com.amazonaws.mpa#SessionArn": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 20,
+            "max": 2048
+          },
+          "smithy.api#pattern": "^arn:aws(-[^:]+)?:mpa:[a-z0-9-]{1,20}:[0-9]{12}:session/[a-zA-Z0-9._-]+/[a-zA-Z0-9_-]+$"
+        }
+      },
+      "com.amazonaws.mpa#SessionExecutionStatus": {
+        "type": "enum",
+        "members": {
+          "EXECUTED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "EXECUTED"
+            }
+          },
+          "FAILED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "FAILED"
+            }
+          },
+          "PENDING": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "PENDING"
+            }
+          }
+        }
+      },
+      "com.amazonaws.mpa#SessionKey": {
+        "type": "string",
+        "traits": {
+          "aws.api#data": "usage",
+          "smithy.api#length": {
+            "min": 1,
+            "max": 100
+          },
+          "smithy.api#pattern": "^[a-zA-Z0-9\\p{P}]*$",
+          "smithy.api#sensitive": {}
+        }
+      },
+      "com.amazonaws.mpa#SessionMetadata": {
+        "type": "map",
+        "key": {
+          "target": "com.amazonaws.mpa#SessionKey"
+        },
+        "value": {
+          "target": "com.amazonaws.mpa#SessionValue"
+        },
+        "traits": {
+          "smithy.api#sensitive": {}
+        }
+      },
+      "com.amazonaws.mpa#SessionResponse": {
+        "type": "enum",
+        "members": {
+          "APPROVED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "APPROVED"
+            }
+          },
+          "NO_RESPONSE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "NO_RESPONSE"
+            }
+          },
+          "REJECTED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "REJECTED"
+            }
+          }
+        }
+      },
+      "com.amazonaws.mpa#SessionStatus": {
+        "type": "enum",
+        "members": {
+          "APPROVED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "APPROVED"
+            }
+          },
+          "CANCELLED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "CANCELLED"
+            }
+          },
+          "CREATING": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "CREATING"
+            }
+          },
+          "FAILED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "FAILED"
+            }
+          },
+          "PENDING": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "PENDING"
+            }
+          }
+        }
+      },
+      "com.amazonaws.mpa#SessionStatusCode": {
+        "type": "enum",
+        "members": {
+          "ALL_APPROVERS_IN_SESSION": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ALL_APPROVERS_IN_SESSION"
+            }
+          },
+          "CONFIGURATION_CHANGED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "CONFIGURATION_CHANGED"
+            }
+          },
+          "EXPIRED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "EXPIRED"
+            }
+          },
+          "REJECTED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "REJECTED"
+            }
+          }
+        }
+      },
+      "com.amazonaws.mpa#SessionValue": {
+        "type": "string",
+        "traits": {
+          "aws.api#data": "usage",
+          "smithy.api#length": {
+            "min": 1,
+            "max": 200
+          },
+          "smithy.api#pattern": "^[a-zA-Z0-9\\p{P}]*$",
+          "smithy.api#sensitive": {}
+        }
+      },
+      "com.amazonaws.mpa#StartActiveApprovalTeamDeletion": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.mpa#StartActiveApprovalTeamDeletionRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.mpa#StartActiveApprovalTeamDeletionResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.mpa#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.mpa#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#conditionKeys": [
+            "aws:ResourceTag/${TagKey}"
+          ],
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to start the deletion process for an active approval team"
+          },
+          "smithy.api#documentation": "\u003cp\u003eStarts the deletion process for an active approval team.\u003c/p\u003e \u003cnote\u003e \u003cp\u003e \u003cb\u003eDeletions require team approval\u003c/b\u003e \u003c/p\u003e \u003cp\u003eRequests to delete an active team must be approved by the team.\u003c/p\u003e \u003c/note\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "POST",
+            "uri": "/approval-teams/{Arn}?Delete"
+          },
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.mpa#StartActiveApprovalTeamDeletionRequest": {
+        "type": "structure",
+        "members": {
+          "Arn": {
+            "target": "com.amazonaws.mpa#ApprovalTeamArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAmazon Resource Name (ARN) for the team.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "PendingWindowDays": {
+            "target": "smithy.api#Integer",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eNumber of days between when the team approves the delete request and when the team is deleted.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.mpa#StartActiveApprovalTeamDeletionResponse": {
+        "type": "structure",
+        "members": {
+          "DeletionCompletionTime": {
+            "target": "com.amazonaws.mpa#IsoTimestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eTimestamp when the deletion process is scheduled to complete.\u003c/p\u003e"
+            }
+          },
+          "DeletionStartTime": {
+            "target": "com.amazonaws.mpa#IsoTimestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eTimestamp when the deletion process was initiated.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.mpa#StartApprovalTeamBaseline": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.mpa#StartApprovalTeamBaselineRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.mpa#StartApprovalTeamBaselineResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.mpa#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.mpa#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#conditionKeys": [
+            "aws:ResourceTag/${TagKey}"
+          ],
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to start a baseline for an active approval team"
+          },
+          "smithy.api#documentation": "\u003cp\u003eStarts a baseline session for specified approvers on an \u003ccode\u003eACTIVE\u003c/code\u003e approval team.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "POST",
+            "uri": "/approval-teams/{Arn}/baseline"
+          }
+        }
+      },
+      "com.amazonaws.mpa#StartApprovalTeamBaselineApproverIds": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.mpa#ParticipantId"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "max": 20
+          }
+        }
+      },
+      "com.amazonaws.mpa#StartApprovalTeamBaselineRequest": {
+        "type": "structure",
+        "members": {
+          "ApproverIds": {
+            "target": "com.amazonaws.mpa#StartApprovalTeamBaselineApproverIds",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eArray of approver IDs.\u003c/p\u003e"
+            }
+          },
+          "Arn": {
+            "target": "com.amazonaws.mpa#ApprovalTeamArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAmazon Resource Name (ARN) for the approval team.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.mpa#StartApprovalTeamBaselineResponse": {
+        "type": "structure",
+        "members": {
+          "BaselineSessionArn": {
+            "target": "com.amazonaws.mpa#SessionArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAmazon Resource Name (ARN) for the session.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.mpa#String": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "max": 1000
+          }
+        }
+      },
+      "com.amazonaws.mpa#TagKey": {
+        "type": "string",
+        "traits": {
+          "aws.api#data": "tagging",
+          "smithy.api#length": {
+            "min": 1,
+            "max": 128
+          },
+          "smithy.api#sensitive": {}
+        }
+      },
+      "com.amazonaws.mpa#TagKeyList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.mpa#TagKey"
+        },
+        "traits": {
+          "aws.api#data": "tagging",
+          "smithy.api#length": {
+            "min": 0,
+            "max": 50
+          },
+          "smithy.api#sensitive": {}
+        }
+      },
+      "com.amazonaws.mpa#TagResource": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.mpa#TagResourceRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.mpa#TagResourceResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.mpa#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.mpa#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.mpa#TooManyTagsException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#conditionKeys": [
+            "aws:ResourceTag/${TagKey}",
+            "aws:RequestTag/${TagKey}",
+            "aws:TagKeys"
+          ],
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to tag a resource"
+          },
+          "smithy.api#documentation": "\u003cp\u003eCreates or updates a resource tag. Each tag is a label consisting of a user-defined key and value. Tags can help you manage, identify, organize, search for, and filter resources.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "PUT",
+            "uri": "/tags/{ResourceArn}"
+          },
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.mpa#TagResourceRequest": {
+        "type": "structure",
+        "members": {
+          "ResourceArn": {
+            "target": "com.amazonaws.mpa#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAmazon Resource Name (ARN) for the resource you want to tag.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "Tags": {
+            "target": "com.amazonaws.mpa#Tags",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eTags that you have added to the specified resource.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.mpa#TagResourceResponse": {
+        "type": "structure",
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.mpa#TagValue": {
+        "type": "string",
+        "traits": {
+          "aws.api#data": "tagging",
+          "smithy.api#length": {
+            "min": 0,
+            "max": 256
+          },
+          "smithy.api#sensitive": {}
+        }
+      },
+      "com.amazonaws.mpa#Tags": {
+        "type": "map",
+        "key": {
+          "target": "com.amazonaws.mpa#TagKey"
+        },
+        "value": {
+          "target": "com.amazonaws.mpa#TagValue"
+        },
+        "traits": {
+          "smithy.api#sensitive": {}
+        }
+      },
+      "com.amazonaws.mpa#ThrottlingException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.mpa#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eMessage for the \u003ccode\u003eThrottlingException\u003c/code\u003e error.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe request was denied due to request throttling.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 429
+        }
+      },
+      "com.amazonaws.mpa#Token": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "max": 4096
+          }
+        }
+      },
+      "com.amazonaws.mpa#TooManyTagsException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.mpa#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eMessage for the \u003ccode\u003eTooManyTagsException\u003c/code\u003e error.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "ResourceName": {
+            "target": "com.amazonaws.mpa#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eName of the resource for the \u003ccode\u003eTooManyTagsException\u003c/code\u003e error.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe request exceeds the maximum number of tags allowed for this resource. Remove some tags, and try again.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.mpa#UnqualifiedPolicyArn": {
+        "type": "string",
+        "traits": {
+          "aws.api#data": "usage",
+          "smithy.api#length": {
+            "max": 1224
+          },
+          "smithy.api#pattern": "^arn:.{1,63}:mpa:::aws:policy/[a-zA-Z0-9_\\.-]{1,1023}/[a-zA-Z0-9_\\.-]{1,1023}$"
+        }
+      },
+      "com.amazonaws.mpa#UntagResource": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.mpa#UntagResourceRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.mpa#UntagResourceResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.mpa#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.mpa#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#conditionKeys": [
+            "aws:ResourceTag/${TagKey}",
+            "aws:TagKeys"
+          ],
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to untag a resource"
+          },
+          "smithy.api#documentation": "\u003cp\u003eRemoves a resource tag. Each tag is a label consisting of a user-defined key and value. Tags can help you manage, identify, organize, search for, and filter resources. \u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "POST",
+            "uri": "/tags/{ResourceArn}"
+          },
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.mpa#UntagResourceRequest": {
+        "type": "structure",
+        "members": {
+          "ResourceArn": {
+            "target": "com.amazonaws.mpa#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAmazon Resource Name (ARN) for the resource you want to untag.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "TagKeys": {
+            "target": "com.amazonaws.mpa#TagKeyList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eArray of tag key-value pairs that you want to untag.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.mpa#UntagResourceResponse": {
+        "type": "structure",
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.mpa#UpdateAction": {
+        "type": "enum",
+        "members": {
+          "SYNCHRONIZE_MFA_DEVICES": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "SYNCHRONIZE_MFA_DEVICES"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eActions that can be taken when updating an approval team\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eSYNCHRONIZE_MFA_DEVICES\u003c/code\u003e: Synchronize MFA devices for all approvers on the team\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e"
+        }
+      },
+      "com.amazonaws.mpa#UpdateActions": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.mpa#UpdateAction"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 100
+          }
+        }
+      },
+      "com.amazonaws.mpa#UpdateApprovalTeam": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.mpa#UpdateApprovalTeamRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.mpa#UpdateApprovalTeamResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.mpa#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.mpa#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ServiceQuotaExceededException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.mpa#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#conditionKeys": [
+            "aws:ResourceTag/${TagKey}"
+          ],
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to update approval team"
+          },
+          "smithy.api#documentation": "\u003cp\u003eUpdates an approval team. You can request to update the team description, approval threshold, and approvers in the team.\u003c/p\u003e \u003cnote\u003e \u003cp\u003e \u003cb\u003eUpdates require team approval\u003c/b\u003e \u003c/p\u003e \u003cp\u003eUpdates to an active team must be approved by the team.\u003c/p\u003e \u003c/note\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "PATCH",
+            "uri": "/approval-teams/{Arn}"
+          },
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.mpa#UpdateApprovalTeamRequest": {
+        "type": "structure",
+        "members": {
+          "ApprovalStrategy": {
+            "target": "com.amazonaws.mpa#ApprovalStrategy",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn \u003ccode\u003eApprovalStrategy\u003c/code\u003e object. Contains details for how the team grants approval.\u003c/p\u003e"
+            }
+          },
+          "Approvers": {
+            "target": "com.amazonaws.mpa#ApprovalTeamRequestApprovers",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn array of \u003ccode\u003eApprovalTeamRequestApprover\u003c/code\u003e objects. Contains details for the approvers in the team.\u003c/p\u003e"
+            }
+          },
+          "Arn": {
+            "target": "com.amazonaws.mpa#ApprovalTeamArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAmazon Resource Name (ARN) for the team.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "Description": {
+            "target": "com.amazonaws.mpa#Description",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eDescription for the team.\u003c/p\u003e"
+            }
+          },
+          "UpdateActions": {
+            "target": "com.amazonaws.mpa#UpdateActions",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of \u003ccode\u003eUpdateAction\u003c/code\u003e to perform when updating the team.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.mpa#UpdateApprovalTeamResponse": {
+        "type": "structure",
+        "members": {
+          "VersionId": {
+            "target": "com.amazonaws.mpa#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eVersion ID for the team that was created. When an approval team is updated, the version ID changes.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.mpa#ValidationException": {
+        "type": "structure",
+        "members": {
+          "Message": {
+            "target": "com.amazonaws.mpa#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eMessage for the \u003ccode\u003eValidationException\u003c/code\u003e error.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe input fails to satisfy the constraints specified by an Amazon Web Services service.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      }
+    }
+  }
+}

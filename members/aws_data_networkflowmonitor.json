@@ -1,0 +1,4167 @@
+{
+  "schema_source": "smithy",
+  "mode": "data_source",
+  "auth": {
+    "Type": "",
+    "Params": null
+  },
+  "base_url": "https://aws.example.invalid",
+  "retry": {
+    "MaxAttempts": 0,
+    "InitialBackoff": "",
+    "MaxBackoff": "",
+    "Jitter": null,
+    "RespectRetryAfter": null,
+    "RateLimitResetHeader": ""
+  },
+  "timeouts": {
+    "Create": "",
+    "Read": "",
+    "Update": "",
+    "Delete": "",
+    "Default": ""
+  },
+  "wire_name": "aws",
+  "raw_spec": {
+    "smithy": "2.0",
+    "shapes": {
+      "com.amazonaws.networkflowmonitor#AccessDeniedException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "smithy.api#String"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eYou don't have sufficient permission to perform this action.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 403
+        }
+      },
+      "com.amazonaws.networkflowmonitor#AccountId": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 12
+          },
+          "smithy.api#pattern": "^[0-9]{12}$"
+        }
+      },
+      "com.amazonaws.networkflowmonitor#Arn": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 20,
+            "max": 2048
+          },
+          "smithy.api#pattern": "^arn:.*$"
+        }
+      },
+      "com.amazonaws.networkflowmonitor#AvailabilityZone": {
+        "type": "string"
+      },
+      "com.amazonaws.networkflowmonitor#AwsRegion": {
+        "type": "string"
+      },
+      "com.amazonaws.networkflowmonitor#Component": {
+        "type": "string"
+      },
+      "com.amazonaws.networkflowmonitor#ComponentType": {
+        "type": "string"
+      },
+      "com.amazonaws.networkflowmonitor#ConflictException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "smithy.api#String"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe requested resource is in use.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 409
+        }
+      },
+      "com.amazonaws.networkflowmonitor#CreateMonitor": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.networkflowmonitor#CreateMonitorInput"
+        },
+        "output": {
+          "target": "com.amazonaws.networkflowmonitor#CreateMonitorOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.networkflowmonitor#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ServiceQuotaExceededException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#conditionKeys": [
+            "aws:RequestTag/${TagKey}",
+            "aws:TagKeys"
+          ],
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to create a monitor"
+          },
+          "smithy.api#documentation": "\u003cp\u003eCreate a monitor for specific network flows between local and remote resources, so that you can monitor network performance for one or several of your workloads. For each monitor, Network Flow Monitor publishes detailed end-to-end performance metrics and a network health indicator (NHI) that informs you whether there were Amazon Web Services network issues for one or more of the network flows tracked by a monitor, during a time period that you choose. \u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/monitors",
+            "method": "POST"
+          },
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#CreateMonitorInput": {
+        "type": "structure",
+        "members": {
+          "clientToken": {
+            "target": "com.amazonaws.networkflowmonitor#UuidString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA unique, case-sensitive string of up to 64 ASCII characters that you specify to make an idempotent API request. Don't reuse the same client token for other API requests.\u003c/p\u003e",
+              "smithy.api#idempotencyToken": {}
+            }
+          },
+          "localResources": {
+            "target": "com.amazonaws.networkflowmonitor#MonitorLocalResources",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe local resources to monitor. A local resource in a workload is the location of the host, or hosts, where the Network Flow Monitor agent is installed. For example, if a workload consists of an interaction between a web service and a backend database (for example, Amazon Dynamo DB), the subnet with the EC2 instance that hosts the web service, which also runs the agent, is the local resource.\u003c/p\u003e \u003cp\u003eBe aware that all local resources must belong to the current Region.\u003c/p\u003e",
+              "smithy.api#length": {
+                "min": 1
+              },
+              "smithy.api#required": {}
+            }
+          },
+          "monitorName": {
+            "target": "com.amazonaws.networkflowmonitor#ResourceName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the monitor. \u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "remoteResources": {
+            "target": "com.amazonaws.networkflowmonitor#MonitorRemoteResources",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe remote resources to monitor. A remote resource is the other endpoint in the bi-directional flow of a workload, with a local resource. For example, Amazon Dynamo DB can be a remote resource.\u003c/p\u003e \u003cp\u003eWhen you specify remote resources, be aware that specific combinations of resources are allowed and others are not, including the following constraints:\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003eAll remote resources that you specify must all belong to a single Region.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003eIf you specify Amazon Web Services services as remote resources, any other remote resources that you specify must be in the current Region.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003eWhen you specify a remote resource for another Region, you can only specify the \u003ccode\u003eRegion\u003c/code\u003e resource type. You cannot specify a subnet, VPC, or Availability Zone in another Region.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003eIf you leave the \u003ccode\u003eRemoteResources\u003c/code\u003e parameter empty, the monitor will include all network flows that terminate in the current Region.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e"
+            }
+          },
+          "scopeArn": {
+            "target": "com.amazonaws.networkflowmonitor#Arn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the scope for the monitor.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "tags": {
+            "target": "com.amazonaws.networkflowmonitor#TagMap",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe tags for a monitor. You can add a maximum of 200 tags.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#CreateMonitorOutput": {
+        "type": "structure",
+        "members": {
+          "createdAt": {
+            "target": "com.amazonaws.networkflowmonitor#Iso8601Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe date and time when the monitor was created.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "localResources": {
+            "target": "com.amazonaws.networkflowmonitor#MonitorLocalResources",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe local resources to monitor. A local resource in a workload is the location of hosts where the Network Flow Monitor agent is installed. \u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "modifiedAt": {
+            "target": "com.amazonaws.networkflowmonitor#Iso8601Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe last date and time that the monitor was modified.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "monitorArn": {
+            "target": "com.amazonaws.networkflowmonitor#MonitorArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the monitor.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "monitorName": {
+            "target": "com.amazonaws.networkflowmonitor#ResourceName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the monitor. \u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "monitorStatus": {
+            "target": "com.amazonaws.networkflowmonitor#MonitorStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe status of a monitor. The status can be one of the following\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003ePENDING\u003c/code\u003e: The monitor is in the process of being created.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eACTIVE\u003c/code\u003e: The monitor is active.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eINACTIVE\u003c/code\u003e: The monitor is inactive.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eERROR\u003c/code\u003e: Monitor creation failed due to an error.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eDELETING\u003c/code\u003e: The monitor is in the process of being deleted.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "remoteResources": {
+            "target": "com.amazonaws.networkflowmonitor#MonitorRemoteResources",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe remote resources to monitor. A remote resource is the other endpoint specified for the network flow of a workload, with a local resource. For example, Amazon Dynamo DB can be a remote resource. \u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "tags": {
+            "target": "com.amazonaws.networkflowmonitor#TagMap",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe tags for a monitor.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#CreateScope": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.networkflowmonitor#CreateScopeInput"
+        },
+        "output": {
+          "target": "com.amazonaws.networkflowmonitor#CreateScopeOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.networkflowmonitor#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ServiceQuotaExceededException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#conditionKeys": [
+            "aws:RequestTag/${TagKey}",
+            "aws:TagKeys"
+          ],
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to create a scope"
+          },
+          "smithy.api#documentation": "\u003cp\u003eIn Network Flow Monitor, you specify a scope for the service to generate metrics for. By using the scope, Network Flow Monitor can generate a topology of all the resources to measure performance metrics for. When you create a scope, you enable permissions for Network Flow Monitor.\u003c/p\u003e \u003cp\u003eA scope is a Region-account pair or multiple Region-account pairs. Network Flow Monitor uses your scope to determine all the resources (the topology) where Network Flow Monitor will gather network flow performance metrics for you. To provide performance metrics, Network Flow Monitor uses the data that is sent by the Network Flow Monitor agents you install on the resources.\u003c/p\u003e \u003cp\u003eTo define the Region-account pairs for your scope, the Network Flow Monitor API uses the following constucts, which allow for future flexibility in defining scopes:\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ci\u003eTargets\u003c/i\u003e, which are arrays of targetResources.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ci\u003eTarget resources\u003c/i\u003e, which are Region-targetIdentifier pairs.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ci\u003eTarget identifiers\u003c/i\u003e, made up of a targetID (currently always an account ID) and a targetType (currently always an account). \u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e",
+          "smithy.api#http": {
+            "uri": "/scopes",
+            "method": "POST"
+          },
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#CreateScopeInput": {
+        "type": "structure",
+        "members": {
+          "clientToken": {
+            "target": "com.amazonaws.networkflowmonitor#UuidString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA unique, case-sensitive string of up to 64 ASCII characters that you specify to make an idempotent API request. Don't reuse the same client token for other API requests.\u003c/p\u003e",
+              "smithy.api#idempotencyToken": {}
+            }
+          },
+          "tags": {
+            "target": "com.amazonaws.networkflowmonitor#TagMap",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe tags for a scope. You can add a maximum of 200 tags.\u003c/p\u003e"
+            }
+          },
+          "targets": {
+            "target": "com.amazonaws.networkflowmonitor#TargetResourceList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe targets to define the scope to be monitored. A target is an array of targetResources, which are currently Region-account pairs, defined by targetResource constructs.\u003c/p\u003e",
+              "smithy.api#length": {
+                "min": 1,
+                "max": 100
+              },
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#CreateScopeOutput": {
+        "type": "structure",
+        "members": {
+          "scopeArn": {
+            "target": "com.amazonaws.networkflowmonitor#Arn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the scope.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "scopeId": {
+            "target": "com.amazonaws.networkflowmonitor#ScopeId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier for the scope that includes the resources you want to get metrics for. A scope ID is an internally-generated identifier that includes all the resources for a specific root account.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "status": {
+            "target": "com.amazonaws.networkflowmonitor#ScopeStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe status for a scope. The status can be one of the following: \u003ccode\u003eSUCCEEDED\u003c/code\u003e, \u003ccode\u003eIN_PROGRESS\u003c/code\u003e, \u003ccode\u003eFAILED\u003c/code\u003e, \u003ccode\u003eDEACTIVATING\u003c/code\u003e, or \u003ccode\u003eDEACTIVATED\u003c/code\u003e.\u003c/p\u003e \u003cp\u003eA status of \u003ccode\u003eDEACTIVATING\u003c/code\u003e means that you've requested a scope to be deactivated and Network Flow Monitor is in the process of deactivating the scope. A status of \u003ccode\u003eDEACTIVATED\u003c/code\u003e means that the deactivating process is complete.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "tags": {
+            "target": "com.amazonaws.networkflowmonitor#TagMap",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe tags for a scope.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#DeleteMonitor": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.networkflowmonitor#DeleteMonitorInput"
+        },
+        "output": {
+          "target": "com.amazonaws.networkflowmonitor#DeleteMonitorOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.networkflowmonitor#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to delete a monitor"
+          },
+          "smithy.api#documentation": "\u003cp\u003eDeletes a monitor in Network Flow Monitor.\u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/monitors/{monitorName}",
+            "method": "DELETE"
+          },
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#DeleteMonitorInput": {
+        "type": "structure",
+        "members": {
+          "monitorName": {
+            "target": "com.amazonaws.networkflowmonitor#ResourceName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the monitor to delete.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#DeleteMonitorOutput": {
+        "type": "structure",
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#DeleteScope": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.networkflowmonitor#DeleteScopeInput"
+        },
+        "output": {
+          "target": "com.amazonaws.networkflowmonitor#DeleteScopeOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.networkflowmonitor#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ServiceQuotaExceededException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to delete a scope"
+          },
+          "smithy.api#documentation": "\u003cp\u003eDeletes a scope that has been defined.\u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/scopes/{scopeId}",
+            "method": "DELETE"
+          },
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#DeleteScopeInput": {
+        "type": "structure",
+        "members": {
+          "scopeId": {
+            "target": "com.amazonaws.networkflowmonitor#ScopeId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier for the scope that includes the resources you want to get data results for. A scope ID is an internally-generated identifier that includes all the resources for a specific root account.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#DeleteScopeOutput": {
+        "type": "structure",
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#DestinationCategory": {
+        "type": "enum",
+        "members": {
+          "AMAZON_DYNAMODB": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "AMAZON_DYNAMODB"
+            }
+          },
+          "AMAZON_S3": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "AMAZON_S3"
+            }
+          },
+          "INTER_AZ": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "INTER_AZ"
+            }
+          },
+          "INTER_REGION": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "INTER_REGION"
+            }
+          },
+          "INTER_VPC": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "INTER_VPC"
+            }
+          },
+          "INTRA_AZ": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "INTRA_AZ"
+            }
+          },
+          "UNCLASSIFIED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "UNCLASSIFIED"
+            }
+          }
+        }
+      },
+      "com.amazonaws.networkflowmonitor#GetMonitor": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.networkflowmonitor#GetMonitorInput"
+        },
+        "output": {
+          "target": "com.amazonaws.networkflowmonitor#GetMonitorOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.networkflowmonitor#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to get information about a monitor"
+          },
+          "smithy.api#documentation": "\u003cp\u003eGets information about a monitor in Network Flow Monitor based on a monitor name. The information returned includes the Amazon Resource Name (ARN), create time, modified time, resources included in the monitor, and status information.\u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/monitors/{monitorName}",
+            "method": "GET"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#GetMonitorInput": {
+        "type": "structure",
+        "members": {
+          "monitorName": {
+            "target": "com.amazonaws.networkflowmonitor#ResourceName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the monitor.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#GetMonitorOutput": {
+        "type": "structure",
+        "members": {
+          "createdAt": {
+            "target": "com.amazonaws.networkflowmonitor#Iso8601Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe date and time when the monitor was created.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "localResources": {
+            "target": "com.amazonaws.networkflowmonitor#MonitorLocalResources",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe local resources to monitor. A local resource in a workload is the location of the hosts where the Network Flow Monitor agent is installed. \u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "modifiedAt": {
+            "target": "com.amazonaws.networkflowmonitor#Iso8601Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe date and time when the monitor was last modified.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "monitorArn": {
+            "target": "com.amazonaws.networkflowmonitor#MonitorArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the monitor.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "monitorName": {
+            "target": "com.amazonaws.networkflowmonitor#ResourceName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the monitor.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "monitorStatus": {
+            "target": "com.amazonaws.networkflowmonitor#MonitorStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe status of a monitor. The status can be one of the following\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003ePENDING\u003c/code\u003e: The monitor is in the process of being created.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eACTIVE\u003c/code\u003e: The monitor is active.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eINACTIVE\u003c/code\u003e: The monitor is inactive.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eERROR\u003c/code\u003e: Monitor creation failed due to an error.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eDELETING\u003c/code\u003e: The monitor is in the process of being deleted.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "remoteResources": {
+            "target": "com.amazonaws.networkflowmonitor#MonitorRemoteResources",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe remote resources to monitor. A remote resource is the other endpoint specified for the network flow of a workload, with a local resource. For example, Amazon Dynamo DB can be a remote resource. \u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "tags": {
+            "target": "com.amazonaws.networkflowmonitor#TagMap",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe tags for a monitor.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#GetQueryResultsMonitorTopContributors": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.networkflowmonitor#GetQueryResultsMonitorTopContributorsInput"
+        },
+        "output": {
+          "target": "com.amazonaws.networkflowmonitor#GetQueryResultsMonitorTopContributorsOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.networkflowmonitor#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ServiceQuotaExceededException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.api#dataPlane": {},
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to get the results of a query that retrieves top contributors data for a monitor"
+          },
+          "smithy.api#documentation": "\u003cp\u003eReturn the data for a query with the Network Flow Monitor query interface. You specify the query that you want to return results for by providing a query ID and a monitor name. This query returns the top contributors for a specific monitor.\u003c/p\u003e \u003cp\u003eCreate a query ID for this call by calling the corresponding API call to start the query, \u003ccode\u003eStartQueryMonitorTopContributors\u003c/code\u003e. Use the scope ID that was returned for your account by \u003ccode\u003eCreateScope\u003c/code\u003e.\u003c/p\u003e \u003cp\u003eTop contributors in Network Flow Monitor are network flows with the highest values for a specific metric type. Top contributors can be across all workload insights, for a given scope, or for a specific monitor. Use the applicable call for the top contributors that you want to be returned.\u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/monitors/{monitorName}/topContributorsQueries/{queryId}/results",
+            "method": "GET"
+          },
+          "smithy.api#paginated": {
+            "inputToken": "nextToken",
+            "outputToken": "nextToken",
+            "pageSize": "maxResults",
+            "items": "topContributors"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#GetQueryResultsMonitorTopContributorsInput": {
+        "type": "structure",
+        "members": {
+          "maxResults": {
+            "target": "smithy.api#Integer",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe number of query results that you want to return with this call.\u003c/p\u003e",
+              "smithy.api#httpQuery": "maxResults"
+            }
+          },
+          "monitorName": {
+            "target": "com.amazonaws.networkflowmonitor#ResourceName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the monitor.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "nextToken": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe token for the next set of results. You receive this token from a previous call.\u003c/p\u003e",
+              "smithy.api#httpQuery": "nextToken"
+            }
+          },
+          "queryId": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier for the query. A query ID is an internally-generated identifier for a specific query returned from an API call to create a query.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#GetQueryResultsMonitorTopContributorsOutput": {
+        "type": "structure",
+        "members": {
+          "nextToken": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe token for the next set of results. You receive this token from a previous call.\u003c/p\u003e"
+            }
+          },
+          "topContributors": {
+            "target": "com.amazonaws.networkflowmonitor#MonitorTopContributorsRowList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe top contributor network flows overall for a specific metric type, for example, the number of retransmissions.\u003c/p\u003e"
+            }
+          },
+          "unit": {
+            "target": "com.amazonaws.networkflowmonitor#MetricUnit",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe units for a metric returned by the query.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#GetQueryResultsWorkloadInsightsTopContributors": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.networkflowmonitor#GetQueryResultsWorkloadInsightsTopContributorsInput"
+        },
+        "output": {
+          "target": "com.amazonaws.networkflowmonitor#GetQueryResultsWorkloadInsightsTopContributorsOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.networkflowmonitor#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ServiceQuotaExceededException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.api#dataPlane": {},
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to get the results of a query that retrieves top contributors for workload insights"
+          },
+          "smithy.api#documentation": "\u003cp\u003eReturn the data for a query with the Network Flow Monitor query interface. You specify the query that you want to return results for by providing a query ID and a monitor name.\u003c/p\u003e \u003cp\u003eThis query returns the top contributors for a scope for workload insights. Workload insights provide a high level view of network flow performance data collected by agents. To return the data for the top contributors, see \u003ccode\u003eGetQueryResultsWorkloadInsightsTopContributorsData\u003c/code\u003e.\u003c/p\u003e \u003cp\u003eCreate a query ID for this call by calling the corresponding API call to start the query, \u003ccode\u003eStartQueryWorkloadInsightsTopContributors\u003c/code\u003e. Use the scope ID that was returned for your account by \u003ccode\u003eCreateScope\u003c/code\u003e.\u003c/p\u003e \u003cp\u003eTop contributors in Network Flow Monitor are network flows with the highest values for a specific metric type. Top contributors can be across all workload insights, for a given scope, or for a specific monitor. Use the applicable call for the top contributors that you want to be returned.\u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/workloadInsights/{scopeId}/topContributorsQueries/{queryId}/results",
+            "method": "GET"
+          },
+          "smithy.api#paginated": {
+            "inputToken": "nextToken",
+            "outputToken": "nextToken",
+            "pageSize": "maxResults",
+            "items": "topContributors"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#GetQueryResultsWorkloadInsightsTopContributorsData": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.networkflowmonitor#GetQueryResultsWorkloadInsightsTopContributorsDataInput"
+        },
+        "output": {
+          "target": "com.amazonaws.networkflowmonitor#GetQueryResultsWorkloadInsightsTopContributorsDataOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.networkflowmonitor#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ServiceQuotaExceededException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.api#dataPlane": {},
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to get the results of a query that retrieves top contributors data points for workload insights"
+          },
+          "smithy.api#documentation": "\u003cp\u003eReturn the data for a query with the Network Flow Monitor query interface. Specify the query that you want to return results for by providing a query ID and a scope ID.\u003c/p\u003e \u003cp\u003eThis query returns the data for top contributors for workload insights for a specific scope. Workload insights provide a high level view of network flow performance data collected by agents for a scope. To return just the top contributors, see \u003ccode\u003eGetQueryResultsWorkloadInsightsTopContributors\u003c/code\u003e.\u003c/p\u003e \u003cp\u003eCreate a query ID for this call by calling the corresponding API call to start the query, \u003ccode\u003eStartQueryWorkloadInsightsTopContributorsData\u003c/code\u003e. Use the scope ID that was returned for your account by \u003ccode\u003eCreateScope\u003c/code\u003e.\u003c/p\u003e \u003cp\u003eTop contributors in Network Flow Monitor are network flows with the highest values for a specific metric type. Top contributors can be across all workload insights, for a given scope, or for a specific monitor. Use the applicable call for the top contributors that you want to be returned.\u003c/p\u003e \u003cp\u003eThe top contributor network flows overall are for a specific metric type, for example, the number of retransmissions.\u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/workloadInsights/{scopeId}/topContributorsDataQueries/{queryId}/results",
+            "method": "GET"
+          },
+          "smithy.api#paginated": {
+            "inputToken": "nextToken",
+            "outputToken": "nextToken",
+            "pageSize": "maxResults",
+            "items": "datapoints"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#GetQueryResultsWorkloadInsightsTopContributorsDataInput": {
+        "type": "structure",
+        "members": {
+          "maxResults": {
+            "target": "smithy.api#Integer",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe number of query results that you want to return with this call.\u003c/p\u003e",
+              "smithy.api#httpQuery": "maxResults"
+            }
+          },
+          "nextToken": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe token for the next set of results. You receive this token from a previous call.\u003c/p\u003e",
+              "smithy.api#httpQuery": "nextToken"
+            }
+          },
+          "queryId": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier for the query. A query ID is an internally-generated identifier for a specific query returned from an API call to create a query.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "scopeId": {
+            "target": "com.amazonaws.networkflowmonitor#ScopeId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier for the scope that includes the resources you want to get data results for. A scope ID is an internally-generated identifier that includes all the resources for a specific root account.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#GetQueryResultsWorkloadInsightsTopContributorsDataOutput": {
+        "type": "structure",
+        "members": {
+          "datapoints": {
+            "target": "com.amazonaws.networkflowmonitor#WorkloadInsightsTopContributorsDataPoints",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe datapoints returned by the query.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "nextToken": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe token for the next set of results. You receive this token from a previous call.\u003c/p\u003e"
+            }
+          },
+          "unit": {
+            "target": "com.amazonaws.networkflowmonitor#MetricUnit",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe units for a metric returned by the query.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#GetQueryResultsWorkloadInsightsTopContributorsInput": {
+        "type": "structure",
+        "members": {
+          "maxResults": {
+            "target": "smithy.api#Integer",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe number of query results that you want to return with this call.\u003c/p\u003e",
+              "smithy.api#httpQuery": "maxResults"
+            }
+          },
+          "nextToken": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe token for the next set of results. You receive this token from a previous call.\u003c/p\u003e",
+              "smithy.api#httpQuery": "nextToken"
+            }
+          },
+          "queryId": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier for the query. A query ID is an internally-generated identifier for a specific query returned from an API call to create a query.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "scopeId": {
+            "target": "com.amazonaws.networkflowmonitor#ScopeId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier for the scope that includes the resources you want to get data results for. A scope ID is an internally-generated identifier that includes all the resources for a specific root account.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#GetQueryResultsWorkloadInsightsTopContributorsOutput": {
+        "type": "structure",
+        "members": {
+          "nextToken": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe token for the next set of results. You receive this token from a previous call.\u003c/p\u003e"
+            }
+          },
+          "topContributors": {
+            "target": "com.amazonaws.networkflowmonitor#WorkloadInsightsTopContributorsRowList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe top contributor network flows overall for a specific metric type, for example, the number of retransmissions.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#GetQueryStatusMonitorTopContributors": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.networkflowmonitor#GetQueryStatusMonitorTopContributorsInput"
+        },
+        "output": {
+          "target": "com.amazonaws.networkflowmonitor#GetQueryStatusMonitorTopContributorsOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.networkflowmonitor#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ServiceQuotaExceededException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.api#dataPlane": {},
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to get the status of a query that retrieves top contributors data for a monitor"
+          },
+          "smithy.api#documentation": "\u003cp\u003eReturns the current status of a query for the Network Flow Monitor query interface, for a specified query ID and monitor. This call returns the query status for the top contributors for a monitor.\u003c/p\u003e \u003cp\u003eWhen you create a query, use this call to check the status of the query to make sure that it has has \u003ccode\u003eSUCCEEDED\u003c/code\u003e before you review the results. Use the same query ID that you used for the corresponding API call to start (create) the query, \u003ccode\u003eStartQueryMonitorTopContributors\u003c/code\u003e.\u003c/p\u003e \u003cp\u003eWhen you run a query, use this call to check the status of the query to make sure that the query has \u003ccode\u003eSUCCEEDED\u003c/code\u003e before you review the results.\u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/monitors/{monitorName}/topContributorsQueries/{queryId}/status",
+            "method": "GET"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#GetQueryStatusMonitorTopContributorsInput": {
+        "type": "structure",
+        "members": {
+          "monitorName": {
+            "target": "com.amazonaws.networkflowmonitor#ResourceName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the monitor.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "queryId": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier for the query. A query ID is an internally-generated identifier for a specific query returned from an API call to start a query.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#GetQueryStatusMonitorTopContributorsOutput": {
+        "type": "structure",
+        "members": {
+          "status": {
+            "target": "com.amazonaws.networkflowmonitor#QueryStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eWhen you run a query, use this call to check the status of the query to make sure that the query has \u003ccode\u003eSUCCEEDED\u003c/code\u003e before you review the results.\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eQUEUED\u003c/code\u003e: The query is scheduled to run.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eRUNNING\u003c/code\u003e: The query is in progress but not complete.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eSUCCEEDED\u003c/code\u003e: The query completed sucessfully.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eFAILED\u003c/code\u003e: The query failed due to an error.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eCANCELED\u003c/code\u003e: The query was canceled.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#GetQueryStatusWorkloadInsightsTopContributors": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.networkflowmonitor#GetQueryStatusWorkloadInsightsTopContributorsInput"
+        },
+        "output": {
+          "target": "com.amazonaws.networkflowmonitor#GetQueryStatusWorkloadInsightsTopContributorsOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.networkflowmonitor#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ServiceQuotaExceededException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.api#dataPlane": {},
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to get the status of a query that retrieves top contributors for workload insights"
+          },
+          "smithy.api#documentation": "\u003cp\u003eReturn the data for a query with the Network Flow Monitor query interface. Specify the query that you want to return results for by providing a query ID and a monitor name. This query returns the top contributors for workload insights.\u003c/p\u003e \u003cp\u003eWhen you start a query, use this call to check the status of the query to make sure that it has has \u003ccode\u003eSUCCEEDED\u003c/code\u003e before you review the results. Use the same query ID that you used for the corresponding API call to start the query, \u003ccode\u003eStartQueryWorkloadInsightsTopContributors\u003c/code\u003e.\u003c/p\u003e \u003cp\u003eTop contributors in Network Flow Monitor are network flows with the highest values for a specific metric type. Top contributors can be across all workload insights, for a given scope, or for a specific monitor. Use the applicable call for the top contributors that you want to be returned.\u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/workloadInsights/{scopeId}/topContributorsQueries/{queryId}/status",
+            "method": "GET"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#GetQueryStatusWorkloadInsightsTopContributorsData": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.networkflowmonitor#GetQueryStatusWorkloadInsightsTopContributorsDataInput"
+        },
+        "output": {
+          "target": "com.amazonaws.networkflowmonitor#GetQueryStatusWorkloadInsightsTopContributorsDataOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.networkflowmonitor#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ServiceQuotaExceededException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.api#dataPlane": {},
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to get the status of a query that retrieves top contributors data points for workload insights"
+          },
+          "smithy.api#documentation": "\u003cp\u003eReturns the current status of a query for the Network Flow Monitor query interface, for a specified query ID and monitor. This call returns the query status for the top contributors data for workload insights.\u003c/p\u003e \u003cp\u003eWhen you start a query, use this call to check the status of the query to make sure that it has has \u003ccode\u003eSUCCEEDED\u003c/code\u003e before you review the results. Use the same query ID that you used for the corresponding API call to start the query, \u003ccode\u003eStartQueryWorkloadInsightsTopContributorsData\u003c/code\u003e.\u003c/p\u003e \u003cp\u003eTop contributors in Network Flow Monitor are network flows with the highest values for a specific metric type. Top contributors can be across all workload insights, for a given scope, or for a specific monitor. Use the applicable call for the top contributors that you want to be returned.\u003c/p\u003e \u003cp\u003eThe top contributor network flows overall are for a specific metric type, for example, the number of retransmissions.\u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/workloadInsights/{scopeId}/topContributorsDataQueries/{queryId}/status",
+            "method": "GET"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#GetQueryStatusWorkloadInsightsTopContributorsDataInput": {
+        "type": "structure",
+        "members": {
+          "queryId": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier for the query. A query ID is an internally-generated identifier for a specific query returned from an API call to start a query.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "scopeId": {
+            "target": "com.amazonaws.networkflowmonitor#ScopeId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier for the scope that includes the resources you want to get data results for. A scope ID is an internally-generated identifier that includes all the resources for a specific root account. A scope ID is returned from a \u003ccode\u003eCreateScope\u003c/code\u003e API call.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#GetQueryStatusWorkloadInsightsTopContributorsDataOutput": {
+        "type": "structure",
+        "members": {
+          "status": {
+            "target": "com.amazonaws.networkflowmonitor#QueryStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe status of a query for top contributors data.\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eQUEUED\u003c/code\u003e: The query is scheduled to run.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eRUNNING\u003c/code\u003e: The query is in progress but not complete.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eSUCCEEDED\u003c/code\u003e: The query completed sucessfully.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eFAILED\u003c/code\u003e: The query failed due to an error.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eCANCELED\u003c/code\u003e: The query was canceled.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#GetQueryStatusWorkloadInsightsTopContributorsInput": {
+        "type": "structure",
+        "members": {
+          "queryId": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier for the query. A query ID is an internally-generated identifier for a specific query returned from an API call to start a query.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "scopeId": {
+            "target": "com.amazonaws.networkflowmonitor#ScopeId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier for the scope that includes the resources you want to get data results for. A scope ID is an internally-generated identifier that includes all the resources for a specific root account.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#GetQueryStatusWorkloadInsightsTopContributorsOutput": {
+        "type": "structure",
+        "members": {
+          "status": {
+            "target": "com.amazonaws.networkflowmonitor#QueryStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eWhen you run a query, use this call to check the status of the query to make sure that the query has \u003ccode\u003eSUCCEEDED\u003c/code\u003e before you review the results.\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eQUEUED\u003c/code\u003e: The query is scheduled to run.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eRUNNING\u003c/code\u003e: The query is in progress but not complete.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eSUCCEEDED\u003c/code\u003e: The query completed sucessfully.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eFAILED\u003c/code\u003e: The query failed due to an error.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eCANCELED\u003c/code\u003e: The query was canceled.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#GetScope": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.networkflowmonitor#GetScopeInput"
+        },
+        "output": {
+          "target": "com.amazonaws.networkflowmonitor#GetScopeOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.networkflowmonitor#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ServiceQuotaExceededException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to get information about a scope"
+          },
+          "smithy.api#documentation": "\u003cp\u003eGets information about a scope, including the name, status, tags, and target details. The scope in Network Flow Monitor is an account.\u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/scopes/{scopeId}",
+            "method": "GET"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#GetScopeInput": {
+        "type": "structure",
+        "members": {
+          "scopeId": {
+            "target": "com.amazonaws.networkflowmonitor#ScopeId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier for the scope that includes the resources you want to get data results for. A scope ID is an internally-generated identifier that includes all the resources for a specific root account. A scope ID is returned from a \u003ccode\u003eCreateScope\u003c/code\u003e API call.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#length": {
+                "min": 1
+              },
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#GetScopeOutput": {
+        "type": "structure",
+        "members": {
+          "scopeArn": {
+            "target": "com.amazonaws.networkflowmonitor#Arn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the scope.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "scopeId": {
+            "target": "com.amazonaws.networkflowmonitor#ScopeId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier for the scope that includes the resources you want to get data results for. A scope ID is an internally-generated identifier that includes all the resources for a specific root account. A scope ID is returned from a \u003ccode\u003eCreateScope\u003c/code\u003e API call.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "status": {
+            "target": "com.amazonaws.networkflowmonitor#ScopeStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe status for a scope. The status can be one of the following: \u003ccode\u003eSUCCEEDED\u003c/code\u003e, \u003ccode\u003eIN_PROGRESS\u003c/code\u003e, \u003ccode\u003eFAILED\u003c/code\u003e, \u003ccode\u003eDEACTIVATING\u003c/code\u003e, or \u003ccode\u003eDEACTIVATED\u003c/code\u003e.\u003c/p\u003e \u003cp\u003eA status of \u003ccode\u003eDEACTIVATING\u003c/code\u003e means that you've requested a scope to be deactivated and Network Flow Monitor is in the process of deactivating the scope. A status of \u003ccode\u003eDEACTIVATED\u003c/code\u003e means that the deactivating process is complete.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "tags": {
+            "target": "com.amazonaws.networkflowmonitor#TagMap",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe tags for a scope.\u003c/p\u003e"
+            }
+          },
+          "targets": {
+            "target": "com.amazonaws.networkflowmonitor#TargetResourceList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe targets to define the scope to be monitored. A target is an array of targetResources, which are currently Region-account pairs, defined by targetResource constructs.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#InstanceArn": {
+        "type": "string"
+      },
+      "com.amazonaws.networkflowmonitor#InstanceId": {
+        "type": "string",
+        "traits": {
+          "smithy.api#pattern": "^i-[a-zA-Z0-9]{8,32}$"
+        }
+      },
+      "com.amazonaws.networkflowmonitor#InternalServerException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "smithy.api#String"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eAn internal error occurred.\u003c/p\u003e",
+          "smithy.api#error": "server",
+          "smithy.api#httpError": 500,
+          "smithy.api#retryable": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#Iso8601Timestamp": {
+        "type": "timestamp"
+      },
+      "com.amazonaws.networkflowmonitor#KubernetesMetadata": {
+        "type": "structure",
+        "members": {
+          "localPodName": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the pod for a local resource.\u003c/p\u003e"
+            }
+          },
+          "localPodNamespace": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe namespace of the pod for a local resource.\u003c/p\u003e"
+            }
+          },
+          "localServiceName": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe service name for a local resource.\u003c/p\u003e"
+            }
+          },
+          "remotePodName": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the pod for a remote resource.\u003c/p\u003e"
+            }
+          },
+          "remotePodNamespace": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe namespace of the pod for a remote resource.\u003c/p\u003e"
+            }
+          },
+          "remoteServiceName": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe service name for a remote resource.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eMeta data about Kubernetes resources.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.networkflowmonitor#Limit": {
+        "type": "integer",
+        "traits": {
+          "smithy.api#range": {
+            "min": 1,
+            "max": 500
+          }
+        }
+      },
+      "com.amazonaws.networkflowmonitor#ListMonitors": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.networkflowmonitor#ListMonitorsInput"
+        },
+        "output": {
+          "target": "com.amazonaws.networkflowmonitor#ListMonitorsOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.networkflowmonitor#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to list all monitors in an account and their statuses"
+          },
+          "smithy.api#documentation": "\u003cp\u003eList all monitors in an account. Optionally, you can list only monitors that have a specific status, by using the \u003ccode\u003eSTATUS\u003c/code\u003e parameter.\u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/monitors",
+            "method": "GET"
+          },
+          "smithy.api#paginated": {
+            "inputToken": "nextToken",
+            "outputToken": "nextToken",
+            "pageSize": "maxResults",
+            "items": "monitors"
+          },
+          "smithy.api#readonly": {},
+          "smithy.test#smokeTests": [
+            {
+              "id": "ListMonitors",
+              "expect": {
+                "success": {}
+              },
+              "vendorParamsShape": "aws.test#AwsVendorParams",
+              "vendorParams": {
+                "region": "us-east-1"
+              }
+            }
+          ]
+        }
+      },
+      "com.amazonaws.networkflowmonitor#ListMonitorsInput": {
+        "type": "structure",
+        "members": {
+          "maxResults": {
+            "target": "com.amazonaws.networkflowmonitor#MaxResults",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe number of query results that you want to return with this call.\u003c/p\u003e",
+              "smithy.api#httpQuery": "maxResults"
+            }
+          },
+          "monitorStatus": {
+            "target": "com.amazonaws.networkflowmonitor#MonitorStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe status of a monitor. The status can be one of the following\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003ePENDING\u003c/code\u003e: The monitor is in the process of being created.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eACTIVE\u003c/code\u003e: The monitor is active.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eINACTIVE\u003c/code\u003e: The monitor is inactive.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eERROR\u003c/code\u003e: Monitor creation failed due to an error.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eDELETING\u003c/code\u003e: The monitor is in the process of being deleted.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e",
+              "smithy.api#httpQuery": "monitorStatus"
+            }
+          },
+          "nextToken": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe token for the next set of results. You receive this token from a previous call.\u003c/p\u003e",
+              "smithy.api#httpQuery": "nextToken"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#ListMonitorsOutput": {
+        "type": "structure",
+        "members": {
+          "monitors": {
+            "target": "com.amazonaws.networkflowmonitor#MonitorList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe monitors that are in an account.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "nextToken": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe token for the next set of results. You receive this token from a previous call.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#ListScopes": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.networkflowmonitor#ListScopesInput"
+        },
+        "output": {
+          "target": "com.amazonaws.networkflowmonitor#ListScopesOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.networkflowmonitor#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ServiceQuotaExceededException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to get all scopes for an account"
+          },
+          "smithy.api#documentation": "\u003cp\u003eList all the scopes for an account.\u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/scopes",
+            "method": "GET"
+          },
+          "smithy.api#paginated": {
+            "inputToken": "nextToken",
+            "outputToken": "nextToken",
+            "pageSize": "maxResults",
+            "items": "scopes"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#ListScopesInput": {
+        "type": "structure",
+        "members": {
+          "maxResults": {
+            "target": "com.amazonaws.networkflowmonitor#MaxResults",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe number of query results that you want to return with this call.\u003c/p\u003e",
+              "smithy.api#httpQuery": "maxResults"
+            }
+          },
+          "nextToken": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe token for the next set of results. You receive this token from a previous call.\u003c/p\u003e",
+              "smithy.api#httpQuery": "nextToken"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#ListScopesOutput": {
+        "type": "structure",
+        "members": {
+          "nextToken": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe token for the next set of results. You receive this token from a previous call.\u003c/p\u003e"
+            }
+          },
+          "scopes": {
+            "target": "com.amazonaws.networkflowmonitor#ScopeSummaryList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe scopes returned by the call.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#ListTagsForResource": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.networkflowmonitor#ListTagsForResourceInput"
+        },
+        "output": {
+          "target": "com.amazonaws.networkflowmonitor#ListTagsForResourceOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.networkflowmonitor#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to list the tags for a resource"
+          },
+          "smithy.api#documentation": "\u003cp\u003eReturns all the tags for a resource.\u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/tags/{resourceArn}",
+            "method": "GET"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#ListTagsForResourceInput": {
+        "type": "structure",
+        "members": {
+          "resourceArn": {
+            "target": "com.amazonaws.networkflowmonitor#Arn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the resource.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "aws.api#data": "tagging",
+          "smithy.api#input": {},
+          "smithy.api#references": [
+            {
+              "resource": "com.amazonaws.networkflowmonitor#ScopeResource",
+              "ids": {
+                "scopeId": "resourceArn"
+              }
+            },
+            {
+              "resource": "com.amazonaws.networkflowmonitor#MonitorResource",
+              "ids": {
+                "monitorName": "resourceArn"
+              }
+            }
+          ]
+        }
+      },
+      "com.amazonaws.networkflowmonitor#ListTagsForResourceOutput": {
+        "type": "structure",
+        "members": {
+          "tags": {
+            "target": "com.amazonaws.networkflowmonitor#TagMap",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe tags for a resource.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#MaxResults": {
+        "type": "integer",
+        "traits": {
+          "smithy.api#range": {
+            "min": 1,
+            "max": 25
+          }
+        }
+      },
+      "com.amazonaws.networkflowmonitor#MetricUnit": {
+        "type": "enum",
+        "members": {
+          "BITS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Bits"
+            }
+          },
+          "BITS_PER_SECOND": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Bits/Second"
+            }
+          },
+          "BYTES": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Bytes"
+            }
+          },
+          "BYTES_PER_SECOND": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Bytes/Second"
+            }
+          },
+          "COUNT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Count"
+            }
+          },
+          "COUNT_PER_SECOND": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Count/Second"
+            }
+          },
+          "GIGABITS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Gigabits"
+            }
+          },
+          "GIGABITS_PER_SECOND": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Gigabits/Second"
+            }
+          },
+          "GIGABYTES": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Gigabytes"
+            }
+          },
+          "GIGABYTES_PER_SECOND": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Gigabytes/Second"
+            }
+          },
+          "KILOBITS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Kilobits"
+            }
+          },
+          "KILOBITS_PER_SECOND": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Kilobits/Second"
+            }
+          },
+          "KILOBYTES": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Kilobytes"
+            }
+          },
+          "KILOBYTES_PER_SECOND": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Kilobytes/Second"
+            }
+          },
+          "MEGABITS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Megabits"
+            }
+          },
+          "MEGABITS_PER_SECOND": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Megabits/Second"
+            }
+          },
+          "MEGABYTES": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Megabytes"
+            }
+          },
+          "MEGABYTES_PER_SECOND": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Megabytes/Second"
+            }
+          },
+          "MICROSECONDS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Microseconds"
+            }
+          },
+          "MILLISECONDS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Milliseconds"
+            }
+          },
+          "NONE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "None"
+            }
+          },
+          "PERCENT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Percent"
+            }
+          },
+          "SECONDS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Seconds"
+            }
+          },
+          "TERABITS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Terabits"
+            }
+          },
+          "TERABITS_PER_SECOND": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Terabits/Second"
+            }
+          },
+          "TERABYTES": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Terabytes"
+            }
+          },
+          "TERABYTES_PER_SECOND": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Terabytes/Second"
+            }
+          }
+        }
+      },
+      "com.amazonaws.networkflowmonitor#MonitorArn": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 20,
+            "max": 512
+          },
+          "smithy.api#pattern": "^arn:.*$"
+        }
+      },
+      "com.amazonaws.networkflowmonitor#MonitorList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.networkflowmonitor#MonitorSummary"
+        }
+      },
+      "com.amazonaws.networkflowmonitor#MonitorLocalResource": {
+        "type": "structure",
+        "members": {
+          "identifier": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier of the local resource. The values you can specify are the following:\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003eFor a VPC, subnet or EKS cluster, this identifier is the VPC Amazon Resource Name (ARN), subnet ARN or cluster ARN.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003eFor an Availability Zone, this identifier is the AZ name, for example, us-west-2b.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003eFor a Region, this identifier is the Region name, for example, us-west-2.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "type": {
+            "target": "com.amazonaws.networkflowmonitor#MonitorLocalResourceType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe type of the local resource. Valid values are \u003ccode\u003eAWS::EC2::VPC\u003c/code\u003e \u003ccode\u003eAWS::AvailabilityZone\u003c/code\u003e, \u003ccode\u003eAWS::EC2::Subnet\u003c/code\u003e, \u003ccode\u003eAWS::EKS::Cluster\u003c/code\u003e, or \u003ccode\u003eAWS::Region\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA local resource is the host where the agent is installed. Local resources can be a a subnet, a VPC, an Availability Zone, an EKS cluster or an Amazon Web Services Region.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.networkflowmonitor#MonitorLocalResourceType": {
+        "type": "enum",
+        "members": {
+          "AWS_AZ": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "AWS::AvailabilityZone"
+            }
+          },
+          "AWS_REGION": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "AWS::Region"
+            }
+          },
+          "AWS_SUBNET": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "AWS::EC2::Subnet"
+            }
+          },
+          "AWS_VPC": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "AWS::EC2::VPC"
+            }
+          },
+          "EKS_CLUSTER": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "AWS::EKS::Cluster"
+            }
+          }
+        }
+      },
+      "com.amazonaws.networkflowmonitor#MonitorLocalResources": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.networkflowmonitor#MonitorLocalResource"
+        }
+      },
+      "com.amazonaws.networkflowmonitor#MonitorMetric": {
+        "type": "enum",
+        "members": {
+          "DATA_TRANSFERRED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "DATA_TRANSFERRED"
+            }
+          },
+          "RETRANSMISSIONS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "RETRANSMISSIONS"
+            }
+          },
+          "ROUND_TRIP_TIME": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ROUND_TRIP_TIME"
+            }
+          },
+          "TIMEOUTS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "TIMEOUTS"
+            }
+          }
+        }
+      },
+      "com.amazonaws.networkflowmonitor#MonitorRemoteResource": {
+        "type": "structure",
+        "members": {
+          "identifier": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier of the remote resource. For a VPC or subnet, this identifier is the VPC Amazon Resource Name (ARN) or subnet ARN. For an Availability Zone, this identifier is the AZ name, for example, us-west-2b. For an Amazon Web Services Region , this identifier is the Region name, for example, us-west-2. \u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "type": {
+            "target": "com.amazonaws.networkflowmonitor#MonitorRemoteResourceType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe type of the remote resource. Valid values are \u003ccode\u003eAWS::EC2::VPC\u003c/code\u003e \u003ccode\u003eAWS::AvailabilityZone\u003c/code\u003e, \u003ccode\u003eAWS::EC2::Subnet\u003c/code\u003e, \u003ccode\u003eAWS::AWSService\u003c/code\u003e, or \u003ccode\u003eAWS::Region\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA remote resource is the other endpoint in a network flow. That is, one endpoint is the local resource and the other is the remote resource. The values you can specify are the following:\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003eFor a VPC or subnet, this identifier is the VPC Amazon Resource Name (ARN) or subnet ARN.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003eFor a service, this identifier is one of the following strings: \u003ccode\u003eS3\u003c/code\u003e or \u003ccode\u003eDynamoDB\u003c/code\u003e.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003eFor an Availability Zone, this identifier is the AZ name, for example, us-west-2b.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003eFor a Region, this identifier is the Region name, for example, us-west-2.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e \u003cp\u003eWhen a remote resource is an Amazon Web Services Region, Network Flow Monitor provides network performance measurements up to the edge of the Region that you specify.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.networkflowmonitor#MonitorRemoteResourceType": {
+        "type": "enum",
+        "members": {
+          "AWS_AZ": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "AWS::AvailabilityZone"
+            }
+          },
+          "AWS_REGION": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "AWS::Region"
+            }
+          },
+          "AWS_SERVICE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "AWS::AWSService"
+            }
+          },
+          "AWS_SUBNET": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "AWS::EC2::Subnet"
+            }
+          },
+          "AWS_VPC": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "AWS::EC2::VPC"
+            }
+          }
+        }
+      },
+      "com.amazonaws.networkflowmonitor#MonitorRemoteResources": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.networkflowmonitor#MonitorRemoteResource"
+        }
+      },
+      "com.amazonaws.networkflowmonitor#MonitorResource": {
+        "type": "resource",
+        "operations": [
+          {
+            "target": "com.amazonaws.networkflowmonitor#GetQueryResultsMonitorTopContributors"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#GetQueryStatusMonitorTopContributors"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#StartQueryMonitorTopContributors"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#StopQueryMonitorTopContributors"
+          }
+        ],
+        "traits": {
+          "aws.api#arn": {
+            "template": "monitor/{monitorName}"
+          },
+          "aws.iam#conditionKeys": [
+            "aws:ResourceTag/${TagKey}"
+          ],
+          "aws.iam#disableConditionKeyInference": {},
+          "aws.iam#iamResource": {
+            "name": "monitor"
+          }
+        }
+      },
+      "com.amazonaws.networkflowmonitor#MonitorStatus": {
+        "type": "enum",
+        "members": {
+          "ACTIVE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ACTIVE"
+            }
+          },
+          "DELETING": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "DELETING"
+            }
+          },
+          "ERROR": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ERROR"
+            }
+          },
+          "INACTIVE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "INACTIVE"
+            }
+          },
+          "PENDING": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "PENDING"
+            }
+          }
+        }
+      },
+      "com.amazonaws.networkflowmonitor#MonitorSummary": {
+        "type": "structure",
+        "members": {
+          "monitorArn": {
+            "target": "com.amazonaws.networkflowmonitor#MonitorArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the monitor.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "monitorName": {
+            "target": "com.amazonaws.networkflowmonitor#ResourceName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the monitor.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "monitorStatus": {
+            "target": "com.amazonaws.networkflowmonitor#MonitorStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe status of a monitor. The status can be one of the following\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003ePENDING\u003c/code\u003e: The monitor is in the process of being created.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eACTIVE\u003c/code\u003e: The monitor is active.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eINACTIVE\u003c/code\u003e: The monitor is inactive.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eERROR\u003c/code\u003e: Monitor creation failed due to an error.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eDELETING\u003c/code\u003e: The monitor is in the process of being deleted.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA summary of information about a monitor, including the ARN, the name, and the status.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.networkflowmonitor#MonitorTopContributorsRow": {
+        "type": "structure",
+        "members": {
+          "destinationCategory": {
+            "target": "com.amazonaws.networkflowmonitor#DestinationCategory",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe destination category for a top contributors row. Destination categories can be one of the following: \u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eINTRA_AZ\u003c/code\u003e: Top contributor network flows within a single Availability Zone\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eINTER_AZ\u003c/code\u003e: Top contributor network flows between Availability Zones\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eINTER_REGION\u003c/code\u003e: Top contributor network flows between Regions (to the edge of another Region)\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eINTER_VPC\u003c/code\u003e: Top contributor network flows between VPCs\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAWS_SERVICES\u003c/code\u003e: Top contributor network flows to or from Amazon Web Services services\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eUNCLASSIFIED\u003c/code\u003e: Top contributor network flows that do not have a bucket classification\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e"
+            }
+          },
+          "dnatIp": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe destination network address translation (DNAT) IP address for a top contributor network flow.\u003c/p\u003e"
+            }
+          },
+          "kubernetesMetadata": {
+            "target": "com.amazonaws.networkflowmonitor#KubernetesMetadata",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eMeta data about Kubernetes resources.\u003c/p\u003e"
+            }
+          },
+          "localAz": {
+            "target": "com.amazonaws.networkflowmonitor#AvailabilityZone",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Availability Zone for the local resource for a top contributor network flow.\u003c/p\u003e"
+            }
+          },
+          "localInstanceArn": {
+            "target": "com.amazonaws.networkflowmonitor#InstanceArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of a local resource.\u003c/p\u003e"
+            }
+          },
+          "localInstanceId": {
+            "target": "com.amazonaws.networkflowmonitor#InstanceId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe instance identifier for the local resource for a top contributor network flow.\u003c/p\u003e"
+            }
+          },
+          "localIp": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe IP address of the local resource for a top contributor network flow.\u003c/p\u003e"
+            }
+          },
+          "localRegion": {
+            "target": "com.amazonaws.networkflowmonitor#AwsRegion",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Web Services Region for the local resource for a top contributor network flow.\u003c/p\u003e"
+            }
+          },
+          "localSubnetArn": {
+            "target": "com.amazonaws.networkflowmonitor#SubnetArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of a local subnet.\u003c/p\u003e"
+            }
+          },
+          "localSubnetId": {
+            "target": "com.amazonaws.networkflowmonitor#SubnetId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe subnet ID for the local resource for a top contributor network flow.\u003c/p\u003e"
+            }
+          },
+          "localVpcArn": {
+            "target": "com.amazonaws.networkflowmonitor#VpcArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of a local VPC.\u003c/p\u003e"
+            }
+          },
+          "localVpcId": {
+            "target": "com.amazonaws.networkflowmonitor#VpcId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe VPC ID for a top contributor network flow for the local resource.\u003c/p\u003e"
+            }
+          },
+          "remoteAz": {
+            "target": "com.amazonaws.networkflowmonitor#AvailabilityZone",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Availability Zone for the remote resource for a top contributor network flow.\u003c/p\u003e"
+            }
+          },
+          "remoteInstanceArn": {
+            "target": "com.amazonaws.networkflowmonitor#InstanceArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of a remote resource.\u003c/p\u003e"
+            }
+          },
+          "remoteInstanceId": {
+            "target": "com.amazonaws.networkflowmonitor#InstanceId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe instance identifier for the remote resource for a top contributor network flow.\u003c/p\u003e"
+            }
+          },
+          "remoteIp": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe IP address of the remote resource for a top contributor network flow.\u003c/p\u003e"
+            }
+          },
+          "remoteRegion": {
+            "target": "com.amazonaws.networkflowmonitor#AwsRegion",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Web Services Region for the remote resource for a top contributor network flow.\u003c/p\u003e"
+            }
+          },
+          "remoteSubnetArn": {
+            "target": "com.amazonaws.networkflowmonitor#SubnetArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of a remote subnet.\u003c/p\u003e"
+            }
+          },
+          "remoteSubnetId": {
+            "target": "com.amazonaws.networkflowmonitor#SubnetId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe subnet ID for the remote resource for a top contributor network flow.\u003c/p\u003e"
+            }
+          },
+          "remoteVpcArn": {
+            "target": "com.amazonaws.networkflowmonitor#VpcArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of a remote VPC.\u003c/p\u003e"
+            }
+          },
+          "remoteVpcId": {
+            "target": "com.amazonaws.networkflowmonitor#VpcId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe VPC ID for a top contributor network flow for the remote resource.\u003c/p\u003e"
+            }
+          },
+          "snatIp": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe secure network address translation (SNAT) IP address for a top contributor network flow.\u003c/p\u003e"
+            }
+          },
+          "targetPort": {
+            "target": "smithy.api#Integer",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe target port.\u003c/p\u003e"
+            }
+          },
+          "traversedConstructs": {
+            "target": "com.amazonaws.networkflowmonitor#TraversedConstructsList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe constructs traversed by a network flow.\u003c/p\u003e"
+            }
+          },
+          "value": {
+            "target": "smithy.api#Long",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe value of the metric for a top contributor network flow.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA set of information for a top contributor network flow in a monitor. In a monitor, Network Flow Monitor returns information about the network flows for top contributors for each metric. Top contributors are network flows with the top values for each metric type.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.networkflowmonitor#MonitorTopContributorsRowList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.networkflowmonitor#MonitorTopContributorsRow"
+        }
+      },
+      "com.amazonaws.networkflowmonitor#NetworkFlowMonitor": {
+        "type": "service",
+        "version": "2023-04-19",
+        "operations": [
+          {
+            "target": "com.amazonaws.networkflowmonitor#ListTagsForResource"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#TagResource"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#UntagResource"
+          }
+        ],
+        "resources": [
+          {
+            "target": "com.amazonaws.networkflowmonitor#MonitorResource"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ScopeResource"
+          }
+        ],
+        "traits": {
+          "aws.api#service": {
+            "sdkId": "NetworkFlowMonitor",
+            "arnNamespace": "networkflowmonitor",
+            "cloudTrailEventSource": "networkflowmonitor.amazonaws.com"
+          },
+          "aws.auth#sigv4": {
+            "name": "networkflowmonitor"
+          },
+          "aws.endpoints#dualStackOnlyEndpoints": {},
+          "aws.endpoints#standardRegionalEndpoints": {},
+          "aws.iam#defineConditionKeys": {
+            "aws:ResourceTag/${TagKey}": {
+              "type": "String",
+              "documentation": "Filters access by the tag key-value pairs attached to the resource",
+              "externalDocumentation": "${DocHomeURL}IAM/latest/UserGuide/reference_policies_condition-keys.html#condition-keys-resourcetag"
+            },
+            "aws:RequestTag/${TagKey}": {
+              "type": "String",
+              "documentation": "Filters access by the tag key-value pairs in the request",
+              "externalDocumentation": "${DocHomeURL}IAM/latest/UserGuide/reference_policies_condition-keys.html#condition-keys-requesttag"
+            },
+            "aws:TagKeys": {
+              "type": "ArrayOfString",
+              "documentation": "Filters access by the tag keys in the request",
+              "externalDocumentation": "${DocHomeURL}IAM/latest/UserGuide/reference_policies_condition-keys.html#condition-keys-tagkeys"
+            }
+          },
+          "aws.iam#supportedPrincipalTypes": [
+            "Root",
+            "IAMUser",
+            "IAMRole",
+            "FederatedUser"
+          ],
+          "aws.protocols#restJson1": {},
+          "smithy.api#cors": {
+            "additionalAllowedHeaders": [
+              "Content-Type",
+              "X-Amz-Requested-Operation"
+            ]
+          },
+          "smithy.api#documentation": "\u003cp\u003eNetwork Flow Monitor is a feature of Amazon CloudWatch Network Monitoring that provides visibility into the performance of network flows for your Amazon Web Services workloads, between instances in subnets, as well as to and from Amazon Web Services. Lightweight agents that you install on the instances capture performance metrics for your network flows, such as packet loss and latency, and send them to the Network Flow Monitor backend. Then, you can view and analyze metrics from the top contributors for each metric type, to help troubleshoot issues.\u003c/p\u003e \u003cp\u003eIn addition, when you create a monitor, Network Flow Monitor provides a network health indicator (NHI) that informs you whether there were Amazon Web Services network issues for one or more of the network flows tracked by a monitor, during a time period that you choose. By using this value, you can independently determine if the Amazon Web Services network is impacting your workload during a specific time frame, to help you focus troubleshooting efforts.\u003c/p\u003e \u003cp\u003eTo learn more about Network Flow Monitor, see the \u003ca href=\"https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-NetworkFlowMonitor.html\"\u003eNetwork Flow Monitor User Guide\u003c/a\u003e in the Amazon CloudWatch User Guide.\u003c/p\u003e",
+          "smithy.api#title": "Network Flow Monitor",
+          "smithy.rules#endpointBdd": {
+            "version": "1.1",
+            "parameters": {
+              "UseFIPS": {
+                "builtIn": "AWS::UseFIPS",
+                "required": true,
+                "default": false,
+                "documentation": "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
+                "type": "boolean"
+              },
+              "Endpoint": {
+                "builtIn": "SDK::Endpoint",
+                "required": false,
+                "documentation": "Override the endpoint used to send this request",
+                "type": "string"
+              },
+              "Region": {
+                "builtIn": "AWS::Region",
+                "required": false,
+                "documentation": "The AWS region used to dispatch the request.",
+                "type": "string"
+              }
+            },
+            "conditions": [
+              {
+                "fn": "isSet",
+                "argv": [
+                  {
+                    "ref": "Endpoint"
+                  }
+                ]
+              },
+              {
+                "fn": "isSet",
+                "argv": [
+                  {
+                    "ref": "Region"
+                  }
+                ]
+              },
+              {
+                "fn": "aws.partition",
+                "argv": [
+                  {
+                    "ref": "Region"
+                  }
+                ],
+                "assign": "PartitionResult"
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "ref": "UseFIPS"
+                  },
+                  true
+                ]
+              }
+            ],
+            "results": [
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: FIPS and custom endpoint are not supported",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": {
+                    "ref": "Endpoint"
+                  },
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://networkflowmonitor-fips.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://networkflowmonitor.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: Missing Region",
+                "type": "error"
+              }
+            ],
+            "root": 2,
+            "nodeCount": 6,
+            "nodes": "/////wAAAAH/////AAAAAAAAAAYAAAADAAAAAQAAAAQF9eEFAAAAAgAAAAUF9eEFAAAAAwX14QMF9eEEAAAAAwX14QEF9eEC"
+          },
+          "smithy.rules#endpointRuleSet": {
+            "version": "1.0",
+            "parameters": {
+              "UseFIPS": {
+                "builtIn": "AWS::UseFIPS",
+                "required": true,
+                "default": false,
+                "documentation": "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
+                "type": "boolean"
+              },
+              "Endpoint": {
+                "builtIn": "SDK::Endpoint",
+                "required": false,
+                "documentation": "Override the endpoint used to send this request",
+                "type": "string"
+              },
+              "Region": {
+                "builtIn": "AWS::Region",
+                "required": false,
+                "documentation": "The AWS region used to dispatch the request.",
+                "type": "string"
+              }
+            },
+            "rules": [
+              {
+                "conditions": [
+                  {
+                    "fn": "isSet",
+                    "argv": [
+                      {
+                        "ref": "Endpoint"
+                      }
+                    ]
+                  }
+                ],
+                "rules": [
+                  {
+                    "conditions": [
+                      {
+                        "fn": "booleanEquals",
+                        "argv": [
+                          {
+                            "ref": "UseFIPS"
+                          },
+                          true
+                        ]
+                      }
+                    ],
+                    "error": "Invalid Configuration: FIPS and custom endpoint are not supported",
+                    "type": "error"
+                  },
+                  {
+                    "conditions": [],
+                    "endpoint": {
+                      "url": {
+                        "ref": "Endpoint"
+                      },
+                      "properties": {},
+                      "headers": {}
+                    },
+                    "type": "endpoint"
+                  }
+                ],
+                "type": "tree"
+              },
+              {
+                "conditions": [],
+                "rules": [
+                  {
+                    "conditions": [
+                      {
+                        "fn": "isSet",
+                        "argv": [
+                          {
+                            "ref": "Region"
+                          }
+                        ]
+                      }
+                    ],
+                    "rules": [
+                      {
+                        "conditions": [
+                          {
+                            "fn": "aws.partition",
+                            "argv": [
+                              {
+                                "ref": "Region"
+                              }
+                            ],
+                            "assign": "PartitionResult"
+                          }
+                        ],
+                        "rules": [
+                          {
+                            "conditions": [
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  {
+                                    "ref": "UseFIPS"
+                                  },
+                                  true
+                                ]
+                              }
+                            ],
+                            "endpoint": {
+                              "url": "https://networkflowmonitor-fips.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                              "properties": {},
+                              "headers": {}
+                            },
+                            "type": "endpoint"
+                          },
+                          {
+                            "conditions": [],
+                            "endpoint": {
+                              "url": "https://networkflowmonitor.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                              "properties": {},
+                              "headers": {}
+                            },
+                            "type": "endpoint"
+                          }
+                        ],
+                        "type": "tree"
+                      }
+                    ],
+                    "type": "tree"
+                  },
+                  {
+                    "conditions": [],
+                    "error": "Invalid Configuration: Missing Region",
+                    "type": "error"
+                  }
+                ],
+                "type": "tree"
+              }
+            ]
+          },
+          "smithy.rules#endpointTests": {
+            "testCases": [
+              {
+                "documentation": "For custom endpoint with region not set and fips disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://example.com"
+                  }
+                },
+                "params": {
+                  "Endpoint": "https://example.com",
+                  "UseFIPS": false
+                }
+              },
+              {
+                "documentation": "For custom endpoint with fips enabled",
+                "expect": {
+                  "error": "Invalid Configuration: FIPS and custom endpoint are not supported"
+                },
+                "params": {
+                  "Endpoint": "https://example.com",
+                  "UseFIPS": true
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://networkflowmonitor-fips.us-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": true
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://networkflowmonitor.us-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false
+                }
+              },
+              {
+                "documentation": "For region cn-northwest-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://networkflowmonitor-fips.cn-northwest-1.api.amazonwebservices.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-northwest-1",
+                  "UseFIPS": true
+                }
+              },
+              {
+                "documentation": "For region cn-northwest-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://networkflowmonitor.cn-northwest-1.api.amazonwebservices.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-northwest-1",
+                  "UseFIPS": false
+                }
+              },
+              {
+                "documentation": "For region us-gov-west-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://networkflowmonitor-fips.us-gov-west-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-west-1",
+                  "UseFIPS": true
+                }
+              },
+              {
+                "documentation": "For region us-gov-west-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://networkflowmonitor.us-gov-west-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-west-1",
+                  "UseFIPS": false
+                }
+              },
+              {
+                "documentation": "Missing region",
+                "expect": {
+                  "error": "Invalid Configuration: Missing Region"
+                }
+              }
+            ],
+            "version": "1.0"
+          }
+        }
+      },
+      "com.amazonaws.networkflowmonitor#QueryStatus": {
+        "type": "enum",
+        "members": {
+          "CANCELED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "CANCELED"
+            }
+          },
+          "FAILED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "FAILED"
+            }
+          },
+          "QUEUED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "QUEUED"
+            }
+          },
+          "RUNNING": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "RUNNING"
+            }
+          },
+          "SUCCEEDED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "SUCCEEDED"
+            }
+          }
+        }
+      },
+      "com.amazonaws.networkflowmonitor#ResourceName": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 255
+          },
+          "smithy.api#pattern": "^[a-zA-Z0-9_.-]+$"
+        }
+      },
+      "com.amazonaws.networkflowmonitor#ResourceNotFoundException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "smithy.api#String"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe request specifies a resource that doesn't exist.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 404
+        }
+      },
+      "com.amazonaws.networkflowmonitor#ScopeId": {
+        "type": "string"
+      },
+      "com.amazonaws.networkflowmonitor#ScopeResource": {
+        "type": "resource",
+        "operations": [
+          {
+            "target": "com.amazonaws.networkflowmonitor#GetQueryResultsWorkloadInsightsTopContributors"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#GetQueryResultsWorkloadInsightsTopContributorsData"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#GetQueryStatusWorkloadInsightsTopContributors"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#GetQueryStatusWorkloadInsightsTopContributorsData"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#StartQueryWorkloadInsightsTopContributors"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#StartQueryWorkloadInsightsTopContributorsData"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#StopQueryWorkloadInsightsTopContributors"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#StopQueryWorkloadInsightsTopContributorsData"
+          }
+        ],
+        "traits": {
+          "aws.api#arn": {
+            "template": "scope/{scopeId}"
+          },
+          "aws.iam#conditionKeys": [
+            "aws:ResourceTag/${TagKey}"
+          ],
+          "aws.iam#disableConditionKeyInference": {},
+          "aws.iam#iamResource": {
+            "name": "scope"
+          }
+        }
+      },
+      "com.amazonaws.networkflowmonitor#ScopeStatus": {
+        "type": "enum",
+        "members": {
+          "DEACTIVATED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "DEACTIVATED"
+            }
+          },
+          "DEACTIVATING": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "DEACTIVATING"
+            }
+          },
+          "FAILED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "FAILED"
+            }
+          },
+          "IN_PROGRESS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "IN_PROGRESS"
+            }
+          },
+          "SUCCEEDED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "SUCCEEDED"
+            }
+          }
+        }
+      },
+      "com.amazonaws.networkflowmonitor#ScopeSummary": {
+        "type": "structure",
+        "members": {
+          "scopeArn": {
+            "target": "com.amazonaws.networkflowmonitor#Arn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the scope.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "scopeId": {
+            "target": "com.amazonaws.networkflowmonitor#ScopeId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier for the scope that includes the resources that you want to get data results for. A scope ID is an internally-generated identifier that includes all the resources for the accounts in a scope.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "status": {
+            "target": "com.amazonaws.networkflowmonitor#ScopeStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe status for a scope. The status can be one of the following: \u003ccode\u003eSUCCEEDED\u003c/code\u003e, \u003ccode\u003eIN_PROGRESS\u003c/code\u003e, \u003ccode\u003eFAILED\u003c/code\u003e, \u003ccode\u003eDEACTIVATING\u003c/code\u003e, or \u003ccode\u003eDEACTIVATED\u003c/code\u003e.\u003c/p\u003e \u003cp\u003eA status of \u003ccode\u003eDEACTIVATING\u003c/code\u003e means that you've requested a scope to be deactivated and Network Flow Monitor is in the process of deactivating the scope. A status of \u003ccode\u003eDEACTIVATED\u003c/code\u003e means that the deactivating process is complete.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA summary of information about a scope, including the ARN, target ID, and Amazon Web Services Region.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.networkflowmonitor#ScopeSummaryList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.networkflowmonitor#ScopeSummary"
+        }
+      },
+      "com.amazonaws.networkflowmonitor#ServiceQuotaExceededException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "smithy.api#String"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe request exceeded a service quota.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 402
+        }
+      },
+      "com.amazonaws.networkflowmonitor#StartQueryMonitorTopContributors": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.networkflowmonitor#StartQueryMonitorTopContributorsInput"
+        },
+        "output": {
+          "target": "com.amazonaws.networkflowmonitor#StartQueryMonitorTopContributorsOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.networkflowmonitor#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ServiceQuotaExceededException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.api#dataPlane": {},
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to start a query for retrieving top contributors data for a monitor"
+          },
+          "smithy.api#documentation": "\u003cp\u003eCreate a query that you can use with the Network Flow Monitor query interface to return the top contributors for a monitor. Specify the monitor that you want to create the query for. \u003c/p\u003e \u003cp\u003eThe call returns a query ID that you can use with \u003ca href=\"https://docs.aws.amazon.com/networkflowmonitor/2.0/APIReference/API_GetQueryResultsMonitorTopContributors.html\"\u003e GetQueryResultsMonitorTopContributors\u003c/a\u003e to run the query and return the top contributors for a specific monitor.\u003c/p\u003e \u003cp\u003eTop contributors in Network Flow Monitor are network flows with the highest values for a specific metric type. Top contributors can be across all workload insights, for a given scope, or for a specific monitor. Use the applicable APIs for the top contributors that you want to be returned.\u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/monitors/{monitorName}/topContributorsQueries",
+            "method": "POST"
+          }
+        }
+      },
+      "com.amazonaws.networkflowmonitor#StartQueryMonitorTopContributorsInput": {
+        "type": "structure",
+        "members": {
+          "destinationCategory": {
+            "target": "com.amazonaws.networkflowmonitor#DestinationCategory",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe category that you want to query top contributors for, for a specific monitor. Destination categories can be one of the following: \u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eINTRA_AZ\u003c/code\u003e: Top contributor network flows within a single Availability Zone\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eINTER_AZ\u003c/code\u003e: Top contributor network flows between Availability Zones\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eINTER_REGION\u003c/code\u003e: Top contributor network flows between Regions (to the edge of another Region)\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eINTER_VPC\u003c/code\u003e: Top contributor network flows between VPCs\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAMAZON_S3\u003c/code\u003e: Top contributor network flows to or from Amazon S3\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAMAZON_DYNAMODB\u003c/code\u003e: Top contributor network flows to or from Amazon Dynamo DB\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eUNCLASSIFIED\u003c/code\u003e: Top contributor network flows that do not have a bucket classification\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "endTime": {
+            "target": "smithy.api#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe timestamp that is the date and time end of the period that you want to retrieve results for with your query.\u003c/p\u003e",
+              "smithy.api#required": {},
+              "smithy.api#timestampFormat": "date-time"
+            }
+          },
+          "limit": {
+            "target": "com.amazonaws.networkflowmonitor#Limit",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of top contributors to return.\u003c/p\u003e"
+            }
+          },
+          "metricName": {
+            "target": "com.amazonaws.networkflowmonitor#MonitorMetric",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe metric that you want to query top contributors for. That is, you can specify a metric with this call and return the top contributor network flows, for that type of metric, for a monitor and (optionally) within a specific category, such as network flows between Availability Zones.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "monitorName": {
+            "target": "com.amazonaws.networkflowmonitor#ResourceName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the monitor.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "startTime": {
+            "target": "smithy.api#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe timestamp that is the date and time that is the beginning of the period that you want to retrieve results for with your query.\u003c/p\u003e",
+              "smithy.api#required": {},
+              "smithy.api#timestampFormat": "date-time"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#StartQueryMonitorTopContributorsOutput": {
+        "type": "structure",
+        "members": {
+          "queryId": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier for the query. A query ID is an internally-generated identifier for a specific query returned from an API call to start a query.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#StartQueryWorkloadInsightsTopContributors": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.networkflowmonitor#StartQueryWorkloadInsightsTopContributorsInput"
+        },
+        "output": {
+          "target": "com.amazonaws.networkflowmonitor#StartQueryWorkloadInsightsTopContributorsOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.networkflowmonitor#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ServiceQuotaExceededException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.api#dataPlane": {},
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to start a query for retrieving top contributors data for workload insights"
+          },
+          "smithy.api#documentation": "\u003cp\u003eCreate a query with the Network Flow Monitor query interface that you can run to return workload insights top contributors. Specify the scope that you want to create a query for.\u003c/p\u003e \u003cp\u003eThe call returns a query ID that you can use with \u003ca href=\"https://docs.aws.amazon.com/networkflowmonitor/2.0/APIReference/API_GetQueryResultsWorkloadInsightsTopContributors.html\"\u003e GetQueryResultsWorkloadInsightsTopContributors\u003c/a\u003e to run the query and return the top contributors for the workload insights for a scope.\u003c/p\u003e \u003cp\u003eTop contributors in Network Flow Monitor are network flows with the highest values for a specific metric type. Top contributors can be across all workload insights, for a given scope, or for a specific monitor. Use the applicable APIs for the top contributors that you want to be returned.\u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/workloadInsights/{scopeId}/topContributorsQueries",
+            "method": "POST"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#StartQueryWorkloadInsightsTopContributorsData": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.networkflowmonitor#StartQueryWorkloadInsightsTopContributorsDataInput"
+        },
+        "output": {
+          "target": "com.amazonaws.networkflowmonitor#StartQueryWorkloadInsightsTopContributorsDataOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.networkflowmonitor#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ServiceQuotaExceededException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.api#dataPlane": {},
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to start a query for retrieving top contributors data points for workload insights"
+          },
+          "smithy.api#documentation": "\u003cp\u003eCreate a query with the Network Flow Monitor query interface that you can run to return data for workload insights top contributors. Specify the scope that you want to create a query for.\u003c/p\u003e \u003cp\u003eThe call returns a query ID that you can use with \u003ca href=\"https://docs.aws.amazon.com/networkflowmonitor/2.0/APIReference/API_GetQueryResultsWorkloadInsightsTopContributorsData.html\"\u003e GetQueryResultsWorkloadInsightsTopContributorsData\u003c/a\u003e to run the query and return the data for the top contributors for the workload insights for a scope.\u003c/p\u003e \u003cp\u003eTop contributors in Network Flow Monitor are network flows with the highest values for a specific metric type. Top contributors can be across all workload insights, for a given scope, or for a specific monitor. Use the applicable call for the top contributors that you want to be returned.\u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/workloadInsights/{scopeId}/topContributorsDataQueries",
+            "method": "POST"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#StartQueryWorkloadInsightsTopContributorsDataInput": {
+        "type": "structure",
+        "members": {
+          "destinationCategory": {
+            "target": "com.amazonaws.networkflowmonitor#DestinationCategory",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe destination category for a top contributors. Destination categories can be one of the following: \u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eINTRA_AZ\u003c/code\u003e: Top contributor network flows within a single Availability Zone\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eINTER_AZ\u003c/code\u003e: Top contributor network flows between Availability Zones\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eINTER_REGION\u003c/code\u003e: Top contributor network flows between Regions (to the edge of another Region)\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eINTER_VPC\u003c/code\u003e: Top contributor network flows between VPCs\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAWS_SERVICES\u003c/code\u003e: Top contributor network flows to or from Amazon Web Services services\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eUNCLASSIFIED\u003c/code\u003e: Top contributor network flows that do not have a bucket classification\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "endTime": {
+            "target": "smithy.api#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe timestamp that is the date and time end of the period that you want to retrieve results for with your query.\u003c/p\u003e",
+              "smithy.api#required": {},
+              "smithy.api#timestampFormat": "date-time"
+            }
+          },
+          "metricName": {
+            "target": "com.amazonaws.networkflowmonitor#WorkloadInsightsMetric",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe metric that you want to query top contributors for. That is, you can specify this metric to return the top contributor network flows, for this type of metric, for a monitor and (optionally) within a specific category, such as network flows between Availability Zones.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "scopeId": {
+            "target": "com.amazonaws.networkflowmonitor#ScopeId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier for the scope that includes the resources you want to get data results for. A scope ID is an internally-generated identifier that includes all the resources for a specific root account.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "startTime": {
+            "target": "smithy.api#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe timestamp that is the date and time that is the beginning of the period that you want to retrieve results for with your query.\u003c/p\u003e",
+              "smithy.api#required": {},
+              "smithy.api#timestampFormat": "date-time"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#StartQueryWorkloadInsightsTopContributorsDataOutput": {
+        "type": "structure",
+        "members": {
+          "queryId": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier for the query. A query ID is an internally-generated identifier for a specific query returned from an API call to start a query.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#StartQueryWorkloadInsightsTopContributorsInput": {
+        "type": "structure",
+        "members": {
+          "destinationCategory": {
+            "target": "com.amazonaws.networkflowmonitor#DestinationCategory",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe destination category for a top contributors row. Destination categories can be one of the following: \u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eINTRA_AZ\u003c/code\u003e: Top contributor network flows within a single Availability Zone\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eINTER_AZ\u003c/code\u003e: Top contributor network flows between Availability Zones\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eINTER_REGION\u003c/code\u003e: Top contributor network flows between Regions (to the edge of another Region)\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eINTER_VPC\u003c/code\u003e: Top contributor network flows between VPCs\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAWS_SERVICES\u003c/code\u003e: Top contributor network flows to or from Amazon Web Services services\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eUNCLASSIFIED\u003c/code\u003e: Top contributor network flows that do not have a bucket classification\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "endTime": {
+            "target": "smithy.api#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe timestamp that is the date and time end of the period that you want to retrieve results for with your query.\u003c/p\u003e",
+              "smithy.api#required": {},
+              "smithy.api#timestampFormat": "date-time"
+            }
+          },
+          "limit": {
+            "target": "com.amazonaws.networkflowmonitor#Limit",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of top contributors to return.\u003c/p\u003e"
+            }
+          },
+          "metricName": {
+            "target": "com.amazonaws.networkflowmonitor#WorkloadInsightsMetric",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe metric that you want to query top contributors for. That is, you can specify this metric to return the top contributor network flows, for this type of metric, for a monitor and (optionally) within a specific category, such as network flows between Availability Zones.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "scopeId": {
+            "target": "com.amazonaws.networkflowmonitor#ScopeId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier for the scope that includes the resources you want to get data results for. A scope ID is an internally-generated identifier that includes all the resources for a specific root account. A scope ID is returned from a \u003ccode\u003eCreateScope\u003c/code\u003e API call.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "startTime": {
+            "target": "smithy.api#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe timestamp that is the date and time that is the beginning of the period that you want to retrieve results for with your query.\u003c/p\u003e",
+              "smithy.api#required": {},
+              "smithy.api#timestampFormat": "date-time"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#StartQueryWorkloadInsightsTopContributorsOutput": {
+        "type": "structure",
+        "members": {
+          "queryId": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier for the query. A query ID is an internally-generated identifier for a specific query returned from an API call to start a query.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#StopQueryMonitorTopContributors": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.networkflowmonitor#StopQueryMonitorTopContributorsInput"
+        },
+        "output": {
+          "target": "com.amazonaws.networkflowmonitor#StopQueryMonitorTopContributorsOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.networkflowmonitor#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ServiceQuotaExceededException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.api#dataPlane": {},
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to stop a query for retrieving top contributors data for a monitor"
+          },
+          "smithy.api#documentation": "\u003cp\u003eStop a top contributors query for a monitor. Specify the query that you want to stop by providing a query ID and a monitor name. \u003c/p\u003e \u003cp\u003eTop contributors in Network Flow Monitor are network flows with the highest values for a specific metric type. Top contributors can be across all workload insights, for a given scope, or for a specific monitor. Use the applicable call for the top contributors that you want to be returned.\u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/monitors/{monitorName}/topContributorsQueries/{queryId}",
+            "method": "DELETE"
+          },
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#StopQueryMonitorTopContributorsInput": {
+        "type": "structure",
+        "members": {
+          "monitorName": {
+            "target": "com.amazonaws.networkflowmonitor#ResourceName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the monitor.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "queryId": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier for the query. A query ID is an internally-generated identifier for a specific query returned from an API call to create a query.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#StopQueryMonitorTopContributorsOutput": {
+        "type": "structure",
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#StopQueryWorkloadInsightsTopContributors": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.networkflowmonitor#StopQueryWorkloadInsightsTopContributorsInput"
+        },
+        "output": {
+          "target": "com.amazonaws.networkflowmonitor#StopQueryWorkloadInsightsTopContributorsOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.networkflowmonitor#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ServiceQuotaExceededException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.api#dataPlane": {},
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to stop a query for retrieving top contributors for workload insights"
+          },
+          "smithy.api#documentation": "\u003cp\u003eStop a top contributors query for workload insights. Specify the query that you want to stop by providing a query ID and a scope ID. \u003c/p\u003e \u003cp\u003eTop contributors in Network Flow Monitor are network flows with the highest values for a specific metric type. Top contributors can be across all workload insights, for a given scope, or for a specific monitor. Use the applicable call for the top contributors that you want to be returned.\u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/workloadInsights/{scopeId}/topContributorsQueries/{queryId}",
+            "method": "DELETE"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#StopQueryWorkloadInsightsTopContributorsData": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.networkflowmonitor#StopQueryWorkloadInsightsTopContributorsDataInput"
+        },
+        "output": {
+          "target": "com.amazonaws.networkflowmonitor#StopQueryWorkloadInsightsTopContributorsDataOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.networkflowmonitor#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ServiceQuotaExceededException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.api#dataPlane": {},
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to stop a query for retrieving top contributors data points for workload insights"
+          },
+          "smithy.api#documentation": "\u003cp\u003eStop a top contributors data query for workload insights. Specify the query that you want to stop by providing a query ID and a scope ID. \u003c/p\u003e \u003cp\u003eTop contributors in Network Flow Monitor are network flows with the highest values for a specific metric type. Top contributors can be across all workload insights, for a given scope, or for a specific monitor. Use the applicable call for the top contributors that you want to be returned.\u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/workloadInsights/{scopeId}/topContributorsDataQueries/{queryId}",
+            "method": "DELETE"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#StopQueryWorkloadInsightsTopContributorsDataInput": {
+        "type": "structure",
+        "members": {
+          "queryId": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier for the query. A query ID is an internally-generated identifier for a specific query returned from an API call to create a query.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "scopeId": {
+            "target": "com.amazonaws.networkflowmonitor#ScopeId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier for the scope that includes the resources you want to get data results for. A scope ID is an internally-generated identifier that includes all the resources for a specific root account.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#StopQueryWorkloadInsightsTopContributorsDataOutput": {
+        "type": "structure",
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#StopQueryWorkloadInsightsTopContributorsInput": {
+        "type": "structure",
+        "members": {
+          "queryId": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier for the query. A query ID is an internally-generated identifier for a specific query returned from an API call to create a query.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "scopeId": {
+            "target": "com.amazonaws.networkflowmonitor#ScopeId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier for the scope that includes the resources you want to get data results for. A scope ID is an internally-generated identifier that includes all the resources for a specific root account.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#StopQueryWorkloadInsightsTopContributorsOutput": {
+        "type": "structure",
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#SubnetArn": {
+        "type": "string"
+      },
+      "com.amazonaws.networkflowmonitor#SubnetId": {
+        "type": "string",
+        "traits": {
+          "smithy.api#pattern": "^subnet-[a-zA-Z0-9]{8,32}$"
+        }
+      },
+      "com.amazonaws.networkflowmonitor#TagKey": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 128
+          }
+        }
+      },
+      "com.amazonaws.networkflowmonitor#TagKeyList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.networkflowmonitor#TagKey"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 200
+          }
+        }
+      },
+      "com.amazonaws.networkflowmonitor#TagMap": {
+        "type": "map",
+        "key": {
+          "target": "com.amazonaws.networkflowmonitor#TagKey"
+        },
+        "value": {
+          "target": "com.amazonaws.networkflowmonitor#TagValue"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 200
+          }
+        }
+      },
+      "com.amazonaws.networkflowmonitor#TagResource": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.networkflowmonitor#TagResourceInput"
+        },
+        "output": {
+          "target": "com.amazonaws.networkflowmonitor#TagResourceOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.networkflowmonitor#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#conditionKeys": [
+            "aws:RequestTag/${TagKey}",
+            "aws:TagKeys"
+          ],
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to add tags to a resource"
+          },
+          "smithy.api#documentation": "\u003cp\u003eAdds a tag to a resource.\u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/tags/{resourceArn}",
+            "method": "POST"
+          },
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#TagResourceInput": {
+        "type": "structure",
+        "members": {
+          "resourceArn": {
+            "target": "com.amazonaws.networkflowmonitor#Arn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the resource.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "tags": {
+            "target": "com.amazonaws.networkflowmonitor#TagMap",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe tags for a resource.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "aws.api#data": "tagging",
+          "smithy.api#input": {},
+          "smithy.api#references": [
+            {
+              "resource": "com.amazonaws.networkflowmonitor#ScopeResource",
+              "ids": {
+                "scopeId": "resourceArn"
+              }
+            },
+            {
+              "resource": "com.amazonaws.networkflowmonitor#MonitorResource",
+              "ids": {
+                "monitorName": "resourceArn"
+              }
+            }
+          ]
+        }
+      },
+      "com.amazonaws.networkflowmonitor#TagResourceOutput": {
+        "type": "structure",
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#TagValue": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 256
+          }
+        }
+      },
+      "com.amazonaws.networkflowmonitor#TargetId": {
+        "type": "union",
+        "members": {
+          "accountId": {
+            "target": "com.amazonaws.networkflowmonitor#AccountId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier for the account for a target.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA target ID is an internally-generated identifier for a target. A target allows you to identify all the resources in a Network Flow Monitor scope. Currently, a target is always an Amazon Web Services account.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.networkflowmonitor#TargetIdentifier": {
+        "type": "structure",
+        "members": {
+          "targetId": {
+            "target": "com.amazonaws.networkflowmonitor#TargetId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier for a target, which is currently always an account ID .\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "targetType": {
+            "target": "com.amazonaws.networkflowmonitor#TargetType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe type of a target. A target type is currently always \u003ccode\u003eACCOUNT\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA target identifier is a pair of identifying information for a scope that is included in a target. A target identifier is made up of a target ID and a target type. Currently the target ID is always an account ID and the target type is always ACCOUNT.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.networkflowmonitor#TargetResource": {
+        "type": "structure",
+        "members": {
+          "region": {
+            "target": "com.amazonaws.networkflowmonitor#AwsRegion",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Web Services Region for the scope.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "targetIdentifier": {
+            "target": "com.amazonaws.networkflowmonitor#TargetIdentifier",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA target identifier is a pair of identifying information for a scope. A target identifier is made up of a targetID (currently always an account ID) and a targetType (currently always an account).\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA target resource in a scope. The resource is identified by a Region and an account, defined by a target identifier. A target identifier is made up of a target ID (currently always an account ID) and a target type (currently always \u003ccode\u003eACCOUNT\u003c/code\u003e).\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.networkflowmonitor#TargetResourceList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.networkflowmonitor#TargetResource"
+        }
+      },
+      "com.amazonaws.networkflowmonitor#TargetType": {
+        "type": "enum",
+        "members": {
+          "ACCOUNT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ACCOUNT"
+            }
+          }
+        }
+      },
+      "com.amazonaws.networkflowmonitor#ThrottlingException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "smithy.api#String"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe request was denied due to request throttling.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 429,
+          "smithy.api#retryable": {
+            "throttling": true
+          }
+        }
+      },
+      "com.amazonaws.networkflowmonitor#TraversedComponent": {
+        "type": "structure",
+        "members": {
+          "componentArn": {
+            "target": "com.amazonaws.networkflowmonitor#Arn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of a traversed component.\u003c/p\u003e"
+            }
+          },
+          "componentId": {
+            "target": "com.amazonaws.networkflowmonitor#Component",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier for the traversed component.\u003c/p\u003e"
+            }
+          },
+          "componentType": {
+            "target": "com.amazonaws.networkflowmonitor#ComponentType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe type of component that was traversed.\u003c/p\u003e"
+            }
+          },
+          "serviceName": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe service name for the traversed component.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA section of the network that a network flow has traveled through.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.networkflowmonitor#TraversedConstructsList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.networkflowmonitor#TraversedComponent"
+        }
+      },
+      "com.amazonaws.networkflowmonitor#UntagResource": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.networkflowmonitor#UntagResourceInput"
+        },
+        "output": {
+          "target": "com.amazonaws.networkflowmonitor#UntagResourceOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.networkflowmonitor#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#conditionKeys": [
+            "aws:TagKeys"
+          ],
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to remove tags from a resource"
+          },
+          "smithy.api#documentation": "\u003cp\u003eRemoves a tag from a resource.\u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/tags/{resourceArn}",
+            "method": "DELETE"
+          },
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#UntagResourceInput": {
+        "type": "structure",
+        "members": {
+          "resourceArn": {
+            "target": "com.amazonaws.networkflowmonitor#Arn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the resource.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "tagKeys": {
+            "target": "com.amazonaws.networkflowmonitor#TagKeyList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eKeys that you specified when you tagged a resource.\u003c/p\u003e",
+              "smithy.api#httpQuery": "tagKeys",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "aws.api#data": "tagging",
+          "smithy.api#input": {},
+          "smithy.api#references": [
+            {
+              "resource": "com.amazonaws.networkflowmonitor#ScopeResource",
+              "ids": {
+                "scopeId": "resourceArn"
+              }
+            },
+            {
+              "resource": "com.amazonaws.networkflowmonitor#MonitorResource",
+              "ids": {
+                "monitorName": "resourceArn"
+              }
+            }
+          ]
+        }
+      },
+      "com.amazonaws.networkflowmonitor#UntagResourceOutput": {
+        "type": "structure",
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#UpdateMonitor": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.networkflowmonitor#UpdateMonitorInput"
+        },
+        "output": {
+          "target": "com.amazonaws.networkflowmonitor#UpdateMonitorOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.networkflowmonitor#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to update a monitor"
+          },
+          "smithy.api#documentation": "\u003cp\u003eUpdate a monitor to add or remove local or remote resources.\u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/monitors/{monitorName}",
+            "method": "PATCH"
+          },
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#UpdateMonitorInput": {
+        "type": "structure",
+        "members": {
+          "clientToken": {
+            "target": "com.amazonaws.networkflowmonitor#UuidString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA unique, case-sensitive string of up to 64 ASCII characters that you specify to make an idempotent API request. Don't reuse the same client token for other API requests.\u003c/p\u003e",
+              "smithy.api#idempotencyToken": {}
+            }
+          },
+          "localResourcesToAdd": {
+            "target": "com.amazonaws.networkflowmonitor#MonitorLocalResources",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAdditional local resources to specify network flows for a monitor, as an array of resources with identifiers and types. A local resource in a workload is the location of hosts where the Network Flow Monitor agent is installed. \u003c/p\u003e"
+            }
+          },
+          "localResourcesToRemove": {
+            "target": "com.amazonaws.networkflowmonitor#MonitorLocalResources",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe local resources to remove, as an array of resources with identifiers and types.\u003c/p\u003e"
+            }
+          },
+          "monitorName": {
+            "target": "com.amazonaws.networkflowmonitor#ResourceName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the monitor.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "remoteResourcesToAdd": {
+            "target": "com.amazonaws.networkflowmonitor#MonitorRemoteResources",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe remote resources to add, as an array of resources with identifiers and types.\u003c/p\u003e \u003cp\u003eA remote resource is the other endpoint in the flow of a workload, with a local resource. For example, Amazon Dynamo DB can be a remote resource. \u003c/p\u003e"
+            }
+          },
+          "remoteResourcesToRemove": {
+            "target": "com.amazonaws.networkflowmonitor#MonitorRemoteResources",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe remote resources to remove, as an array of resources with identifiers and types.\u003c/p\u003e \u003cp\u003eA remote resource is the other endpoint specified for the network flow of a workload, with a local resource. For example, Amazon Dynamo DB can be a remote resource. \u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#UpdateMonitorOutput": {
+        "type": "structure",
+        "members": {
+          "createdAt": {
+            "target": "com.amazonaws.networkflowmonitor#Iso8601Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe date and time when the monitor was created.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "localResources": {
+            "target": "com.amazonaws.networkflowmonitor#MonitorLocalResources",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe local resources to monitor. A local resource in a workload is the location of hosts where the Network Flow Monitor agent is installed. \u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "modifiedAt": {
+            "target": "com.amazonaws.networkflowmonitor#Iso8601Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe last date and time that the monitor was modified.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "monitorArn": {
+            "target": "com.amazonaws.networkflowmonitor#MonitorArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the monitor.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "monitorName": {
+            "target": "com.amazonaws.networkflowmonitor#ResourceName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the monitor.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "monitorStatus": {
+            "target": "com.amazonaws.networkflowmonitor#MonitorStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe status of a monitor. The status can be one of the following\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003ePENDING\u003c/code\u003e: The monitor is in the process of being created.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eACTIVE\u003c/code\u003e: The monitor is active.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eINACTIVE\u003c/code\u003e: The monitor is inactive.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eERROR\u003c/code\u003e: Monitor creation failed due to an error.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eDELETING\u003c/code\u003e: The monitor is in the process of being deleted.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "remoteResources": {
+            "target": "com.amazonaws.networkflowmonitor#MonitorRemoteResources",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe remote resources updated for a monitor, as an array of resources with identifiers and types.\u003c/p\u003e \u003cp\u003eA remote resource is the other endpoint specified for the network flow of a workload, with a local resource. For example, Amazon Dynamo DB can be a remote resource.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "tags": {
+            "target": "com.amazonaws.networkflowmonitor#TagMap",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe tags for a monitor.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#UpdateScope": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.networkflowmonitor#UpdateScopeInput"
+        },
+        "output": {
+          "target": "com.amazonaws.networkflowmonitor#UpdateScopeOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.networkflowmonitor#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ServiceQuotaExceededException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.networkflowmonitor#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to update a scope"
+          },
+          "smithy.api#documentation": "\u003cp\u003eUpdate a scope to add or remove resources that you want to be available for Network Flow Monitor to generate metrics for, when you have active agents on those resources sending metrics reports to the Network Flow Monitor backend.\u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/scopes/{scopeId}",
+            "method": "PATCH"
+          },
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#UpdateScopeInput": {
+        "type": "structure",
+        "members": {
+          "resourcesToAdd": {
+            "target": "com.amazonaws.networkflowmonitor#TargetResourceList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of resources to add to a scope.\u003c/p\u003e",
+              "smithy.api#length": {
+                "min": 1,
+                "max": 99
+              }
+            }
+          },
+          "resourcesToDelete": {
+            "target": "com.amazonaws.networkflowmonitor#TargetResourceList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of resources to delete from a scope.\u003c/p\u003e",
+              "smithy.api#length": {
+                "min": 1,
+                "max": 99
+              }
+            }
+          },
+          "scopeId": {
+            "target": "com.amazonaws.networkflowmonitor#ScopeId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier for the scope that includes the resources you want to get data results for. A scope ID is an internally-generated identifier that includes all the resources for a specific root account.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#UpdateScopeOutput": {
+        "type": "structure",
+        "members": {
+          "scopeArn": {
+            "target": "com.amazonaws.networkflowmonitor#Arn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the scope.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "scopeId": {
+            "target": "com.amazonaws.networkflowmonitor#ScopeId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier for the scope that includes the resources you want to get data results for. A scope ID is an internally-generated identifier that includes all the resources for a specific root account.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "status": {
+            "target": "com.amazonaws.networkflowmonitor#ScopeStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe status for a scope. The status can be one of the following: \u003ccode\u003eSUCCEEDED\u003c/code\u003e, \u003ccode\u003eIN_PROGRESS\u003c/code\u003e, \u003ccode\u003eFAILED\u003c/code\u003e, \u003ccode\u003eDEACTIVATING\u003c/code\u003e, or \u003ccode\u003eDEACTIVATED\u003c/code\u003e.\u003c/p\u003e \u003cp\u003eA status of \u003ccode\u003eDEACTIVATING\u003c/code\u003e means that you've requested a scope to be deactivated and Network Flow Monitor is in the process of deactivating the scope. A status of \u003ccode\u003eDEACTIVATED\u003c/code\u003e means that the deactivating process is complete.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "tags": {
+            "target": "com.amazonaws.networkflowmonitor#TagMap",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe tags for a scope.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.networkflowmonitor#UuidString": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 36,
+            "max": 36
+          },
+          "smithy.api#pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$"
+        }
+      },
+      "com.amazonaws.networkflowmonitor#ValidationException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "smithy.api#String"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eInvalid request.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.networkflowmonitor#VpcArn": {
+        "type": "string"
+      },
+      "com.amazonaws.networkflowmonitor#VpcId": {
+        "type": "string",
+        "traits": {
+          "smithy.api#pattern": "^vpc-[a-zA-Z0-9]{8,32}$"
+        }
+      },
+      "com.amazonaws.networkflowmonitor#WorkloadInsightsMetric": {
+        "type": "enum",
+        "members": {
+          "DATA_TRANSFERRED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "DATA_TRANSFERRED"
+            }
+          },
+          "RETRANSMISSIONS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "RETRANSMISSIONS"
+            }
+          },
+          "TIMEOUTS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "TIMEOUTS"
+            }
+          }
+        }
+      },
+      "com.amazonaws.networkflowmonitor#WorkloadInsightsTopContributorsDataPoint": {
+        "type": "structure",
+        "members": {
+          "label": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe label identifying the data point.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "timestamps": {
+            "target": "com.amazonaws.networkflowmonitor#WorkloadInsightsTopContributorsTimestampsList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn array of the timestamps for the data point.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "values": {
+            "target": "com.amazonaws.networkflowmonitor#WorkloadInsightsTopContributorsValuesList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe values for the data point.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA data point for a top contributor network flow in a scope. Network Flow Monitor returns information about the network flows with the top values for each metric type, which are called top contributors.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.networkflowmonitor#WorkloadInsightsTopContributorsDataPoints": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.networkflowmonitor#WorkloadInsightsTopContributorsDataPoint"
+        }
+      },
+      "com.amazonaws.networkflowmonitor#WorkloadInsightsTopContributorsRow": {
+        "type": "structure",
+        "members": {
+          "accountId": {
+            "target": "com.amazonaws.networkflowmonitor#AccountId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe account ID for a specific row of data.\u003c/p\u003e"
+            }
+          },
+          "localAz": {
+            "target": "com.amazonaws.networkflowmonitor#AvailabilityZone",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier for the Availability Zone where the local resource is located.\u003c/p\u003e"
+            }
+          },
+          "localRegion": {
+            "target": "com.amazonaws.networkflowmonitor#AwsRegion",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Web Services Region where the local resource is located.\u003c/p\u003e"
+            }
+          },
+          "localSubnetArn": {
+            "target": "com.amazonaws.networkflowmonitor#SubnetArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of a local subnet.\u003c/p\u003e"
+            }
+          },
+          "localSubnetId": {
+            "target": "com.amazonaws.networkflowmonitor#SubnetId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe subnet identifier for the local resource.\u003c/p\u003e"
+            }
+          },
+          "localVpcArn": {
+            "target": "com.amazonaws.networkflowmonitor#VpcArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of a local VPC.\u003c/p\u003e"
+            }
+          },
+          "localVpcId": {
+            "target": "com.amazonaws.networkflowmonitor#VpcId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier for the VPC for the local resource.\u003c/p\u003e"
+            }
+          },
+          "remoteIdentifier": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier of a remote resource. For a VPC or subnet, this identifier is the VPC Amazon Resource Name (ARN) or subnet ARN. For an Availability Zone, this identifier is the AZ name, for example, us-west-2b. For an Amazon Web Services Region , this identifier is the Region name, for example, us-west-2.\u003c/p\u003e"
+            }
+          },
+          "value": {
+            "target": "smithy.api#Long",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe value for a metric.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA row for a top contributor for a scope.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.networkflowmonitor#WorkloadInsightsTopContributorsRowList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.networkflowmonitor#WorkloadInsightsTopContributorsRow"
+        }
+      },
+      "com.amazonaws.networkflowmonitor#WorkloadInsightsTopContributorsTimestampsList": {
+        "type": "list",
+        "member": {
+          "target": "smithy.api#Timestamp",
+          "traits": {
+            "smithy.api#timestampFormat": "date-time"
+          }
+        }
+      },
+      "com.amazonaws.networkflowmonitor#WorkloadInsightsTopContributorsValuesList": {
+        "type": "list",
+        "member": {
+          "target": "smithy.api#Double"
+        }
+      }
+    }
+  }
+}

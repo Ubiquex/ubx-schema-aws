@@ -1,0 +1,2642 @@
+{
+  "schema_source": "smithy",
+  "mode": "data_source",
+  "auth": {
+    "Type": "",
+    "Params": null
+  },
+  "base_url": "https://aws.example.invalid",
+  "retry": {
+    "MaxAttempts": 0,
+    "InitialBackoff": "",
+    "MaxBackoff": "",
+    "Jitter": null,
+    "RespectRetryAfter": null,
+    "RateLimitResetHeader": ""
+  },
+  "timeouts": {
+    "Create": "",
+    "Read": "",
+    "Update": "",
+    "Delete": "",
+    "Default": ""
+  },
+  "wire_name": "aws",
+  "raw_spec": {
+    "smithy": "2.0",
+    "shapes": {
+      "com.amazonaws.interconnect#AcceptConnectionProposal": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.interconnect#AcceptConnectionProposalRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.interconnect#AcceptConnectionProposalResponse"
+        },
+        "traits": {
+          "aws.iam#conditionKeys": [
+            "aws:RequestTag/${TagKey}",
+            "aws:TagKeys"
+          ],
+          "aws.iam#iamAction": {
+            "createsResources": [
+              "connection"
+            ],
+            "documentation": "Grants permission to accept a connection proposal generated elsewhere"
+          },
+          "smithy.api#documentation": "\u003cp\u003eAccepts a connection proposal which was generated at a supported partner's portal.\u003c/p\u003e \u003cp\u003eThe proposal contains the Environment and bandwidth that were chosen on the partner's portal and cannot be modified.\u003c/p\u003e \u003cp\u003eUpon accepting the proposal a connection will be made between the AWS network as accessed via the selected Attach Point and the network previously selected network on the partner's portal.\u003c/p\u003e",
+          "smithy.api#examples": [
+            {
+              "title": "Accept Connection Proposal",
+              "input": {
+                "activationKey": "\u003cActivation Key Data\u003e",
+                "attachPoint": {
+                  "directConnectGateway": "90392BE3-219C-47FD-BBA5-03DF76D2542A"
+                }
+              },
+              "output": {
+                "connection": {
+                  "id": "mcc-abc12345",
+                  "arn": "arn:aws:interconnect:us-east-1:000000000000:connection/mcc-abc12345",
+                  "description": "My MultiCloud Connection",
+                  "bandwidth": "1Gbps",
+                  "attachPoint": {
+                    "directConnectGateway": "90392BE3-219C-47FD-BBA5-03DF76D2542A"
+                  },
+                  "environmentId": "mce-aws-acme-1",
+                  "provider": {
+                    "cloudServiceProvider": "acme"
+                  },
+                  "location": "acme-east",
+                  "type": "Multicloud",
+                  "state": "pending",
+                  "sharedId": "B0615F4D-E588-47AD-9D04-1449EAA61C91",
+                  "ownerAccount": "000000000000",
+                  "activationKey": "\u003cActivation Key Data\u003e"
+                }
+              }
+            }
+          ],
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.interconnect#AcceptConnectionProposalRequest": {
+        "type": "structure",
+        "members": {
+          "activationKey": {
+            "target": "com.amazonaws.interconnect#ActivationKey",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn Activation Key that was generated on a supported partner's portal. This key captures the desired parameters from the initial creation request.\u003c/p\u003e \u003cp\u003eThe details of this request can be described using with \u003ca\u003eDescribeConnectionProposal\u003c/a\u003e. \u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "attachPoint": {
+            "target": "com.amazonaws.interconnect#AttachPoint",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Attach Point to which the connection should be associated.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "clientToken": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIdempotency token used for the request.\u003c/p\u003e",
+              "smithy.api#idempotencyToken": {}
+            }
+          },
+          "description": {
+            "target": "com.amazonaws.interconnect#ConnectionDescription",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA description to distinguish this \u003ca\u003eConnection\u003c/a\u003e.\u003c/p\u003e"
+            }
+          },
+          "tags": {
+            "target": "com.amazonaws.interconnect#TagMap",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe tags to associate with the resulting \u003ca\u003eConnection\u003c/a\u003e.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.interconnect#AcceptConnectionProposalResponse": {
+        "type": "structure",
+        "members": {
+          "connection": {
+            "target": "com.amazonaws.interconnect#Connection",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe created \u003ca\u003eConnection\u003c/a\u003e object.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.interconnect#AccessDeniedException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "smithy.api#String"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe calling principal is not allowed to access the specified resource, or the resource does not exist.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 403
+        }
+      },
+      "com.amazonaws.interconnect#ActivationKey": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 2048
+          },
+          "smithy.api#sensitive": {}
+        }
+      },
+      "com.amazonaws.interconnect#AmazonResourceName": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 59,
+            "max": 150
+          },
+          "smithy.api#pattern": "^arn:aws[a-z-]*:interconnect:[^:]+:[0-9]{12}:connection/(mcc|lmcc)-[a-z0-9]{8}$"
+        }
+      },
+      "com.amazonaws.interconnect#AttachPoint": {
+        "type": "union",
+        "members": {
+          "arn": {
+            "target": "com.amazonaws.interconnect#AmazonResourceName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIdentifies an attach point by full ARN.\u003c/p\u003e"
+            }
+          },
+          "directConnectGateway": {
+            "target": "com.amazonaws.interconnect#DirectConnectGatewayAttachPoint",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIdentifies an DirectConnect Gateway attach point by DirectConnectGatewayID.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eIdentifies an attach point to use with a Connection.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.interconnect#AttachPointDescriptor": {
+        "type": "structure",
+        "members": {
+          "identifier": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier for the specific type of the AttachPoint.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "name": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe descriptive name of the identifier attach point.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "type": {
+            "target": "com.amazonaws.interconnect#AttachPointType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe type of this AttachPoint, which will dictate the syntax of the identifier.\u003c/p\u003e \u003cp\u003eCurrent types include:\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003eARN\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003eDirectConnect Gateway\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eDescribes a possible Attach Point for a Connection.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.interconnect#AttachPointDescriptorList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.interconnect#AttachPointDescriptor"
+        }
+      },
+      "com.amazonaws.interconnect#AttachPointType": {
+        "type": "enum",
+        "members": {
+          "DirectConnectGateway": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "DirectConnectGateway"
+            }
+          }
+        }
+      },
+      "com.amazonaws.interconnect#BandwidthList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.interconnect#ConnectionBandwidth"
+        }
+      },
+      "com.amazonaws.interconnect#Bandwidths": {
+        "type": "structure",
+        "members": {
+          "available": {
+            "target": "com.amazonaws.interconnect#BandwidthList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe list of currently available bandwidths.\u003c/p\u003e"
+            }
+          },
+          "supported": {
+            "target": "com.amazonaws.interconnect#BandwidthList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe list of all bandwidths that this environment plans to support\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eContains the details about the available and supported bandwidths.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.interconnect#BillingTier": {
+        "type": "integer",
+        "traits": {
+          "smithy.api#range": {
+            "min": 0,
+            "max": 8
+          }
+        }
+      },
+      "com.amazonaws.interconnect#CloudServiceProvider": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "max": 32
+          }
+        }
+      },
+      "com.amazonaws.interconnect#Connection": {
+        "type": "structure",
+        "members": {
+          "activationKey": {
+            "target": "com.amazonaws.interconnect#ActivationKey",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Activation Key associated to this connection.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "arn": {
+            "target": "com.amazonaws.interconnect#AmazonResourceName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn ARN of a \u003ca\u003eConnection\u003c/a\u003e object.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "attachPoint": {
+            "target": "com.amazonaws.interconnect#AttachPoint",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Attach Point to which the connection should be associated.\"\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "bandwidth": {
+            "target": "com.amazonaws.interconnect#ConnectionBandwidth",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe specific selected bandwidth of this connection.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "billingTier": {
+            "target": "com.amazonaws.interconnect#BillingTier",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe billing tier this connection is currently assigned.\u003c/p\u003e"
+            }
+          },
+          "description": {
+            "target": "com.amazonaws.interconnect#ConnectionDescription",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA descriptive name for the connection.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "environmentId": {
+            "target": "com.amazonaws.interconnect#EnvironmentId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe specific \u003ca\u003eEnvironment\u003c/a\u003e this connection is placed upon.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "id": {
+            "target": "com.amazonaws.interconnect#ConnectionId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe short identifier of the connection object.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "location": {
+            "target": "com.amazonaws.interconnect#Location",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe provider specific location on the remote side of this \u003ca\u003eConnection\u003c/a\u003e \u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "ownerAccount": {
+            "target": "com.amazonaws.interconnect#OwnerAccountId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe account that owns this \u003ca\u003eConnection\u003c/a\u003e \u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "provider": {
+            "target": "com.amazonaws.interconnect#Provider",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe provider on the remote side of this \u003ca\u003eConnection\u003c/a\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "sharedId": {
+            "target": "com.amazonaws.interconnect#ConnectionSharedId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn identifier used by both AWS and the remote partner to identify the specific connection.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "state": {
+            "target": "com.amazonaws.interconnect#ConnectionState",
+            "traits": {
+              "smithy.api#documentation": "\u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003erequested\u003c/code\u003e: The initial state of a connection. The state will remain here until the Connection is accepted on the Partner portal.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003epending\u003c/code\u003e: The connection has been accepted and is being provisioned between AWS and the Partner.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eavailable\u003c/code\u003e: The connection has been fully provisioned between AWS and the Partner.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003edeleting\u003c/code\u003e: The connection is being deleted.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003edeleted\u003c/code\u003e: The connection has been deleted.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003efailed\u003c/code\u003e: The connection has failed to be created.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eupdating\u003c/code\u003e: The connection is being updated.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "tags": {
+            "target": "com.amazonaws.interconnect#TagMap",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe tags on the \u003ca\u003eConnection\u003c/a\u003e \u003c/p\u003e"
+            }
+          },
+          "type": {
+            "target": "com.amazonaws.interconnect#ProductType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe specific product type of this \u003ca\u003eConnection\u003c/a\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe object describing the provided connectivity from the AWS region to the partner location.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.interconnect#ConnectionBandwidth": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 8
+          },
+          "smithy.api#pattern": "^\\d+[MG]bps$"
+        }
+      },
+      "com.amazonaws.interconnect#ConnectionDescription": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 255
+          },
+          "smithy.api#pattern": "^[-a-zA-Z0-9_ ]+$"
+        }
+      },
+      "com.amazonaws.interconnect#ConnectionId": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 32
+          },
+          "smithy.api#pattern": "^(mcc|lmcc)-[a-z0-9]{8}$"
+        }
+      },
+      "com.amazonaws.interconnect#ConnectionResource": {
+        "type": "resource",
+        "traits": {
+          "aws.api#arn": {
+            "template": "connection/{id}"
+          },
+          "aws.api#taggable": {},
+          "aws.iam#conditionKeys": [
+            "aws:ResourceTag/${TagKey}"
+          ],
+          "aws.iam#disableConditionKeyInference": {},
+          "aws.iam#iamResource": {
+            "name": "connection",
+            "relativeDocumentation": "Connection.html"
+          }
+        }
+      },
+      "com.amazonaws.interconnect#ConnectionSharedId": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 36,
+            "max": 36
+          },
+          "smithy.api#pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+        }
+      },
+      "com.amazonaws.interconnect#ConnectionState": {
+        "type": "enum",
+        "members": {
+          "AVAILABLE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "available"
+            }
+          },
+          "DELETED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "deleted"
+            }
+          },
+          "DELETING": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "deleting"
+            }
+          },
+          "DOWN": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "down"
+            }
+          },
+          "FAILED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "failed"
+            }
+          },
+          "PENDING": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "pending"
+            }
+          },
+          "REQUESTED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "requested"
+            }
+          },
+          "UPDATING": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "updating"
+            }
+          }
+        }
+      },
+      "com.amazonaws.interconnect#ConnectionSummariesList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.interconnect#ConnectionSummary"
+        }
+      },
+      "com.amazonaws.interconnect#ConnectionSummary": {
+        "type": "structure",
+        "members": {
+          "arn": {
+            "target": "com.amazonaws.interconnect#AmazonResourceName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ARN of the \u003ca\u003eConnection\u003c/a\u003e \u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "attachPoint": {
+            "target": "com.amazonaws.interconnect#AttachPoint",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Attach Point to which the connection should be associated.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "bandwidth": {
+            "target": "com.amazonaws.interconnect#ConnectionBandwidth",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe bandwidth of the \u003ca\u003eConnection\u003c/a\u003e \u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "billingTier": {
+            "target": "com.amazonaws.interconnect#BillingTier",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe billing tier this connection is currently assigned.\u003c/p\u003e"
+            }
+          },
+          "description": {
+            "target": "com.amazonaws.interconnect#ConnectionDescription",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA descriptive name of the \u003ca\u003eConnection\u003c/a\u003e \u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "environmentId": {
+            "target": "com.amazonaws.interconnect#EnvironmentId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe \u003ca\u003eEnvironment\u003c/a\u003e that this \u003ca\u003eConnection\u003c/a\u003e is created on.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "id": {
+            "target": "com.amazonaws.interconnect#ConnectionId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier of the requested \u003ca\u003eConnection\u003c/a\u003e \u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "location": {
+            "target": "com.amazonaws.interconnect#Location",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe provider specific location at the remote end of this \u003ca\u003eConnection\u003c/a\u003e \u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "provider": {
+            "target": "com.amazonaws.interconnect#Provider",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe provider on the remote end of this \u003ca\u003eConnection\u003c/a\u003e \u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "sharedId": {
+            "target": "com.amazonaws.interconnect#ConnectionSharedId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn identifier used by both AWS and the remote partner to identify the specific connection.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "state": {
+            "target": "com.amazonaws.interconnect#ConnectionState",
+            "traits": {
+              "smithy.api#documentation": "\u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003erequested\u003c/code\u003e: The initial state of a connection. The state will remain here until the Connection is accepted on the Partner portal.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003epending\u003c/code\u003e: The connection has been accepted and is being provisioned between AWS and the Partner.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eavailable\u003c/code\u003e: The connection has been fully provisioned between AWS and the Partner.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003edeleting\u003c/code\u003e: The connection is being deleted.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003edeleted\u003c/code\u003e: The connection has been deleted.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003efailed\u003c/code\u003e: The connection has failed to be created.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eupdating\u003c/code\u003e: The connection is being updated.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "type": {
+            "target": "com.amazonaws.interconnect#ProductType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe product variant supplied by this resource.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eSummarized view of a Connection object.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.interconnect#CreateConnection": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.interconnect#CreateConnectionRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.interconnect#CreateConnectionResponse"
+        },
+        "traits": {
+          "aws.iam#conditionKeys": [
+            "aws:RequestTag/${TagKey}",
+            "aws:TagKeys"
+          ],
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to create a connection"
+          },
+          "smithy.api#documentation": "\u003cp\u003eInitiates the process to create a Connection across the specified Environment. \u003c/p\u003e \u003cp\u003eThe Environment dictates the specified partner and location to which the other end of the connection should attach. You can see a list of the available Environments by calling \u003ca\u003eListEnvironments\u003c/a\u003e \u003c/p\u003e \u003cp\u003eThe Attach Point specifies where within the AWS Network your connection will logically connect.\u003c/p\u003e \u003cp\u003eAfter a successful call to this method, the resulting \u003ca\u003eConnection\u003c/a\u003e will return an Activation Key which will need to be brought to the specific partner's portal to confirm the \u003ca\u003eConnection\u003c/a\u003e on both sides. (See \u003ca\u003eEnvironment$activationPageUrl\u003c/a\u003e for a direct link to the partner portal). \u003c/p\u003e",
+          "smithy.api#examples": [
+            {
+              "title": "Create Connection on specific environment",
+              "input": {
+                "bandwidth": "1Gbps",
+                "environmentId": "mce-aws-acme-1",
+                "remoteAccount": {
+                  "identifier": "PartnerAccountDetails"
+                },
+                "attachPoint": {
+                  "directConnectGateway": "90392BE3-219C-47FD-BBA5-03DF76D2542A"
+                }
+              },
+              "output": {
+                "connection": {
+                  "id": "mcc-abc12345",
+                  "arn": "arn:aws:interconnect:us-east-1:000000000000:connection/mcc-abc12345",
+                  "description": "My MultiCloud Connection",
+                  "bandwidth": "1Gbps",
+                  "attachPoint": {
+                    "directConnectGateway": "90392BE3-219C-47FD-BBA5-03DF76D2542A"
+                  },
+                  "environmentId": "mce-aws-acme-1",
+                  "provider": {
+                    "cloudServiceProvider": "acme"
+                  },
+                  "location": "acme-east",
+                  "type": "Multicloud",
+                  "state": "requested",
+                  "sharedId": "B0615F4D-E588-47AD-9D04-1449EAA61C91",
+                  "ownerAccount": "000000000000",
+                  "activationKey": "\u003cActivation Key Data\u003e"
+                }
+              }
+            }
+          ],
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.interconnect#CreateConnectionRequest": {
+        "type": "structure",
+        "members": {
+          "attachPoint": {
+            "target": "com.amazonaws.interconnect#AttachPoint",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Attach Point to which the connection should be associated.\"\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "bandwidth": {
+            "target": "com.amazonaws.interconnect#ConnectionBandwidth",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe desired bandwidth of the requested \u003ca\u003eConnection\u003c/a\u003e \u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "clientToken": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIdempotency token used for the request.\u003c/p\u003e",
+              "smithy.api#idempotencyToken": {}
+            }
+          },
+          "description": {
+            "target": "com.amazonaws.interconnect#ConnectionDescription",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA description to distinguish this \u003ca\u003eConnection\u003c/a\u003e.\u003c/p\u003e"
+            }
+          },
+          "environmentId": {
+            "target": "com.amazonaws.interconnect#EnvironmentId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier of the \u003ca\u003eEnvironment\u003c/a\u003e across which this \u003ca\u003eConnection\u003c/a\u003e should be created.\u003c/p\u003e \u003cp\u003eThe available \u003ca\u003eEnvironment\u003c/a\u003e objects can be determined using \u003ca\u003eListEnvironments\u003c/a\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "remoteAccount": {
+            "target": "com.amazonaws.interconnect#RemoteAccountIdentifier",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAccount and/or principal identifying information that can be verified by the partner of this specific Environment.\u003c/p\u003e"
+            }
+          },
+          "tags": {
+            "target": "com.amazonaws.interconnect#TagMap",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe tag to associate with the resulting \u003ca\u003eConnection\u003c/a\u003e.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.interconnect#CreateConnectionResponse": {
+        "type": "structure",
+        "members": {
+          "connection": {
+            "target": "com.amazonaws.interconnect#Connection",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe resulting \u003ca\u003eConnection\u003c/a\u003e.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.interconnect#DeleteConnection": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.interconnect#DeleteConnectionRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.interconnect#DeleteConnectionResponse"
+        },
+        "traits": {
+          "aws.iam#iamAction": {
+            "resources": {
+              "required": {
+                "connection": {}
+              }
+            },
+            "documentation": "Grants permission to delete an existing connection"
+          },
+          "smithy.api#documentation": "\u003cp\u003eDeletes an existing Connection with the supplied identifier.\u003c/p\u003e \u003cp\u003eThis operation will also inform the remote partner of your intention to delete your connection. Note, the partner may still require you to delete to fully clean up resources, but the network connectivity provided by the \u003ca\u003eConnection\u003c/a\u003e will cease to exist.\u003c/p\u003e",
+          "smithy.api#examples": [
+            {
+              "title": "Delete Connection",
+              "input": {
+                "identifier": "mcc-abc12345"
+              },
+              "output": {
+                "connection": {
+                  "id": "mcc-abc12345",
+                  "arn": "arn:aws:interconnect:us-east-1:000000000000:connection/mcc-abc12345",
+                  "description": "changed Description",
+                  "bandwidth": "2Gbps",
+                  "attachPoint": {
+                    "directConnectGateway": "90392BE3-219C-47FD-BBA5-03DF76D2542A"
+                  },
+                  "environmentId": "mce-aws-acme-1",
+                  "provider": {
+                    "cloudServiceProvider": "acme"
+                  },
+                  "location": "acme-east",
+                  "type": "Multicloud",
+                  "state": "deleting",
+                  "sharedId": "B0615F4D-E588-47AD-9D04-1449EAA61C91",
+                  "ownerAccount": "000000000000",
+                  "activationKey": "\u003cActivation Key Data\u003e"
+                }
+              }
+            }
+          ],
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.interconnect#DeleteConnectionRequest": {
+        "type": "structure",
+        "members": {
+          "clientToken": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIdempotency token used for the request.\u003c/p\u003e",
+              "smithy.api#idempotencyToken": {}
+            }
+          },
+          "identifier": {
+            "target": "com.amazonaws.interconnect#ConnectionId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier of the \u003ca\u003eConnection\u003c/a\u003e to be deleted. \u003c/p\u003e",
+              "smithy.api#required": {},
+              "smithy.api#resourceIdentifier": "id"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.interconnect#DeleteConnectionResponse": {
+        "type": "structure",
+        "members": {
+          "connection": {
+            "target": "com.amazonaws.interconnect#Connection",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe \u003ca\u003eConnection\u003c/a\u003e object that has been marked for deletion.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.interconnect#DescribeConnectionProposal": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.interconnect#DescribeConnectionProposalRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.interconnect#DescribeConnectionProposalResponse"
+        },
+        "traits": {
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to describe a connection proposal"
+          },
+          "smithy.api#documentation": "\u003cp\u003eDescribes the details of a connection proposal generated at a partner's portal.\u003c/p\u003e",
+          "smithy.api#examples": [
+            {
+              "title": "Describe Connection Proposal",
+              "input": {
+                "activationKey": "\u003cActivation Key Data\u003e"
+              },
+              "output": {
+                "bandwidth": "1Gbps",
+                "environmentId": "mce-aws-acme-1",
+                "provider": {
+                  "cloudServiceProvider": "acme"
+                },
+                "location": "acme-east"
+              }
+            }
+          ],
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.interconnect#DescribeConnectionProposalRequest": {
+        "type": "structure",
+        "members": {
+          "activationKey": {
+            "target": "com.amazonaws.interconnect#ActivationKey",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn Activation Key that was generated on a supported partner's portal. This key captures the desired parameters from the initial creation request.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.interconnect#DescribeConnectionProposalResponse": {
+        "type": "structure",
+        "members": {
+          "bandwidth": {
+            "target": "com.amazonaws.interconnect#ConnectionBandwidth",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe bandwidth of the proposed \u003ca\u003eConnection\u003c/a\u003e. \u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "environmentId": {
+            "target": "com.amazonaws.interconnect#EnvironmentId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier of the \u003ca\u003eEnvironment\u003c/a\u003e upon which the \u003ca\u003eConnection\u003c/a\u003e would be placed if this proposal were accepted.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "location": {
+            "target": "com.amazonaws.interconnect#Location",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe partner specific location distinguisher of the specific \u003ca\u003eEnvironment\u003c/a\u003e of the proposal.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "provider": {
+            "target": "com.amazonaws.interconnect#Provider",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe partner provider of the specific \u003ca\u003eEnvironment\u003c/a\u003e of the proposal.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.interconnect#DirectConnectGatewayAttachPoint": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 36,
+            "max": 36
+          },
+          "smithy.api#pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+        }
+      },
+      "com.amazonaws.interconnect#Environment": {
+        "type": "structure",
+        "members": {
+          "activationPageUrl": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn HTTPS URL on the remote partner portal where the Activation Key should be brought to complete the creation process.\u003c/p\u003e"
+            }
+          },
+          "bandwidths": {
+            "target": "com.amazonaws.interconnect#Bandwidths",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe sets of bandwidths that are available and supported on this environment.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "environmentId": {
+            "target": "com.amazonaws.interconnect#EnvironmentId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier of this \u003ca\u003eEnvironment\u003c/a\u003e \u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "location": {
+            "target": "com.amazonaws.interconnect#Location",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe provider specific location on the remote side of this \u003ca\u003eConnection\u003c/a\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "provider": {
+            "target": "com.amazonaws.interconnect#Provider",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe provider on the remote side of this \u003ca\u003eConnection\u003c/a\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "remoteIdentifierType": {
+            "target": "com.amazonaws.interconnect#RemoteAccountIdentifierType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe type of identifying information that should be supplied to the \u003ccode\u003eremoteAccount\u003c/code\u003e parameter of a \u003ca\u003eCreateConnection\u003c/a\u003e call for this specific Environment.\u003c/p\u003e"
+            }
+          },
+          "state": {
+            "target": "com.amazonaws.interconnect#EnvironmentState",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe state of the \u003ca\u003eEnvironment\u003c/a\u003e. Possible values:\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eavailable\u003c/code\u003e: The environment is available and new \u003ca\u003eConnection\u003c/a\u003e objects can be requested.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003elimited\u003c/code\u003e: The environment is available, but overall capacity is limited. The set of available bandwidths \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eunavailable\u003c/code\u003e: The environment is currently unavailable.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "type": {
+            "target": "com.amazonaws.interconnect#ProductType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe specific product type of \u003ca\u003eConnection\u003c/a\u003e objects provided by this \u003ca\u003eEnvironment\u003c/a\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eDefines the logical topology that an AWS Interconnect Connection is created upon.\u003c/p\u003e \u003cp\u003eSpecifically, an Environment defines the partner The remote Cloud Service Provider of this resource. or The remote Last Mile Provider of this resource. and the region or location specification to which an AWS Interconnect Connection can be made.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.interconnect#EnvironmentId": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 64
+          }
+        }
+      },
+      "com.amazonaws.interconnect#EnvironmentList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.interconnect#Environment"
+        }
+      },
+      "com.amazonaws.interconnect#EnvironmentResource": {
+        "type": "resource",
+        "traits": {
+          "aws.api#arn": {
+            "template": "environment/{id}"
+          },
+          "aws.iam#disableConditionKeyInference": {},
+          "aws.iam#iamResource": {
+            "name": "environment",
+            "relativeDocumentation": "Environment.html"
+          }
+        }
+      },
+      "com.amazonaws.interconnect#EnvironmentState": {
+        "type": "enum",
+        "members": {
+          "AVAILABLE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "available"
+            }
+          },
+          "LIMITED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "limited"
+            }
+          },
+          "UNAVAILABLE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "unavailable"
+            }
+          }
+        }
+      },
+      "com.amazonaws.interconnect#GetConnection": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.interconnect#GetConnectionRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.interconnect#GetConnectionResponse"
+        },
+        "traits": {
+          "aws.iam#iamAction": {
+            "resources": {
+              "required": {
+                "connection": {}
+              }
+            },
+            "documentation": "Grants permission to describe a connection"
+          },
+          "smithy.api#documentation": "\u003cp\u003eDescribes the current state of a Connection resource as specified by the identifier. \u003c/p\u003e",
+          "smithy.api#examples": [
+            {
+              "title": "Get connection",
+              "input": {
+                "identifier": "mcc-abc12345"
+              },
+              "output": {
+                "connection": {
+                  "id": "mcc-abc12345",
+                  "arn": "arn:aws:interconnect:us-east-1:000000000000:connection/mcc-abc12345",
+                  "description": "My MultiCloud Connection",
+                  "bandwidth": "1Gbps",
+                  "attachPoint": {
+                    "directConnectGateway": "90392BE3-219C-47FD-BBA5-03DF76D2542A"
+                  },
+                  "environmentId": "mce-aws-acme-1",
+                  "provider": {
+                    "cloudServiceProvider": "acme"
+                  },
+                  "location": "acme-east",
+                  "type": "Multicloud",
+                  "state": "available",
+                  "sharedId": "B0615F4D-E588-47AD-9D04-1449EAA61C91",
+                  "ownerAccount": "000000000000",
+                  "activationKey": "\u003cActivation Key Data\u003e"
+                }
+              }
+            }
+          ],
+          "smithy.api#readonly": {},
+          "smithy.waiters#waitable": {
+            "ConnectionAvailable": {
+              "minDelay": 30,
+              "maxDelay": 120,
+              "acceptors": [
+                {
+                  "state": "success",
+                  "matcher": {
+                    "output": {
+                      "path": "connection.state",
+                      "expected": "available",
+                      "comparator": "stringEquals"
+                    }
+                  }
+                },
+                {
+                  "state": "failure",
+                  "matcher": {
+                    "output": {
+                      "path": "connection.state",
+                      "expected": "deleted",
+                      "comparator": "stringEquals"
+                    }
+                  }
+                },
+                {
+                  "state": "failure",
+                  "matcher": {
+                    "output": {
+                      "path": "connection.state",
+                      "expected": "down",
+                      "comparator": "stringEquals"
+                    }
+                  }
+                }
+              ]
+            },
+            "ConnectionDeleted": {
+              "minDelay": 30,
+              "maxDelay": 120,
+              "acceptors": [
+                {
+                  "state": "success",
+                  "matcher": {
+                    "output": {
+                      "path": "connection.state",
+                      "expected": "deleted",
+                      "comparator": "stringEquals"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "com.amazonaws.interconnect#GetConnectionRequest": {
+        "type": "structure",
+        "members": {
+          "identifier": {
+            "target": "com.amazonaws.interconnect#ConnectionId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier of the requested \u003ca\u003eConnection\u003c/a\u003e \u003c/p\u003e",
+              "smithy.api#required": {},
+              "smithy.api#resourceIdentifier": "id"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.interconnect#GetConnectionResponse": {
+        "type": "structure",
+        "members": {
+          "connection": {
+            "target": "com.amazonaws.interconnect#Connection",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe existing \u003ca\u003eConnection\u003c/a\u003e resource.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.interconnect#GetEnvironment": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.interconnect#GetEnvironmentRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.interconnect#GetEnvironmentResponse"
+        },
+        "traits": {
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to describe an environment"
+          },
+          "smithy.api#documentation": "\u003cp\u003eDescribes a specific \u003ca\u003eEnvironment\u003c/a\u003e \u003c/p\u003e",
+          "smithy.api#examples": [
+            {
+              "title": "Get a specific environment",
+              "input": {
+                "id": "mce-aws-acme-1"
+              },
+              "output": {
+                "environment": {
+                  "environmentId": "mce-aws-acme-1",
+                  "provider": {
+                    "cloudServiceProvider": "acme"
+                  },
+                  "location": "acme-east",
+                  "state": "available",
+                  "type": "Multicloud",
+                  "bandwidths": {
+                    "available": [
+                      "1Gbps"
+                    ],
+                    "supported": [
+                      "1Gbps",
+                      "2Gbps"
+                    ]
+                  }
+                }
+              }
+            }
+          ],
+          "smithy.api#readonly": {},
+          "smithy.test#smokeTests": [
+            {
+              "id": "GetEnvironmentFailure",
+              "params": {
+                "id": "mce-nonexistent"
+              },
+              "expect": {
+                "failure": {}
+              },
+              "vendorParamsShape": "aws.test#AwsVendorParams",
+              "vendorParams": {
+                "useDualstack": true
+              }
+            }
+          ]
+        }
+      },
+      "com.amazonaws.interconnect#GetEnvironmentRequest": {
+        "type": "structure",
+        "members": {
+          "id": {
+            "target": "com.amazonaws.interconnect#EnvironmentId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier of the specific \u003ca\u003eEnvironment\u003c/a\u003e to describe.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.interconnect#GetEnvironmentResponse": {
+        "type": "structure",
+        "members": {
+          "environment": {
+            "target": "com.amazonaws.interconnect#Environment",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe requested \u003ca\u003eEnvironment\u003c/a\u003e structure.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.interconnect#Interconnect": {
+        "type": "service",
+        "errors": [
+          {
+            "target": "com.amazonaws.interconnect#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.interconnect#InterconnectClientException"
+          },
+          {
+            "target": "com.amazonaws.interconnect#InterconnectServerException"
+          },
+          {
+            "target": "com.amazonaws.interconnect#InterconnectValidationException"
+          },
+          {
+            "target": "com.amazonaws.interconnect#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.interconnect#ServiceQuotaExceededException"
+          },
+          {
+            "target": "com.amazonaws.interconnect#ThrottlingException"
+          }
+        ],
+        "version": "2022-07-26",
+        "operations": [
+          {
+            "target": "com.amazonaws.interconnect#AcceptConnectionProposal"
+          },
+          {
+            "target": "com.amazonaws.interconnect#DescribeConnectionProposal"
+          },
+          {
+            "target": "com.amazonaws.interconnect#ListAttachPoints"
+          },
+          {
+            "target": "com.amazonaws.interconnect#ListTagsForResource"
+          },
+          {
+            "target": "com.amazonaws.interconnect#TagResource"
+          },
+          {
+            "target": "com.amazonaws.interconnect#UntagResource"
+          }
+        ],
+        "resources": [
+          {
+            "target": "com.amazonaws.interconnect#ConnectionResource"
+          },
+          {
+            "target": "com.amazonaws.interconnect#EnvironmentResource"
+          }
+        ],
+        "traits": {
+          "aws.api#service": {
+            "sdkId": "Interconnect",
+            "arnNamespace": "interconnect"
+          },
+          "aws.api#tagEnabled": {},
+          "aws.auth#sigv4": {
+            "name": "interconnect"
+          },
+          "aws.endpoints#dualStackOnlyEndpoints": {},
+          "aws.endpoints#standardRegionalEndpoints": {},
+          "aws.iam#defineConditionKeys": {
+            "aws:ResourceTag/${TagKey}": {
+              "type": "String",
+              "documentation": "Filters access by a tag key and value pair of a resource",
+              "externalDocumentation": "${DocHomeURL}IAM/latest/UserGuide/reference_policies_condition-keys.html#condition-keys-resourcetag"
+            },
+            "aws:RequestTag/${TagKey}": {
+              "type": "String",
+              "documentation": "Filters access by a tag key and value pair that is allowed in the request",
+              "externalDocumentation": "${DocHomeURL}IAM/latest/UserGuide/reference_policies_condition-keys.html#condition-keys-requesttag"
+            },
+            "aws:TagKeys": {
+              "type": "ArrayOfString",
+              "documentation": "Filters access by a list of tag keys that are allowed in the request",
+              "externalDocumentation": "${DocHomeURL}IAM/latest/UserGuide/reference_policies_condition-keys.html#condition-keys-tagkeys"
+            }
+          },
+          "aws.iam#supportedPrincipalTypes": [
+            "Root",
+            "IAMUser",
+            "IAMRole",
+            "FederatedUser"
+          ],
+          "aws.protocols#awsJson1_0": {},
+          "smithy.api#documentation": "\u003cp\u003eProvides managed connections between your AWS network resources and select partner network resources.\u003c/p\u003e",
+          "smithy.api#title": "Interconnect",
+          "smithy.protocols#rpcv2Cbor": {},
+          "smithy.rules#endpointBdd": {
+            "version": "1.1",
+            "parameters": {
+              "UseFIPS": {
+                "builtIn": "AWS::UseFIPS",
+                "required": true,
+                "default": false,
+                "documentation": "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
+                "type": "boolean"
+              },
+              "Endpoint": {
+                "builtIn": "SDK::Endpoint",
+                "required": false,
+                "documentation": "Override the endpoint used to send this request",
+                "type": "string"
+              },
+              "Region": {
+                "builtIn": "AWS::Region",
+                "required": false,
+                "documentation": "The AWS region used to dispatch the request.",
+                "type": "string"
+              }
+            },
+            "conditions": [
+              {
+                "fn": "isSet",
+                "argv": [
+                  {
+                    "ref": "Endpoint"
+                  }
+                ]
+              },
+              {
+                "fn": "isSet",
+                "argv": [
+                  {
+                    "ref": "Region"
+                  }
+                ]
+              },
+              {
+                "fn": "aws.partition",
+                "argv": [
+                  {
+                    "ref": "Region"
+                  }
+                ],
+                "assign": "PartitionResult"
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "ref": "UseFIPS"
+                  },
+                  true
+                ]
+              }
+            ],
+            "results": [
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: FIPS and custom endpoint are not supported",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": {
+                    "ref": "Endpoint"
+                  },
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://interconnect-fips.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://interconnect.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: Missing Region",
+                "type": "error"
+              }
+            ],
+            "root": 2,
+            "nodeCount": 6,
+            "nodes": "/////wAAAAH/////AAAAAAAAAAYAAAADAAAAAQAAAAQF9eEFAAAAAgAAAAUF9eEFAAAAAwX14QMF9eEEAAAAAwX14QEF9eEC"
+          },
+          "smithy.rules#endpointRuleSet": {
+            "version": "1.0",
+            "parameters": {
+              "UseFIPS": {
+                "builtIn": "AWS::UseFIPS",
+                "required": true,
+                "default": false,
+                "documentation": "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
+                "type": "boolean"
+              },
+              "Endpoint": {
+                "builtIn": "SDK::Endpoint",
+                "required": false,
+                "documentation": "Override the endpoint used to send this request",
+                "type": "string"
+              },
+              "Region": {
+                "builtIn": "AWS::Region",
+                "required": false,
+                "documentation": "The AWS region used to dispatch the request.",
+                "type": "string"
+              }
+            },
+            "rules": [
+              {
+                "conditions": [
+                  {
+                    "fn": "isSet",
+                    "argv": [
+                      {
+                        "ref": "Endpoint"
+                      }
+                    ]
+                  }
+                ],
+                "rules": [
+                  {
+                    "conditions": [
+                      {
+                        "fn": "booleanEquals",
+                        "argv": [
+                          {
+                            "ref": "UseFIPS"
+                          },
+                          true
+                        ]
+                      }
+                    ],
+                    "error": "Invalid Configuration: FIPS and custom endpoint are not supported",
+                    "type": "error"
+                  },
+                  {
+                    "conditions": [],
+                    "endpoint": {
+                      "url": {
+                        "ref": "Endpoint"
+                      },
+                      "properties": {},
+                      "headers": {}
+                    },
+                    "type": "endpoint"
+                  }
+                ],
+                "type": "tree"
+              },
+              {
+                "conditions": [],
+                "rules": [
+                  {
+                    "conditions": [
+                      {
+                        "fn": "isSet",
+                        "argv": [
+                          {
+                            "ref": "Region"
+                          }
+                        ]
+                      }
+                    ],
+                    "rules": [
+                      {
+                        "conditions": [
+                          {
+                            "fn": "aws.partition",
+                            "argv": [
+                              {
+                                "ref": "Region"
+                              }
+                            ],
+                            "assign": "PartitionResult"
+                          }
+                        ],
+                        "rules": [
+                          {
+                            "conditions": [
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  {
+                                    "ref": "UseFIPS"
+                                  },
+                                  true
+                                ]
+                              }
+                            ],
+                            "endpoint": {
+                              "url": "https://interconnect-fips.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                              "properties": {},
+                              "headers": {}
+                            },
+                            "type": "endpoint"
+                          },
+                          {
+                            "conditions": [],
+                            "endpoint": {
+                              "url": "https://interconnect.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                              "properties": {},
+                              "headers": {}
+                            },
+                            "type": "endpoint"
+                          }
+                        ],
+                        "type": "tree"
+                      }
+                    ],
+                    "type": "tree"
+                  },
+                  {
+                    "conditions": [],
+                    "error": "Invalid Configuration: Missing Region",
+                    "type": "error"
+                  }
+                ],
+                "type": "tree"
+              }
+            ]
+          },
+          "smithy.rules#endpointTests": {
+            "testCases": [
+              {
+                "documentation": "For custom endpoint with region not set and fips disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://example.com"
+                  }
+                },
+                "params": {
+                  "Endpoint": "https://example.com",
+                  "UseFIPS": false
+                }
+              },
+              {
+                "documentation": "For custom endpoint with fips enabled",
+                "expect": {
+                  "error": "Invalid Configuration: FIPS and custom endpoint are not supported"
+                },
+                "params": {
+                  "Endpoint": "https://example.com",
+                  "UseFIPS": true
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://interconnect-fips.us-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": true
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://interconnect.us-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false
+                }
+              },
+              {
+                "documentation": "For region cn-northwest-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://interconnect-fips.cn-northwest-1.api.amazonwebservices.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-northwest-1",
+                  "UseFIPS": true
+                }
+              },
+              {
+                "documentation": "For region cn-northwest-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://interconnect.cn-northwest-1.api.amazonwebservices.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-northwest-1",
+                  "UseFIPS": false
+                }
+              },
+              {
+                "documentation": "For region us-gov-west-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://interconnect-fips.us-gov-west-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-west-1",
+                  "UseFIPS": true
+                }
+              },
+              {
+                "documentation": "For region us-gov-west-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://interconnect.us-gov-west-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-west-1",
+                  "UseFIPS": false
+                }
+              },
+              {
+                "documentation": "Missing region",
+                "expect": {
+                  "error": "Invalid Configuration: Missing Region"
+                }
+              }
+            ],
+            "version": "1.0"
+          }
+        }
+      },
+      "com.amazonaws.interconnect#InterconnectClientException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe request was denied due to incorrect client supplied parameters.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.interconnect#InterconnectServerException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe request resulted in an exception internal to the service.\u003c/p\u003e",
+          "smithy.api#error": "server",
+          "smithy.api#httpError": 500
+        }
+      },
+      "com.amazonaws.interconnect#InterconnectValidationException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe input fails to satisfy the constraints specified.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.interconnect#LastMileProvider": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "max": 32
+          }
+        }
+      },
+      "com.amazonaws.interconnect#ListAttachPoints": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.interconnect#ListAttachPointsRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.interconnect#ListAttachPointsResponse"
+        },
+        "traits": {
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to list available attach points"
+          },
+          "smithy.api#documentation": "\u003cp\u003eLists all Attach Points the caller has access to that are valid for the specified \u003ca\u003eEnvironment\u003c/a\u003e.\u003c/p\u003e",
+          "smithy.api#examples": [
+            {
+              "title": "List Attach Points",
+              "input": {
+                "environmentId": "mce-aws-acme-1"
+              },
+              "output": {
+                "attachPoints": [
+                  {
+                    "type": "DirectConnectGateway",
+                    "identifier": "90392BE3-219C-47FD-BBA5-03DF76D2542A",
+                    "name": "My DirectConnectGateway"
+                  }
+                ]
+              }
+            }
+          ],
+          "smithy.api#paginated": {
+            "inputToken": "nextToken",
+            "outputToken": "nextToken",
+            "pageSize": "maxResults",
+            "items": "attachPoints"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.interconnect#ListAttachPointsRequest": {
+        "type": "structure",
+        "members": {
+          "environmentId": {
+            "target": "com.amazonaws.interconnect#EnvironmentId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier of the \u003ca\u003eEnvironment\u003c/a\u003e for which to list valid Attach Points.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "maxResults": {
+            "target": "com.amazonaws.interconnect#MaxResults",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe max number of list results in a single paginated response.\u003c/p\u003e"
+            }
+          },
+          "nextToken": {
+            "target": "com.amazonaws.interconnect#NextToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA pagination token from a previous paginated response indicating you wish to get the next page.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.interconnect#ListAttachPointsResponse": {
+        "type": "structure",
+        "members": {
+          "attachPoints": {
+            "target": "com.amazonaws.interconnect#AttachPointDescriptorList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe valid \u003ca\u003eAttachPoint\u003c/a\u003e \u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "nextToken": {
+            "target": "com.amazonaws.interconnect#NextToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA pagination token indicating that there are more results that can be fetched.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.interconnect#ListConnections": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.interconnect#ListConnectionsRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.interconnect#ListConnectionsResponse"
+        },
+        "traits": {
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to list connections"
+          },
+          "smithy.api#documentation": "\u003cp\u003eLists all connection objects to which the caller has access.\u003c/p\u003e \u003cp\u003eAllows for optional filtering by the following properties:\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003estate\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eenvironmentId\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eprovider\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eattach point\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e \u003cp\u003eOnly \u003ca\u003eConnection\u003c/a\u003e objects matching all filters will be returned.\u003c/p\u003e",
+          "smithy.api#examples": [
+            {
+              "title": "List All Connections",
+              "input": {},
+              "output": {
+                "connections": [
+                  {
+                    "id": "mcc-abc12345",
+                    "arn": "arn:aws:interconnect:us-east-1:000000000000:connection/mcc-abc12345",
+                    "description": "My MultiCloud Connection",
+                    "bandwidth": "1Gbps",
+                    "attachPoint": {
+                      "directConnectGateway": "90392BE3-219C-47FD-BBA5-03DF76D2542A"
+                    },
+                    "environmentId": "mce-aws-acme-1",
+                    "provider": {
+                      "cloudServiceProvider": "acme"
+                    },
+                    "location": "acme-east",
+                    "type": "Multicloud",
+                    "state": "available",
+                    "sharedId": "B0615F4D-E588-47AD-9D04-1449EAA61C91"
+                  },
+                  {
+                    "id": "lmcc-xyz98765",
+                    "arn": "arn:aws:interconnect:us-east-1:000000000000:connection/lmcc-xyz98765",
+                    "description": "My LastMile  Connection",
+                    "bandwidth": "1Gbps",
+                    "attachPoint": {
+                      "directConnectGateway": "244FB7E5-3C56-4F7D-AAB9-E35F70764154"
+                    },
+                    "environmentId": "mce-aws-lastmile-1",
+                    "provider": {
+                      "lastMileProvider": "lastmile"
+                    },
+                    "location": "lastmile-east",
+                    "type": "LastMile",
+                    "state": "pending",
+                    "sharedId": "27C2CDD8-8FDF-402D-9DFF-92F66ED7C7FC"
+                  }
+                ]
+              }
+            },
+            {
+              "title": "List Connections in available state",
+              "input": {
+                "state": "available"
+              },
+              "output": {
+                "connections": [
+                  {
+                    "id": "mcc-abc12345",
+                    "arn": "arn:aws:interconnect:us-east-1:000000000000:connection/mcc-abc12345",
+                    "description": "My MultiCloud Connection",
+                    "bandwidth": "1Gbps",
+                    "attachPoint": {
+                      "directConnectGateway": "90392BE3-219C-47FD-BBA5-03DF76D2542A"
+                    },
+                    "environmentId": "mce-aws-acme-1",
+                    "provider": {
+                      "cloudServiceProvider": "acme"
+                    },
+                    "location": "acme-east",
+                    "type": "Multicloud",
+                    "state": "available",
+                    "sharedId": "B0615F4D-E588-47AD-9D04-1449EAA61C91"
+                  }
+                ]
+              }
+            },
+            {
+              "title": "List Connections on specific Environment",
+              "input": {
+                "environmentId": "mce-aws-acme-1"
+              },
+              "output": {
+                "connections": [
+                  {
+                    "id": "lmcc-xyz98765",
+                    "arn": "arn:aws:interconnect:us-east-1:000000000000:connection/lmcc-xyz98765",
+                    "description": "My LastMile  Connection",
+                    "bandwidth": "1Gbps",
+                    "attachPoint": {
+                      "directConnectGateway": "244FB7E5-3C56-4F7D-AAB9-E35F70764154"
+                    },
+                    "environmentId": "mce-aws-lastmile-1",
+                    "provider": {
+                      "lastMileProvider": "lastmile"
+                    },
+                    "location": "lastmile-east",
+                    "type": "LastMile",
+                    "state": "pending",
+                    "sharedId": "27C2CDD8-8FDF-402D-9DFF-92F66ED7C7FC"
+                  }
+                ]
+              }
+            }
+          ],
+          "smithy.api#paginated": {
+            "inputToken": "nextToken",
+            "outputToken": "nextToken",
+            "pageSize": "maxResults",
+            "items": "connections"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.interconnect#ListConnectionsRequest": {
+        "type": "structure",
+        "members": {
+          "attachPoint": {
+            "target": "com.amazonaws.interconnect#AttachPoint",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eFilter results to only include \u003ca\u003eConnection\u003c/a\u003e objects attached to the given \u003ca\u003eAttachPoint\u003c/a\u003e.\u003c/p\u003e"
+            }
+          },
+          "environmentId": {
+            "target": "com.amazonaws.interconnect#EnvironmentId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eFilter the results to only include \u003ca\u003eConnection\u003c/a\u003e objects on the given \u003ca\u003eEnvironment\u003c/a\u003e.\u003c/p\u003e"
+            }
+          },
+          "maxResults": {
+            "target": "com.amazonaws.interconnect#MaxResults",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe max number of list results in a single paginated response.\u003c/p\u003e"
+            }
+          },
+          "nextToken": {
+            "target": "com.amazonaws.interconnect#NextToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA pagination token from a previous paginated response indicating you wish to get the next page of results.\u003c/p\u003e"
+            }
+          },
+          "provider": {
+            "target": "com.amazonaws.interconnect#Provider",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eFilter the results to only include \u003ca\u003eConnection\u003c/a\u003e objects to the given \u003ca\u003eProvider\u003c/a\u003e.\u003c/p\u003e"
+            }
+          },
+          "state": {
+            "target": "com.amazonaws.interconnect#ConnectionState",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eFilter the results to only include \u003ca\u003eConnection\u003c/a\u003e objects in the given \u003ca\u003eConnection$state\u003c/a\u003e.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.interconnect#ListConnectionsResponse": {
+        "type": "structure",
+        "members": {
+          "connections": {
+            "target": "com.amazonaws.interconnect#ConnectionSummariesList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe resulting list of \u003ca\u003eConnection\u003c/a\u003e objects.\u003c/p\u003e"
+            }
+          },
+          "nextToken": {
+            "target": "com.amazonaws.interconnect#NextToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA pagination token for use in subsequent calls to fetch the next page of results.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.interconnect#ListEnvironments": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.interconnect#ListEnvironmentsRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.interconnect#ListEnvironmentsResponse"
+        },
+        "traits": {
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to list available environments"
+          },
+          "smithy.api#documentation": "\u003cp\u003eLists all of the environments that can produce connections that will land in the called AWS region.\u003c/p\u003e",
+          "smithy.api#examples": [
+            {
+              "title": "List All Environments",
+              "input": {},
+              "output": {
+                "environments": [
+                  {
+                    "environmentId": "mce-aws-acme-1",
+                    "provider": {
+                      "cloudServiceProvider": "acme"
+                    },
+                    "location": "acme-east",
+                    "state": "available",
+                    "type": "Multicloud",
+                    "bandwidths": {
+                      "available": [
+                        "1Gbps"
+                      ],
+                      "supported": [
+                        "1Gbps",
+                        "2Gbps"
+                      ]
+                    }
+                  },
+                  {
+                    "environmentId": "mce-aws-lastmile-1",
+                    "provider": {
+                      "cloudServiceProvider": "acme"
+                    },
+                    "location": "lastmile-east",
+                    "state": "available",
+                    "type": "LastMile",
+                    "bandwidths": {
+                      "available": [
+                        "1Gbps"
+                      ],
+                      "supported": [
+                        "1Gbps",
+                        "2Gbps"
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "smithy.api#paginated": {
+            "inputToken": "nextToken",
+            "outputToken": "nextToken",
+            "pageSize": "maxResults",
+            "items": "environments"
+          },
+          "smithy.api#readonly": {},
+          "smithy.test#smokeTests": [
+            {
+              "id": "ListEnvironmentSuccess",
+              "params": {},
+              "expect": {
+                "success": {}
+              },
+              "vendorParamsShape": "aws.test#AwsVendorParams",
+              "vendorParams": {
+                "useDualstack": true
+              }
+            }
+          ]
+        }
+      },
+      "com.amazonaws.interconnect#ListEnvironmentsRequest": {
+        "type": "structure",
+        "members": {
+          "location": {
+            "target": "com.amazonaws.interconnect#Location",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eFilter results to only include \u003ca\u003eEnvironment\u003c/a\u003e objects that connect to a given location distiguisher.\u003c/p\u003e"
+            }
+          },
+          "maxResults": {
+            "target": "com.amazonaws.interconnect#MaxResults",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe max number of list results in a single paginated response.\u003c/p\u003e"
+            }
+          },
+          "nextToken": {
+            "target": "com.amazonaws.interconnect#NextToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA pagination token from a previous paginated response indicating you wish to get the next page of results.\u003c/p\u003e"
+            }
+          },
+          "provider": {
+            "target": "com.amazonaws.interconnect#Provider",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eFilter results to only include \u003ca\u003eEnvironment\u003c/a\u003e objects that connect to the \u003ca\u003eProvider\u003c/a\u003e.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.interconnect#ListEnvironmentsResponse": {
+        "type": "structure",
+        "members": {
+          "environments": {
+            "target": "com.amazonaws.interconnect#EnvironmentList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe list of matching \u003ca\u003eEnvironment\u003c/a\u003e objects.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "nextToken": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA pagination token for use in subsequent calls to fetch the next page of results.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.interconnect#ListTagsForResource": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.interconnect#ListTagsForResourceRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.interconnect#ListTagsForResourceResponse"
+        },
+        "traits": {
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to list tags on a resource"
+          },
+          "smithy.api#documentation": "\u003cp\u003eList all current tags on the specified resource. Currently this supports \u003ca\u003eConnection\u003c/a\u003e resources. \u003c/p\u003e",
+          "smithy.api#examples": [
+            {
+              "title": "List Tags",
+              "input": {
+                "arn": "arn:aws:interconnect:us-east-1:000000000000:connection/mcc-abc12345"
+              },
+              "output": {
+                "tags": {
+                  "TagKey1": "TagValue1",
+                  "TagKey2": "TagValue2"
+                }
+              }
+            }
+          ],
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.interconnect#ListTagsForResourceRequest": {
+        "type": "structure",
+        "members": {
+          "arn": {
+            "target": "com.amazonaws.interconnect#AmazonResourceName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe resource ARN for which to list tags. \u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.interconnect#ListTagsForResourceResponse": {
+        "type": "structure",
+        "members": {
+          "tags": {
+            "target": "com.amazonaws.interconnect#TagMap",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe tags on the specified ARN.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.interconnect#Location": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "max": 255
+          }
+        }
+      },
+      "com.amazonaws.interconnect#MaxResults": {
+        "type": "integer",
+        "traits": {
+          "smithy.api#range": {
+            "min": 1,
+            "max": 100
+          }
+        }
+      },
+      "com.amazonaws.interconnect#NextToken": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 1024
+          }
+        }
+      },
+      "com.amazonaws.interconnect#OwnerAccountId": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 12,
+            "max": 12
+          },
+          "smithy.api#pattern": "^[0-9]{12}$"
+        }
+      },
+      "com.amazonaws.interconnect#ProductType": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 5,
+            "max": 32
+          }
+        }
+      },
+      "com.amazonaws.interconnect#Provider": {
+        "type": "union",
+        "members": {
+          "cloudServiceProvider": {
+            "target": "com.amazonaws.interconnect#CloudServiceProvider",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe provider's name. Specifically, connections to/from this Cloud Service Provider will be considered Multicloud connections.\u003c/p\u003e"
+            }
+          },
+          "lastMileProvider": {
+            "target": "com.amazonaws.interconnect#LastMileProvider",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe provider's name. Specifically, connections to/from this Last Mile Provider will be considered LastMile connections.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eDescribes the respective AWS Interconnect Partner organization.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.interconnect#RemoteAccountIdentifier": {
+        "type": "union",
+        "members": {
+          "identifier": {
+            "target": "com.amazonaws.interconnect#RemoteOwnerAccount",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA generic bit of identifying information. Can be used in place of any of the more specific types.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe types of identifiers that may be needed for remote account specification.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.interconnect#RemoteAccountIdentifierType": {
+        "type": "enum",
+        "members": {
+          "ACCOUNT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "account"
+            }
+          },
+          "EMAIL": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "email"
+            }
+          }
+        }
+      },
+      "com.amazonaws.interconnect#RemoteOwnerAccount": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 255
+          },
+          "smithy.api#pattern": "^[-a-zA-Z0-9_@\\.]+$"
+        }
+      },
+      "com.amazonaws.interconnect#ResourceNotFoundException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "smithy.api#String"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe request specifies a resource that does not exist on the server.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 404
+        }
+      },
+      "com.amazonaws.interconnect#ServiceQuotaExceededException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "smithy.api#String"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe requested operation would result in the calling principal exceeding their allotted quota.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 402
+        }
+      },
+      "com.amazonaws.interconnect#TagKey": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 128
+          }
+        }
+      },
+      "com.amazonaws.interconnect#TagKeyList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.interconnect#TagKey"
+        }
+      },
+      "com.amazonaws.interconnect#TagMap": {
+        "type": "map",
+        "key": {
+          "target": "com.amazonaws.interconnect#TagKey"
+        },
+        "value": {
+          "target": "com.amazonaws.interconnect#TagValue"
+        }
+      },
+      "com.amazonaws.interconnect#TagResource": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.interconnect#TagResourceRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.interconnect#TagResourceResponse"
+        },
+        "traits": {
+          "aws.iam#conditionKeys": [
+            "aws:TagKeys",
+            "aws:RequestTag/${TagKey}"
+          ],
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to apply tags to a resource"
+          },
+          "smithy.api#documentation": "\u003cp\u003eAdd new tags to the specified resource.\u003c/p\u003e",
+          "smithy.api#examples": [
+            {
+              "title": "Apply Tags",
+              "input": {
+                "arn": "arn:aws:interconnect:us-east-1:000000000000:connection/mcc-abc12345",
+                "tags": {
+                  "TagKey1": "TagValue1",
+                  "TagKey2": "TagValue2"
+                }
+              },
+              "output": {}
+            }
+          ]
+        }
+      },
+      "com.amazonaws.interconnect#TagResourceRequest": {
+        "type": "structure",
+        "members": {
+          "arn": {
+            "target": "com.amazonaws.interconnect#AmazonResourceName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ARN of the resource that should receive the new tags.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "tags": {
+            "target": "com.amazonaws.interconnect#TagMap",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA map of tags to apply to the specified resource.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {},
+          "smithy.api#references": [
+            {
+              "resource": "com.amazonaws.interconnect#ConnectionResource",
+              "ids": {
+                "id": "arn"
+              }
+            }
+          ]
+        }
+      },
+      "com.amazonaws.interconnect#TagResourceResponse": {
+        "type": "structure",
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.interconnect#TagValue": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 256
+          }
+        }
+      },
+      "com.amazonaws.interconnect#ThrottlingException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "smithy.api#String"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe request was denied due to request throttling.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 429
+        }
+      },
+      "com.amazonaws.interconnect#UntagResource": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.interconnect#UntagResourceRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.interconnect#UntagResourceResponse"
+        },
+        "traits": {
+          "aws.iam#conditionKeys": [
+            "aws:TagKeys"
+          ],
+          "aws.iam#iamAction": {
+            "documentation": "Grants permission to remove tags from a resource"
+          },
+          "smithy.api#documentation": "\u003cp\u003eRemoves tags from the specified resource.\u003c/p\u003e",
+          "smithy.api#examples": [
+            {
+              "title": "Remove Tags",
+              "input": {
+                "arn": "arn:aws:interconnect:us-east-1:000000000000:connection/mcc-abc12345",
+                "tagKeys": [
+                  "TagKey1",
+                  "TagKey2"
+                ]
+              },
+              "output": {}
+            }
+          ]
+        }
+      },
+      "com.amazonaws.interconnect#UntagResourceRequest": {
+        "type": "structure",
+        "members": {
+          "arn": {
+            "target": "com.amazonaws.interconnect#AmazonResourceName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ARN of the resource from which the specified tags should be removed.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "tagKeys": {
+            "target": "com.amazonaws.interconnect#TagKeyList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe list of tag keys that should be removed from the resource.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {},
+          "smithy.api#references": [
+            {
+              "resource": "com.amazonaws.interconnect#ConnectionResource",
+              "ids": {
+                "id": "arn"
+              }
+            }
+          ]
+        }
+      },
+      "com.amazonaws.interconnect#UntagResourceResponse": {
+        "type": "structure",
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.interconnect#UpdateConnection": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.interconnect#UpdateConnectionRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.interconnect#UpdateConnectionResponse"
+        },
+        "traits": {
+          "aws.iam#iamAction": {
+            "resources": {
+              "required": {
+                "connection": {}
+              }
+            },
+            "documentation": "Grants permission to update an existing connection"
+          },
+          "smithy.api#documentation": "\u003cp\u003eModifies an existing connection. Currently we support modifications to the connection's description and/or bandwidth.\u003c/p\u003e",
+          "smithy.api#examples": [
+            {
+              "title": "Update Connection Description",
+              "input": {
+                "identifier": "mcc-abc12345",
+                "description": "Changed Description"
+              },
+              "output": {
+                "connection": {
+                  "id": "mcc-abc12345",
+                  "arn": "arn:aws:interconnect:us-east-1:000000000000:connection/mcc-abc12345",
+                  "description": "changed Description",
+                  "bandwidth": "1Gbps",
+                  "attachPoint": {
+                    "directConnectGateway": "90392BE3-219C-47FD-BBA5-03DF76D2542A"
+                  },
+                  "environmentId": "mce-aws-acme-1",
+                  "provider": {
+                    "cloudServiceProvider": "acme"
+                  },
+                  "location": "acme-east",
+                  "type": "Multicloud",
+                  "state": "available",
+                  "sharedId": "B0615F4D-E588-47AD-9D04-1449EAA61C91",
+                  "ownerAccount": "000000000000",
+                  "activationKey": "\u003cActivation Key Data\u003e"
+                }
+              }
+            },
+            {
+              "title": "Update Connection Bandwidth",
+              "input": {
+                "identifier": "mcc-abc12345",
+                "bandwidth": "2Gbps"
+              },
+              "output": {
+                "connection": {
+                  "id": "mcc-abc12345",
+                  "arn": "arn:aws:interconnect:us-east-1:000000000000:connection/mcc-abc12345",
+                  "description": "changed Description",
+                  "bandwidth": "2Gbps",
+                  "attachPoint": {
+                    "directConnectGateway": "90392BE3-219C-47FD-BBA5-03DF76D2542A"
+                  },
+                  "environmentId": "mce-aws-acme-1",
+                  "provider": {
+                    "cloudServiceProvider": "acme"
+                  },
+                  "location": "acme-east",
+                  "type": "Multicloud",
+                  "state": "updating",
+                  "sharedId": "B0615F4D-E588-47AD-9D04-1449EAA61C91",
+                  "ownerAccount": "000000000000",
+                  "activationKey": "\u003cActivation Key Data\u003e"
+                }
+              }
+            }
+          ],
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.interconnect#UpdateConnectionRequest": {
+        "type": "structure",
+        "members": {
+          "bandwidth": {
+            "target": "com.amazonaws.interconnect#ConnectionBandwidth",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eRequest a new bandwidth size on the given \u003ca\u003eConnection\u003c/a\u003e.\u003c/p\u003e \u003cp\u003eNote that changes to the size may be subject to additional policy, and does require the remote partner provider to acknowledge and permit this new bandwidth size.\u003c/p\u003e"
+            }
+          },
+          "clientToken": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIdempotency token used for the request.\u003c/p\u003e",
+              "smithy.api#idempotencyToken": {}
+            }
+          },
+          "description": {
+            "target": "com.amazonaws.interconnect#ConnectionDescription",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn updated description to apply to the \u003ca\u003eConnection\u003c/a\u003e \u003c/p\u003e"
+            }
+          },
+          "identifier": {
+            "target": "com.amazonaws.interconnect#ConnectionId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier of the \u003ca\u003eConnection\u003c/a\u003e that should be updated.\u003c/p\u003e",
+              "smithy.api#required": {},
+              "smithy.api#resourceIdentifier": "id"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.interconnect#UpdateConnectionResponse": {
+        "type": "structure",
+        "members": {
+          "connection": {
+            "target": "com.amazonaws.interconnect#Connection",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe resulting updated \u003ca\u003eConnection\u003c/a\u003e \u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,3419 @@
+{
+  "schema_source": "smithy",
+  "mode": "data_source",
+  "auth": {
+    "Type": "",
+    "Params": null
+  },
+  "base_url": "https://aws.example.invalid",
+  "retry": {
+    "MaxAttempts": 0,
+    "InitialBackoff": "",
+    "MaxBackoff": "",
+    "Jitter": null,
+    "RespectRetryAfter": null,
+    "RateLimitResetHeader": ""
+  },
+  "timeouts": {
+    "Create": "",
+    "Read": "",
+    "Update": "",
+    "Delete": "",
+    "Default": ""
+  },
+  "wire_name": "aws",
+  "raw_spec": {
+    "smithy": "2.0",
+    "shapes": {
+      "com.amazonaws.backupgateway#AccessDeniedException": {
+        "type": "structure",
+        "members": {
+          "ErrorCode": {
+            "target": "com.amazonaws.backupgateway#string",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA description of why you have insufficient permissions.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Message": {
+            "target": "com.amazonaws.backupgateway#string"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe operation cannot proceed because you have insufficient permissions.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 403
+        }
+      },
+      "com.amazonaws.backupgateway#ActivationKey": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 50
+          },
+          "smithy.api#pattern": "^[0-9a-zA-Z\\-]+$"
+        }
+      },
+      "com.amazonaws.backupgateway#AssociateGatewayToServer": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.backupgateway#AssociateGatewayToServerInput"
+        },
+        "output": {
+          "target": "com.amazonaws.backupgateway#AssociateGatewayToServerOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.backupgateway#ConflictException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eAssociates a backup gateway with your server. After you complete the association process, you can back up and restore your VMs through the gateway.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.backupgateway#AssociateGatewayToServerInput": {
+        "type": "structure",
+        "members": {
+          "GatewayArn": {
+            "target": "com.amazonaws.backupgateway#GatewayArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the gateway. Use the \u003ccode\u003eListGateways\u003c/code\u003e operation to return a list of gateways for your account and Amazon Web Services Region.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "ServerArn": {
+            "target": "com.amazonaws.backupgateway#ServerArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the server that hosts your virtual machines.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#AssociateGatewayToServerOutput": {
+        "type": "structure",
+        "members": {
+          "GatewayArn": {
+            "target": "com.amazonaws.backupgateway#GatewayArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of a gateway.\u003c/p\u003e"
+            }
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#AverageUploadRateLimit": {
+        "type": "long",
+        "traits": {
+          "smithy.api#range": {
+            "min": 51200,
+            "max": 8000000000000
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#BackupOnPremises_v20210101": {
+        "type": "service",
+        "errors": [
+          {
+            "target": "com.amazonaws.backupgateway#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.backupgateway#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.backupgateway#ValidationException"
+          }
+        ],
+        "version": "2021-01-01",
+        "operations": [
+          {
+            "target": "com.amazonaws.backupgateway#ListTagsForResource"
+          },
+          {
+            "target": "com.amazonaws.backupgateway#TagResource"
+          },
+          {
+            "target": "com.amazonaws.backupgateway#UntagResource"
+          }
+        ],
+        "resources": [
+          {
+            "target": "com.amazonaws.backupgateway#GatewayResource"
+          },
+          {
+            "target": "com.amazonaws.backupgateway#HypervisorResource"
+          },
+          {
+            "target": "com.amazonaws.backupgateway#VirtualMachineResource"
+          }
+        ],
+        "traits": {
+          "aws.api#service": {
+            "sdkId": "Backup Gateway",
+            "arnNamespace": "backup-gateway",
+            "cloudFormationName": "BackupGateway",
+            "cloudTrailEventSource": "backup-gateway.amazonaws.com",
+            "endpointPrefix": "backup-gateway"
+          },
+          "aws.auth#sigv4": {
+            "name": "backup-gateway"
+          },
+          "aws.protocols#awsJson1_0": {},
+          "smithy.api#documentation": "\u003cfullname\u003eBackup gateway\u003c/fullname\u003e \u003cp\u003eBackup gateway connects Backup to your hypervisor, so you can create, store, and restore backups of your virtual machines (VMs) anywhere, whether on-premises or in the VMware Cloud (VMC) on Amazon Web Services.\u003c/p\u003e \u003cp\u003eAdd on-premises resources by connecting to a hypervisor through a gateway. Backup will automatically discover the resources in your hypervisor.\u003c/p\u003e \u003cp\u003eUse Backup to assign virtual or on-premises resources to a backup plan, or run on-demand backups. Once you have backed up your resources, you can view them and restore them like any resource supported by Backup.\u003c/p\u003e \u003cp\u003eTo download the Amazon Web Services software to get started, navigate to the Backup console, choose \u003cb\u003eGateways\u003c/b\u003e, then choose \u003cb\u003eCreate gateway\u003c/b\u003e.\u003c/p\u003e",
+          "smithy.api#paginated": {
+            "inputToken": "NextToken",
+            "outputToken": "NextToken",
+            "pageSize": "MaxResults"
+          },
+          "smithy.api#title": "AWS Backup Gateway",
+          "smithy.protocols#rpcv2Cbor": {},
+          "smithy.rules#endpointBdd": {
+            "version": "1.1",
+            "parameters": {
+              "Region": {
+                "builtIn": "AWS::Region",
+                "required": false,
+                "documentation": "The AWS region used to dispatch the request.",
+                "type": "string"
+              },
+              "UseDualStack": {
+                "builtIn": "AWS::UseDualStack",
+                "required": true,
+                "default": false,
+                "documentation": "When true, use the dual-stack endpoint. If the configured endpoint does not support dual-stack, dispatching the request MAY return an error.",
+                "type": "boolean"
+              },
+              "UseFIPS": {
+                "builtIn": "AWS::UseFIPS",
+                "required": true,
+                "default": false,
+                "documentation": "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
+                "type": "boolean"
+              },
+              "Endpoint": {
+                "builtIn": "SDK::Endpoint",
+                "required": false,
+                "documentation": "Override the endpoint used to send this request",
+                "type": "string"
+              }
+            },
+            "conditions": [
+              {
+                "fn": "isSet",
+                "argv": [
+                  {
+                    "ref": "Endpoint"
+                  }
+                ]
+              },
+              {
+                "fn": "isSet",
+                "argv": [
+                  {
+                    "ref": "Region"
+                  }
+                ]
+              },
+              {
+                "fn": "aws.partition",
+                "argv": [
+                  {
+                    "ref": "Region"
+                  }
+                ],
+                "assign": "PartitionResult"
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "ref": "UseFIPS"
+                  },
+                  true
+                ]
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "ref": "UseDualStack"
+                  },
+                  true
+                ]
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "fn": "getAttr",
+                    "argv": [
+                      {
+                        "ref": "PartitionResult"
+                      },
+                      "supportsDualStack"
+                    ]
+                  },
+                  true
+                ]
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "fn": "getAttr",
+                    "argv": [
+                      {
+                        "ref": "PartitionResult"
+                      },
+                      "supportsFIPS"
+                    ]
+                  },
+                  true
+                ]
+              }
+            ],
+            "results": [
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: FIPS and custom endpoint are not supported",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: Dualstack and custom endpoint are not supported",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": {
+                    "ref": "Endpoint"
+                  },
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://backup-gateway-fips.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "FIPS and DualStack are enabled, but this partition does not support one or both",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://backup-gateway-fips.{Region}.{PartitionResult#dnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "FIPS is enabled but this partition does not support FIPS",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://backup-gateway.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "DualStack is enabled but this partition does not support DualStack",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://backup-gateway.{Region}.{PartitionResult#dnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: Missing Region",
+                "type": "error"
+              }
+            ],
+            "root": 2,
+            "nodeCount": 13,
+            "nodes": "/////wAAAAH/////AAAAAAAAAAwAAAADAAAAAQAAAAQF9eELAAAAAgAAAAUF9eELAAAAAwAAAAgAAAAGAAAABAAAAAcF9eEKAAAABQX14QgF9eEJAAAABAAAAAoAAAAJAAAABgX14QYF9eEHAAAABQAAAAsF9eEFAAAABgX14QQF9eEFAAAAAwX14QEAAAANAAAABAX14QIF9eED"
+          },
+          "smithy.rules#endpointRuleSet": {
+            "version": "1.0",
+            "parameters": {
+              "Region": {
+                "builtIn": "AWS::Region",
+                "required": false,
+                "documentation": "The AWS region used to dispatch the request.",
+                "type": "string"
+              },
+              "UseDualStack": {
+                "builtIn": "AWS::UseDualStack",
+                "required": true,
+                "default": false,
+                "documentation": "When true, use the dual-stack endpoint. If the configured endpoint does not support dual-stack, dispatching the request MAY return an error.",
+                "type": "boolean"
+              },
+              "UseFIPS": {
+                "builtIn": "AWS::UseFIPS",
+                "required": true,
+                "default": false,
+                "documentation": "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
+                "type": "boolean"
+              },
+              "Endpoint": {
+                "builtIn": "SDK::Endpoint",
+                "required": false,
+                "documentation": "Override the endpoint used to send this request",
+                "type": "string"
+              }
+            },
+            "rules": [
+              {
+                "conditions": [
+                  {
+                    "fn": "isSet",
+                    "argv": [
+                      {
+                        "ref": "Endpoint"
+                      }
+                    ]
+                  }
+                ],
+                "rules": [
+                  {
+                    "conditions": [
+                      {
+                        "fn": "booleanEquals",
+                        "argv": [
+                          {
+                            "ref": "UseFIPS"
+                          },
+                          true
+                        ]
+                      }
+                    ],
+                    "error": "Invalid Configuration: FIPS and custom endpoint are not supported",
+                    "type": "error"
+                  },
+                  {
+                    "conditions": [
+                      {
+                        "fn": "booleanEquals",
+                        "argv": [
+                          {
+                            "ref": "UseDualStack"
+                          },
+                          true
+                        ]
+                      }
+                    ],
+                    "error": "Invalid Configuration: Dualstack and custom endpoint are not supported",
+                    "type": "error"
+                  },
+                  {
+                    "conditions": [],
+                    "endpoint": {
+                      "url": {
+                        "ref": "Endpoint"
+                      },
+                      "properties": {},
+                      "headers": {}
+                    },
+                    "type": "endpoint"
+                  }
+                ],
+                "type": "tree"
+              },
+              {
+                "conditions": [
+                  {
+                    "fn": "isSet",
+                    "argv": [
+                      {
+                        "ref": "Region"
+                      }
+                    ]
+                  }
+                ],
+                "rules": [
+                  {
+                    "conditions": [
+                      {
+                        "fn": "aws.partition",
+                        "argv": [
+                          {
+                            "ref": "Region"
+                          }
+                        ],
+                        "assign": "PartitionResult"
+                      }
+                    ],
+                    "rules": [
+                      {
+                        "conditions": [
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseFIPS"
+                              },
+                              true
+                            ]
+                          },
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseDualStack"
+                              },
+                              true
+                            ]
+                          }
+                        ],
+                        "rules": [
+                          {
+                            "conditions": [
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  true,
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsFIPS"
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  true,
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsDualStack"
+                                    ]
+                                  }
+                                ]
+                              }
+                            ],
+                            "rules": [
+                              {
+                                "conditions": [],
+                                "endpoint": {
+                                  "url": "https://backup-gateway-fips.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                                  "properties": {},
+                                  "headers": {}
+                                },
+                                "type": "endpoint"
+                              }
+                            ],
+                            "type": "tree"
+                          },
+                          {
+                            "conditions": [],
+                            "error": "FIPS and DualStack are enabled, but this partition does not support one or both",
+                            "type": "error"
+                          }
+                        ],
+                        "type": "tree"
+                      },
+                      {
+                        "conditions": [
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseFIPS"
+                              },
+                              true
+                            ]
+                          }
+                        ],
+                        "rules": [
+                          {
+                            "conditions": [
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsFIPS"
+                                    ]
+                                  },
+                                  true
+                                ]
+                              }
+                            ],
+                            "rules": [
+                              {
+                                "conditions": [],
+                                "endpoint": {
+                                  "url": "https://backup-gateway-fips.{Region}.{PartitionResult#dnsSuffix}",
+                                  "properties": {},
+                                  "headers": {}
+                                },
+                                "type": "endpoint"
+                              }
+                            ],
+                            "type": "tree"
+                          },
+                          {
+                            "conditions": [],
+                            "error": "FIPS is enabled but this partition does not support FIPS",
+                            "type": "error"
+                          }
+                        ],
+                        "type": "tree"
+                      },
+                      {
+                        "conditions": [
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseDualStack"
+                              },
+                              true
+                            ]
+                          }
+                        ],
+                        "rules": [
+                          {
+                            "conditions": [
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  true,
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsDualStack"
+                                    ]
+                                  }
+                                ]
+                              }
+                            ],
+                            "rules": [
+                              {
+                                "conditions": [],
+                                "endpoint": {
+                                  "url": "https://backup-gateway.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                                  "properties": {},
+                                  "headers": {}
+                                },
+                                "type": "endpoint"
+                              }
+                            ],
+                            "type": "tree"
+                          },
+                          {
+                            "conditions": [],
+                            "error": "DualStack is enabled but this partition does not support DualStack",
+                            "type": "error"
+                          }
+                        ],
+                        "type": "tree"
+                      },
+                      {
+                        "conditions": [],
+                        "endpoint": {
+                          "url": "https://backup-gateway.{Region}.{PartitionResult#dnsSuffix}",
+                          "properties": {},
+                          "headers": {}
+                        },
+                        "type": "endpoint"
+                      }
+                    ],
+                    "type": "tree"
+                  }
+                ],
+                "type": "tree"
+              },
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: Missing Region",
+                "type": "error"
+              }
+            ]
+          },
+          "smithy.rules#endpointTests": {
+            "testCases": [
+              {
+                "documentation": "For region af-south-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://backup-gateway.af-south-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "af-south-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region ap-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://backup-gateway.ap-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ap-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region ap-northeast-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://backup-gateway.ap-northeast-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ap-northeast-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region ap-northeast-2 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://backup-gateway.ap-northeast-2.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ap-northeast-2",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region ap-northeast-3 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://backup-gateway.ap-northeast-3.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ap-northeast-3",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region ap-south-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://backup-gateway.ap-south-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ap-south-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region ap-southeast-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://backup-gateway.ap-southeast-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ap-southeast-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region ap-southeast-2 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://backup-gateway.ap-southeast-2.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ap-southeast-2",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region ca-central-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://backup-gateway.ca-central-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ca-central-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region eu-central-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://backup-gateway.eu-central-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "eu-central-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region eu-north-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://backup-gateway.eu-north-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "eu-north-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region eu-south-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://backup-gateway.eu-south-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "eu-south-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region eu-west-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://backup-gateway.eu-west-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "eu-west-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region eu-west-2 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://backup-gateway.eu-west-2.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "eu-west-2",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region eu-west-3 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://backup-gateway.eu-west-3.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "eu-west-3",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region me-south-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://backup-gateway.me-south-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "me-south-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region sa-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://backup-gateway.sa-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "sa-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://backup-gateway.us-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-east-2 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://backup-gateway.us-east-2.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-2",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-west-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://backup-gateway.us-west-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-west-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-west-2 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://backup-gateway.us-west-2.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-west-2",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://backup-gateway-fips.us-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://backup-gateway-fips.us-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://backup-gateway.us-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://backup-gateway-fips.cn-north-1.api.amazonwebservices.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": true,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://backup-gateway-fips.cn-north-1.amazonaws.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://backup-gateway.cn-north-1.api.amazonwebservices.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://backup-gateway.cn-north-1.amazonaws.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://backup-gateway.us-gov-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-gov-west-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://backup-gateway.us-gov-west-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-west-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://backup-gateway-fips.us-gov-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://backup-gateway-fips.us-gov-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://backup-gateway.us-gov-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region us-iso-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://backup-gateway-fips.us-iso-east-1.c2s.ic.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-iso-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-iso-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://backup-gateway.us-iso-east-1.c2s.ic.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-iso-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-isob-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://backup-gateway-fips.us-isob-east-1.sc2s.sgov.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-isob-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-isob-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://backup-gateway.us-isob-east-1.sc2s.sgov.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-isob-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For custom endpoint with region set and fips disabled and dualstack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://example.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "For custom endpoint with region not set and fips disabled and dualstack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://example.com"
+                  }
+                },
+                "params": {
+                  "UseFIPS": false,
+                  "UseDualStack": false,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "For custom endpoint with fips enabled and dualstack disabled",
+                "expect": {
+                  "error": "Invalid Configuration: FIPS and custom endpoint are not supported"
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "For custom endpoint with fips disabled and dualstack enabled",
+                "expect": {
+                  "error": "Invalid Configuration: Dualstack and custom endpoint are not supported"
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "Missing region",
+                "expect": {
+                  "error": "Invalid Configuration: Missing Region"
+                }
+              }
+            ],
+            "version": "1.0"
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#BandwidthRateLimitInterval": {
+        "type": "structure",
+        "members": {
+          "AverageUploadRateLimitInBitsPerSec": {
+            "target": "com.amazonaws.backupgateway#AverageUploadRateLimit",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe average upload rate limit component of the bandwidth rate limit interval, in bits per second. This field does not appear in the response if the upload rate limit is not set.\u003c/p\u003e"
+            }
+          },
+          "DaysOfWeek": {
+            "target": "com.amazonaws.backupgateway#DaysOfWeek",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe days of the week component of the bandwidth rate limit interval, represented as ordinal numbers from 0 to 6, where 0 represents Sunday and 6 represents Saturday.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "EndHourOfDay": {
+            "target": "com.amazonaws.backupgateway#HourOfDay",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe hour of the day to end the bandwidth rate limit interval.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "EndMinuteOfHour": {
+            "target": "com.amazonaws.backupgateway#MinuteOfHour",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe minute of the hour to end the bandwidth rate limit interval.\u003c/p\u003e \u003cimportant\u003e \u003cp\u003eThe bandwidth rate limit interval ends at the end of the minute. To end an interval at the end of an hour, use the value \u003ccode\u003e59\u003c/code\u003e.\u003c/p\u003e \u003c/important\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "StartHourOfDay": {
+            "target": "com.amazonaws.backupgateway#HourOfDay",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe hour of the day to start the bandwidth rate limit interval.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "StartMinuteOfHour": {
+            "target": "com.amazonaws.backupgateway#MinuteOfHour",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe minute of the hour to start the bandwidth rate limit interval. The interval begins at the start of that minute. To begin an interval exactly at the start of the hour, use the value \u003ccode\u003e0\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eDescribes a bandwidth rate limit interval for a gateway. A bandwidth rate limit schedule consists of one or more bandwidth rate limit intervals. A bandwidth rate limit interval defines a period of time on one or more days of the week, during which bandwidth rate limits are specified for uploading, downloading, or both.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.backupgateway#BandwidthRateLimitIntervals": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.backupgateway#BandwidthRateLimitInterval"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 20
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#BandwidthRateLimitScheduleResource": {
+        "type": "resource"
+      },
+      "com.amazonaws.backupgateway#ConflictException": {
+        "type": "structure",
+        "members": {
+          "ErrorCode": {
+            "target": "com.amazonaws.backupgateway#string",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA description of why the operation is not supported.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Message": {
+            "target": "com.amazonaws.backupgateway#string"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe operation cannot proceed because it is not supported.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 409
+        }
+      },
+      "com.amazonaws.backupgateway#CreateGateway": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.backupgateway#CreateGatewayInput"
+        },
+        "output": {
+          "target": "com.amazonaws.backupgateway#CreateGatewayOutput"
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eCreates a backup gateway. After you create a gateway, you can associate it with a server using the \u003ccode\u003eAssociateGatewayToServer\u003c/code\u003e operation.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.backupgateway#CreateGatewayInput": {
+        "type": "structure",
+        "members": {
+          "ActivationKey": {
+            "target": "com.amazonaws.backupgateway#ActivationKey",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe activation key of the created gateway.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "GatewayDisplayName": {
+            "target": "com.amazonaws.backupgateway#Name",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe display name of the created gateway.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "GatewayType": {
+            "target": "com.amazonaws.backupgateway#GatewayType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe type of created gateway.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Tags": {
+            "target": "com.amazonaws.backupgateway#Tags",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of up to 50 tags to assign to the gateway. Each tag is a key-value pair.\u003c/p\u003e"
+            }
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#CreateGatewayOutput": {
+        "type": "structure",
+        "members": {
+          "GatewayArn": {
+            "target": "com.amazonaws.backupgateway#GatewayArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the gateway you create.\u003c/p\u003e"
+            }
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#DayOfMonth": {
+        "type": "integer",
+        "traits": {
+          "smithy.api#range": {
+            "min": 1,
+            "max": 31
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#DayOfWeek": {
+        "type": "integer",
+        "traits": {
+          "smithy.api#range": {
+            "min": 0,
+            "max": 6
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#DaysOfWeek": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.backupgateway#DayOfWeek"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 7
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#DeleteGateway": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.backupgateway#DeleteGatewayInput"
+        },
+        "output": {
+          "target": "com.amazonaws.backupgateway#DeleteGatewayOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.backupgateway#ResourceNotFoundException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eDeletes a backup gateway.\u003c/p\u003e",
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.backupgateway#DeleteGatewayInput": {
+        "type": "structure",
+        "members": {
+          "GatewayArn": {
+            "target": "com.amazonaws.backupgateway#GatewayArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the gateway to delete.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#DeleteGatewayOutput": {
+        "type": "structure",
+        "members": {
+          "GatewayArn": {
+            "target": "com.amazonaws.backupgateway#GatewayArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the gateway you deleted.\u003c/p\u003e"
+            }
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#DeleteHypervisor": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.backupgateway#DeleteHypervisorInput"
+        },
+        "output": {
+          "target": "com.amazonaws.backupgateway#DeleteHypervisorOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.backupgateway#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.backupgateway#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.backupgateway#ResourceNotFoundException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eDeletes a hypervisor.\u003c/p\u003e",
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.backupgateway#DeleteHypervisorInput": {
+        "type": "structure",
+        "members": {
+          "HypervisorArn": {
+            "target": "com.amazonaws.backupgateway#ServerArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the hypervisor to delete.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#DeleteHypervisorOutput": {
+        "type": "structure",
+        "members": {
+          "HypervisorArn": {
+            "target": "com.amazonaws.backupgateway#ServerArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the hypervisor you deleted.\u003c/p\u003e"
+            }
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#DisassociateGatewayFromServer": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.backupgateway#DisassociateGatewayFromServerInput"
+        },
+        "output": {
+          "target": "com.amazonaws.backupgateway#DisassociateGatewayFromServerOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.backupgateway#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.backupgateway#ResourceNotFoundException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eDisassociates a backup gateway from the specified server. After the disassociation process finishes, the gateway can no longer access the virtual machines on the server.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.backupgateway#DisassociateGatewayFromServerInput": {
+        "type": "structure",
+        "members": {
+          "GatewayArn": {
+            "target": "com.amazonaws.backupgateway#GatewayArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the gateway to disassociate.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#DisassociateGatewayFromServerOutput": {
+        "type": "structure",
+        "members": {
+          "GatewayArn": {
+            "target": "com.amazonaws.backupgateway#GatewayArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the gateway you disassociated.\u003c/p\u003e"
+            }
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#Gateway": {
+        "type": "structure",
+        "members": {
+          "GatewayArn": {
+            "target": "com.amazonaws.backupgateway#GatewayArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the gateway. Use the \u003ccode\u003eListGateways\u003c/code\u003e operation to return a list of gateways for your account and Amazon Web Services Region.\u003c/p\u003e"
+            }
+          },
+          "GatewayDisplayName": {
+            "target": "com.amazonaws.backupgateway#Name",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe display name of the gateway.\u003c/p\u003e"
+            }
+          },
+          "GatewayType": {
+            "target": "com.amazonaws.backupgateway#GatewayType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe type of the gateway.\u003c/p\u003e"
+            }
+          },
+          "HypervisorId": {
+            "target": "com.amazonaws.backupgateway#HypervisorId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe hypervisor ID of the gateway.\u003c/p\u003e"
+            }
+          },
+          "LastSeenTime": {
+            "target": "com.amazonaws.backupgateway#Time",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe last time Backup gateway communicated with the gateway, in Unix format and UTC time.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA gateway is an Backup Gateway appliance that runs on the customer's network to provide seamless connectivity to backup storage in the Amazon Web Services Cloud.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.backupgateway#GatewayArn": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 50,
+            "max": 180
+          },
+          "smithy.api#pattern": "^arn:(aws|aws-cn|aws-us-gov):backup-gateway(:[a-zA-Z-0-9]+){3}\\/[a-zA-Z-0-9]+$"
+        }
+      },
+      "com.amazonaws.backupgateway#GatewayDetails": {
+        "type": "structure",
+        "members": {
+          "DeprecationDate": {
+            "target": "com.amazonaws.backupgateway#Time",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eDate after which this gateway will not receive software updates for new features and bug fixes.\u003c/p\u003e"
+            }
+          },
+          "GatewayArn": {
+            "target": "com.amazonaws.backupgateway#GatewayArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the gateway. Use the \u003ccode\u003eListGateways\u003c/code\u003e operation to return a list of gateways for your account and Amazon Web Services Region.\u003c/p\u003e"
+            }
+          },
+          "GatewayDisplayName": {
+            "target": "com.amazonaws.backupgateway#Name",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe display name of the gateway.\u003c/p\u003e"
+            }
+          },
+          "GatewayType": {
+            "target": "com.amazonaws.backupgateway#GatewayType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe type of the gateway type.\u003c/p\u003e"
+            }
+          },
+          "HypervisorId": {
+            "target": "com.amazonaws.backupgateway#HypervisorId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe hypervisor ID of the gateway.\u003c/p\u003e"
+            }
+          },
+          "LastSeenTime": {
+            "target": "com.amazonaws.backupgateway#Time",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eDetails showing the last time Backup gateway communicated with the cloud, in Unix format and UTC time.\u003c/p\u003e"
+            }
+          },
+          "MaintenanceStartTime": {
+            "target": "com.amazonaws.backupgateway#MaintenanceStartTime",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eReturns your gateway's weekly maintenance start time including the day and time of the week. Note that values are in terms of the gateway's time zone. Can be weekly or monthly.\u003c/p\u003e"
+            }
+          },
+          "NextUpdateAvailabilityTime": {
+            "target": "com.amazonaws.backupgateway#Time",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eDetails showing the next update availability time of the gateway.\u003c/p\u003e"
+            }
+          },
+          "SoftwareVersion": {
+            "target": "com.amazonaws.backupgateway#Name",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe version number of the software running on the gateway appliance.\u003c/p\u003e"
+            }
+          },
+          "VpcEndpoint": {
+            "target": "com.amazonaws.backupgateway#VpcEndpoint",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe DNS name for the virtual private cloud (VPC) endpoint the gateway uses to connect to the cloud for backup gateway.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe details of gateway.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.backupgateway#GatewayResource": {
+        "type": "resource",
+        "operations": [
+          {
+            "target": "com.amazonaws.backupgateway#AssociateGatewayToServer"
+          },
+          {
+            "target": "com.amazonaws.backupgateway#DisassociateGatewayFromServer"
+          },
+          {
+            "target": "com.amazonaws.backupgateway#PutMaintenanceStartTime"
+          },
+          {
+            "target": "com.amazonaws.backupgateway#TestHypervisorConfiguration"
+          },
+          {
+            "target": "com.amazonaws.backupgateway#UpdateGatewaySoftwareNow"
+          }
+        ],
+        "resources": [
+          {
+            "target": "com.amazonaws.backupgateway#BandwidthRateLimitScheduleResource"
+          }
+        ],
+        "traits": {
+          "aws.cloudformation#cfnResource": {
+            "name": "Gateway"
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#GatewayType": {
+        "type": "string",
+        "traits": {
+          "smithy.api#enum": [
+            {
+              "value": "BACKUP_VM",
+              "name": "BACKUP_VM"
+            }
+          ]
+        }
+      },
+      "com.amazonaws.backupgateway#Gateways": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.backupgateway#Gateway"
+        }
+      },
+      "com.amazonaws.backupgateway#GetBandwidthRateLimitSchedule": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.backupgateway#GetBandwidthRateLimitScheduleInput"
+        },
+        "output": {
+          "target": "com.amazonaws.backupgateway#GetBandwidthRateLimitScheduleOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.backupgateway#ResourceNotFoundException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eRetrieves the bandwidth rate limit schedule for a specified gateway. By default, gateways do not have bandwidth rate limit schedules, which means no bandwidth rate limiting is in effect. Use this to get a gateway's bandwidth rate limit schedule.\u003c/p\u003e",
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.backupgateway#GetBandwidthRateLimitScheduleInput": {
+        "type": "structure",
+        "members": {
+          "GatewayArn": {
+            "target": "com.amazonaws.backupgateway#GatewayArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the gateway. Use the \u003ca href=\"https://docs.aws.amazon.com/aws-backup/latest/devguide/API_BGW_ListGateways.html\"\u003e \u003ccode\u003eListGateways\u003c/code\u003e \u003c/a\u003e operation to return a list of gateways for your account and Amazon Web Services Region.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#GetBandwidthRateLimitScheduleOutput": {
+        "type": "structure",
+        "members": {
+          "BandwidthRateLimitIntervals": {
+            "target": "com.amazonaws.backupgateway#BandwidthRateLimitIntervals",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn array containing bandwidth rate limit schedule intervals for a gateway. When no bandwidth rate limit intervals have been scheduled, the array is empty.\u003c/p\u003e"
+            }
+          },
+          "GatewayArn": {
+            "target": "com.amazonaws.backupgateway#GatewayArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the gateway. Use the \u003ca href=\"https://docs.aws.amazon.com/aws-backup/latest/devguide/API_BGW_ListGateways.html\"\u003e \u003ccode\u003eListGateways\u003c/code\u003e \u003c/a\u003e operation to return a list of gateways for your account and Amazon Web Services Region.\u003c/p\u003e"
+            }
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#GetGateway": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.backupgateway#GetGatewayInput"
+        },
+        "output": {
+          "target": "com.amazonaws.backupgateway#GetGatewayOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.backupgateway#ResourceNotFoundException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eBy providing the ARN (Amazon Resource Name), this API returns the gateway.\u003c/p\u003e",
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.backupgateway#GetGatewayInput": {
+        "type": "structure",
+        "members": {
+          "GatewayArn": {
+            "target": "com.amazonaws.backupgateway#GatewayArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the gateway.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#GetGatewayOutput": {
+        "type": "structure",
+        "members": {
+          "Gateway": {
+            "target": "com.amazonaws.backupgateway#GatewayDetails",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eBy providing the ARN (Amazon Resource Name), this API returns the gateway.\u003c/p\u003e"
+            }
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#GetHypervisor": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.backupgateway#GetHypervisorInput"
+        },
+        "output": {
+          "target": "com.amazonaws.backupgateway#GetHypervisorOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.backupgateway#ResourceNotFoundException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThis action requests information about the specified hypervisor to which the gateway will connect. A hypervisor is hardware, software, or firmware that creates and manages virtual machines, and allocates resources to them.\u003c/p\u003e",
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.backupgateway#GetHypervisorInput": {
+        "type": "structure",
+        "members": {
+          "HypervisorArn": {
+            "target": "com.amazonaws.backupgateway#ServerArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the hypervisor.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#GetHypervisorOutput": {
+        "type": "structure",
+        "members": {
+          "Hypervisor": {
+            "target": "com.amazonaws.backupgateway#HypervisorDetails",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eDetails about the requested hypervisor.\u003c/p\u003e"
+            }
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#GetHypervisorPropertyMappings": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.backupgateway#GetHypervisorPropertyMappingsInput"
+        },
+        "output": {
+          "target": "com.amazonaws.backupgateway#GetHypervisorPropertyMappingsOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.backupgateway#ResourceNotFoundException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThis action retrieves the property mappings for the specified hypervisor. A hypervisor property mapping displays the relationship of entity properties available from the hypervisor to the properties available in Amazon Web Services.\u003c/p\u003e",
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.backupgateway#GetHypervisorPropertyMappingsInput": {
+        "type": "structure",
+        "members": {
+          "HypervisorArn": {
+            "target": "com.amazonaws.backupgateway#ServerArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the hypervisor.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#GetHypervisorPropertyMappingsOutput": {
+        "type": "structure",
+        "members": {
+          "HypervisorArn": {
+            "target": "com.amazonaws.backupgateway#ServerArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the hypervisor.\u003c/p\u003e"
+            }
+          },
+          "IamRoleArn": {
+            "target": "com.amazonaws.backupgateway#IamRoleArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the IAM role.\u003c/p\u003e"
+            }
+          },
+          "VmwareToAwsTagMappings": {
+            "target": "com.amazonaws.backupgateway#VmwareToAwsTagMappings",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThis is a display of the mappings of VMware tags to the Amazon Web Services tags.\u003c/p\u003e"
+            }
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#GetVirtualMachine": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.backupgateway#GetVirtualMachineInput"
+        },
+        "output": {
+          "target": "com.amazonaws.backupgateway#GetVirtualMachineOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.backupgateway#ResourceNotFoundException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eBy providing the ARN (Amazon Resource Name), this API returns the virtual machine.\u003c/p\u003e",
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.backupgateway#GetVirtualMachineInput": {
+        "type": "structure",
+        "members": {
+          "ResourceArn": {
+            "target": "com.amazonaws.backupgateway#ResourceArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the virtual machine.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#GetVirtualMachineOutput": {
+        "type": "structure",
+        "members": {
+          "VirtualMachine": {
+            "target": "com.amazonaws.backupgateway#VirtualMachineDetails",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThis object contains the basic attributes of \u003ccode\u003eVirtualMachine\u003c/code\u003e contained by the output of \u003ccode\u003eGetVirtualMachine\u003c/code\u003e \u003c/p\u003e"
+            }
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#Host": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 3,
+            "max": 128
+          },
+          "smithy.api#pattern": "^.+$"
+        }
+      },
+      "com.amazonaws.backupgateway#HourOfDay": {
+        "type": "integer",
+        "traits": {
+          "smithy.api#range": {
+            "min": 0,
+            "max": 23
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#Hypervisor": {
+        "type": "structure",
+        "members": {
+          "Host": {
+            "target": "com.amazonaws.backupgateway#Host",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe server host of the hypervisor. This can be either an IP address or a fully-qualified domain name (FQDN).\u003c/p\u003e"
+            }
+          },
+          "HypervisorArn": {
+            "target": "com.amazonaws.backupgateway#ServerArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the hypervisor.\u003c/p\u003e"
+            }
+          },
+          "KmsKeyArn": {
+            "target": "com.amazonaws.backupgateway#KmsKeyArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the Key Management Service used to encrypt the hypervisor.\u003c/p\u003e"
+            }
+          },
+          "Name": {
+            "target": "com.amazonaws.backupgateway#Name",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the hypervisor.\u003c/p\u003e"
+            }
+          },
+          "State": {
+            "target": "com.amazonaws.backupgateway#HypervisorState",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe state of the hypervisor.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eRepresents the hypervisor's permissions to which the gateway will connect.\u003c/p\u003e \u003cp\u003eA hypervisor is hardware, software, or firmware that creates and manages virtual machines, and allocates resources to them.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.backupgateway#HypervisorDetails": {
+        "type": "structure",
+        "members": {
+          "Host": {
+            "target": "com.amazonaws.backupgateway#Host",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe server host of the hypervisor. This can be either an IP address or a fully-qualified domain name (FQDN).\u003c/p\u003e"
+            }
+          },
+          "HypervisorArn": {
+            "target": "com.amazonaws.backupgateway#ServerArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the hypervisor.\u003c/p\u003e"
+            }
+          },
+          "KmsKeyArn": {
+            "target": "com.amazonaws.backupgateway#KmsKeyArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the KMS used to encrypt the hypervisor.\u003c/p\u003e"
+            }
+          },
+          "LastSuccessfulMetadataSyncTime": {
+            "target": "com.amazonaws.backupgateway#Time",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThis is the time when the most recent successful sync of metadata occurred.\u003c/p\u003e"
+            }
+          },
+          "LatestMetadataSyncStatus": {
+            "target": "com.amazonaws.backupgateway#SyncMetadataStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThis is the most recent status for the indicated metadata sync.\u003c/p\u003e"
+            }
+          },
+          "LatestMetadataSyncStatusMessage": {
+            "target": "com.amazonaws.backupgateway#string",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThis is the most recent status for the indicated metadata sync.\u003c/p\u003e"
+            }
+          },
+          "LogGroupArn": {
+            "target": "com.amazonaws.backupgateway#LogGroupArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the group of gateways within the requested log.\u003c/p\u003e"
+            }
+          },
+          "Name": {
+            "target": "com.amazonaws.backupgateway#Name",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThis is the name of the specified hypervisor.\u003c/p\u003e"
+            }
+          },
+          "State": {
+            "target": "com.amazonaws.backupgateway#HypervisorState",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThis is the current state of the specified hypervisor.\u003c/p\u003e \u003cp\u003eThe possible states are \u003ccode\u003ePENDING\u003c/code\u003e, \u003ccode\u003eONLINE\u003c/code\u003e, \u003ccode\u003eOFFLINE\u003c/code\u003e, or \u003ccode\u003eERROR\u003c/code\u003e.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThese are the details of the specified hypervisor. A hypervisor is hardware, software, or firmware that creates and manages virtual machines, and allocates resources to them.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.backupgateway#HypervisorId": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 100
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#HypervisorPropertyMappingResource": {
+        "type": "resource"
+      },
+      "com.amazonaws.backupgateway#HypervisorResource": {
+        "type": "resource",
+        "operations": [
+          {
+            "target": "com.amazonaws.backupgateway#StartVirtualMachinesMetadataSync"
+          }
+        ],
+        "resources": [
+          {
+            "target": "com.amazonaws.backupgateway#HypervisorPropertyMappingResource"
+          }
+        ],
+        "traits": {
+          "aws.cloudformation#cfnResource": {
+            "name": "Hypervisor"
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#HypervisorState": {
+        "type": "string",
+        "traits": {
+          "smithy.api#enum": [
+            {
+              "value": "PENDING",
+              "name": "PENDING"
+            },
+            {
+              "value": "ONLINE",
+              "name": "ONLINE"
+            },
+            {
+              "value": "OFFLINE",
+              "name": "OFFLINE"
+            },
+            {
+              "value": "ERROR",
+              "name": "ERROR"
+            }
+          ]
+        }
+      },
+      "com.amazonaws.backupgateway#Hypervisors": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.backupgateway#Hypervisor"
+        }
+      },
+      "com.amazonaws.backupgateway#IamRoleArn": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 20,
+            "max": 2048
+          },
+          "smithy.api#pattern": "^arn:(aws|aws-cn|aws-us-gov):iam::([0-9]+):role/(\\S+)$"
+        }
+      },
+      "com.amazonaws.backupgateway#ImportHypervisorConfiguration": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.backupgateway#ImportHypervisorConfigurationInput"
+        },
+        "output": {
+          "target": "com.amazonaws.backupgateway#ImportHypervisorConfigurationOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.backupgateway#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.backupgateway#ConflictException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eConnect to a hypervisor by importing its configuration.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.backupgateway#ImportHypervisorConfigurationInput": {
+        "type": "structure",
+        "members": {
+          "Host": {
+            "target": "com.amazonaws.backupgateway#Host",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe server host of the hypervisor. This can be either an IP address or a fully-qualified domain name (FQDN).\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "KmsKeyArn": {
+            "target": "com.amazonaws.backupgateway#KmsKeyArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Key Management Service for the hypervisor.\u003c/p\u003e"
+            }
+          },
+          "Name": {
+            "target": "com.amazonaws.backupgateway#Name",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the hypervisor.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Password": {
+            "target": "com.amazonaws.backupgateway#Password",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe password for the hypervisor.\u003c/p\u003e"
+            }
+          },
+          "Tags": {
+            "target": "com.amazonaws.backupgateway#Tags",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe tags of the hypervisor configuration to import.\u003c/p\u003e"
+            }
+          },
+          "Username": {
+            "target": "com.amazonaws.backupgateway#Username",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe username for the hypervisor.\u003c/p\u003e"
+            }
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#ImportHypervisorConfigurationOutput": {
+        "type": "structure",
+        "members": {
+          "HypervisorArn": {
+            "target": "com.amazonaws.backupgateway#ServerArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the hypervisor you disassociated.\u003c/p\u003e"
+            }
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#InternalServerException": {
+        "type": "structure",
+        "members": {
+          "ErrorCode": {
+            "target": "com.amazonaws.backupgateway#string",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA description of which internal error occured.\u003c/p\u003e"
+            }
+          },
+          "Message": {
+            "target": "com.amazonaws.backupgateway#string"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe operation did not succeed because an internal error occurred. Try again later.\u003c/p\u003e",
+          "smithy.api#error": "server",
+          "smithy.api#httpError": 500
+        }
+      },
+      "com.amazonaws.backupgateway#KmsKeyArn": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 50,
+            "max": 500
+          },
+          "smithy.api#pattern": "^(^arn:(aws|aws-cn|aws-us-gov):kms:([a-zA-Z0-9-]+):([0-9]+):(key|alias)/(\\S+)$)|(^alias/(\\S+)$)$"
+        }
+      },
+      "com.amazonaws.backupgateway#ListGateways": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.backupgateway#ListGatewaysInput"
+        },
+        "output": {
+          "target": "com.amazonaws.backupgateway#ListGatewaysOutput"
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eLists backup gateways owned by an Amazon Web Services account in an Amazon Web Services Region. The returned list is ordered by gateway Amazon Resource Name (ARN).\u003c/p\u003e",
+          "smithy.api#paginated": {
+            "items": "Gateways"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.backupgateway#ListGatewaysInput": {
+        "type": "structure",
+        "members": {
+          "MaxResults": {
+            "target": "com.amazonaws.backupgateway#MaxResults",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of gateways to list.\u003c/p\u003e"
+            }
+          },
+          "NextToken": {
+            "target": "com.amazonaws.backupgateway#NextToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe next item following a partial list of returned resources. For example, if a request is made to return \u003ccode\u003eMaxResults\u003c/code\u003e number of resources, \u003ccode\u003eNextToken\u003c/code\u003e allows you to return more items in your list starting at the location pointed to by the next token.\u003c/p\u003e"
+            }
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#ListGatewaysOutput": {
+        "type": "structure",
+        "members": {
+          "Gateways": {
+            "target": "com.amazonaws.backupgateway#Gateways",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of your gateways.\u003c/p\u003e"
+            }
+          },
+          "NextToken": {
+            "target": "com.amazonaws.backupgateway#NextToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe next item following a partial list of returned resources. For example, if a request is made to return \u003ccode\u003emaxResults\u003c/code\u003e number of resources, \u003ccode\u003eNextToken\u003c/code\u003e allows you to return more items in your list starting at the location pointed to by the next token.\u003c/p\u003e"
+            }
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#ListHypervisors": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.backupgateway#ListHypervisorsInput"
+        },
+        "output": {
+          "target": "com.amazonaws.backupgateway#ListHypervisorsOutput"
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eLists your hypervisors.\u003c/p\u003e",
+          "smithy.api#paginated": {
+            "items": "Hypervisors"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.backupgateway#ListHypervisorsInput": {
+        "type": "structure",
+        "members": {
+          "MaxResults": {
+            "target": "com.amazonaws.backupgateway#MaxResults",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of hypervisors to list.\u003c/p\u003e"
+            }
+          },
+          "NextToken": {
+            "target": "com.amazonaws.backupgateway#NextToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe next item following a partial list of returned resources. For example, if a request is made to return \u003ccode\u003emaxResults\u003c/code\u003e number of resources, \u003ccode\u003eNextToken\u003c/code\u003e allows you to return more items in your list starting at the location pointed to by the next token.\u003c/p\u003e"
+            }
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#ListHypervisorsOutput": {
+        "type": "structure",
+        "members": {
+          "Hypervisors": {
+            "target": "com.amazonaws.backupgateway#Hypervisors",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of your \u003ccode\u003eHypervisor\u003c/code\u003e objects, ordered by their Amazon Resource Names (ARNs).\u003c/p\u003e"
+            }
+          },
+          "NextToken": {
+            "target": "com.amazonaws.backupgateway#NextToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe next item following a partial list of returned resources. For example, if a request is made to return \u003ccode\u003emaxResults\u003c/code\u003e number of resources, \u003ccode\u003eNextToken\u003c/code\u003e allows you to return more items in your list starting at the location pointed to by the next token.\u003c/p\u003e"
+            }
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#ListTagsForResource": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.backupgateway#ListTagsForResourceInput"
+        },
+        "output": {
+          "target": "com.amazonaws.backupgateway#ListTagsForResourceOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.backupgateway#ResourceNotFoundException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eLists the tags applied to the resource identified by its Amazon Resource Name (ARN).\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.backupgateway#ListTagsForResourceInput": {
+        "type": "structure",
+        "members": {
+          "ResourceArn": {
+            "target": "com.amazonaws.backupgateway#ResourceArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the resource's tags to list.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#ListTagsForResourceOutput": {
+        "type": "structure",
+        "members": {
+          "ResourceArn": {
+            "target": "com.amazonaws.backupgateway#ResourceArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the resource's tags that you listed.\u003c/p\u003e"
+            }
+          },
+          "Tags": {
+            "target": "com.amazonaws.backupgateway#Tags",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of the resource's tags.\u003c/p\u003e"
+            }
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#ListVirtualMachines": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.backupgateway#ListVirtualMachinesInput"
+        },
+        "output": {
+          "target": "com.amazonaws.backupgateway#ListVirtualMachinesOutput"
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eLists your virtual machines.\u003c/p\u003e",
+          "smithy.api#paginated": {
+            "items": "VirtualMachines"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.backupgateway#ListVirtualMachinesInput": {
+        "type": "structure",
+        "members": {
+          "HypervisorArn": {
+            "target": "com.amazonaws.backupgateway#ServerArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the hypervisor connected to your virtual machine.\u003c/p\u003e"
+            }
+          },
+          "MaxResults": {
+            "target": "com.amazonaws.backupgateway#MaxResults",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of virtual machines to list.\u003c/p\u003e"
+            }
+          },
+          "NextToken": {
+            "target": "com.amazonaws.backupgateway#NextToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe next item following a partial list of returned resources. For example, if a request is made to return \u003ccode\u003emaxResults\u003c/code\u003e number of resources, \u003ccode\u003eNextToken\u003c/code\u003e allows you to return more items in your list starting at the location pointed to by the next token.\u003c/p\u003e"
+            }
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#ListVirtualMachinesOutput": {
+        "type": "structure",
+        "members": {
+          "NextToken": {
+            "target": "com.amazonaws.backupgateway#NextToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe next item following a partial list of returned resources. For example, if a request is made to return \u003ccode\u003emaxResults\u003c/code\u003e number of resources, \u003ccode\u003eNextToken\u003c/code\u003e allows you to return more items in your list starting at the location pointed to by the next token.\u003c/p\u003e"
+            }
+          },
+          "VirtualMachines": {
+            "target": "com.amazonaws.backupgateway#VirtualMachines",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of your \u003ccode\u003eVirtualMachine\u003c/code\u003e objects, ordered by their Amazon Resource Names (ARNs).\u003c/p\u003e"
+            }
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#LogGroupArn": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 2048
+          },
+          "smithy.api#pattern": "^$|^arn:(aws|aws-cn|aws-us-gov):logs:([a-zA-Z0-9-]+):([0-9]+):log-group:[a-zA-Z0-9_\\-\\/\\.]+:\\*$"
+        }
+      },
+      "com.amazonaws.backupgateway#MaintenanceStartTime": {
+        "type": "structure",
+        "members": {
+          "DayOfMonth": {
+            "target": "com.amazonaws.backupgateway#DayOfMonth",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe day of the month component of the maintenance start time represented as an ordinal number from 1 to 28, where 1 represents the first day of the month and 28 represents the last day of the month.\u003c/p\u003e"
+            }
+          },
+          "DayOfWeek": {
+            "target": "com.amazonaws.backupgateway#DayOfWeek",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn ordinal number between 0 and 6 that represents the day of the week, where 0 represents Sunday and 6 represents Saturday. The day of week is in the time zone of the gateway.\u003c/p\u003e"
+            }
+          },
+          "HourOfDay": {
+            "target": "com.amazonaws.backupgateway#HourOfDay",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe hour component of the maintenance start time represented as \u003ci\u003ehh\u003c/i\u003e, where \u003ci\u003ehh\u003c/i\u003e is the hour (0 to 23). The hour of the day is in the time zone of the gateway.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "MinuteOfHour": {
+            "target": "com.amazonaws.backupgateway#MinuteOfHour",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe minute component of the maintenance start time represented as \u003ci\u003emm\u003c/i\u003e, where \u003ci\u003emm\u003c/i\u003e is the minute (0 to 59). The minute of the hour is in the time zone of the gateway.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThis is your gateway's weekly maintenance start time including the day and time of the week. Note that values are in terms of the gateway's time zone. Can be weekly or monthly.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.backupgateway#MaxResults": {
+        "type": "integer",
+        "traits": {
+          "smithy.api#range": {
+            "min": 1
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#MinuteOfHour": {
+        "type": "integer",
+        "traits": {
+          "smithy.api#range": {
+            "min": 0,
+            "max": 59
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#Name": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 100
+          },
+          "smithy.api#pattern": "^[a-zA-Z0-9-]*$"
+        }
+      },
+      "com.amazonaws.backupgateway#NextToken": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 1000
+          },
+          "smithy.api#pattern": "^.+$"
+        }
+      },
+      "com.amazonaws.backupgateway#Password": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 100
+          },
+          "smithy.api#pattern": "^[ -~]+$",
+          "smithy.api#sensitive": {}
+        }
+      },
+      "com.amazonaws.backupgateway#Path": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 4096
+          },
+          "smithy.api#pattern": "^[^\\x00]+$"
+        }
+      },
+      "com.amazonaws.backupgateway#PutBandwidthRateLimitSchedule": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.backupgateway#PutBandwidthRateLimitScheduleInput"
+        },
+        "output": {
+          "target": "com.amazonaws.backupgateway#PutBandwidthRateLimitScheduleOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.backupgateway#ResourceNotFoundException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThis action sets the bandwidth rate limit schedule for a specified gateway. By default, gateways do not have a bandwidth rate limit schedule, which means no bandwidth rate limiting is in effect. Use this to initiate a gateway's bandwidth rate limit schedule.\u003c/p\u003e",
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.backupgateway#PutBandwidthRateLimitScheduleInput": {
+        "type": "structure",
+        "members": {
+          "BandwidthRateLimitIntervals": {
+            "target": "com.amazonaws.backupgateway#BandwidthRateLimitIntervals",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn array containing bandwidth rate limit schedule intervals for a gateway. When no bandwidth rate limit intervals have been scheduled, the array is empty.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "GatewayArn": {
+            "target": "com.amazonaws.backupgateway#GatewayArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the gateway. Use the \u003ca href=\"https://docs.aws.amazon.com/aws-backup/latest/devguide/API_BGW_ListGateways.html\"\u003e \u003ccode\u003eListGateways\u003c/code\u003e \u003c/a\u003e operation to return a list of gateways for your account and Amazon Web Services Region.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#PutBandwidthRateLimitScheduleOutput": {
+        "type": "structure",
+        "members": {
+          "GatewayArn": {
+            "target": "com.amazonaws.backupgateway#GatewayArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the gateway. Use the \u003ca href=\"https://docs.aws.amazon.com/aws-backup/latest/devguide/API_BGW_ListGateways.html\"\u003e \u003ccode\u003eListGateways\u003c/code\u003e \u003c/a\u003e operation to return a list of gateways for your account and Amazon Web Services Region.\u003c/p\u003e"
+            }
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#PutHypervisorPropertyMappings": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.backupgateway#PutHypervisorPropertyMappingsInput"
+        },
+        "output": {
+          "target": "com.amazonaws.backupgateway#PutHypervisorPropertyMappingsOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.backupgateway#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.backupgateway#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.backupgateway#ResourceNotFoundException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThis action sets the property mappings for the specified hypervisor. A hypervisor property mapping displays the relationship of entity properties available from the hypervisor to the properties available in Amazon Web Services.\u003c/p\u003e",
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.backupgateway#PutHypervisorPropertyMappingsInput": {
+        "type": "structure",
+        "members": {
+          "HypervisorArn": {
+            "target": "com.amazonaws.backupgateway#ServerArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the hypervisor.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "IamRoleArn": {
+            "target": "com.amazonaws.backupgateway#IamRoleArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the IAM role.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "VmwareToAwsTagMappings": {
+            "target": "com.amazonaws.backupgateway#VmwareToAwsTagMappings",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThis action requests the mappings of VMware tags to the Amazon Web Services tags.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#PutHypervisorPropertyMappingsOutput": {
+        "type": "structure",
+        "members": {
+          "HypervisorArn": {
+            "target": "com.amazonaws.backupgateway#ServerArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the hypervisor.\u003c/p\u003e"
+            }
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#PutMaintenanceStartTime": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.backupgateway#PutMaintenanceStartTimeInput"
+        },
+        "output": {
+          "target": "com.amazonaws.backupgateway#PutMaintenanceStartTimeOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.backupgateway#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.backupgateway#ResourceNotFoundException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eSet the maintenance start time for a gateway.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.backupgateway#PutMaintenanceStartTimeInput": {
+        "type": "structure",
+        "members": {
+          "DayOfMonth": {
+            "target": "com.amazonaws.backupgateway#DayOfMonth",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe day of the month start maintenance on a gateway.\u003c/p\u003e \u003cp\u003eValid values range from \u003ccode\u003eSunday\u003c/code\u003e to \u003ccode\u003eSaturday\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "DayOfWeek": {
+            "target": "com.amazonaws.backupgateway#DayOfWeek",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe day of the week to start maintenance on a gateway.\u003c/p\u003e"
+            }
+          },
+          "GatewayArn": {
+            "target": "com.amazonaws.backupgateway#GatewayArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) for the gateway, used to specify its maintenance start time.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "HourOfDay": {
+            "target": "com.amazonaws.backupgateway#HourOfDay",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe hour of the day to start maintenance on a gateway.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "MinuteOfHour": {
+            "target": "com.amazonaws.backupgateway#MinuteOfHour",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe minute of the hour to start maintenance on a gateway.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#PutMaintenanceStartTimeOutput": {
+        "type": "structure",
+        "members": {
+          "GatewayArn": {
+            "target": "com.amazonaws.backupgateway#GatewayArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of a gateway for which you set the maintenance start time.\u003c/p\u003e"
+            }
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#ResourceArn": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 50,
+            "max": 500
+          },
+          "smithy.api#pattern": "^arn:(aws|aws-cn|aws-us-gov):backup-gateway(:[a-zA-Z-0-9]+){3}\\/[a-zA-Z-0-9]+$"
+        }
+      },
+      "com.amazonaws.backupgateway#ResourceNotFoundException": {
+        "type": "structure",
+        "members": {
+          "ErrorCode": {
+            "target": "com.amazonaws.backupgateway#string",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA description of which resource wasn't found.\u003c/p\u003e"
+            }
+          },
+          "Message": {
+            "target": "com.amazonaws.backupgateway#string"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA resource that is required for the action wasn't found.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 404
+        }
+      },
+      "com.amazonaws.backupgateway#ServerArn": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 50,
+            "max": 500
+          },
+          "smithy.api#pattern": "^arn:(aws|aws-cn|aws-us-gov):backup-gateway(:[a-zA-Z-0-9]+){3}\\/[a-zA-Z-0-9]+$"
+        }
+      },
+      "com.amazonaws.backupgateway#StartVirtualMachinesMetadataSync": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.backupgateway#StartVirtualMachinesMetadataSyncInput"
+        },
+        "output": {
+          "target": "com.amazonaws.backupgateway#StartVirtualMachinesMetadataSyncOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.backupgateway#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.backupgateway#ResourceNotFoundException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThis action sends a request to sync metadata across the specified virtual machines.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.backupgateway#StartVirtualMachinesMetadataSyncInput": {
+        "type": "structure",
+        "members": {
+          "HypervisorArn": {
+            "target": "com.amazonaws.backupgateway#ServerArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the hypervisor.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#StartVirtualMachinesMetadataSyncOutput": {
+        "type": "structure",
+        "members": {
+          "HypervisorArn": {
+            "target": "com.amazonaws.backupgateway#ServerArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the hypervisor.\u003c/p\u003e"
+            }
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#SyncMetadataStatus": {
+        "type": "string",
+        "traits": {
+          "smithy.api#enum": [
+            {
+              "value": "CREATED",
+              "name": "CREATED"
+            },
+            {
+              "value": "RUNNING",
+              "name": "RUNNING"
+            },
+            {
+              "value": "FAILED",
+              "name": "FAILED"
+            },
+            {
+              "value": "PARTIALLY_FAILED",
+              "name": "PARTIALLY_FAILED"
+            },
+            {
+              "value": "SUCCEEDED",
+              "name": "SUCCEEDED"
+            }
+          ]
+        }
+      },
+      "com.amazonaws.backupgateway#Tag": {
+        "type": "structure",
+        "members": {
+          "Key": {
+            "target": "com.amazonaws.backupgateway#TagKey",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe key part of a tag's key-value pair. The key can't start with \u003ccode\u003eaws:\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Value": {
+            "target": "com.amazonaws.backupgateway#TagValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe value part of a tag's key-value pair.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA key-value pair you can use to manage, filter, and search for your resources. Allowed characters include UTF-8 letters, numbers, and the following characters: + - = . _ : /. Spaces are not allowed in tag values.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.backupgateway#TagKey": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 128
+          },
+          "smithy.api#pattern": "^([\\p{L}\\p{Z}\\p{N}_.:/=+\\-@]*)$"
+        }
+      },
+      "com.amazonaws.backupgateway#TagKeys": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.backupgateway#TagKey"
+        }
+      },
+      "com.amazonaws.backupgateway#TagResource": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.backupgateway#TagResourceInput"
+        },
+        "output": {
+          "target": "com.amazonaws.backupgateway#TagResourceOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.backupgateway#ResourceNotFoundException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eTag the resource.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.backupgateway#TagResourceInput": {
+        "type": "structure",
+        "members": {
+          "ResourceARN": {
+            "target": "com.amazonaws.backupgateway#ResourceArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the resource to tag.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Tags": {
+            "target": "com.amazonaws.backupgateway#Tags",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of tags to assign to the resource.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#TagResourceOutput": {
+        "type": "structure",
+        "members": {
+          "ResourceARN": {
+            "target": "com.amazonaws.backupgateway#ResourceArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the resource you tagged.\u003c/p\u003e"
+            }
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#TagValue": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 256
+          },
+          "smithy.api#pattern": "^[^\\x00]*$"
+        }
+      },
+      "com.amazonaws.backupgateway#Tags": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.backupgateway#Tag"
+        }
+      },
+      "com.amazonaws.backupgateway#TestHypervisorConfiguration": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.backupgateway#TestHypervisorConfigurationInput"
+        },
+        "output": {
+          "target": "com.amazonaws.backupgateway#TestHypervisorConfigurationOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.backupgateway#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.backupgateway#ResourceNotFoundException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eTests your hypervisor configuration to validate that backup gateway can connect with the hypervisor and its resources.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.backupgateway#TestHypervisorConfigurationInput": {
+        "type": "structure",
+        "members": {
+          "GatewayArn": {
+            "target": "com.amazonaws.backupgateway#GatewayArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the gateway to the hypervisor to test.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Host": {
+            "target": "com.amazonaws.backupgateway#Host",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe server host of the hypervisor. This can be either an IP address or a fully-qualified domain name (FQDN).\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Password": {
+            "target": "com.amazonaws.backupgateway#Password",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe password for the hypervisor.\u003c/p\u003e"
+            }
+          },
+          "Username": {
+            "target": "com.amazonaws.backupgateway#Username",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe username for the hypervisor.\u003c/p\u003e"
+            }
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#TestHypervisorConfigurationOutput": {
+        "type": "structure"
+      },
+      "com.amazonaws.backupgateway#ThrottlingException": {
+        "type": "structure",
+        "members": {
+          "ErrorCode": {
+            "target": "com.amazonaws.backupgateway#string",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eError: TPS has been limited to protect against intentional or unintentional high request volumes.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Message": {
+            "target": "com.amazonaws.backupgateway#string"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eTPS has been limited to protect against intentional or unintentional high request volumes.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 429
+        }
+      },
+      "com.amazonaws.backupgateway#Time": {
+        "type": "timestamp"
+      },
+      "com.amazonaws.backupgateway#UntagResource": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.backupgateway#UntagResourceInput"
+        },
+        "output": {
+          "target": "com.amazonaws.backupgateway#UntagResourceOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.backupgateway#ResourceNotFoundException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eRemoves tags from the resource.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.backupgateway#UntagResourceInput": {
+        "type": "structure",
+        "members": {
+          "ResourceARN": {
+            "target": "com.amazonaws.backupgateway#ResourceArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the resource from which to remove tags.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "TagKeys": {
+            "target": "com.amazonaws.backupgateway#TagKeys",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe list of tag keys specifying which tags to remove.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#UntagResourceOutput": {
+        "type": "structure",
+        "members": {
+          "ResourceARN": {
+            "target": "com.amazonaws.backupgateway#ResourceArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the resource from which you removed tags.\u003c/p\u003e"
+            }
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#UpdateGatewayInformation": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.backupgateway#UpdateGatewayInformationInput"
+        },
+        "output": {
+          "target": "com.amazonaws.backupgateway#UpdateGatewayInformationOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.backupgateway#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.backupgateway#ResourceNotFoundException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eUpdates a gateway's name. Specify which gateway to update using the Amazon Resource Name (ARN) of the gateway in your request.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.backupgateway#UpdateGatewayInformationInput": {
+        "type": "structure",
+        "members": {
+          "GatewayArn": {
+            "target": "com.amazonaws.backupgateway#GatewayArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the gateway to update.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "GatewayDisplayName": {
+            "target": "com.amazonaws.backupgateway#Name",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe updated display name of the gateway.\u003c/p\u003e"
+            }
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#UpdateGatewayInformationOutput": {
+        "type": "structure",
+        "members": {
+          "GatewayArn": {
+            "target": "com.amazonaws.backupgateway#GatewayArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the gateway you updated.\u003c/p\u003e"
+            }
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#UpdateGatewaySoftwareNow": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.backupgateway#UpdateGatewaySoftwareNowInput"
+        },
+        "output": {
+          "target": "com.amazonaws.backupgateway#UpdateGatewaySoftwareNowOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.backupgateway#ResourceNotFoundException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eUpdates the gateway virtual machine (VM) software. The request immediately triggers the software update.\u003c/p\u003e \u003cnote\u003e \u003cp\u003eWhen you make this request, you get a \u003ccode\u003e200 OK\u003c/code\u003e success response immediately. However, it might take some time for the update to complete.\u003c/p\u003e \u003c/note\u003e"
+        }
+      },
+      "com.amazonaws.backupgateway#UpdateGatewaySoftwareNowInput": {
+        "type": "structure",
+        "members": {
+          "GatewayArn": {
+            "target": "com.amazonaws.backupgateway#GatewayArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the gateway to be updated.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#UpdateGatewaySoftwareNowOutput": {
+        "type": "structure",
+        "members": {
+          "GatewayArn": {
+            "target": "com.amazonaws.backupgateway#GatewayArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the gateway you updated.\u003c/p\u003e"
+            }
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#UpdateHypervisor": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.backupgateway#UpdateHypervisorInput"
+        },
+        "output": {
+          "target": "com.amazonaws.backupgateway#UpdateHypervisorOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.backupgateway#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.backupgateway#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.backupgateway#ResourceNotFoundException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eUpdates a hypervisor metadata, including its host, username, and password. Specify which hypervisor to update using the Amazon Resource Name (ARN) of the hypervisor in your request.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.backupgateway#UpdateHypervisorInput": {
+        "type": "structure",
+        "members": {
+          "Host": {
+            "target": "com.amazonaws.backupgateway#Host",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe updated host of the hypervisor. This can be either an IP address or a fully-qualified domain name (FQDN).\u003c/p\u003e"
+            }
+          },
+          "HypervisorArn": {
+            "target": "com.amazonaws.backupgateway#ServerArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the hypervisor to update.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "LogGroupArn": {
+            "target": "com.amazonaws.backupgateway#LogGroupArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the group of gateways within the requested log.\u003c/p\u003e"
+            }
+          },
+          "Name": {
+            "target": "com.amazonaws.backupgateway#Name",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe updated name for the hypervisor\u003c/p\u003e"
+            }
+          },
+          "Password": {
+            "target": "com.amazonaws.backupgateway#Password",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe updated password for the hypervisor.\u003c/p\u003e"
+            }
+          },
+          "Username": {
+            "target": "com.amazonaws.backupgateway#Username",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe updated username for the hypervisor.\u003c/p\u003e"
+            }
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#UpdateHypervisorOutput": {
+        "type": "structure",
+        "members": {
+          "HypervisorArn": {
+            "target": "com.amazonaws.backupgateway#ServerArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the hypervisor you updated.\u003c/p\u003e"
+            }
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#Username": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 100
+          },
+          "smithy.api#pattern": "^[ -\\.0-\\[\\]-~]*[!-\\.0-\\[\\]-~][ -\\.0-\\[\\]-~]*$",
+          "smithy.api#sensitive": {}
+        }
+      },
+      "com.amazonaws.backupgateway#ValidationException": {
+        "type": "structure",
+        "members": {
+          "ErrorCode": {
+            "target": "com.amazonaws.backupgateway#string",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA description of what caused the validation error.\u003c/p\u003e"
+            }
+          },
+          "Message": {
+            "target": "com.amazonaws.backupgateway#string"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe operation did not succeed because a validation error occurred.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.backupgateway#VirtualMachine": {
+        "type": "structure",
+        "members": {
+          "HostName": {
+            "target": "com.amazonaws.backupgateway#Name",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe host name of the virtual machine.\u003c/p\u003e"
+            }
+          },
+          "HypervisorId": {
+            "target": "com.amazonaws.backupgateway#string",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID of the virtual machine's hypervisor.\u003c/p\u003e"
+            }
+          },
+          "LastBackupDate": {
+            "target": "com.amazonaws.backupgateway#Time",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe most recent date a virtual machine was backed up, in Unix format and UTC time.\u003c/p\u003e"
+            }
+          },
+          "Name": {
+            "target": "com.amazonaws.backupgateway#Name",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the virtual machine.\u003c/p\u003e"
+            }
+          },
+          "Path": {
+            "target": "com.amazonaws.backupgateway#Path",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe path of the virtual machine.\u003c/p\u003e"
+            }
+          },
+          "ResourceArn": {
+            "target": "com.amazonaws.backupgateway#ResourceArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the virtual machine. For example, \u003ccode\u003earn:aws:backup-gateway:us-west-1:0000000000000:vm/vm-0000ABCDEFGIJKL\u003c/code\u003e.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA virtual machine that is on a hypervisor.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.backupgateway#VirtualMachineDetails": {
+        "type": "structure",
+        "members": {
+          "HostName": {
+            "target": "com.amazonaws.backupgateway#Name",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe host name of the virtual machine.\u003c/p\u003e"
+            }
+          },
+          "HypervisorId": {
+            "target": "com.amazonaws.backupgateway#string",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID of the virtual machine's hypervisor.\u003c/p\u003e"
+            }
+          },
+          "LastBackupDate": {
+            "target": "com.amazonaws.backupgateway#Time",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe most recent date a virtual machine was backed up, in Unix format and UTC time.\u003c/p\u003e"
+            }
+          },
+          "Name": {
+            "target": "com.amazonaws.backupgateway#Name",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the virtual machine.\u003c/p\u003e"
+            }
+          },
+          "Path": {
+            "target": "com.amazonaws.backupgateway#Path",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe path of the virtual machine.\u003c/p\u003e"
+            }
+          },
+          "ResourceArn": {
+            "target": "com.amazonaws.backupgateway#ResourceArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the virtual machine. For example, \u003ccode\u003earn:aws:backup-gateway:us-west-1:0000000000000:vm/vm-0000ABCDEFGIJKL\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "VmwareTags": {
+            "target": "com.amazonaws.backupgateway#VmwareTags",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThese are the details of the VMware tags associated with the specified virtual machine.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eYour \u003ccode\u003eVirtualMachine\u003c/code\u003e objects, ordered by their Amazon Resource Names (ARNs).\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.backupgateway#VirtualMachineResource": {
+        "type": "resource",
+        "traits": {
+          "aws.cloudformation#cfnResource": {
+            "name": "VirtualMachine"
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#VirtualMachines": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.backupgateway#VirtualMachine"
+        }
+      },
+      "com.amazonaws.backupgateway#VmwareCategory": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 80
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#VmwareTag": {
+        "type": "structure",
+        "members": {
+          "VmwareCategory": {
+            "target": "com.amazonaws.backupgateway#VmwareCategory",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe is the category of VMware.\u003c/p\u003e"
+            }
+          },
+          "VmwareTagDescription": {
+            "target": "com.amazonaws.backupgateway#string",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThis is a user-defined description of a VMware tag.\u003c/p\u003e"
+            }
+          },
+          "VmwareTagName": {
+            "target": "com.amazonaws.backupgateway#VmwareTagName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThis is the user-defined name of a VMware tag.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA VMware tag is a tag attached to a specific virtual machine. A \u003ca href=\"https://docs.aws.amazon.com/aws-backup/latest/devguide/API_BGW_Tag.html\"\u003etag\u003c/a\u003e is a key-value pair you can use to manage, filter, and search for your resources.\u003c/p\u003e \u003cp\u003eThe content of VMware tags can be matched to Amazon Web Services tags.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.backupgateway#VmwareTagName": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 80
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#VmwareTags": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.backupgateway#VmwareTag"
+        }
+      },
+      "com.amazonaws.backupgateway#VmwareToAwsTagMapping": {
+        "type": "structure",
+        "members": {
+          "AwsTagKey": {
+            "target": "com.amazonaws.backupgateway#TagKey",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe key part of the Amazon Web Services tag's key-value pair.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "AwsTagValue": {
+            "target": "com.amazonaws.backupgateway#TagValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe value part of the Amazon Web Services tag's key-value pair.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "VmwareCategory": {
+            "target": "com.amazonaws.backupgateway#VmwareCategory",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe is the category of VMware.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "VmwareTagName": {
+            "target": "com.amazonaws.backupgateway#VmwareTagName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThis is the user-defined name of a VMware tag.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThis displays the mapping of VMware tags to the corresponding Amazon Web Services tags.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.backupgateway#VmwareToAwsTagMappings": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.backupgateway#VmwareToAwsTagMapping"
+        }
+      },
+      "com.amazonaws.backupgateway#VpcEndpoint": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 255
+          }
+        }
+      },
+      "com.amazonaws.backupgateway#string": {
+        "type": "string"
+      }
+    }
+  }
+}

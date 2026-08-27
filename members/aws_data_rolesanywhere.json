@@ -1,0 +1,3759 @@
+{
+  "schema_source": "smithy",
+  "mode": "data_source",
+  "auth": {
+    "Type": "",
+    "Params": null
+  },
+  "base_url": "https://aws.example.invalid",
+  "retry": {
+    "MaxAttempts": 0,
+    "InitialBackoff": "",
+    "MaxBackoff": "",
+    "Jitter": null,
+    "RespectRetryAfter": null,
+    "RateLimitResetHeader": ""
+  },
+  "timeouts": {
+    "Create": "",
+    "Read": "",
+    "Update": "",
+    "Delete": "",
+    "Default": ""
+  },
+  "wire_name": "aws",
+  "raw_spec": {
+    "smithy": "2.0",
+    "shapes": {
+      "com.amazonaws.rolesanywhere#AccessDeniedException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "smithy.api#String"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eYou do not have sufficient access to perform this action.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 403
+        }
+      },
+      "com.amazonaws.rolesanywhere#AmazonResourceName": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 1011
+          }
+        }
+      },
+      "com.amazonaws.rolesanywhere#AttributeMapping": {
+        "type": "structure",
+        "members": {
+          "certificateField": {
+            "target": "com.amazonaws.rolesanywhere#CertificateField",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eFields (x509Subject, x509Issuer and x509SAN) within X.509 certificates.\u003c/p\u003e"
+            }
+          },
+          "mappingRules": {
+            "target": "com.amazonaws.rolesanywhere#MappingRules",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of mapping entries for every supported specifier or sub-field.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA mapping applied to the authenticating end-entity certificate.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.rolesanywhere#AttributeMappings": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.rolesanywhere#AttributeMapping"
+        }
+      },
+      "com.amazonaws.rolesanywhere#CertificateField": {
+        "type": "string",
+        "traits": {
+          "smithy.api#enum": [
+            {
+              "name": "x509Subject",
+              "value": "x509Subject"
+            },
+            {
+              "name": "x509Issuer",
+              "value": "x509Issuer"
+            },
+            {
+              "name": "x509SAN",
+              "value": "x509SAN"
+            }
+          ]
+        }
+      },
+      "com.amazonaws.rolesanywhere#CreateProfile": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.rolesanywhere#CreateProfileRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.rolesanywhere#ProfileDetailResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.rolesanywhere#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eCreates a \u003ci\u003eprofile\u003c/i\u003e, a list of the roles that Roles Anywhere service is trusted to assume. You use profiles to intersect permissions with IAM managed policies.\u003c/p\u003e \u003cp\u003e \u003cb\u003eRequired permissions: \u003c/b\u003e \u003ccode\u003erolesanywhere:CreateProfile\u003c/code\u003e. \u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/profiles",
+            "method": "POST",
+            "code": 201
+          }
+        }
+      },
+      "com.amazonaws.rolesanywhere#CreateProfileRequest": {
+        "type": "structure",
+        "members": {
+          "acceptRoleSessionName": {
+            "target": "smithy.api#Boolean",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eUsed to determine if a custom role session name will be accepted in a temporary credential request.\u003c/p\u003e"
+            }
+          },
+          "durationSeconds": {
+            "target": "smithy.api#Integer",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003e Used to determine how long sessions vended using this profile are valid for. See the \u003ccode\u003eExpiration\u003c/code\u003e section of the \u003ca href=\"https://docs.aws.amazon.com/rolesanywhere/latest/userguide/authentication-create-session.html#credentials-object\"\u003eCreateSession API documentation\u003c/a\u003e page for more details. In requests, if this value is not provided, the default value will be 3600. \u003c/p\u003e",
+              "smithy.api#range": {
+                "min": 900,
+                "max": 43200
+              }
+            }
+          },
+          "enabled": {
+            "target": "smithy.api#Boolean",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies whether the profile is enabled.\u003c/p\u003e"
+            }
+          },
+          "managedPolicyArns": {
+            "target": "com.amazonaws.rolesanywhere#ManagedPolicyList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of managed policy ARNs that apply to the vended session credentials. \u003c/p\u003e"
+            }
+          },
+          "name": {
+            "target": "com.amazonaws.rolesanywhere#ResourceName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the profile.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "requireInstanceProperties": {
+            "target": "smithy.api#Boolean",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eUnused, saved for future use. Will likely specify whether instance properties are required in temporary credential requests with this profile. \u003c/p\u003e"
+            }
+          },
+          "roleArns": {
+            "target": "com.amazonaws.rolesanywhere#RoleArnList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of IAM roles that this profile can assume in a temporary credential request.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "sessionPolicy": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA session policy that applies to the trust boundary of the vended session credentials. \u003c/p\u003e"
+            }
+          },
+          "tags": {
+            "target": "com.amazonaws.rolesanywhere#TagList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe tags to attach to the profile.\u003c/p\u003e"
+            }
+          }
+        }
+      },
+      "com.amazonaws.rolesanywhere#CreateTrustAnchor": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.rolesanywhere#CreateTrustAnchorRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.rolesanywhere#TrustAnchorDetailResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.rolesanywhere#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eCreates a trust anchor to establish trust between IAM Roles Anywhere and your certificate authority (CA). You can define a trust anchor as a reference to an Private Certificate Authority (Private CA) or by uploading a CA certificate. Your Amazon Web Services workloads can authenticate with the trust anchor using certificates issued by the CA in exchange for temporary Amazon Web Services credentials.\u003c/p\u003e \u003cp\u003e \u003cb\u003eRequired permissions: \u003c/b\u003e \u003ccode\u003erolesanywhere:CreateTrustAnchor\u003c/code\u003e. \u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/trustanchors",
+            "method": "POST",
+            "code": 201
+          }
+        }
+      },
+      "com.amazonaws.rolesanywhere#CreateTrustAnchorRequest": {
+        "type": "structure",
+        "members": {
+          "enabled": {
+            "target": "smithy.api#Boolean",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies whether the trust anchor is enabled.\u003c/p\u003e"
+            }
+          },
+          "name": {
+            "target": "com.amazonaws.rolesanywhere#ResourceName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the trust anchor.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "notificationSettings": {
+            "target": "com.amazonaws.rolesanywhere#NotificationSettings",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of notification settings to be associated to the trust anchor.\u003c/p\u003e"
+            }
+          },
+          "source": {
+            "target": "com.amazonaws.rolesanywhere#Source",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe trust anchor type and its related certificate data.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "tags": {
+            "target": "com.amazonaws.rolesanywhere#TagList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe tags to attach to the trust anchor.\u003c/p\u003e"
+            }
+          }
+        }
+      },
+      "com.amazonaws.rolesanywhere#CredentialSummaries": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.rolesanywhere#CredentialSummary"
+        }
+      },
+      "com.amazonaws.rolesanywhere#CredentialSummary": {
+        "type": "structure",
+        "members": {
+          "enabled": {
+            "target": "smithy.api#Boolean",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIndicates whether the credential is enabled.\u003c/p\u003e"
+            }
+          },
+          "failed": {
+            "target": "smithy.api#Boolean",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIndicates whether the temporary credential request was successful. \u003c/p\u003e"
+            }
+          },
+          "issuer": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe fully qualified domain name of the issuing certificate for the presented end-entity certificate.\u003c/p\u003e"
+            }
+          },
+          "seenAt": {
+            "target": "smithy.api#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ISO-8601 time stamp of when the certificate was last used in a temporary credential request.\u003c/p\u003e",
+              "smithy.api#timestampFormat": "date-time"
+            }
+          },
+          "serialNumber": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe serial number of the certificate.\u003c/p\u003e"
+            }
+          },
+          "x509CertificateData": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe PEM-encoded data of the certificate.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA record of a presented X509 credential from a temporary credential request. \u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.rolesanywhere#Crl": {
+        "type": "resource",
+        "operations": [
+          {
+            "target": "com.amazonaws.rolesanywhere#DisableCrl"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#EnableCrl"
+          }
+        ]
+      },
+      "com.amazonaws.rolesanywhere#CrlDetail": {
+        "type": "structure",
+        "members": {
+          "createdAt": {
+            "target": "smithy.api#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ISO-8601 timestamp when the certificate revocation list (CRL) was created. \u003c/p\u003e",
+              "smithy.api#timestampFormat": "date-time"
+            }
+          },
+          "crlArn": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ARN of the certificate revocation list (CRL).\u003c/p\u003e"
+            }
+          },
+          "crlData": {
+            "target": "smithy.api#Blob",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe state of the certificate revocation list (CRL) after a read or write operation.\u003c/p\u003e"
+            }
+          },
+          "crlId": {
+            "target": "com.amazonaws.rolesanywhere#Uuid",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the certificate revocation list (CRL).\u003c/p\u003e"
+            }
+          },
+          "enabled": {
+            "target": "smithy.api#Boolean",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIndicates whether the certificate revocation list (CRL) is enabled.\u003c/p\u003e"
+            }
+          },
+          "name": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the certificate revocation list (CRL).\u003c/p\u003e"
+            }
+          },
+          "trustAnchorArn": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ARN of the TrustAnchor the certificate revocation list (CRL) will provide revocation for. \u003c/p\u003e"
+            }
+          },
+          "updatedAt": {
+            "target": "smithy.api#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ISO-8601 timestamp when the certificate revocation list (CRL) was last updated. \u003c/p\u003e",
+              "smithy.api#timestampFormat": "date-time"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe state of the certificate revocation list (CRL) after a read or write operation.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.rolesanywhere#CrlDetailResponse": {
+        "type": "structure",
+        "members": {
+          "crl": {
+            "target": "com.amazonaws.rolesanywhere#CrlDetail",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe state of the certificate revocation list (CRL) after a read or write operation.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        }
+      },
+      "com.amazonaws.rolesanywhere#CrlDetails": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.rolesanywhere#CrlDetail"
+        }
+      },
+      "com.amazonaws.rolesanywhere#DeleteAttributeMapping": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.rolesanywhere#DeleteAttributeMappingRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.rolesanywhere#DeleteAttributeMappingResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.rolesanywhere#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eDelete an entry from the attribute mapping rules enforced by a given profile.\u003c/p\u003e",
+          "smithy.api#examples": [
+            {
+              "title": "DeleteAttributeMapping - Deletes a custom attribute mapping rule",
+              "input": {
+                "profileId": "00000000-0000-0000-0000-000000000000",
+                "specifiers": [
+                  "OU"
+                ],
+                "certificateField": "x509Subject"
+              },
+              "output": {
+                "profile": {
+                  "acceptRoleSessionName": false,
+                  "attributeMappings": [
+                    {
+                      "mappingRules": [
+                        {
+                          "specifier": "CN"
+                        }
+                      ],
+                      "certificateField": "x509Subject"
+                    }
+                  ],
+                  "createdAt": "2021-07-19T15:55:25.986591Z",
+                  "createdBy": "arn:aws:sts::123456789012:assumed-role/Admin/DummyRole",
+                  "durationSeconds": 3600,
+                  "enabled": true,
+                  "managedPolicyArns": [],
+                  "name": "Dummy Profile",
+                  "profileArn": "arn:aws:rolesanywhere:us-east-1:123456789012:profile/00000000-0000-0000-0000-000000000000",
+                  "profileId": "00000000-0000-0000-0000-000000000000",
+                  "requireInstanceProperties": false,
+                  "roleArns": [
+                    "arn:aws:iam::123456789012:role/DummyRole"
+                  ],
+                  "sessionPolicy": "",
+                  "updatedAt": "2021-07-19T15:55:25.986591Z"
+                }
+              }
+            }
+          ],
+          "smithy.api#http": {
+            "uri": "/profiles/{profileId}/mappings",
+            "method": "DELETE"
+          },
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.rolesanywhere#DeleteAttributeMappingRequest": {
+        "type": "structure",
+        "members": {
+          "certificateField": {
+            "target": "com.amazonaws.rolesanywhere#CertificateField",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eFields (x509Subject, x509Issuer and x509SAN) within X.509 certificates.\u003c/p\u003e",
+              "smithy.api#httpQuery": "certificateField",
+              "smithy.api#required": {}
+            }
+          },
+          "profileId": {
+            "target": "com.amazonaws.rolesanywhere#Uuid",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the profile.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "specifiers": {
+            "target": "com.amazonaws.rolesanywhere#SpecifierList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of specifiers of a certificate field; for example, CN, OU, UID from a Subject.\u003c/p\u003e",
+              "smithy.api#httpQuery": "specifiers"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.rolesanywhere#DeleteAttributeMappingResponse": {
+        "type": "structure",
+        "members": {
+          "profile": {
+            "target": "com.amazonaws.rolesanywhere#ProfileDetail",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe state of the profile after a read or write operation.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.rolesanywhere#DeleteCrl": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.rolesanywhere#ScalarCrlRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.rolesanywhere#CrlDetailResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.rolesanywhere#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#ResourceNotFoundException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eDeletes a certificate revocation list (CRL).\u003c/p\u003e \u003cp\u003e \u003cb\u003eRequired permissions: \u003c/b\u003e \u003ccode\u003erolesanywhere:DeleteCrl\u003c/code\u003e. \u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/crl/{crlId}",
+            "method": "DELETE"
+          },
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.rolesanywhere#DeleteProfile": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.rolesanywhere#ScalarProfileRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.rolesanywhere#ProfileDetailResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.rolesanywhere#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#ResourceNotFoundException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eDeletes a profile.\u003c/p\u003e \u003cp\u003e \u003cb\u003eRequired permissions: \u003c/b\u003e \u003ccode\u003erolesanywhere:DeleteProfile\u003c/code\u003e. \u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/profile/{profileId}",
+            "method": "DELETE"
+          },
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.rolesanywhere#DeleteTrustAnchor": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.rolesanywhere#ScalarTrustAnchorRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.rolesanywhere#TrustAnchorDetailResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.rolesanywhere#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#ResourceNotFoundException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eDeletes a trust anchor.\u003c/p\u003e \u003cp\u003e \u003cb\u003eRequired permissions: \u003c/b\u003e \u003ccode\u003erolesanywhere:DeleteTrustAnchor\u003c/code\u003e. \u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/trustanchor/{trustAnchorId}",
+            "method": "DELETE"
+          },
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.rolesanywhere#DisableCrl": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.rolesanywhere#ScalarCrlRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.rolesanywhere#CrlDetailResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.rolesanywhere#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#ResourceNotFoundException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eDisables a certificate revocation list (CRL).\u003c/p\u003e \u003cp\u003e \u003cb\u003eRequired permissions: \u003c/b\u003e \u003ccode\u003erolesanywhere:DisableCrl\u003c/code\u003e. \u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/crl/{crlId}/disable",
+            "method": "POST"
+          }
+        }
+      },
+      "com.amazonaws.rolesanywhere#DisableProfile": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.rolesanywhere#ScalarProfileRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.rolesanywhere#ProfileDetailResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.rolesanywhere#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#ResourceNotFoundException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eDisables a profile. When disabled, temporary credential requests with this profile fail.\u003c/p\u003e \u003cp\u003e \u003cb\u003eRequired permissions: \u003c/b\u003e \u003ccode\u003erolesanywhere:DisableProfile\u003c/code\u003e. \u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/profile/{profileId}/disable",
+            "method": "POST"
+          }
+        }
+      },
+      "com.amazonaws.rolesanywhere#DisableTrustAnchor": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.rolesanywhere#ScalarTrustAnchorRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.rolesanywhere#TrustAnchorDetailResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.rolesanywhere#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#ResourceNotFoundException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eDisables a trust anchor. When disabled, temporary credential requests specifying this trust anchor are unauthorized.\u003c/p\u003e \u003cp\u003e \u003cb\u003eRequired permissions: \u003c/b\u003e \u003ccode\u003erolesanywhere:DisableTrustAnchor\u003c/code\u003e. \u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/trustanchor/{trustAnchorId}/disable",
+            "method": "POST"
+          }
+        }
+      },
+      "com.amazonaws.rolesanywhere#EnableCrl": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.rolesanywhere#ScalarCrlRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.rolesanywhere#CrlDetailResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.rolesanywhere#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#ResourceNotFoundException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eEnables a certificate revocation list (CRL). When enabled, certificates stored in the CRL are unauthorized to receive session credentials.\u003c/p\u003e \u003cp\u003e \u003cb\u003eRequired permissions: \u003c/b\u003e \u003ccode\u003erolesanywhere:EnableCrl\u003c/code\u003e. \u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/crl/{crlId}/enable",
+            "method": "POST"
+          }
+        }
+      },
+      "com.amazonaws.rolesanywhere#EnableProfile": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.rolesanywhere#ScalarProfileRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.rolesanywhere#ProfileDetailResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.rolesanywhere#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#ResourceNotFoundException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eEnables temporary credential requests for a profile. \u003c/p\u003e \u003cp\u003e \u003cb\u003eRequired permissions: \u003c/b\u003e \u003ccode\u003erolesanywhere:EnableProfile\u003c/code\u003e. \u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/profile/{profileId}/enable",
+            "method": "POST"
+          }
+        }
+      },
+      "com.amazonaws.rolesanywhere#EnableTrustAnchor": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.rolesanywhere#ScalarTrustAnchorRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.rolesanywhere#TrustAnchorDetailResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.rolesanywhere#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#ResourceNotFoundException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eEnables a trust anchor. When enabled, certificates in the trust anchor chain are authorized for trust validation. \u003c/p\u003e \u003cp\u003e \u003cb\u003eRequired permissions: \u003c/b\u003e \u003ccode\u003erolesanywhere:EnableTrustAnchor\u003c/code\u003e. \u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/trustanchor/{trustAnchorId}/enable",
+            "method": "POST"
+          }
+        }
+      },
+      "com.amazonaws.rolesanywhere#GetCrl": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.rolesanywhere#ScalarCrlRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.rolesanywhere#CrlDetailResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.rolesanywhere#ResourceNotFoundException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eGets a certificate revocation list (CRL).\u003c/p\u003e \u003cp\u003e \u003cb\u003eRequired permissions: \u003c/b\u003e \u003ccode\u003erolesanywhere:GetCrl\u003c/code\u003e. \u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/crl/{crlId}",
+            "method": "GET"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.rolesanywhere#GetProfile": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.rolesanywhere#ScalarProfileRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.rolesanywhere#ProfileDetailResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.rolesanywhere#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#ResourceNotFoundException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eGets a profile.\u003c/p\u003e \u003cp\u003e \u003cb\u003eRequired permissions: \u003c/b\u003e \u003ccode\u003erolesanywhere:GetProfile\u003c/code\u003e. \u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/profile/{profileId}",
+            "method": "GET"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.rolesanywhere#GetSubject": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.rolesanywhere#ScalarSubjectRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.rolesanywhere#SubjectDetailResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.rolesanywhere#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#ResourceNotFoundException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eGets a \u003ci\u003esubject\u003c/i\u003e, which associates a certificate identity with authentication attempts. The subject stores auditing information such as the status of the last authentication attempt, the certificate data used in the attempt, and the last time the associated identity attempted authentication. \u003c/p\u003e \u003cp\u003e \u003cb\u003eRequired permissions: \u003c/b\u003e \u003ccode\u003erolesanywhere:GetSubject\u003c/code\u003e. \u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/subject/{subjectId}",
+            "method": "GET"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.rolesanywhere#GetTrustAnchor": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.rolesanywhere#ScalarTrustAnchorRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.rolesanywhere#TrustAnchorDetailResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.rolesanywhere#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eGets a trust anchor.\u003c/p\u003e \u003cp\u003e \u003cb\u003eRequired permissions: \u003c/b\u003e \u003ccode\u003erolesanywhere:GetTrustAnchor\u003c/code\u003e. \u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/trustanchor/{trustAnchorId}",
+            "method": "GET"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.rolesanywhere#ImportCrl": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.rolesanywhere#ImportCrlRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.rolesanywhere#CrlDetailResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.rolesanywhere#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eImports the certificate revocation list (CRL). A CRL is a list of certificates that have been revoked by the issuing certificate Authority (CA).In order to be properly imported, a CRL must be in PEM format. IAM Roles Anywhere validates against the CRL before issuing credentials. \u003c/p\u003e \u003cp\u003e \u003cb\u003eRequired permissions: \u003c/b\u003e \u003ccode\u003erolesanywhere:ImportCrl\u003c/code\u003e. \u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/crls",
+            "method": "POST",
+            "code": 201
+          }
+        }
+      },
+      "com.amazonaws.rolesanywhere#ImportCrlRequest": {
+        "type": "structure",
+        "members": {
+          "crlData": {
+            "target": "smithy.api#Blob",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe x509 v3 specified certificate revocation list (CRL).\u003c/p\u003e",
+              "smithy.api#length": {
+                "min": 1,
+                "max": 300000
+              },
+              "smithy.api#required": {}
+            }
+          },
+          "enabled": {
+            "target": "smithy.api#Boolean",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies whether the certificate revocation list (CRL) is enabled.\u003c/p\u003e"
+            }
+          },
+          "name": {
+            "target": "com.amazonaws.rolesanywhere#ResourceName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the certificate revocation list (CRL).\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "tags": {
+            "target": "com.amazonaws.rolesanywhere#TagList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of tags to attach to the certificate revocation list (CRL).\u003c/p\u003e"
+            }
+          },
+          "trustAnchorArn": {
+            "target": "com.amazonaws.rolesanywhere#TrustAnchorArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ARN of the TrustAnchor the certificate revocation list (CRL) will provide revocation for.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        }
+      },
+      "com.amazonaws.rolesanywhere#InstanceProperties": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.rolesanywhere#InstanceProperty"
+        }
+      },
+      "com.amazonaws.rolesanywhere#InstanceProperty": {
+        "type": "structure",
+        "members": {
+          "failed": {
+            "target": "smithy.api#Boolean",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIndicates whether the temporary credential request was successful. \u003c/p\u003e"
+            }
+          },
+          "properties": {
+            "target": "com.amazonaws.rolesanywhere#InstancePropertyMap",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of instanceProperty objects. \u003c/p\u003e"
+            }
+          },
+          "seenAt": {
+            "target": "smithy.api#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ISO-8601 time stamp of when the certificate was last used in a temporary credential request.\u003c/p\u003e",
+              "smithy.api#timestampFormat": "date-time"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA key-value pair you set that identifies a property of the authenticating instance.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.rolesanywhere#InstancePropertyMap": {
+        "type": "map",
+        "key": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#length": {
+              "min": 1,
+              "max": 200
+            }
+          }
+        },
+        "value": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#length": {
+              "min": 1,
+              "max": 200
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 50
+          }
+        }
+      },
+      "com.amazonaws.rolesanywhere#ListCrls": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.rolesanywhere#ListRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.rolesanywhere#ListCrlsResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.rolesanywhere#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eLists all certificate revocation lists (CRL) in the authenticated account and Amazon Web Services Region.\u003c/p\u003e \u003cp\u003e \u003cb\u003eRequired permissions: \u003c/b\u003e \u003ccode\u003erolesanywhere:ListCrls\u003c/code\u003e. \u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/crls",
+            "method": "GET"
+          },
+          "smithy.api#paginated": {
+            "inputToken": "nextToken",
+            "outputToken": "nextToken",
+            "items": "crls"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.rolesanywhere#ListCrlsResponse": {
+        "type": "structure",
+        "members": {
+          "crls": {
+            "target": "com.amazonaws.rolesanywhere#CrlDetails",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of certificate revocation lists (CRL). \u003c/p\u003e"
+            }
+          },
+          "nextToken": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA token that indicates where the output should continue from, if a previous request did not show all results. To get the next results, make the request again with this value.\u003c/p\u003e"
+            }
+          }
+        }
+      },
+      "com.amazonaws.rolesanywhere#ListProfiles": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.rolesanywhere#ListRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.rolesanywhere#ListProfilesResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.rolesanywhere#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eLists all profiles in the authenticated account and Amazon Web Services Region.\u003c/p\u003e \u003cp\u003e \u003cb\u003eRequired permissions: \u003c/b\u003e \u003ccode\u003erolesanywhere:ListProfiles\u003c/code\u003e. \u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/profiles",
+            "method": "GET"
+          },
+          "smithy.api#paginated": {
+            "inputToken": "nextToken",
+            "outputToken": "nextToken",
+            "items": "profiles"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.rolesanywhere#ListProfilesResponse": {
+        "type": "structure",
+        "members": {
+          "nextToken": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA token that indicates where the output should continue from, if a previous request did not show all results. To get the next results, make the request again with this value.\u003c/p\u003e"
+            }
+          },
+          "profiles": {
+            "target": "com.amazonaws.rolesanywhere#ProfileDetails",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of profiles.\u003c/p\u003e"
+            }
+          }
+        }
+      },
+      "com.amazonaws.rolesanywhere#ListRequest": {
+        "type": "structure",
+        "members": {
+          "nextToken": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA token that indicates where the output should continue from, if a previous request did not show all results. To get the next results, make the request again with this value.\u003c/p\u003e",
+              "smithy.api#httpQuery": "nextToken",
+              "smithy.api#length": {
+                "min": 1,
+                "max": 10000
+              }
+            }
+          },
+          "pageSize": {
+            "target": "smithy.api#Integer",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe number of resources in the paginated list. \u003c/p\u003e",
+              "smithy.api#httpQuery": "pageSize"
+            }
+          }
+        }
+      },
+      "com.amazonaws.rolesanywhere#ListSubjects": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.rolesanywhere#ListRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.rolesanywhere#ListSubjectsResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.rolesanywhere#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eLists the subjects in the authenticated account and Amazon Web Services Region.\u003c/p\u003e \u003cp\u003e \u003cb\u003eRequired permissions: \u003c/b\u003e \u003ccode\u003erolesanywhere:ListSubjects\u003c/code\u003e. \u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/subjects",
+            "method": "GET"
+          },
+          "smithy.api#paginated": {
+            "inputToken": "nextToken",
+            "outputToken": "nextToken",
+            "items": "subjects"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.rolesanywhere#ListSubjectsResponse": {
+        "type": "structure",
+        "members": {
+          "nextToken": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA token that indicates where the output should continue from, if a previous request did not show all results. To get the next results, make the request again with this value.\u003c/p\u003e"
+            }
+          },
+          "subjects": {
+            "target": "com.amazonaws.rolesanywhere#SubjectSummaries",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of subjects.\u003c/p\u003e"
+            }
+          }
+        }
+      },
+      "com.amazonaws.rolesanywhere#ListTagsForResource": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.rolesanywhere#ListTagsForResourceRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.rolesanywhere#ListTagsForResourceResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.rolesanywhere#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eLists the tags attached to the resource.\u003c/p\u003e \u003cp\u003e \u003cb\u003eRequired permissions: \u003c/b\u003e \u003ccode\u003erolesanywhere:ListTagsForResource\u003c/code\u003e. \u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/ListTagsForResource",
+            "method": "GET"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.rolesanywhere#ListTagsForResourceRequest": {
+        "type": "structure",
+        "members": {
+          "resourceArn": {
+            "target": "com.amazonaws.rolesanywhere#AmazonResourceName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ARN of the resource.\u003c/p\u003e",
+              "smithy.api#httpQuery": "resourceArn",
+              "smithy.api#required": {}
+            }
+          }
+        }
+      },
+      "com.amazonaws.rolesanywhere#ListTagsForResourceResponse": {
+        "type": "structure",
+        "members": {
+          "tags": {
+            "target": "com.amazonaws.rolesanywhere#TagList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of tags attached to the resource.\u003c/p\u003e"
+            }
+          }
+        }
+      },
+      "com.amazonaws.rolesanywhere#ListTrustAnchors": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.rolesanywhere#ListRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.rolesanywhere#ListTrustAnchorsResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.rolesanywhere#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eLists the trust anchors in the authenticated account and Amazon Web Services Region.\u003c/p\u003e \u003cp\u003e \u003cb\u003eRequired permissions: \u003c/b\u003e \u003ccode\u003erolesanywhere:ListTrustAnchors\u003c/code\u003e. \u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/trustanchors",
+            "method": "GET"
+          },
+          "smithy.api#paginated": {
+            "inputToken": "nextToken",
+            "outputToken": "nextToken",
+            "items": "trustAnchors"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.rolesanywhere#ListTrustAnchorsResponse": {
+        "type": "structure",
+        "members": {
+          "nextToken": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA token that indicates where the output should continue from, if a previous request did not show all results. To get the next results, make the request again with this value.\u003c/p\u003e"
+            }
+          },
+          "trustAnchors": {
+            "target": "com.amazonaws.rolesanywhere#TrustAnchorDetails",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of trust anchors.\u003c/p\u003e"
+            }
+          }
+        }
+      },
+      "com.amazonaws.rolesanywhere#ManagedPolicyList": {
+        "type": "list",
+        "member": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#length": {
+              "min": 1,
+              "max": 200
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 50
+          }
+        }
+      },
+      "com.amazonaws.rolesanywhere#MappingRule": {
+        "type": "structure",
+        "members": {
+          "specifier": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifier within a certificate field, such as CN, OU, or UID from the Subject field.\u003c/p\u003e",
+              "smithy.api#length": {
+                "max": 60
+              },
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA single mapping entry for each supported specifier or sub-field.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.rolesanywhere#MappingRules": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.rolesanywhere#MappingRule"
+        }
+      },
+      "com.amazonaws.rolesanywhere#NotificationChannel": {
+        "type": "string",
+        "traits": {
+          "smithy.api#enum": [
+            {
+              "value": "ALL",
+              "name": "ALL"
+            }
+          ]
+        }
+      },
+      "com.amazonaws.rolesanywhere#NotificationEvent": {
+        "type": "string",
+        "traits": {
+          "smithy.api#enum": [
+            {
+              "value": "CA_CERTIFICATE_EXPIRY",
+              "name": "CA_CERTIFICATE_EXPIRY"
+            },
+            {
+              "value": "END_ENTITY_CERTIFICATE_EXPIRY",
+              "name": "END_ENTITY_CERTIFICATE_EXPIRY"
+            }
+          ]
+        }
+      },
+      "com.amazonaws.rolesanywhere#NotificationSetting": {
+        "type": "structure",
+        "members": {
+          "channel": {
+            "target": "com.amazonaws.rolesanywhere#NotificationChannel",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe specified channel of notification. IAM Roles Anywhere uses CloudWatch metrics, EventBridge, and Health Dashboard to notify for an event.\u003c/p\u003e \u003cnote\u003e \u003cp\u003eIn the absence of a specific channel, IAM Roles Anywhere applies this setting to 'ALL' channels.\u003c/p\u003e \u003c/note\u003e"
+            }
+          },
+          "enabled": {
+            "target": "smithy.api#Boolean",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIndicates whether the notification setting is enabled.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "event": {
+            "target": "com.amazonaws.rolesanywhere#NotificationEvent",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe event to which this notification setting is applied.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "threshold": {
+            "target": "smithy.api#Integer",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe number of days before a notification event. This value is required for a notification setting that is enabled.\u003c/p\u003e",
+              "smithy.api#range": {
+                "min": 1,
+                "max": 360
+              }
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003e Customizable notification settings that will be applied to notification events. IAM Roles Anywhere consumes these settings while notifying across multiple channels - CloudWatch metrics, EventBridge, and Health Dashboard. \u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.rolesanywhere#NotificationSettingDetail": {
+        "type": "structure",
+        "members": {
+          "channel": {
+            "target": "com.amazonaws.rolesanywhere#NotificationChannel",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe specified channel of notification. IAM Roles Anywhere uses CloudWatch metrics, EventBridge, and Health Dashboard to notify for an event.\u003c/p\u003e \u003cnote\u003e \u003cp\u003eIn the absence of a specific channel, IAM Roles Anywhere applies this setting to 'ALL' channels.\u003c/p\u003e \u003c/note\u003e"
+            }
+          },
+          "configuredBy": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe principal that configured the notification setting. For default settings configured by IAM Roles Anywhere, the value is \u003ccode\u003erolesanywhere.amazonaws.com\u003c/code\u003e, and for customized notifications settings, it is the respective account ID. \u003c/p\u003e",
+              "smithy.api#length": {
+                "min": 1,
+                "max": 200
+              }
+            }
+          },
+          "enabled": {
+            "target": "smithy.api#Boolean",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIndicates whether the notification setting is enabled.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "event": {
+            "target": "com.amazonaws.rolesanywhere#NotificationEvent",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe event to which this notification setting is applied.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "threshold": {
+            "target": "smithy.api#Integer",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe number of days before a notification event.\u003c/p\u003e",
+              "smithy.api#range": {
+                "min": 1,
+                "max": 360
+              }
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe state of a notification setting.\u003c/p\u003e \u003cp\u003eA notification setting includes information such as event name, threshold, status of the notification setting, and the channel to notify.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.rolesanywhere#NotificationSettingDetails": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.rolesanywhere#NotificationSettingDetail"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 50
+          }
+        }
+      },
+      "com.amazonaws.rolesanywhere#NotificationSettingKey": {
+        "type": "structure",
+        "members": {
+          "channel": {
+            "target": "com.amazonaws.rolesanywhere#NotificationChannel",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe specified channel of notification.\u003c/p\u003e"
+            }
+          },
+          "event": {
+            "target": "com.amazonaws.rolesanywhere#NotificationEvent",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe notification setting event to reset.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA notification setting key to reset. A notification setting key includes the event and the channel. \u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.rolesanywhere#NotificationSettingKeys": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.rolesanywhere#NotificationSettingKey"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 50
+          }
+        }
+      },
+      "com.amazonaws.rolesanywhere#NotificationSettings": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.rolesanywhere#NotificationSetting"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 50
+          }
+        }
+      },
+      "com.amazonaws.rolesanywhere#Profile": {
+        "type": "resource",
+        "operations": [
+          {
+            "target": "com.amazonaws.rolesanywhere#DeleteAttributeMapping"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#DisableProfile"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#EnableProfile"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#PutAttributeMapping"
+          }
+        ],
+        "traits": {
+          "aws.cloudformation#cfnResource": {}
+        }
+      },
+      "com.amazonaws.rolesanywhere#ProfileArn": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 1011
+          },
+          "smithy.api#pattern": "^arn:aws(-[^:]+)?:rolesanywhere(:.*){2}(:profile.*)$"
+        }
+      },
+      "com.amazonaws.rolesanywhere#ProfileDetail": {
+        "type": "structure",
+        "members": {
+          "acceptRoleSessionName": {
+            "target": "smithy.api#Boolean",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eUsed to determine if a custom role session name will be accepted in a temporary credential request.\u003c/p\u003e"
+            }
+          },
+          "attributeMappings": {
+            "target": "com.amazonaws.rolesanywhere#AttributeMappings",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA mapping applied to the authenticating end-entity certificate.\u003c/p\u003e"
+            }
+          },
+          "createdAt": {
+            "target": "smithy.api#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ISO-8601 timestamp when the profile was created. \u003c/p\u003e",
+              "smithy.api#timestampFormat": "date-time"
+            }
+          },
+          "createdBy": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Web Services account that created the profile.\u003c/p\u003e"
+            }
+          },
+          "durationSeconds": {
+            "target": "smithy.api#Integer",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003e Used to determine how long sessions vended using this profile are valid for. See the \u003ccode\u003eExpiration\u003c/code\u003e section of the \u003ca href=\"https://docs.aws.amazon.com/rolesanywhere/latest/userguide/authentication-create-session.html#credentials-object\"\u003eCreateSession API documentation\u003c/a\u003e page for more details. In requests, if this value is not provided, the default value will be 3600. \u003c/p\u003e"
+            }
+          },
+          "enabled": {
+            "target": "smithy.api#Boolean",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIndicates whether the profile is enabled.\u003c/p\u003e"
+            }
+          },
+          "managedPolicyArns": {
+            "target": "com.amazonaws.rolesanywhere#ManagedPolicyList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of managed policy ARNs that apply to the vended session credentials. \u003c/p\u003e"
+            }
+          },
+          "name": {
+            "target": "com.amazonaws.rolesanywhere#ResourceName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the profile.\u003c/p\u003e"
+            }
+          },
+          "profileArn": {
+            "target": "com.amazonaws.rolesanywhere#ProfileArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ARN of the profile.\u003c/p\u003e"
+            }
+          },
+          "profileId": {
+            "target": "com.amazonaws.rolesanywhere#Uuid",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the profile.\u003c/p\u003e"
+            }
+          },
+          "requireInstanceProperties": {
+            "target": "smithy.api#Boolean",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eUnused, saved for future use. Will likely specify whether instance properties are required in temporary credential requests with this profile. \u003c/p\u003e"
+            }
+          },
+          "roleArns": {
+            "target": "com.amazonaws.rolesanywhere#RoleArnList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of IAM roles that this profile can assume in a temporary credential request.\u003c/p\u003e"
+            }
+          },
+          "sessionPolicy": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA session policy that applies to the trust boundary of the vended session credentials. \u003c/p\u003e"
+            }
+          },
+          "updatedAt": {
+            "target": "smithy.api#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ISO-8601 timestamp when the profile was last updated. \u003c/p\u003e",
+              "smithy.api#timestampFormat": "date-time"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe state of the profile after a read or write operation.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.rolesanywhere#ProfileDetailResponse": {
+        "type": "structure",
+        "members": {
+          "profile": {
+            "target": "com.amazonaws.rolesanywhere#ProfileDetail",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe state of the profile after a read or write operation.\u003c/p\u003e"
+            }
+          }
+        }
+      },
+      "com.amazonaws.rolesanywhere#ProfileDetails": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.rolesanywhere#ProfileDetail"
+        }
+      },
+      "com.amazonaws.rolesanywhere#PutAttributeMapping": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.rolesanywhere#PutAttributeMappingRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.rolesanywhere#PutAttributeMappingResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.rolesanywhere#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003ePut an entry in the attribute mapping rules that will be enforced by a given profile. A mapping specifies a certificate field and one or more specifiers that have contextual meanings.\u003c/p\u003e",
+          "smithy.api#examples": [
+            {
+              "title": "PutAttributeMapping - Adds a custom attribute mapping rule",
+              "input": {
+                "profileId": "00000000-0000-0000-0000-000000000000",
+                "mappingRules": [
+                  {
+                    "specifier": "CN"
+                  }
+                ],
+                "certificateField": "x509Subject"
+              },
+              "output": {
+                "profile": {
+                  "acceptRoleSessionName": false,
+                  "attributeMappings": [
+                    {
+                      "mappingRules": [
+                        {
+                          "specifier": "CN"
+                        }
+                      ],
+                      "certificateField": "x509Subject"
+                    }
+                  ],
+                  "createdAt": "2021-07-19T15:55:25.986591Z",
+                  "createdBy": "arn:aws:sts::123456789012:assumed-role/Admin/DummyRole",
+                  "durationSeconds": 3600,
+                  "enabled": true,
+                  "managedPolicyArns": [],
+                  "name": "Dummy Profile",
+                  "profileArn": "arn:aws:rolesanywhere:us-east-1:123456789012:profile/00000000-0000-0000-0000-000000000000",
+                  "profileId": "00000000-0000-0000-0000-000000000000",
+                  "requireInstanceProperties": false,
+                  "roleArns": [
+                    "arn:aws:iam::123456789012:role/DummyRole"
+                  ],
+                  "sessionPolicy": "",
+                  "updatedAt": "2021-07-19T15:55:25.986591Z"
+                }
+              }
+            }
+          ],
+          "smithy.api#http": {
+            "uri": "/profiles/{profileId}/mappings",
+            "method": "PUT"
+          },
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.rolesanywhere#PutAttributeMappingRequest": {
+        "type": "structure",
+        "members": {
+          "certificateField": {
+            "target": "com.amazonaws.rolesanywhere#CertificateField",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eFields (x509Subject, x509Issuer and x509SAN) within X.509 certificates.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "mappingRules": {
+            "target": "com.amazonaws.rolesanywhere#MappingRules",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of mapping entries for every supported specifier or sub-field.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "profileId": {
+            "target": "com.amazonaws.rolesanywhere#Uuid",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the profile.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.rolesanywhere#PutAttributeMappingResponse": {
+        "type": "structure",
+        "members": {
+          "profile": {
+            "target": "com.amazonaws.rolesanywhere#ProfileDetail",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe state of the profile after a read or write operation.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.rolesanywhere#PutNotificationSettings": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.rolesanywhere#PutNotificationSettingsRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.rolesanywhere#PutNotificationSettingsResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.rolesanywhere#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eAttaches a list of \u003ci\u003enotification settings\u003c/i\u003e to a trust anchor.\u003c/p\u003e \u003cp\u003eA notification setting includes information such as event name, threshold, status of the notification setting, and the channel to notify.\u003c/p\u003e \u003cp\u003e \u003cb\u003eRequired permissions: \u003c/b\u003e \u003ccode\u003erolesanywhere:PutNotificationSettings\u003c/code\u003e. \u003c/p\u003e",
+          "smithy.api#examples": [
+            {
+              "title": "PutNotificationSettings - Adds custom notification settings",
+              "input": {
+                "trustAnchorId": "c2505e61-2fc1-4a18-9fcf-94e18a22928b",
+                "notificationSettings": [
+                  {
+                    "event": "END_ENTITY_CERTIFICATE_EXPIRY",
+                    "enabled": true,
+                    "threshold": 10
+                  }
+                ]
+              },
+              "output": {
+                "trustAnchor": {
+                  "trustAnchorId": "c2505e61-2fc1-4a18-9fcf-94e18a22928b",
+                  "trustAnchorArn": "arn:aws:rolesanywhere:us-west-2:123456789012:trust-anchor/c2505e61-2fc1-4a18-9fcf-94e18a22928b",
+                  "name": "PutNotificationSettings - TA with PCA - example",
+                  "enabled": true,
+                  "notificationSettings": [
+                    {
+                      "event": "CA_CERTIFICATE_EXPIRY",
+                      "channel": "ALL",
+                      "configuredBy": "rolesanywhere.amazonaws.com",
+                      "enabled": true,
+                      "threshold": 45
+                    },
+                    {
+                      "event": "END_ENTITY_CERTIFICATE_EXPIRY",
+                      "channel": "ALL",
+                      "configuredBy": "123456789012",
+                      "enabled": true,
+                      "threshold": 10
+                    }
+                  ],
+                  "source": {
+                    "sourceType": "AWS_ACM_PCA",
+                    "sourceData": {
+                      "acmPcaArn": "arn:aws:acm-pca:us-west-2:123456789012:certificate-authority/123abc00-1233-12b3-1a33-54cb9c1ce2f3"
+                    }
+                  },
+                  "updatedAt": "2021-07-19T15:55:25.986591Z",
+                  "createdAt": "2021-07-19T15:55:25.986591Z"
+                }
+              }
+            }
+          ],
+          "smithy.api#http": {
+            "uri": "/put-notifications-settings",
+            "method": "PATCH"
+          }
+        }
+      },
+      "com.amazonaws.rolesanywhere#PutNotificationSettingsRequest": {
+        "type": "structure",
+        "members": {
+          "notificationSettings": {
+            "target": "com.amazonaws.rolesanywhere#NotificationSettings",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of notification settings to be associated to the trust anchor.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "trustAnchorId": {
+            "target": "com.amazonaws.rolesanywhere#Uuid",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the trust anchor.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.rolesanywhere#PutNotificationSettingsResponse": {
+        "type": "structure",
+        "members": {
+          "trustAnchor": {
+            "target": "com.amazonaws.rolesanywhere#TrustAnchorDetail",
+            "traits": {
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.rolesanywhere#ResetNotificationSettings": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.rolesanywhere#ResetNotificationSettingsRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.rolesanywhere#ResetNotificationSettingsResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.rolesanywhere#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eResets the \u003ci\u003ecustom notification setting\u003c/i\u003e to IAM Roles Anywhere default setting. \u003c/p\u003e \u003cp\u003e \u003cb\u003eRequired permissions: \u003c/b\u003e \u003ccode\u003erolesanywhere:ResetNotificationSettings\u003c/code\u003e. \u003c/p\u003e",
+          "smithy.api#examples": [
+            {
+              "title": "ResetNotificationSettings - Resets to IAM Roles Anywhere defined default notification settings",
+              "input": {
+                "trustAnchorId": "c2505e61-2fc1-4a18-9fcf-94e18a22928b",
+                "notificationSettingKeys": [
+                  {
+                    "event": "END_ENTITY_CERTIFICATE_EXPIRY"
+                  }
+                ]
+              },
+              "output": {
+                "trustAnchor": {
+                  "trustAnchorId": "c2505e61-2fc1-4a18-9fcf-94e18a22928b",
+                  "trustAnchorArn": "arn:aws:rolesanywhere:us-west-2:123456789012:trust-anchor/c2505e61-2fc1-4a18-9fcf-94e18a22928b",
+                  "name": "ResetNotificationSettings - TA with PCA - example",
+                  "enabled": true,
+                  "notificationSettings": [
+                    {
+                      "event": "CA_CERTIFICATE_EXPIRY",
+                      "channel": "ALL",
+                      "configuredBy": "rolesanywhere.amazonaws.com",
+                      "enabled": true,
+                      "threshold": 45
+                    },
+                    {
+                      "event": "END_ENTITY_CERTIFICATE_EXPIRY",
+                      "channel": "ALL",
+                      "configuredBy": "123456789012",
+                      "enabled": true,
+                      "threshold": 45
+                    }
+                  ],
+                  "source": {
+                    "sourceType": "AWS_ACM_PCA",
+                    "sourceData": {
+                      "acmPcaArn": "arn:aws:acm-pca:us-west-2:123456789012:certificate-authority/123abc00-1233-12b3-1a33-54cb9c1ce2f3"
+                    }
+                  },
+                  "updatedAt": "2021-07-19T15:55:25.986591Z",
+                  "createdAt": "2021-07-19T15:55:25.986591Z"
+                }
+              }
+            }
+          ],
+          "smithy.api#http": {
+            "uri": "/reset-notifications-settings",
+            "method": "PATCH"
+          }
+        }
+      },
+      "com.amazonaws.rolesanywhere#ResetNotificationSettingsRequest": {
+        "type": "structure",
+        "members": {
+          "notificationSettingKeys": {
+            "target": "com.amazonaws.rolesanywhere#NotificationSettingKeys",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of notification setting keys to reset. A notification setting key includes the event and the channel. \u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "trustAnchorId": {
+            "target": "com.amazonaws.rolesanywhere#Uuid",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the trust anchor.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.rolesanywhere#ResetNotificationSettingsResponse": {
+        "type": "structure",
+        "members": {
+          "trustAnchor": {
+            "target": "com.amazonaws.rolesanywhere#TrustAnchorDetail",
+            "traits": {
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.rolesanywhere#ResourceName": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 255
+          },
+          "smithy.api#pattern": "^[ a-zA-Z0-9-_]*$"
+        }
+      },
+      "com.amazonaws.rolesanywhere#ResourceNotFoundException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "smithy.api#String"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe resource could not be found.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 404
+        }
+      },
+      "com.amazonaws.rolesanywhere#RoleArn": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 1011
+          },
+          "smithy.api#pattern": "^arn:aws(-[^:]+)?:iam(:.*){2}(:role.*)$"
+        }
+      },
+      "com.amazonaws.rolesanywhere#RoleArnList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.rolesanywhere#RoleArn"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 250
+          }
+        }
+      },
+      "com.amazonaws.rolesanywhere#RolesAnywhere": {
+        "type": "service",
+        "version": "2018-05-10",
+        "operations": [
+          {
+            "target": "com.amazonaws.rolesanywhere#ListTagsForResource"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#PutNotificationSettings"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#ResetNotificationSettings"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#TagResource"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#UntagResource"
+          }
+        ],
+        "resources": [
+          {
+            "target": "com.amazonaws.rolesanywhere#Crl"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#Profile"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#Subject"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#TrustAnchor"
+          }
+        ],
+        "traits": {
+          "aws.api#service": {
+            "sdkId": "RolesAnywhere",
+            "arnNamespace": "rolesanywhere",
+            "cloudFormationName": "RolesAnywhere"
+          },
+          "aws.auth#sigv4": {
+            "name": "rolesanywhere"
+          },
+          "aws.protocols#restJson1": {},
+          "smithy.api#documentation": "\u003cp\u003eIdentity and Access Management Roles Anywhere provides a secure way for your workloads such as servers, containers, and applications that run outside of Amazon Web Services to obtain temporary Amazon Web Services credentials. Your workloads can use the same IAM policies and roles you have for native Amazon Web Services applications to access Amazon Web Services resources. Using IAM Roles Anywhere eliminates the need to manage long-term credentials for workloads running outside of Amazon Web Services.\u003c/p\u003e \u003cp\u003e To use IAM Roles Anywhere, your workloads must use X.509 certificates issued by their certificate authority (CA). You register the CA with IAM Roles Anywhere as a trust anchor to establish trust between your public key infrastructure (PKI) and IAM Roles Anywhere. If you don't manage your own PKI system, you can use Private Certificate Authority to create a CA and then use that to establish trust with IAM Roles Anywhere. \u003c/p\u003e \u003cp\u003eThis guide describes the IAM Roles Anywhere operations that you can call programmatically. For more information about IAM Roles Anywhere, see the \u003ca href=\"https://docs.aws.amazon.com/rolesanywhere/latest/userguide/introduction.html\"\u003eIAM Roles Anywhere User Guide\u003c/a\u003e.\u003c/p\u003e",
+          "smithy.api#title": "IAM Roles Anywhere",
+          "smithy.rules#endpointBdd": {
+            "version": "1.1",
+            "parameters": {
+              "Region": {
+                "builtIn": "AWS::Region",
+                "required": false,
+                "documentation": "The AWS region used to dispatch the request.",
+                "type": "string"
+              },
+              "UseDualStack": {
+                "builtIn": "AWS::UseDualStack",
+                "required": true,
+                "default": false,
+                "documentation": "When true, use the dual-stack endpoint. If the configured endpoint does not support dual-stack, dispatching the request MAY return an error.",
+                "type": "boolean"
+              },
+              "UseFIPS": {
+                "builtIn": "AWS::UseFIPS",
+                "required": true,
+                "default": false,
+                "documentation": "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
+                "type": "boolean"
+              },
+              "Endpoint": {
+                "builtIn": "SDK::Endpoint",
+                "required": false,
+                "documentation": "Override the endpoint used to send this request",
+                "type": "string"
+              }
+            },
+            "conditions": [
+              {
+                "fn": "isSet",
+                "argv": [
+                  {
+                    "ref": "Endpoint"
+                  }
+                ]
+              },
+              {
+                "fn": "isSet",
+                "argv": [
+                  {
+                    "ref": "Region"
+                  }
+                ]
+              },
+              {
+                "fn": "aws.partition",
+                "argv": [
+                  {
+                    "ref": "Region"
+                  }
+                ],
+                "assign": "PartitionResult"
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "ref": "UseFIPS"
+                  },
+                  true
+                ]
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "ref": "UseDualStack"
+                  },
+                  true
+                ]
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "fn": "getAttr",
+                    "argv": [
+                      {
+                        "ref": "PartitionResult"
+                      },
+                      "supportsDualStack"
+                    ]
+                  },
+                  true
+                ]
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "fn": "getAttr",
+                    "argv": [
+                      {
+                        "ref": "PartitionResult"
+                      },
+                      "supportsFIPS"
+                    ]
+                  },
+                  true
+                ]
+              }
+            ],
+            "results": [
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: FIPS and custom endpoint are not supported",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: Dualstack and custom endpoint are not supported",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": {
+                    "ref": "Endpoint"
+                  },
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://rolesanywhere-fips.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "FIPS and DualStack are enabled, but this partition does not support one or both",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://rolesanywhere-fips.{Region}.{PartitionResult#dnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "FIPS is enabled but this partition does not support FIPS",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://rolesanywhere.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "DualStack is enabled but this partition does not support DualStack",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://rolesanywhere.{Region}.{PartitionResult#dnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: Missing Region",
+                "type": "error"
+              }
+            ],
+            "root": 2,
+            "nodeCount": 13,
+            "nodes": "/////wAAAAH/////AAAAAAAAAAwAAAADAAAAAQAAAAQF9eELAAAAAgAAAAUF9eELAAAAAwAAAAgAAAAGAAAABAAAAAcF9eEKAAAABQX14QgF9eEJAAAABAAAAAoAAAAJAAAABgX14QYF9eEHAAAABQAAAAsF9eEFAAAABgX14QQF9eEFAAAAAwX14QEAAAANAAAABAX14QIF9eED"
+          },
+          "smithy.rules#endpointRuleSet": {
+            "version": "1.0",
+            "parameters": {
+              "Region": {
+                "builtIn": "AWS::Region",
+                "required": false,
+                "documentation": "The AWS region used to dispatch the request.",
+                "type": "string"
+              },
+              "UseDualStack": {
+                "builtIn": "AWS::UseDualStack",
+                "required": true,
+                "default": false,
+                "documentation": "When true, use the dual-stack endpoint. If the configured endpoint does not support dual-stack, dispatching the request MAY return an error.",
+                "type": "boolean"
+              },
+              "UseFIPS": {
+                "builtIn": "AWS::UseFIPS",
+                "required": true,
+                "default": false,
+                "documentation": "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
+                "type": "boolean"
+              },
+              "Endpoint": {
+                "builtIn": "SDK::Endpoint",
+                "required": false,
+                "documentation": "Override the endpoint used to send this request",
+                "type": "string"
+              }
+            },
+            "rules": [
+              {
+                "conditions": [
+                  {
+                    "fn": "isSet",
+                    "argv": [
+                      {
+                        "ref": "Endpoint"
+                      }
+                    ]
+                  }
+                ],
+                "rules": [
+                  {
+                    "conditions": [
+                      {
+                        "fn": "booleanEquals",
+                        "argv": [
+                          {
+                            "ref": "UseFIPS"
+                          },
+                          true
+                        ]
+                      }
+                    ],
+                    "error": "Invalid Configuration: FIPS and custom endpoint are not supported",
+                    "type": "error"
+                  },
+                  {
+                    "conditions": [
+                      {
+                        "fn": "booleanEquals",
+                        "argv": [
+                          {
+                            "ref": "UseDualStack"
+                          },
+                          true
+                        ]
+                      }
+                    ],
+                    "error": "Invalid Configuration: Dualstack and custom endpoint are not supported",
+                    "type": "error"
+                  },
+                  {
+                    "conditions": [],
+                    "endpoint": {
+                      "url": {
+                        "ref": "Endpoint"
+                      },
+                      "properties": {},
+                      "headers": {}
+                    },
+                    "type": "endpoint"
+                  }
+                ],
+                "type": "tree"
+              },
+              {
+                "conditions": [
+                  {
+                    "fn": "isSet",
+                    "argv": [
+                      {
+                        "ref": "Region"
+                      }
+                    ]
+                  }
+                ],
+                "rules": [
+                  {
+                    "conditions": [
+                      {
+                        "fn": "aws.partition",
+                        "argv": [
+                          {
+                            "ref": "Region"
+                          }
+                        ],
+                        "assign": "PartitionResult"
+                      }
+                    ],
+                    "rules": [
+                      {
+                        "conditions": [
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseFIPS"
+                              },
+                              true
+                            ]
+                          },
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseDualStack"
+                              },
+                              true
+                            ]
+                          }
+                        ],
+                        "rules": [
+                          {
+                            "conditions": [
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  true,
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsFIPS"
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  true,
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsDualStack"
+                                    ]
+                                  }
+                                ]
+                              }
+                            ],
+                            "rules": [
+                              {
+                                "conditions": [],
+                                "endpoint": {
+                                  "url": "https://rolesanywhere-fips.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                                  "properties": {},
+                                  "headers": {}
+                                },
+                                "type": "endpoint"
+                              }
+                            ],
+                            "type": "tree"
+                          },
+                          {
+                            "conditions": [],
+                            "error": "FIPS and DualStack are enabled, but this partition does not support one or both",
+                            "type": "error"
+                          }
+                        ],
+                        "type": "tree"
+                      },
+                      {
+                        "conditions": [
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseFIPS"
+                              },
+                              true
+                            ]
+                          }
+                        ],
+                        "rules": [
+                          {
+                            "conditions": [
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsFIPS"
+                                    ]
+                                  },
+                                  true
+                                ]
+                              }
+                            ],
+                            "rules": [
+                              {
+                                "conditions": [],
+                                "endpoint": {
+                                  "url": "https://rolesanywhere-fips.{Region}.{PartitionResult#dnsSuffix}",
+                                  "properties": {},
+                                  "headers": {}
+                                },
+                                "type": "endpoint"
+                              }
+                            ],
+                            "type": "tree"
+                          },
+                          {
+                            "conditions": [],
+                            "error": "FIPS is enabled but this partition does not support FIPS",
+                            "type": "error"
+                          }
+                        ],
+                        "type": "tree"
+                      },
+                      {
+                        "conditions": [
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseDualStack"
+                              },
+                              true
+                            ]
+                          }
+                        ],
+                        "rules": [
+                          {
+                            "conditions": [
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  true,
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsDualStack"
+                                    ]
+                                  }
+                                ]
+                              }
+                            ],
+                            "rules": [
+                              {
+                                "conditions": [],
+                                "endpoint": {
+                                  "url": "https://rolesanywhere.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                                  "properties": {},
+                                  "headers": {}
+                                },
+                                "type": "endpoint"
+                              }
+                            ],
+                            "type": "tree"
+                          },
+                          {
+                            "conditions": [],
+                            "error": "DualStack is enabled but this partition does not support DualStack",
+                            "type": "error"
+                          }
+                        ],
+                        "type": "tree"
+                      },
+                      {
+                        "conditions": [],
+                        "endpoint": {
+                          "url": "https://rolesanywhere.{Region}.{PartitionResult#dnsSuffix}",
+                          "properties": {},
+                          "headers": {}
+                        },
+                        "type": "endpoint"
+                      }
+                    ],
+                    "type": "tree"
+                  }
+                ],
+                "type": "tree"
+              },
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: Missing Region",
+                "type": "error"
+              }
+            ]
+          },
+          "smithy.rules#endpointTests": {
+            "testCases": [
+              {
+                "documentation": "For region ap-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://rolesanywhere.ap-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ap-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region ap-northeast-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://rolesanywhere.ap-northeast-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ap-northeast-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region ap-northeast-2 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://rolesanywhere.ap-northeast-2.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ap-northeast-2",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region ap-northeast-3 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://rolesanywhere.ap-northeast-3.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ap-northeast-3",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region ap-south-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://rolesanywhere.ap-south-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ap-south-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region ap-southeast-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://rolesanywhere.ap-southeast-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ap-southeast-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region ap-southeast-2 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://rolesanywhere.ap-southeast-2.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ap-southeast-2",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region ca-central-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://rolesanywhere.ca-central-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ca-central-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region eu-central-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://rolesanywhere.eu-central-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "eu-central-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region eu-north-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://rolesanywhere.eu-north-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "eu-north-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region eu-west-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://rolesanywhere.eu-west-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "eu-west-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region eu-west-2 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://rolesanywhere.eu-west-2.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "eu-west-2",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region eu-west-3 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://rolesanywhere.eu-west-3.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "eu-west-3",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region me-south-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://rolesanywhere.me-south-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "me-south-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region sa-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://rolesanywhere.sa-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "sa-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://rolesanywhere.us-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-east-2 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://rolesanywhere.us-east-2.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-2",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-west-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://rolesanywhere.us-west-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-west-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-west-2 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://rolesanywhere.us-west-2.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-west-2",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://rolesanywhere-fips.us-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://rolesanywhere-fips.us-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://rolesanywhere.us-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://rolesanywhere-fips.cn-north-1.api.amazonwebservices.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": true,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://rolesanywhere-fips.cn-north-1.amazonaws.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://rolesanywhere.cn-north-1.api.amazonwebservices.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://rolesanywhere.cn-north-1.amazonaws.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://rolesanywhere-fips.us-gov-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://rolesanywhere-fips.us-gov-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://rolesanywhere.us-gov-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://rolesanywhere.us-gov-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-iso-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://rolesanywhere-fips.us-iso-east-1.c2s.ic.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-iso-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-iso-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://rolesanywhere.us-iso-east-1.c2s.ic.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-iso-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-isob-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://rolesanywhere-fips.us-isob-east-1.sc2s.sgov.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-isob-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-isob-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://rolesanywhere.us-isob-east-1.sc2s.sgov.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-isob-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For custom endpoint with region set and fips disabled and dualstack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://example.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "For custom endpoint with region not set and fips disabled and dualstack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://example.com"
+                  }
+                },
+                "params": {
+                  "UseFIPS": false,
+                  "UseDualStack": false,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "For custom endpoint with fips enabled and dualstack disabled",
+                "expect": {
+                  "error": "Invalid Configuration: FIPS and custom endpoint are not supported"
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "For custom endpoint with fips disabled and dualstack enabled",
+                "expect": {
+                  "error": "Invalid Configuration: Dualstack and custom endpoint are not supported"
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "Missing region",
+                "expect": {
+                  "error": "Invalid Configuration: Missing Region"
+                }
+              }
+            ],
+            "version": "1.0"
+          }
+        }
+      },
+      "com.amazonaws.rolesanywhere#ScalarCrlRequest": {
+        "type": "structure",
+        "members": {
+          "crlId": {
+            "target": "com.amazonaws.rolesanywhere#Uuid",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the certificate revocation list (CRL).\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        }
+      },
+      "com.amazonaws.rolesanywhere#ScalarProfileRequest": {
+        "type": "structure",
+        "members": {
+          "profileId": {
+            "target": "com.amazonaws.rolesanywhere#Uuid",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the profile.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        }
+      },
+      "com.amazonaws.rolesanywhere#ScalarSubjectRequest": {
+        "type": "structure",
+        "members": {
+          "subjectId": {
+            "target": "com.amazonaws.rolesanywhere#Uuid",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the subject. \u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        }
+      },
+      "com.amazonaws.rolesanywhere#ScalarTrustAnchorRequest": {
+        "type": "structure",
+        "members": {
+          "trustAnchorId": {
+            "target": "com.amazonaws.rolesanywhere#Uuid",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the trust anchor.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        }
+      },
+      "com.amazonaws.rolesanywhere#Source": {
+        "type": "structure",
+        "members": {
+          "sourceData": {
+            "target": "com.amazonaws.rolesanywhere#SourceData",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe data field of the trust anchor depending on its type. \u003c/p\u003e"
+            }
+          },
+          "sourceType": {
+            "target": "com.amazonaws.rolesanywhere#TrustAnchorType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe type of the trust anchor. \u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe trust anchor type and its related certificate data.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.rolesanywhere#SourceData": {
+        "type": "union",
+        "members": {
+          "acmPcaArn": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003e The root certificate of the Private Certificate Authority specified by this ARN is used in trust validation for temporary credential requests. Included for trust anchors of type \u003ccode\u003eAWS_ACM_PCA\u003c/code\u003e. \u003c/p\u003e"
+            }
+          },
+          "x509CertificateData": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe PEM-encoded data for the certificate anchor. Included for trust anchors of type \u003ccode\u003eCERTIFICATE_BUNDLE\u003c/code\u003e. \u003c/p\u003e",
+              "smithy.api#length": {
+                "min": 1,
+                "max": 204800
+              }
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe data field of the trust anchor depending on its type. \u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.rolesanywhere#SpecifierList": {
+        "type": "list",
+        "member": {
+          "target": "smithy.api#String"
+        }
+      },
+      "com.amazonaws.rolesanywhere#Subject": {
+        "type": "resource",
+        "traits": {
+          "aws.cloudformation#cfnResource": {}
+        }
+      },
+      "com.amazonaws.rolesanywhere#SubjectDetail": {
+        "type": "structure",
+        "members": {
+          "createdAt": {
+            "target": "smithy.api#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ISO-8601 timestamp when the subject was created. \u003c/p\u003e",
+              "smithy.api#timestampFormat": "date-time"
+            }
+          },
+          "credentials": {
+            "target": "com.amazonaws.rolesanywhere#CredentialSummaries",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe temporary session credentials vended at the last authenticating call with this subject.\u003c/p\u003e"
+            }
+          },
+          "enabled": {
+            "target": "smithy.api#Boolean",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe enabled status of the subject.\u003c/p\u003e"
+            }
+          },
+          "instanceProperties": {
+            "target": "com.amazonaws.rolesanywhere#InstanceProperties",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe specified instance properties associated with the request.\u003c/p\u003e"
+            }
+          },
+          "lastSeenAt": {
+            "target": "smithy.api#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ISO-8601 timestamp of the last time this subject requested temporary session credentials.\u003c/p\u003e",
+              "smithy.api#timestampFormat": "date-time"
+            }
+          },
+          "subjectArn": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ARN of the resource.\u003c/p\u003e"
+            }
+          },
+          "subjectId": {
+            "target": "com.amazonaws.rolesanywhere#Uuid",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe id of the resource\u003c/p\u003e"
+            }
+          },
+          "updatedAt": {
+            "target": "smithy.api#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ISO-8601 timestamp when the subject was last updated.\u003c/p\u003e",
+              "smithy.api#timestampFormat": "date-time"
+            }
+          },
+          "x509Subject": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe x509 principal identifier of the authenticating certificate.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe state of the subject after a read or write operation.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.rolesanywhere#SubjectDetailResponse": {
+        "type": "structure",
+        "members": {
+          "subject": {
+            "target": "com.amazonaws.rolesanywhere#SubjectDetail",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe state of the subject after a read or write operation.\u003c/p\u003e"
+            }
+          }
+        }
+      },
+      "com.amazonaws.rolesanywhere#SubjectSummaries": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.rolesanywhere#SubjectSummary"
+        }
+      },
+      "com.amazonaws.rolesanywhere#SubjectSummary": {
+        "type": "structure",
+        "members": {
+          "createdAt": {
+            "target": "smithy.api#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ISO-8601 time stamp of when the certificate was first used in a temporary credential request.\u003c/p\u003e",
+              "smithy.api#timestampFormat": "date-time"
+            }
+          },
+          "enabled": {
+            "target": "smithy.api#Boolean",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe enabled status of the subject. \u003c/p\u003e"
+            }
+          },
+          "lastSeenAt": {
+            "target": "smithy.api#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ISO-8601 time stamp of when the certificate was last used in a temporary credential request.\u003c/p\u003e",
+              "smithy.api#timestampFormat": "date-time"
+            }
+          },
+          "subjectArn": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ARN of the resource.\u003c/p\u003e"
+            }
+          },
+          "subjectId": {
+            "target": "com.amazonaws.rolesanywhere#Uuid",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe id of the resource.\u003c/p\u003e"
+            }
+          },
+          "updatedAt": {
+            "target": "smithy.api#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ISO-8601 timestamp when the subject was last updated. \u003c/p\u003e",
+              "smithy.api#timestampFormat": "date-time"
+            }
+          },
+          "x509Subject": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe x509 principal identifier of the authenticating certificate.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA summary representation of subjects.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.rolesanywhere#Tag": {
+        "type": "structure",
+        "members": {
+          "key": {
+            "target": "com.amazonaws.rolesanywhere#TagKey",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe tag key.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "value": {
+            "target": "com.amazonaws.rolesanywhere#TagValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe tag value.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA label that consists of a key and value you define. \u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.rolesanywhere#TagKey": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 128
+          },
+          "smithy.api#pattern": "^[ a-zA-Z0-9_.:/=+@-]*$",
+          "smithy.api#sensitive": {}
+        }
+      },
+      "com.amazonaws.rolesanywhere#TagKeyList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.rolesanywhere#TagKey"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 200
+          }
+        }
+      },
+      "com.amazonaws.rolesanywhere#TagList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.rolesanywhere#Tag"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 200
+          }
+        }
+      },
+      "com.amazonaws.rolesanywhere#TagResource": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.rolesanywhere#TagResourceRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.rolesanywhere#TagResourceResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.rolesanywhere#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#TooManyTagsException"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eAttaches tags to a resource.\u003c/p\u003e \u003cp\u003e \u003cb\u003eRequired permissions: \u003c/b\u003e \u003ccode\u003erolesanywhere:TagResource\u003c/code\u003e. \u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/TagResource",
+            "method": "POST",
+            "code": 201
+          }
+        }
+      },
+      "com.amazonaws.rolesanywhere#TagResourceRequest": {
+        "type": "structure",
+        "members": {
+          "resourceArn": {
+            "target": "com.amazonaws.rolesanywhere#AmazonResourceName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ARN of the resource.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "tags": {
+            "target": "com.amazonaws.rolesanywhere#TagList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe tags to attach to the resource.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        }
+      },
+      "com.amazonaws.rolesanywhere#TagResourceResponse": {
+        "type": "structure"
+      },
+      "com.amazonaws.rolesanywhere#TagValue": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 256
+          },
+          "smithy.api#pattern": "^[ a-zA-Z0-9_.:/=+@-]*$",
+          "smithy.api#sensitive": {}
+        }
+      },
+      "com.amazonaws.rolesanywhere#TooManyTagsException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "smithy.api#String"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eToo many tags.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.rolesanywhere#TrustAnchor": {
+        "type": "resource",
+        "operations": [
+          {
+            "target": "com.amazonaws.rolesanywhere#DisableTrustAnchor"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#EnableTrustAnchor"
+          }
+        ],
+        "traits": {
+          "aws.cloudformation#cfnResource": {}
+        }
+      },
+      "com.amazonaws.rolesanywhere#TrustAnchorArn": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 1011
+          },
+          "smithy.api#pattern": "^arn:aws(-[^:]+)?:rolesanywhere(:.*){2}(:trust-anchor.*)$"
+        }
+      },
+      "com.amazonaws.rolesanywhere#TrustAnchorDetail": {
+        "type": "structure",
+        "members": {
+          "createdAt": {
+            "target": "smithy.api#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ISO-8601 timestamp when the trust anchor was created. \u003c/p\u003e",
+              "smithy.api#timestampFormat": "date-time"
+            }
+          },
+          "enabled": {
+            "target": "smithy.api#Boolean",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIndicates whether the trust anchor is enabled.\u003c/p\u003e"
+            }
+          },
+          "name": {
+            "target": "com.amazonaws.rolesanywhere#ResourceName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the trust anchor.\u003c/p\u003e"
+            }
+          },
+          "notificationSettings": {
+            "target": "com.amazonaws.rolesanywhere#NotificationSettingDetails",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of notification settings to be associated to the trust anchor.\u003c/p\u003e"
+            }
+          },
+          "source": {
+            "target": "com.amazonaws.rolesanywhere#Source",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe trust anchor type and its related certificate data.\u003c/p\u003e"
+            }
+          },
+          "trustAnchorArn": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ARN of the trust anchor.\u003c/p\u003e"
+            }
+          },
+          "trustAnchorId": {
+            "target": "com.amazonaws.rolesanywhere#Uuid",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the trust anchor.\u003c/p\u003e"
+            }
+          },
+          "updatedAt": {
+            "target": "smithy.api#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ISO-8601 timestamp when the trust anchor was last updated. \u003c/p\u003e",
+              "smithy.api#timestampFormat": "date-time"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe state of the trust anchor after a read or write operation. \u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.rolesanywhere#TrustAnchorDetailResponse": {
+        "type": "structure",
+        "members": {
+          "trustAnchor": {
+            "target": "com.amazonaws.rolesanywhere#TrustAnchorDetail",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe state of the trust anchor after a read or write operation. \u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        }
+      },
+      "com.amazonaws.rolesanywhere#TrustAnchorDetails": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.rolesanywhere#TrustAnchorDetail"
+        }
+      },
+      "com.amazonaws.rolesanywhere#TrustAnchorType": {
+        "type": "string",
+        "traits": {
+          "smithy.api#enum": [
+            {
+              "value": "AWS_ACM_PCA",
+              "name": "AWS_ACM_PCA"
+            },
+            {
+              "value": "CERTIFICATE_BUNDLE",
+              "name": "CERTIFICATE_BUNDLE"
+            },
+            {
+              "value": "SELF_SIGNED_REPOSITORY",
+              "name": "SELF_SIGNED_REPOSITORY"
+            }
+          ]
+        }
+      },
+      "com.amazonaws.rolesanywhere#UntagResource": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.rolesanywhere#UntagResourceRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.rolesanywhere#UntagResourceResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.rolesanywhere#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eRemoves tags from the resource.\u003c/p\u003e \u003cp\u003e \u003cb\u003eRequired permissions: \u003c/b\u003e \u003ccode\u003erolesanywhere:UntagResource\u003c/code\u003e. \u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/UntagResource",
+            "method": "POST",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.rolesanywhere#UntagResourceRequest": {
+        "type": "structure",
+        "members": {
+          "resourceArn": {
+            "target": "com.amazonaws.rolesanywhere#AmazonResourceName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ARN of the resource.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "tagKeys": {
+            "target": "com.amazonaws.rolesanywhere#TagKeyList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of keys. Tag keys are the unique identifiers of tags. \u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        }
+      },
+      "com.amazonaws.rolesanywhere#UntagResourceResponse": {
+        "type": "structure"
+      },
+      "com.amazonaws.rolesanywhere#UpdateCrl": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.rolesanywhere#UpdateCrlRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.rolesanywhere#CrlDetailResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.rolesanywhere#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eUpdates the certificate revocation list (CRL). A CRL is a list of certificates that have been revoked by the issuing certificate authority (CA). IAM Roles Anywhere validates against the CRL before issuing credentials.\u003c/p\u003e \u003cp\u003e \u003cb\u003eRequired permissions: \u003c/b\u003e \u003ccode\u003erolesanywhere:UpdateCrl\u003c/code\u003e. \u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/crl/{crlId}",
+            "method": "PATCH"
+          }
+        }
+      },
+      "com.amazonaws.rolesanywhere#UpdateCrlRequest": {
+        "type": "structure",
+        "members": {
+          "crlData": {
+            "target": "smithy.api#Blob",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe x509 v3 specified certificate revocation list (CRL).\u003c/p\u003e",
+              "smithy.api#length": {
+                "min": 1,
+                "max": 300000
+              }
+            }
+          },
+          "crlId": {
+            "target": "com.amazonaws.rolesanywhere#Uuid",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the certificate revocation list (CRL).\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "name": {
+            "target": "com.amazonaws.rolesanywhere#ResourceName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the Crl.\u003c/p\u003e"
+            }
+          }
+        }
+      },
+      "com.amazonaws.rolesanywhere#UpdateProfile": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.rolesanywhere#UpdateProfileRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.rolesanywhere#ProfileDetailResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.rolesanywhere#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eUpdates a \u003ci\u003eprofile\u003c/i\u003e, a list of the roles that IAM Roles Anywhere service is trusted to assume. You use profiles to intersect permissions with IAM managed policies.\u003c/p\u003e \u003cp\u003e \u003cb\u003eRequired permissions: \u003c/b\u003e \u003ccode\u003erolesanywhere:UpdateProfile\u003c/code\u003e. \u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/profile/{profileId}",
+            "method": "PATCH"
+          },
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.rolesanywhere#UpdateProfileRequest": {
+        "type": "structure",
+        "members": {
+          "acceptRoleSessionName": {
+            "target": "smithy.api#Boolean",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eUsed to determine if a custom role session name will be accepted in a temporary credential request.\u003c/p\u003e"
+            }
+          },
+          "durationSeconds": {
+            "target": "smithy.api#Integer",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003e Used to determine how long sessions vended using this profile are valid for. See the \u003ccode\u003eExpiration\u003c/code\u003e section of the \u003ca href=\"https://docs.aws.amazon.com/rolesanywhere/latest/userguide/authentication-create-session.html#credentials-object\"\u003eCreateSession API documentation\u003c/a\u003e page for more details. In requests, if this value is not provided, the default value will be 3600. \u003c/p\u003e",
+              "smithy.api#range": {
+                "min": 900,
+                "max": 43200
+              }
+            }
+          },
+          "managedPolicyArns": {
+            "target": "com.amazonaws.rolesanywhere#ManagedPolicyList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of managed policy ARNs that apply to the vended session credentials. \u003c/p\u003e"
+            }
+          },
+          "name": {
+            "target": "com.amazonaws.rolesanywhere#ResourceName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the profile.\u003c/p\u003e"
+            }
+          },
+          "profileId": {
+            "target": "com.amazonaws.rolesanywhere#Uuid",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the profile.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "roleArns": {
+            "target": "com.amazonaws.rolesanywhere#RoleArnList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of IAM roles that this profile can assume in a temporary credential request.\u003c/p\u003e"
+            }
+          },
+          "sessionPolicy": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA session policy that applies to the trust boundary of the vended session credentials. \u003c/p\u003e",
+              "smithy.api#length": {
+                "min": 1,
+                "max": 100000
+              }
+            }
+          }
+        }
+      },
+      "com.amazonaws.rolesanywhere#UpdateTrustAnchor": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.rolesanywhere#UpdateTrustAnchorRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.rolesanywhere#TrustAnchorDetailResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.rolesanywhere#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.rolesanywhere#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eUpdates a trust anchor. You establish trust between IAM Roles Anywhere and your certificate authority (CA) by configuring a trust anchor. You can define a trust anchor as a reference to an Private Certificate Authority (Private CA) or by uploading a CA certificate. Your Amazon Web Services workloads can authenticate with the trust anchor using certificates issued by the CA in exchange for temporary Amazon Web Services credentials.\u003c/p\u003e \u003cp\u003e \u003cb\u003eRequired permissions: \u003c/b\u003e \u003ccode\u003erolesanywhere:UpdateTrustAnchor\u003c/code\u003e. \u003c/p\u003e",
+          "smithy.api#http": {
+            "uri": "/trustanchor/{trustAnchorId}",
+            "method": "PATCH"
+          },
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.rolesanywhere#UpdateTrustAnchorRequest": {
+        "type": "structure",
+        "members": {
+          "name": {
+            "target": "com.amazonaws.rolesanywhere#ResourceName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the trust anchor.\u003c/p\u003e"
+            }
+          },
+          "source": {
+            "target": "com.amazonaws.rolesanywhere#Source",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe trust anchor type and its related certificate data.\u003c/p\u003e"
+            }
+          },
+          "trustAnchorId": {
+            "target": "com.amazonaws.rolesanywhere#Uuid",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the trust anchor.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        }
+      },
+      "com.amazonaws.rolesanywhere#Uuid": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 36,
+            "max": 36
+          },
+          "smithy.api#pattern": "[a-f0-9]{8}-([a-z0-9]{4}-){3}[a-z0-9]{12}"
+        }
+      },
+      "com.amazonaws.rolesanywhere#ValidationException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "smithy.api#String"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eValidation exception error.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      }
+    }
+  }
+}

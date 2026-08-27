@@ -1,0 +1,4277 @@
+{
+  "schema_source": "smithy",
+  "mode": "data_source",
+  "auth": {
+    "Type": "",
+    "Params": null
+  },
+  "base_url": "https://aws.example.invalid",
+  "retry": {
+    "MaxAttempts": 0,
+    "InitialBackoff": "",
+    "MaxBackoff": "",
+    "Jitter": null,
+    "RespectRetryAfter": null,
+    "RateLimitResetHeader": ""
+  },
+  "timeouts": {
+    "Create": "",
+    "Read": "",
+    "Update": "",
+    "Delete": "",
+    "Default": ""
+  },
+  "wire_name": "aws",
+  "raw_spec": {
+    "smithy": "2.0",
+    "metadata": {
+      "suppressions": [
+        {
+          "id": "HttpMethodSemantics",
+          "namespace": "*"
+        },
+        {
+          "id": "HttpResponseCodeSemantics",
+          "namespace": "*"
+        },
+        {
+          "id": "PaginatedTrait",
+          "namespace": "*"
+        },
+        {
+          "id": "HttpHeaderTrait",
+          "namespace": "*"
+        },
+        {
+          "id": "HttpUriConflict",
+          "namespace": "*"
+        },
+        {
+          "id": "Service",
+          "namespace": "*"
+        }
+      ]
+    },
+    "shapes": {
+      "com.amazonaws.polly#Alphabet": {
+        "type": "string"
+      },
+      "com.amazonaws.polly#AudioChunk": {
+        "type": "blob"
+      },
+      "com.amazonaws.polly#AudioEvent": {
+        "type": "structure",
+        "members": {
+          "AudioChunk": {
+            "target": "com.amazonaws.polly#AudioChunk",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA chunk of synthesized audio data encoded in the format specified by the \n      \u003ccode\u003eOutputFormat\u003c/code\u003e parameter.\u003c/p\u003e",
+              "smithy.api#eventPayload": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eContains a chunk of synthesized audio data.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.polly#AudioStream": {
+        "type": "blob",
+        "traits": {
+          "smithy.api#streaming": {}
+        }
+      },
+      "com.amazonaws.polly#AvailabilityErrorMessage": {
+        "type": "string"
+      },
+      "com.amazonaws.polly#CloseStreamEvent": {
+        "type": "structure",
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eIndicates the end of the input stream. After sending this event, the input stream\n     will be closed and all audio will be returned.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.polly#ContentType": {
+        "type": "string"
+      },
+      "com.amazonaws.polly#CoralAvailabilityThrottledResource": {
+        "type": "string"
+      },
+      "com.amazonaws.polly#CoralAvailabilityThrottlingReason": {
+        "type": "string"
+      },
+      "com.amazonaws.polly#DateTime": {
+        "type": "timestamp"
+      },
+      "com.amazonaws.polly#DeleteLexicon": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.polly#DeleteLexiconInput"
+        },
+        "output": {
+          "target": "com.amazonaws.polly#DeleteLexiconOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.polly#LexiconNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.polly#ServiceFailureException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eDeletes the specified pronunciation lexicon stored in an Amazon Web Services Region. A lexicon which has been deleted is not available for\n      speech synthesis, nor is it possible to retrieve it using either the\n        \u003ccode\u003eGetLexicon\u003c/code\u003e or \u003ccode\u003eListLexicon\u003c/code\u003e APIs.\u003c/p\u003e\n         \u003cp\u003eFor more information, see \u003ca href=\"https://docs.aws.amazon.com/polly/latest/dg/managing-lexicons.html\"\u003eManaging Lexicons\u003c/a\u003e.\u003c/p\u003e",
+          "smithy.api#examples": [
+            {
+              "title": "To delete a lexicon",
+              "documentation": "Deletes a specified pronunciation lexicon stored in an AWS Region.",
+              "input": {
+                "Name": "example"
+              },
+              "output": {}
+            }
+          ],
+          "smithy.api#http": {
+            "method": "DELETE",
+            "uri": "/v1/lexicons/{Name}",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.polly#DeleteLexiconInput": {
+        "type": "structure",
+        "members": {
+          "Name": {
+            "target": "com.amazonaws.polly#LexiconName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the lexicon to delete. Must be an existing lexicon in\n      the region.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.polly#DeleteLexiconOutput": {
+        "type": "structure",
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.polly#DescribeVoices": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.polly#DescribeVoicesInput"
+        },
+        "output": {
+          "target": "com.amazonaws.polly#DescribeVoicesOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.polly#InvalidNextTokenException"
+          },
+          {
+            "target": "com.amazonaws.polly#ServiceFailureException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eReturns the list of voices that are available for use when\n      requesting speech synthesis. Each voice speaks a specified language, is\n      either male or female, and is identified by an ID, which is the ASCII\n      version of the voice name. \u003c/p\u003e\n         \u003cp\u003eWhen synthesizing speech ( \u003ccode\u003eSynthesizeSpeech\u003c/code\u003e ), you\n      provide the voice ID for the voice you want from the list of voices\n      returned by \u003ccode\u003eDescribeVoices\u003c/code\u003e.\u003c/p\u003e\n         \u003cp\u003eFor example, you want your news reader application to read news in\n      a specific language, but giving a user the option to choose the voice.\n      Using the \u003ccode\u003eDescribeVoices\u003c/code\u003e operation you can provide the user\n      with a list of available voices to select from.\u003c/p\u003e\n         \u003cp\u003e You can optionally specify a language code to filter the available\n      voices. For example, if you specify \u003ccode\u003een-US\u003c/code\u003e, the operation\n      returns a list of all available US English voices. \u003c/p\u003e\n         \u003cp\u003eThis operation requires permissions to perform the\n        \u003ccode\u003epolly:DescribeVoices\u003c/code\u003e action.\u003c/p\u003e",
+          "smithy.api#examples": [
+            {
+              "title": "To describe available voices",
+              "documentation": "Returns the list of voices that are available for use when requesting speech synthesis. Displayed languages are those within the specified language code. If no language code is specified, voices for all available languages are displayed.",
+              "input": {
+                "LanguageCode": "en-GB"
+              },
+              "output": {
+                "Voices": [
+                  {
+                    "Gender": "Female",
+                    "Name": "Emma",
+                    "LanguageName": "British English",
+                    "Id": "Emma",
+                    "LanguageCode": "en-GB"
+                  },
+                  {
+                    "Gender": "Male",
+                    "Name": "Brian",
+                    "LanguageName": "British English",
+                    "Id": "Brian",
+                    "LanguageCode": "en-GB"
+                  },
+                  {
+                    "Gender": "Female",
+                    "Name": "Amy",
+                    "LanguageName": "British English",
+                    "Id": "Amy",
+                    "LanguageCode": "en-GB"
+                  }
+                ]
+              }
+            }
+          ],
+          "smithy.api#http": {
+            "method": "GET",
+            "uri": "/v1/voices",
+            "code": 200
+          },
+          "smithy.test#smokeTests": [
+            {
+              "id": "DescribeVoicesSuccess",
+              "params": {},
+              "vendorParams": {
+                "region": "us-west-2"
+              },
+              "vendorParamsShape": "aws.test#AwsVendorParams",
+              "expect": {
+                "success": {}
+              }
+            }
+          ]
+        }
+      },
+      "com.amazonaws.polly#DescribeVoicesInput": {
+        "type": "structure",
+        "members": {
+          "Engine": {
+            "target": "com.amazonaws.polly#Engine",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies the engine (\u003ccode\u003estandard\u003c/code\u003e, \u003ccode\u003eneural\u003c/code\u003e,\n      \u003ccode\u003elong-form\u003c/code\u003e or \u003ccode\u003egenerative\u003c/code\u003e) used by Amazon Polly when\n      processing input text for speech synthesis. \u003c/p\u003e",
+              "smithy.api#httpQuery": "Engine"
+            }
+          },
+          "IncludeAdditionalLanguageCodes": {
+            "target": "com.amazonaws.polly#IncludeAdditionalLanguageCodes",
+            "traits": {
+              "smithy.api#default": false,
+              "smithy.api#documentation": "\u003cp\u003eBoolean value indicating whether to return any bilingual voices that\n      use the specified language as an additional language. For instance, if you\n      request all languages that use US English (es-US), and there is an Italian\n      voice that speaks both Italian (it-IT) and US English, that voice will be\n      included if you specify \u003ccode\u003eyes\u003c/code\u003e but not if you specify\n        \u003ccode\u003eno\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#httpQuery": "IncludeAdditionalLanguageCodes"
+            }
+          },
+          "LanguageCode": {
+            "target": "com.amazonaws.polly#LanguageCode",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003e The language identification tag (ISO 639 code for the language\n      name-ISO 3166 country code) for filtering the list of voices returned. If\n      you don't specify this optional parameter, all available voices are\n      returned. \u003c/p\u003e",
+              "smithy.api#httpQuery": "LanguageCode"
+            }
+          },
+          "NextToken": {
+            "target": "com.amazonaws.polly#NextToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn opaque pagination token returned from the previous\n        \u003ccode\u003eDescribeVoices\u003c/code\u003e operation. If present, this indicates where\n      to continue the listing.\u003c/p\u003e",
+              "smithy.api#httpQuery": "NextToken"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.polly#DescribeVoicesOutput": {
+        "type": "structure",
+        "members": {
+          "NextToken": {
+            "target": "com.amazonaws.polly#NextToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe pagination token to use in the next request to continue the\n      listing of voices. \u003ccode\u003eNextToken\u003c/code\u003e is returned only if the response\n      is truncated.\u003c/p\u003e"
+            }
+          },
+          "Voices": {
+            "target": "com.amazonaws.polly#VoiceList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of voices with their properties.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.polly#Engine": {
+        "type": "enum",
+        "members": {
+          "GENERATIVE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "generative"
+            }
+          },
+          "LONG_FORM": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "long-form"
+            }
+          },
+          "NEURAL": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "neural"
+            }
+          },
+          "STANDARD": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "standard"
+            }
+          }
+        }
+      },
+      "com.amazonaws.polly#EngineList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.polly#Engine"
+        }
+      },
+      "com.amazonaws.polly#EngineNotSupportedException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "com.amazonaws.polly#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThis engine is not compatible with the voice that you have designated.\n      Choose a new voice that is compatible with the engine or change the engine\n      and restart the operation.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.polly#ErrorMessage": {
+        "type": "string"
+      },
+      "com.amazonaws.polly#FlushStreamConfiguration": {
+        "type": "structure",
+        "members": {
+          "Force": {
+            "target": "com.amazonaws.polly#Force",
+            "traits": {
+              "smithy.api#default": false,
+              "smithy.api#documentation": "\u003cp\u003eSpecifies whether to force the synthesis engine to immediately \n      write buffered audio data to the output stream.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eConfiguration that controls when synthesized audio data is sent on the output stream.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.polly#Force": {
+        "type": "boolean",
+        "traits": {
+          "smithy.api#default": false
+        }
+      },
+      "com.amazonaws.polly#Gender": {
+        "type": "enum",
+        "members": {
+          "Female": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Female"
+            }
+          },
+          "Male": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Male"
+            }
+          }
+        }
+      },
+      "com.amazonaws.polly#GetLexicon": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.polly#GetLexiconInput"
+        },
+        "output": {
+          "target": "com.amazonaws.polly#GetLexiconOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.polly#LexiconNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.polly#ServiceFailureException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eReturns the content of the specified pronunciation lexicon stored\n      in an Amazon Web Services Region. For more information, see \u003ca href=\"https://docs.aws.amazon.com/polly/latest/dg/managing-lexicons.html\"\u003eManaging Lexicons\u003c/a\u003e.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "GET",
+            "uri": "/v1/lexicons/{Name}",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.polly#GetLexiconInput": {
+        "type": "structure",
+        "members": {
+          "Name": {
+            "target": "com.amazonaws.polly#LexiconName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eName of the lexicon.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.polly#GetLexiconOutput": {
+        "type": "structure",
+        "members": {
+          "Lexicon": {
+            "target": "com.amazonaws.polly#Lexicon",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eLexicon object that provides name and the string content of the\n      lexicon. \u003c/p\u003e"
+            }
+          },
+          "LexiconAttributes": {
+            "target": "com.amazonaws.polly#LexiconAttributes",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eMetadata of the lexicon, including phonetic alphabetic used,\n      language code, lexicon ARN, number of lexemes defined in the lexicon, and\n      size of lexicon in bytes.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.polly#GetSpeechSynthesisTask": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.polly#GetSpeechSynthesisTaskInput"
+        },
+        "output": {
+          "target": "com.amazonaws.polly#GetSpeechSynthesisTaskOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.polly#InvalidTaskIdException"
+          },
+          {
+            "target": "com.amazonaws.polly#ServiceFailureException"
+          },
+          {
+            "target": "com.amazonaws.polly#SynthesisTaskNotFoundException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eRetrieves a specific SpeechSynthesisTask object based on its TaskID.\n      This object contains information about the given speech synthesis task,\n      including the status of the task, and a link to the S3 bucket containing\n      the output of the task.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "GET",
+            "uri": "/v1/synthesisTasks/{TaskId}",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.polly#GetSpeechSynthesisTaskInput": {
+        "type": "structure",
+        "members": {
+          "TaskId": {
+            "target": "com.amazonaws.polly#TaskId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Polly generated identifier for a speech synthesis task.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.polly#GetSpeechSynthesisTaskOutput": {
+        "type": "structure",
+        "members": {
+          "SynthesisTask": {
+            "target": "com.amazonaws.polly#SynthesisTask",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSynthesisTask object that provides information from the requested\n      task, including output format, creation time, task status, and so\n      on.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.polly#IncludeAdditionalLanguageCodes": {
+        "type": "boolean",
+        "traits": {
+          "smithy.api#default": false
+        }
+      },
+      "com.amazonaws.polly#InvalidLexiconException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "com.amazonaws.polly#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eAmazon Polly can't find the specified lexicon. Verify that the lexicon's\n      name is spelled correctly, and then try again.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.polly#InvalidNextTokenException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "com.amazonaws.polly#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe NextToken is invalid. Verify that it's spelled correctly, and\n      then try again.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.polly#InvalidS3BucketException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "com.amazonaws.polly#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe provided Amazon S3 bucket name is invalid. Please check your input\n      with S3 bucket naming requirements and try again.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.polly#InvalidS3KeyException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "com.amazonaws.polly#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe provided Amazon S3 key prefix is invalid. Please provide a valid\n      S3 object key name.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.polly#InvalidSampleRateException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "com.amazonaws.polly#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe specified sample rate is not valid.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.polly#InvalidSnsTopicArnException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "com.amazonaws.polly#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe provided SNS topic ARN is invalid. Please provide a valid SNS\n      topic ARN and try again.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.polly#InvalidSsmlException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "com.amazonaws.polly#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe SSML you provided is invalid. Verify the SSML syntax, spelling\n      of tags and values, and then try again.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.polly#InvalidTaskIdException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "com.amazonaws.polly#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe provided Task ID is not valid. Please provide a valid Task ID and\n      try again.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.polly#LanguageCode": {
+        "type": "enum",
+        "members": {
+          "ar_AE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ar-AE"
+            }
+          },
+          "arb": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "arb"
+            }
+          },
+          "ca_ES": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ca-ES"
+            }
+          },
+          "cmn_CN": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "cmn-CN"
+            }
+          },
+          "cs_CZ": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "cs-CZ"
+            }
+          },
+          "cy_GB": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "cy-GB"
+            }
+          },
+          "da_DK": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "da-DK"
+            }
+          },
+          "de_AT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "de-AT"
+            }
+          },
+          "de_CH": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "de-CH"
+            }
+          },
+          "de_DE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "de-DE"
+            }
+          },
+          "en_AU": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "en-AU"
+            }
+          },
+          "en_GB": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "en-GB"
+            }
+          },
+          "en_GB_WLS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "en-GB-WLS"
+            }
+          },
+          "en_IE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "en-IE"
+            }
+          },
+          "en_IN": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "en-IN"
+            }
+          },
+          "en_NZ": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "en-NZ"
+            }
+          },
+          "en_SG": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "en-SG"
+            }
+          },
+          "en_US": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "en-US"
+            }
+          },
+          "en_ZA": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "en-ZA"
+            }
+          },
+          "es_ES": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "es-ES"
+            }
+          },
+          "es_MX": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "es-MX"
+            }
+          },
+          "es_US": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "es-US"
+            }
+          },
+          "fi_FI": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "fi-FI"
+            }
+          },
+          "fr_BE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "fr-BE"
+            }
+          },
+          "fr_CA": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "fr-CA"
+            }
+          },
+          "fr_FR": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "fr-FR"
+            }
+          },
+          "hi_IN": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "hi-IN"
+            }
+          },
+          "is_IS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "is-IS"
+            }
+          },
+          "it_IT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "it-IT"
+            }
+          },
+          "ja_JP": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ja-JP"
+            }
+          },
+          "ko_KR": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ko-KR"
+            }
+          },
+          "nb_NO": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "nb-NO"
+            }
+          },
+          "nl_BE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "nl-BE"
+            }
+          },
+          "nl_NL": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "nl-NL"
+            }
+          },
+          "pl_PL": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "pl-PL"
+            }
+          },
+          "pt_BR": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "pt-BR"
+            }
+          },
+          "pt_PT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "pt-PT"
+            }
+          },
+          "ro_RO": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ro-RO"
+            }
+          },
+          "ru_RU": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ru-RU"
+            }
+          },
+          "sv_SE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "sv-SE"
+            }
+          },
+          "tr_TR": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "tr-TR"
+            }
+          },
+          "yue_CN": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "yue-CN"
+            }
+          }
+        }
+      },
+      "com.amazonaws.polly#LanguageCodeList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.polly#LanguageCode"
+        }
+      },
+      "com.amazonaws.polly#LanguageName": {
+        "type": "string"
+      },
+      "com.amazonaws.polly#LanguageNotSupportedException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "com.amazonaws.polly#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe language specified is not currently supported by Amazon Polly in this\n      capacity.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.polly#LastModified": {
+        "type": "timestamp"
+      },
+      "com.amazonaws.polly#LexemesCount": {
+        "type": "integer",
+        "traits": {
+          "smithy.api#default": 0
+        }
+      },
+      "com.amazonaws.polly#Lexicon": {
+        "type": "structure",
+        "members": {
+          "Content": {
+            "target": "com.amazonaws.polly#LexiconContent",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eLexicon content in string format. The content of a lexicon must be\n      in PLS format.\u003c/p\u003e"
+            }
+          },
+          "Name": {
+            "target": "com.amazonaws.polly#LexiconName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eName of the lexicon.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eProvides lexicon name and lexicon content in string format. For\n      more information, see \u003ca href=\"https://www.w3.org/TR/pronunciation-lexicon/\"\u003ePronunciation Lexicon\n        Specification (PLS) Version 1.0\u003c/a\u003e.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.polly#LexiconArn": {
+        "type": "string"
+      },
+      "com.amazonaws.polly#LexiconAttributes": {
+        "type": "structure",
+        "members": {
+          "Alphabet": {
+            "target": "com.amazonaws.polly#Alphabet",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003ePhonetic alphabet used in the lexicon. Valid values are\n        \u003ccode\u003eipa\u003c/code\u003e and \u003ccode\u003ex-sampa\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "LanguageCode": {
+            "target": "com.amazonaws.polly#LanguageCode",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eLanguage code that the lexicon applies to. A lexicon with a\n      language code such as \"en\" would be applied to all English languages\n      (en-GB, en-US, en-AUS, en-WLS, and so on.\u003c/p\u003e"
+            }
+          },
+          "LastModified": {
+            "target": "com.amazonaws.polly#LastModified",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eDate lexicon was last modified (a timestamp value).\u003c/p\u003e"
+            }
+          },
+          "LexemesCount": {
+            "target": "com.amazonaws.polly#LexemesCount",
+            "traits": {
+              "smithy.api#default": 0,
+              "smithy.api#documentation": "\u003cp\u003eNumber of lexemes in the lexicon.\u003c/p\u003e"
+            }
+          },
+          "LexiconArn": {
+            "target": "com.amazonaws.polly#LexiconArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAmazon Resource Name (ARN) of the lexicon.\u003c/p\u003e"
+            }
+          },
+          "Size": {
+            "target": "com.amazonaws.polly#Size",
+            "traits": {
+              "smithy.api#default": 0,
+              "smithy.api#documentation": "\u003cp\u003eTotal size of the lexicon, in characters.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eContains metadata describing the lexicon such as the number of\n      lexemes, language code, and so on. For more information, see \u003ca href=\"https://docs.aws.amazon.com/polly/latest/dg/managing-lexicons.html\"\u003eManaging Lexicons\u003c/a\u003e.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.polly#LexiconContent": {
+        "type": "string",
+        "traits": {
+          "smithy.api#sensitive": {}
+        }
+      },
+      "com.amazonaws.polly#LexiconDescription": {
+        "type": "structure",
+        "members": {
+          "Attributes": {
+            "target": "com.amazonaws.polly#LexiconAttributes",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eProvides lexicon metadata.\u003c/p\u003e"
+            }
+          },
+          "Name": {
+            "target": "com.amazonaws.polly#LexiconName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eName of the lexicon.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eDescribes the content of the lexicon.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.polly#LexiconDescriptionList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.polly#LexiconDescription"
+        }
+      },
+      "com.amazonaws.polly#LexiconName": {
+        "type": "string",
+        "traits": {
+          "smithy.api#pattern": "^[0-9A-Za-z]{1,20}$"
+        }
+      },
+      "com.amazonaws.polly#LexiconNameList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.polly#LexiconName"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 5
+          }
+        }
+      },
+      "com.amazonaws.polly#LexiconNotFoundException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "com.amazonaws.polly#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eAmazon Polly can't find the specified lexicon. This could be caused by a\n      lexicon that is missing, its name is misspelled or specifying a lexicon\n      that is in a different region.\u003c/p\u003e\n         \u003cp\u003eVerify that the lexicon exists, is in the region (see \u003ca\u003eListLexicons\u003c/a\u003e) and that you spelled its name is spelled\n      correctly. Then try again.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 404
+        }
+      },
+      "com.amazonaws.polly#LexiconSizeExceededException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "com.amazonaws.polly#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe maximum size of the specified lexicon would be exceeded by this\n      operation.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.polly#ListLexicons": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.polly#ListLexiconsInput"
+        },
+        "output": {
+          "target": "com.amazonaws.polly#ListLexiconsOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.polly#InvalidNextTokenException"
+          },
+          {
+            "target": "com.amazonaws.polly#ServiceFailureException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eReturns a list of pronunciation lexicons stored in an Amazon Web Services Region. For more information, see \u003ca href=\"https://docs.aws.amazon.com/polly/latest/dg/managing-lexicons.html\"\u003eManaging Lexicons\u003c/a\u003e.\u003c/p\u003e",
+          "smithy.api#examples": [
+            {
+              "title": "To list all lexicons in a region",
+              "documentation": "Returns a list of pronunciation lexicons stored in an AWS Region.",
+              "output": {
+                "Lexicons": [
+                  {
+                    "Attributes": {
+                      "LanguageCode": "en-US",
+                      "LastModified": 1478542980.117,
+                      "Alphabet": "ipa",
+                      "LexemesCount": 1,
+                      "LexiconArn": "arn:aws:polly:us-east-1:123456789012:lexicon/example",
+                      "Size": 503
+                    },
+                    "Name": "example"
+                  }
+                ]
+              }
+            }
+          ],
+          "smithy.api#http": {
+            "method": "GET",
+            "uri": "/v1/lexicons",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.polly#ListLexiconsInput": {
+        "type": "structure",
+        "members": {
+          "NextToken": {
+            "target": "com.amazonaws.polly#NextToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn opaque pagination token returned from previous\n        \u003ccode\u003eListLexicons\u003c/code\u003e operation. If present, indicates where to\n      continue the list of lexicons.\u003c/p\u003e",
+              "smithy.api#httpQuery": "NextToken"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.polly#ListLexiconsOutput": {
+        "type": "structure",
+        "members": {
+          "Lexicons": {
+            "target": "com.amazonaws.polly#LexiconDescriptionList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of lexicon names and attributes.\u003c/p\u003e"
+            }
+          },
+          "NextToken": {
+            "target": "com.amazonaws.polly#NextToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe pagination token to use in the next request to continue the\n      listing of lexicons. \u003ccode\u003eNextToken\u003c/code\u003e is returned only if the\n      response is truncated.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.polly#ListSpeechSynthesisTasks": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.polly#ListSpeechSynthesisTasksInput"
+        },
+        "output": {
+          "target": "com.amazonaws.polly#ListSpeechSynthesisTasksOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.polly#InvalidNextTokenException"
+          },
+          {
+            "target": "com.amazonaws.polly#ServiceFailureException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eReturns a list of SpeechSynthesisTask objects ordered by their\n      creation date. This operation can filter the tasks by their status, for\n      example, allowing users to list only tasks that are completed.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "GET",
+            "uri": "/v1/synthesisTasks",
+            "code": 200
+          },
+          "smithy.api#paginated": {
+            "inputToken": "NextToken",
+            "outputToken": "NextToken",
+            "pageSize": "MaxResults"
+          }
+        }
+      },
+      "com.amazonaws.polly#ListSpeechSynthesisTasksInput": {
+        "type": "structure",
+        "members": {
+          "MaxResults": {
+            "target": "com.amazonaws.polly#MaxResults",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eMaximum number of speech synthesis tasks returned in a List\n      operation.\u003c/p\u003e",
+              "smithy.api#httpQuery": "MaxResults"
+            }
+          },
+          "NextToken": {
+            "target": "com.amazonaws.polly#NextToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe pagination token to use in the next request to continue the\n      listing of speech synthesis tasks. \u003c/p\u003e",
+              "smithy.api#httpQuery": "NextToken"
+            }
+          },
+          "Status": {
+            "target": "com.amazonaws.polly#TaskStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eStatus of the speech synthesis tasks returned in a List\n      operation\u003c/p\u003e",
+              "smithy.api#httpQuery": "Status"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.polly#ListSpeechSynthesisTasksOutput": {
+        "type": "structure",
+        "members": {
+          "NextToken": {
+            "target": "com.amazonaws.polly#NextToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn opaque pagination token returned from the previous List operation\n      in this request. If present, this indicates where to continue the\n      listing.\u003c/p\u003e"
+            }
+          },
+          "SynthesisTasks": {
+            "target": "com.amazonaws.polly#SynthesisTasks",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eList of SynthesisTask objects that provides information from the\n      specified task in the list request, including output format, creation\n      time, task status, and so on.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.polly#MarksNotSupportedForFormatException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "com.amazonaws.polly#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eSpeech marks are not supported for the \u003ccode\u003eOutputFormat\u003c/code\u003e\n      selected. Speech marks are only available for content in \u003ccode\u003ejson\u003c/code\u003e\n      format.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.polly#MaxLexemeLengthExceededException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "com.amazonaws.polly#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe maximum size of the lexeme would be exceeded by this\n      operation.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.polly#MaxLexiconsNumberExceededException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "com.amazonaws.polly#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe maximum number of lexicons would be exceeded by this\n      operation.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.polly#MaxResults": {
+        "type": "integer",
+        "traits": {
+          "smithy.api#range": {
+            "min": 1,
+            "max": 100
+          }
+        }
+      },
+      "com.amazonaws.polly#NextToken": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 4096
+          }
+        }
+      },
+      "com.amazonaws.polly#OutputFormat": {
+        "type": "enum",
+        "members": {
+          "ALAW": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "alaw"
+            }
+          },
+          "JSON": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "json"
+            }
+          },
+          "MP3": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "mp3"
+            }
+          },
+          "MULAW": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "mulaw"
+            }
+          },
+          "OGG_OPUS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ogg_opus"
+            }
+          },
+          "OGG_VORBIS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ogg_vorbis"
+            }
+          },
+          "PCM": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "pcm"
+            }
+          }
+        }
+      },
+      "com.amazonaws.polly#OutputS3BucketName": {
+        "type": "string",
+        "traits": {
+          "smithy.api#pattern": "^[a-z0-9][\\.\\-a-z0-9]{1,61}[a-z0-9]$"
+        }
+      },
+      "com.amazonaws.polly#OutputS3KeyPrefix": {
+        "type": "string",
+        "traits": {
+          "smithy.api#pattern": "^[0-9a-zA-Z\\/\\!\\-_\\.\\*\\'\\(\\):;\\$@=+\\,\\?\u0026]{0,800}$"
+        }
+      },
+      "com.amazonaws.polly#OutputUri": {
+        "type": "string"
+      },
+      "com.amazonaws.polly#Parrot_v1": {
+        "type": "service",
+        "version": "2016-06-10",
+        "operations": [
+          {
+            "target": "com.amazonaws.polly#DeleteLexicon"
+          },
+          {
+            "target": "com.amazonaws.polly#DescribeVoices"
+          },
+          {
+            "target": "com.amazonaws.polly#GetLexicon"
+          },
+          {
+            "target": "com.amazonaws.polly#GetSpeechSynthesisTask"
+          },
+          {
+            "target": "com.amazonaws.polly#ListLexicons"
+          },
+          {
+            "target": "com.amazonaws.polly#ListSpeechSynthesisTasks"
+          },
+          {
+            "target": "com.amazonaws.polly#PutLexicon"
+          },
+          {
+            "target": "com.amazonaws.polly#StartSpeechSynthesisStream"
+          },
+          {
+            "target": "com.amazonaws.polly#StartSpeechSynthesisTask"
+          },
+          {
+            "target": "com.amazonaws.polly#SynthesizeSpeech"
+          }
+        ],
+        "traits": {
+          "aws.api#service": {
+            "sdkId": "Polly",
+            "arnNamespace": "polly",
+            "cloudFormationName": "Polly",
+            "cloudTrailEventSource": "polly.amazonaws.com",
+            "endpointPrefix": "polly"
+          },
+          "aws.auth#sigv4": {
+            "name": "polly"
+          },
+          "aws.protocols#restJson1": {
+            "http": [
+              "http/1.1",
+              "h2"
+            ],
+            "eventStreamHttp": [
+              "h2"
+            ]
+          },
+          "smithy.api#documentation": "\u003cp\u003eAmazon Polly is a web service that makes it easy to synthesize speech from\n      text.\u003c/p\u003e\n         \u003cp\u003eThe Amazon Polly service provides API operations for synthesizing\n      high-quality speech from plain text and Speech Synthesis Markup Language\n      (SSML), along with managing pronunciations lexicons that enable you to get\n      the best results for your application domain.\u003c/p\u003e",
+          "smithy.api#title": "Amazon Polly",
+          "smithy.api#xmlNamespace": {
+            "uri": "http://polly.amazonaws.com/doc/v1"
+          },
+          "smithy.rules#endpointBdd": {
+            "version": "1.1",
+            "parameters": {
+              "Region": {
+                "builtIn": "AWS::Region",
+                "required": false,
+                "documentation": "The AWS region used to dispatch the request.",
+                "type": "string"
+              },
+              "UseDualStack": {
+                "builtIn": "AWS::UseDualStack",
+                "required": true,
+                "default": false,
+                "documentation": "When true, use the dual-stack endpoint. If the configured endpoint does not support dual-stack, dispatching the request MAY return an error.",
+                "type": "boolean"
+              },
+              "UseFIPS": {
+                "builtIn": "AWS::UseFIPS",
+                "required": true,
+                "default": false,
+                "documentation": "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
+                "type": "boolean"
+              },
+              "Endpoint": {
+                "builtIn": "SDK::Endpoint",
+                "required": false,
+                "documentation": "Override the endpoint used to send this request",
+                "type": "string"
+              }
+            },
+            "conditions": [
+              {
+                "fn": "isSet",
+                "argv": [
+                  {
+                    "ref": "Endpoint"
+                  }
+                ]
+              },
+              {
+                "fn": "isSet",
+                "argv": [
+                  {
+                    "ref": "Region"
+                  }
+                ]
+              },
+              {
+                "fn": "aws.partition",
+                "argv": [
+                  {
+                    "ref": "Region"
+                  }
+                ],
+                "assign": "PartitionResult"
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "ref": "UseFIPS"
+                  },
+                  true
+                ]
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "ref": "UseDualStack"
+                  },
+                  true
+                ]
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "fn": "getAttr",
+                    "argv": [
+                      {
+                        "ref": "PartitionResult"
+                      },
+                      "supportsDualStack"
+                    ]
+                  },
+                  true
+                ]
+              },
+              {
+                "fn": "booleanEquals",
+                "argv": [
+                  {
+                    "fn": "getAttr",
+                    "argv": [
+                      {
+                        "ref": "PartitionResult"
+                      },
+                      "supportsFIPS"
+                    ]
+                  },
+                  true
+                ]
+              }
+            ],
+            "results": [
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: FIPS and custom endpoint are not supported",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: Dualstack and custom endpoint are not supported",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": {
+                    "ref": "Endpoint"
+                  },
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://polly-fips.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "FIPS and DualStack are enabled, but this partition does not support one or both",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://polly-fips.{Region}.{PartitionResult#dnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "FIPS is enabled but this partition does not support FIPS",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://polly.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "DualStack is enabled but this partition does not support DualStack",
+                "type": "error"
+              },
+              {
+                "conditions": [],
+                "endpoint": {
+                  "url": "https://polly.{Region}.{PartitionResult#dnsSuffix}",
+                  "properties": {},
+                  "headers": {}
+                },
+                "type": "endpoint"
+              },
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: Missing Region",
+                "type": "error"
+              }
+            ],
+            "root": 2,
+            "nodeCount": 13,
+            "nodes": "/////wAAAAH/////AAAAAAAAAAwAAAADAAAAAQAAAAQF9eELAAAAAgAAAAUF9eELAAAAAwAAAAgAAAAGAAAABAAAAAcF9eEKAAAABQX14QgF9eEJAAAABAAAAAoAAAAJAAAABgX14QYF9eEHAAAABQAAAAsF9eEFAAAABgX14QQF9eEFAAAAAwX14QEAAAANAAAABAX14QIF9eED"
+          },
+          "smithy.rules#endpointRuleSet": {
+            "version": "1.0",
+            "parameters": {
+              "Region": {
+                "builtIn": "AWS::Region",
+                "required": false,
+                "documentation": "The AWS region used to dispatch the request.",
+                "type": "string"
+              },
+              "UseDualStack": {
+                "builtIn": "AWS::UseDualStack",
+                "required": true,
+                "default": false,
+                "documentation": "When true, use the dual-stack endpoint. If the configured endpoint does not support dual-stack, dispatching the request MAY return an error.",
+                "type": "boolean"
+              },
+              "UseFIPS": {
+                "builtIn": "AWS::UseFIPS",
+                "required": true,
+                "default": false,
+                "documentation": "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
+                "type": "boolean"
+              },
+              "Endpoint": {
+                "builtIn": "SDK::Endpoint",
+                "required": false,
+                "documentation": "Override the endpoint used to send this request",
+                "type": "string"
+              }
+            },
+            "rules": [
+              {
+                "conditions": [
+                  {
+                    "fn": "isSet",
+                    "argv": [
+                      {
+                        "ref": "Endpoint"
+                      }
+                    ]
+                  }
+                ],
+                "rules": [
+                  {
+                    "conditions": [
+                      {
+                        "fn": "booleanEquals",
+                        "argv": [
+                          {
+                            "ref": "UseFIPS"
+                          },
+                          true
+                        ]
+                      }
+                    ],
+                    "error": "Invalid Configuration: FIPS and custom endpoint are not supported",
+                    "type": "error"
+                  },
+                  {
+                    "conditions": [
+                      {
+                        "fn": "booleanEquals",
+                        "argv": [
+                          {
+                            "ref": "UseDualStack"
+                          },
+                          true
+                        ]
+                      }
+                    ],
+                    "error": "Invalid Configuration: Dualstack and custom endpoint are not supported",
+                    "type": "error"
+                  },
+                  {
+                    "conditions": [],
+                    "endpoint": {
+                      "url": {
+                        "ref": "Endpoint"
+                      },
+                      "properties": {},
+                      "headers": {}
+                    },
+                    "type": "endpoint"
+                  }
+                ],
+                "type": "tree"
+              },
+              {
+                "conditions": [
+                  {
+                    "fn": "isSet",
+                    "argv": [
+                      {
+                        "ref": "Region"
+                      }
+                    ]
+                  }
+                ],
+                "rules": [
+                  {
+                    "conditions": [
+                      {
+                        "fn": "aws.partition",
+                        "argv": [
+                          {
+                            "ref": "Region"
+                          }
+                        ],
+                        "assign": "PartitionResult"
+                      }
+                    ],
+                    "rules": [
+                      {
+                        "conditions": [
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseFIPS"
+                              },
+                              true
+                            ]
+                          },
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseDualStack"
+                              },
+                              true
+                            ]
+                          }
+                        ],
+                        "rules": [
+                          {
+                            "conditions": [
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  true,
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsFIPS"
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  true,
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsDualStack"
+                                    ]
+                                  }
+                                ]
+                              }
+                            ],
+                            "rules": [
+                              {
+                                "conditions": [],
+                                "endpoint": {
+                                  "url": "https://polly-fips.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                                  "properties": {},
+                                  "headers": {}
+                                },
+                                "type": "endpoint"
+                              }
+                            ],
+                            "type": "tree"
+                          },
+                          {
+                            "conditions": [],
+                            "error": "FIPS and DualStack are enabled, but this partition does not support one or both",
+                            "type": "error"
+                          }
+                        ],
+                        "type": "tree"
+                      },
+                      {
+                        "conditions": [
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseFIPS"
+                              },
+                              true
+                            ]
+                          }
+                        ],
+                        "rules": [
+                          {
+                            "conditions": [
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsFIPS"
+                                    ]
+                                  },
+                                  true
+                                ]
+                              }
+                            ],
+                            "rules": [
+                              {
+                                "conditions": [],
+                                "endpoint": {
+                                  "url": "https://polly-fips.{Region}.{PartitionResult#dnsSuffix}",
+                                  "properties": {},
+                                  "headers": {}
+                                },
+                                "type": "endpoint"
+                              }
+                            ],
+                            "type": "tree"
+                          },
+                          {
+                            "conditions": [],
+                            "error": "FIPS is enabled but this partition does not support FIPS",
+                            "type": "error"
+                          }
+                        ],
+                        "type": "tree"
+                      },
+                      {
+                        "conditions": [
+                          {
+                            "fn": "booleanEquals",
+                            "argv": [
+                              {
+                                "ref": "UseDualStack"
+                              },
+                              true
+                            ]
+                          }
+                        ],
+                        "rules": [
+                          {
+                            "conditions": [
+                              {
+                                "fn": "booleanEquals",
+                                "argv": [
+                                  true,
+                                  {
+                                    "fn": "getAttr",
+                                    "argv": [
+                                      {
+                                        "ref": "PartitionResult"
+                                      },
+                                      "supportsDualStack"
+                                    ]
+                                  }
+                                ]
+                              }
+                            ],
+                            "rules": [
+                              {
+                                "conditions": [],
+                                "endpoint": {
+                                  "url": "https://polly.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                                  "properties": {},
+                                  "headers": {}
+                                },
+                                "type": "endpoint"
+                              }
+                            ],
+                            "type": "tree"
+                          },
+                          {
+                            "conditions": [],
+                            "error": "DualStack is enabled but this partition does not support DualStack",
+                            "type": "error"
+                          }
+                        ],
+                        "type": "tree"
+                      },
+                      {
+                        "conditions": [],
+                        "endpoint": {
+                          "url": "https://polly.{Region}.{PartitionResult#dnsSuffix}",
+                          "properties": {},
+                          "headers": {}
+                        },
+                        "type": "endpoint"
+                      }
+                    ],
+                    "type": "tree"
+                  }
+                ],
+                "type": "tree"
+              },
+              {
+                "conditions": [],
+                "error": "Invalid Configuration: Missing Region",
+                "type": "error"
+              }
+            ]
+          },
+          "smithy.rules#endpointTests": {
+            "testCases": [
+              {
+                "documentation": "For region af-south-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://polly.af-south-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "af-south-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region ap-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://polly.ap-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ap-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region ap-northeast-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://polly.ap-northeast-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ap-northeast-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region ap-northeast-2 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://polly.ap-northeast-2.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ap-northeast-2",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region ap-south-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://polly.ap-south-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ap-south-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region ap-southeast-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://polly.ap-southeast-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ap-southeast-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region ap-southeast-2 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://polly.ap-southeast-2.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ap-southeast-2",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region ca-central-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://polly.ca-central-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "ca-central-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region eu-central-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://polly.eu-central-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "eu-central-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region eu-north-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://polly.eu-north-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "eu-north-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region eu-west-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://polly.eu-west-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "eu-west-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region eu-west-2 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://polly.eu-west-2.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "eu-west-2",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region eu-west-3 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://polly.eu-west-3.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "eu-west-3",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region me-south-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://polly.me-south-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "me-south-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region sa-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://polly.sa-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "sa-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://polly.us-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://polly-fips.us-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-east-2 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://polly.us-east-2.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-2",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-east-2 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://polly-fips.us-east-2.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-2",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-west-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://polly.us-west-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-west-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-west-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://polly-fips.us-west-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-west-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-west-2 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://polly.us-west-2.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-west-2",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-west-2 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://polly-fips.us-west-2.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-west-2",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://polly-fips.us-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region us-east-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://polly.us-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region cn-northwest-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://polly.cn-northwest-1.amazonaws.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-northwest-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://polly-fips.cn-north-1.api.amazonwebservices.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": true,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://polly-fips.cn-north-1.amazonaws.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://polly.cn-north-1.api.amazonwebservices.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region cn-north-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://polly.cn-north-1.amazonaws.com.cn"
+                  }
+                },
+                "params": {
+                  "Region": "cn-north-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-gov-west-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://polly.us-gov-west-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-west-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-gov-west-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://polly-fips.us-gov-west-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-west-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS enabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://polly-fips.us-gov-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://polly-fips.us-gov-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS disabled and DualStack enabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://polly.us-gov-east-1.api.aws"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true
+                }
+              },
+              {
+                "documentation": "For region us-gov-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://polly.us-gov-east-1.amazonaws.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-gov-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-iso-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://polly-fips.us-iso-east-1.c2s.ic.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-iso-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-iso-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://polly.us-iso-east-1.c2s.ic.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-iso-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-isob-east-1 with FIPS enabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://polly-fips.us-isob-east-1.sc2s.sgov.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-isob-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For region us-isob-east-1 with FIPS disabled and DualStack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://polly.us-isob-east-1.sc2s.sgov.gov"
+                  }
+                },
+                "params": {
+                  "Region": "us-isob-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false
+                }
+              },
+              {
+                "documentation": "For custom endpoint with region set and fips disabled and dualstack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://example.com"
+                  }
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": false,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "For custom endpoint with region not set and fips disabled and dualstack disabled",
+                "expect": {
+                  "endpoint": {
+                    "url": "https://example.com"
+                  }
+                },
+                "params": {
+                  "UseFIPS": false,
+                  "UseDualStack": false,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "For custom endpoint with fips enabled and dualstack disabled",
+                "expect": {
+                  "error": "Invalid Configuration: FIPS and custom endpoint are not supported"
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": true,
+                  "UseDualStack": false,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "For custom endpoint with fips disabled and dualstack enabled",
+                "expect": {
+                  "error": "Invalid Configuration: Dualstack and custom endpoint are not supported"
+                },
+                "params": {
+                  "Region": "us-east-1",
+                  "UseFIPS": false,
+                  "UseDualStack": true,
+                  "Endpoint": "https://example.com"
+                }
+              },
+              {
+                "documentation": "Missing region",
+                "expect": {
+                  "error": "Invalid Configuration: Missing Region"
+                }
+              }
+            ],
+            "version": "1.0"
+          }
+        }
+      },
+      "com.amazonaws.polly#PutLexicon": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.polly#PutLexiconInput"
+        },
+        "output": {
+          "target": "com.amazonaws.polly#PutLexiconOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.polly#InvalidLexiconException"
+          },
+          {
+            "target": "com.amazonaws.polly#LexiconSizeExceededException"
+          },
+          {
+            "target": "com.amazonaws.polly#MaxLexemeLengthExceededException"
+          },
+          {
+            "target": "com.amazonaws.polly#MaxLexiconsNumberExceededException"
+          },
+          {
+            "target": "com.amazonaws.polly#ServiceFailureException"
+          },
+          {
+            "target": "com.amazonaws.polly#UnsupportedPlsAlphabetException"
+          },
+          {
+            "target": "com.amazonaws.polly#UnsupportedPlsLanguageException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eStores a pronunciation lexicon in an Amazon Web Services Region. If\n      a lexicon with the same name already exists in the region, it is\n      overwritten by the new lexicon. Lexicon operations have eventual\n      consistency, therefore, it might take some time before the lexicon is\n      available to the SynthesizeSpeech operation.\u003c/p\u003e\n         \u003cp\u003eFor more information, see \u003ca href=\"https://docs.aws.amazon.com/polly/latest/dg/managing-lexicons.html\"\u003eManaging Lexicons\u003c/a\u003e.\u003c/p\u003e",
+          "smithy.api#examples": [
+            {
+              "title": "To save a lexicon",
+              "documentation": "Stores a pronunciation lexicon in an AWS Region.",
+              "input": {
+                "Name": "W3C",
+                "Content": "\u003cLexicon Content\u003e"
+              },
+              "output": {}
+            }
+          ],
+          "smithy.api#http": {
+            "method": "PUT",
+            "uri": "/v1/lexicons/{Name}",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.polly#PutLexiconInput": {
+        "type": "structure",
+        "members": {
+          "Content": {
+            "target": "com.amazonaws.polly#LexiconContent",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eContent of the PLS lexicon as string data.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Name": {
+            "target": "com.amazonaws.polly#LexiconName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eName of the lexicon. The name must follow the regular express\n      format [0-9A-Za-z]{1,20}. That is, the name is a case-sensitive\n      alphanumeric string up to 20 characters long. \u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.polly#PutLexiconOutput": {
+        "type": "structure",
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.polly#QuotaCode": {
+        "type": "enum",
+        "members": {
+          "INPUT_STREAM_INBOUND_EVENT_TIMEOUT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "input-stream-inbound-event-timeout"
+            }
+          },
+          "INPUT_STREAM_TIMEOUT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "input-stream-timeout"
+            }
+          }
+        }
+      },
+      "com.amazonaws.polly#RequestCharacters": {
+        "type": "integer",
+        "traits": {
+          "smithy.api#default": 0
+        }
+      },
+      "com.amazonaws.polly#SampleRate": {
+        "type": "string"
+      },
+      "com.amazonaws.polly#ServiceCode": {
+        "type": "enum",
+        "members": {
+          "POLLY": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "polly"
+            }
+          }
+        }
+      },
+      "com.amazonaws.polly#ServiceFailureException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "com.amazonaws.polly#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eAn unknown condition has caused a service failure.\u003c/p\u003e",
+          "smithy.api#error": "server",
+          "smithy.api#httpError": 500
+        }
+      },
+      "com.amazonaws.polly#ServiceQuotaExceededException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "com.amazonaws.polly#ErrorMessage",
+            "traits": {
+              "smithy.api#required": {}
+            }
+          },
+          "quotaCode": {
+            "target": "com.amazonaws.polly#QuotaCode",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe quota code identifying the specific quota.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "serviceCode": {
+            "target": "com.amazonaws.polly#ServiceCode",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe service code identifying the originating service.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe request would cause a service quota to be exceeded.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 402
+        }
+      },
+      "com.amazonaws.polly#Size": {
+        "type": "integer",
+        "traits": {
+          "smithy.api#default": 0
+        }
+      },
+      "com.amazonaws.polly#SnsTopicArn": {
+        "type": "string",
+        "traits": {
+          "smithy.api#pattern": "^arn:aws(-(cn|iso(-b)?|us-gov))?:sns:[a-z0-9_-]{1,50}:\\d{12}:[a-zA-Z0-9_-]{1,251}([a-zA-Z0-9_-]{0,5}|\\.fifo)$"
+        }
+      },
+      "com.amazonaws.polly#SpeechMarkType": {
+        "type": "enum",
+        "members": {
+          "SENTENCE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "sentence"
+            }
+          },
+          "SSML": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ssml"
+            }
+          },
+          "VISEME": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "viseme"
+            }
+          },
+          "WORD": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "word"
+            }
+          }
+        }
+      },
+      "com.amazonaws.polly#SpeechMarkTypeList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.polly#SpeechMarkType"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 4
+          }
+        }
+      },
+      "com.amazonaws.polly#SsmlMarksNotSupportedForTextTypeException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "com.amazonaws.polly#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eSSML speech marks are not supported for plain text-type\n      input.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.polly#StartSpeechSynthesisStream": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.polly#StartSpeechSynthesisStreamInput"
+        },
+        "output": {
+          "target": "com.amazonaws.polly#StartSpeechSynthesisStreamOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.polly#ServiceFailureException"
+          },
+          {
+            "target": "com.amazonaws.polly#ServiceQuotaExceededException"
+          },
+          {
+            "target": "com.amazonaws.polly#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.polly#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eSynthesizes UTF-8 input, plain text, or SSML over a bidirectional streaming connection. \n      Specify synthesis parameters in HTTP/2 headers, send text incrementally as events on the input stream,\n       and receive synthesized audio as it becomes available.\u003c/p\u003e\n         \u003cp\u003eThis operation serves as a bidirectional counterpart to \u003ccode\u003eSynthesizeSpeech\u003c/code\u003e:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ca href=\"https://docs.aws.amazon.com/polly/latest/API/API_SynthesizeSpeech.html\"\u003eSynthesizeSpeech\u003c/a\u003e\n               \u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e",
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/v1/synthesisStream",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.polly#StartSpeechSynthesisStreamActionStream": {
+        "type": "union",
+        "members": {
+          "CloseStreamEvent": {
+            "target": "com.amazonaws.polly#CloseStreamEvent",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn event indicating the end of the input stream.\u003c/p\u003e"
+            }
+          },
+          "TextEvent": {
+            "target": "com.amazonaws.polly#TextEvent",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA text event containing content to be synthesized.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eInbound event stream for sending input and control events to manage bidirectional speech synthesis.\u003c/p\u003e",
+          "smithy.api#streaming": {}
+        }
+      },
+      "com.amazonaws.polly#StartSpeechSynthesisStreamEventStream": {
+        "type": "union",
+        "members": {
+          "AudioEvent": {
+            "target": "com.amazonaws.polly#AudioEvent",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn audio event containing synthesized speech.\u003c/p\u003e"
+            }
+          },
+          "ServiceFailureException": {
+            "target": "com.amazonaws.polly#ServiceFailureException"
+          },
+          "ServiceQuotaExceededException": {
+            "target": "com.amazonaws.polly#ServiceQuotaExceededException",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn exception indicating a service quota would be exceeded.\u003c/p\u003e"
+            }
+          },
+          "StreamClosedEvent": {
+            "target": "com.amazonaws.polly#StreamClosedEvent",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn event, with summary information, indicating the stream has closed.\u003c/p\u003e"
+            }
+          },
+          "ThrottlingException": {
+            "target": "com.amazonaws.polly#ThrottlingException",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn exception indicating the request was throttled.\u003c/p\u003e"
+            }
+          },
+          "ValidationException": {
+            "target": "com.amazonaws.polly#ValidationException",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn exception indicating the input failed validation.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eOutbound event stream that contains synthesized audio data and stream status events.\u003c/p\u003e",
+          "smithy.api#streaming": {}
+        }
+      },
+      "com.amazonaws.polly#StartSpeechSynthesisStreamInput": {
+        "type": "structure",
+        "members": {
+          "ActionStream": {
+            "target": "com.amazonaws.polly#StartSpeechSynthesisStreamActionStream",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe input event stream that contains text events and stream control events.\u003c/p\u003e",
+              "smithy.api#httpPayload": {}
+            }
+          },
+          "Engine": {
+            "target": "com.amazonaws.polly#Engine",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies the engine for Amazon Polly to use when processing input text for speech synthesis. \n      Currently, only the \u003ccode\u003egenerative\u003c/code\u003e engine is supported.\n      If you specify a voice that the selected engine doesn't support, Amazon Polly returns an error.\u003c/p\u003e",
+              "smithy.api#httpHeader": "x-amzn-Engine",
+              "smithy.api#required": {}
+            }
+          },
+          "LanguageCode": {
+            "target": "com.amazonaws.polly#LanguageCode",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn optional parameter that sets the language code for the speech synthesis request. Specify this parameter only \n      when using a bilingual voice. If a bilingual voice is used and no language code is specified, Amazon Polly \n      uses the default language of the bilingual voice.\u003c/p\u003e",
+              "smithy.api#httpHeader": "x-amzn-LanguageCode"
+            }
+          },
+          "LexiconNames": {
+            "target": "com.amazonaws.polly#LexiconNameList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe names of one or more pronunciation lexicons for the service to apply \n      during synthesis. Amazon Polly applies lexicons only when the lexicon language matches the voice language.\u003c/p\u003e",
+              "smithy.api#httpHeader": "x-amzn-LexiconNames"
+            }
+          },
+          "OutputFormat": {
+            "target": "com.amazonaws.polly#OutputFormat",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe audio format for the synthesized speech. Currently, Amazon Polly does not support JSON speech marks.\u003c/p\u003e",
+              "smithy.api#httpHeader": "x-amzn-OutputFormat",
+              "smithy.api#required": {}
+            }
+          },
+          "SampleRate": {
+            "target": "com.amazonaws.polly#SampleRate",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe audio frequency, specified in Hz.\u003c/p\u003e",
+              "smithy.api#httpHeader": "x-amzn-SampleRate"
+            }
+          },
+          "VoiceId": {
+            "target": "com.amazonaws.polly#VoiceId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe voice to use in synthesis. To get a list of available voice IDs, use the \u003ca href=\"https://docs.aws.amazon.com/polly/latest/API/API_DescribeVoices.html\"\u003eDescribeVoices\u003c/a\u003e operation.\u003c/p\u003e",
+              "smithy.api#httpHeader": "x-amzn-VoiceId",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.polly#StartSpeechSynthesisStreamOutput": {
+        "type": "structure",
+        "members": {
+          "EventStream": {
+            "target": "com.amazonaws.polly#StartSpeechSynthesisStreamEventStream",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe output event stream that contains synthesized audio events and stream status events.\u003c/p\u003e",
+              "smithy.api#httpPayload": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.polly#StartSpeechSynthesisTask": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.polly#StartSpeechSynthesisTaskInput"
+        },
+        "output": {
+          "target": "com.amazonaws.polly#StartSpeechSynthesisTaskOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.polly#EngineNotSupportedException"
+          },
+          {
+            "target": "com.amazonaws.polly#InvalidS3BucketException"
+          },
+          {
+            "target": "com.amazonaws.polly#InvalidS3KeyException"
+          },
+          {
+            "target": "com.amazonaws.polly#InvalidSampleRateException"
+          },
+          {
+            "target": "com.amazonaws.polly#InvalidSnsTopicArnException"
+          },
+          {
+            "target": "com.amazonaws.polly#InvalidSsmlException"
+          },
+          {
+            "target": "com.amazonaws.polly#LanguageNotSupportedException"
+          },
+          {
+            "target": "com.amazonaws.polly#LexiconNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.polly#MarksNotSupportedForFormatException"
+          },
+          {
+            "target": "com.amazonaws.polly#ServiceFailureException"
+          },
+          {
+            "target": "com.amazonaws.polly#SsmlMarksNotSupportedForTextTypeException"
+          },
+          {
+            "target": "com.amazonaws.polly#TextLengthExceededException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eAllows the creation of an asynchronous synthesis task, by starting a\n      new \u003ccode\u003eSpeechSynthesisTask\u003c/code\u003e. This operation requires all the\n      standard information needed for speech synthesis, plus the name of an\n      Amazon S3 bucket for the service to store the output of the synthesis task\n      and two optional parameters (\u003ccode\u003eOutputS3KeyPrefix\u003c/code\u003e and\n        \u003ccode\u003eSnsTopicArn\u003c/code\u003e). Once the synthesis task is created, this\n      operation will return a \u003ccode\u003eSpeechSynthesisTask\u003c/code\u003e object, which\n      will include an identifier of this task as well as the current status. The\n        \u003ccode\u003eSpeechSynthesisTask\u003c/code\u003e object is available for 72 hours after\n      starting the asynchronous synthesis task.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/v1/synthesisTasks",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.polly#StartSpeechSynthesisTaskInput": {
+        "type": "structure",
+        "members": {
+          "Engine": {
+            "target": "com.amazonaws.polly#Engine",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies the engine (\u003ccode\u003estandard\u003c/code\u003e, \u003ccode\u003eneural\u003c/code\u003e,\n      \u003ccode\u003elong-form\u003c/code\u003e or \u003ccode\u003egenerative\u003c/code\u003e) for Amazon Polly to use\n      when processing input text for speech synthesis. Using a voice that\n      is not supported for the engine selected will result in an error.\u003c/p\u003e"
+            }
+          },
+          "LanguageCode": {
+            "target": "com.amazonaws.polly#LanguageCode",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eOptional language code for the Speech Synthesis request. This is only\n      necessary if using a bilingual voice, such as Aditi, which can be used for\n      either Indian English (en-IN) or Hindi (hi-IN). \u003c/p\u003e\n         \u003cp\u003eIf a bilingual voice is used and no language code is specified, Amazon Polly\n      uses the default language of the bilingual voice. The default language for\n      any voice is the one returned by the \u003ca href=\"https://docs.aws.amazon.com/polly/latest/dg/API_DescribeVoices.html\"\u003eDescribeVoices\u003c/a\u003e operation for the \u003ccode\u003eLanguageCode\u003c/code\u003e\n      parameter. For example, if no language code is specified, Aditi will use\n      Indian English rather than Hindi.\u003c/p\u003e"
+            }
+          },
+          "LexiconNames": {
+            "target": "com.amazonaws.polly#LexiconNameList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eList of one or more pronunciation lexicon names you want the service\n      to apply during synthesis. Lexicons are applied only if the language of\n      the lexicon is the same as the language of the voice. \u003c/p\u003e"
+            }
+          },
+          "OutputFormat": {
+            "target": "com.amazonaws.polly#OutputFormat",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe format in which the returned output will be encoded. For audio\n      stream, this will be mp3, ogg_vorbis, ogg_opus, mu-law, a-law, or pcm. For speech marks, this will\n      be json. \u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "OutputS3BucketName": {
+            "target": "com.amazonaws.polly#OutputS3BucketName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAmazon S3 bucket name to which the output file will be saved.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "OutputS3KeyPrefix": {
+            "target": "com.amazonaws.polly#OutputS3KeyPrefix",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon S3 key prefix for the output speech file.\u003c/p\u003e"
+            }
+          },
+          "SampleRate": {
+            "target": "com.amazonaws.polly#SampleRate",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe audio frequency specified in Hz.\u003c/p\u003e\n         \u003cp\u003eThe valid values for mp3 and ogg_vorbis are \"8000\", \"16000\", \"22050\",\n      and \"24000\". The default value for standard voices is \"22050\". The default\n      value for neural voices is \"24000\". The default value for long-form voices\n      is \"24000\". The default value for generative voices is \"24000\".\u003c/p\u003e\n         \u003cp\u003eValid values for pcm are \"8000\" and \"16000\" The default value is\n      \"16000\". \u003c/p\u003e\n         \u003cp\u003eValid value for ogg_opus is \"48000\". \u003c/p\u003e\n         \u003cp\u003eValid value for mu-law and a-law is \"8000\". \u003c/p\u003e"
+            }
+          },
+          "SnsTopicArn": {
+            "target": "com.amazonaws.polly#SnsTopicArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eARN for the SNS topic optionally used for providing status\n      notification for a speech synthesis task.\u003c/p\u003e"
+            }
+          },
+          "SpeechMarkTypes": {
+            "target": "com.amazonaws.polly#SpeechMarkTypeList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe type of speech marks returned for the input text.\u003c/p\u003e"
+            }
+          },
+          "Text": {
+            "target": "com.amazonaws.polly#Text",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe input text to synthesize. If you specify ssml as the TextType,\n      follow the SSML format for the input text. \u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "TextType": {
+            "target": "com.amazonaws.polly#TextType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies whether the input text is plain text or SSML. The default\n      value is plain text. \u003c/p\u003e"
+            }
+          },
+          "VoiceId": {
+            "target": "com.amazonaws.polly#VoiceId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eVoice ID to use for the synthesis. \u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.polly#StartSpeechSynthesisTaskOutput": {
+        "type": "structure",
+        "members": {
+          "SynthesisTask": {
+            "target": "com.amazonaws.polly#SynthesisTask",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSynthesisTask object that provides information and attributes about a\n      newly submitted speech synthesis task.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.polly#StreamClosedEvent": {
+        "type": "structure",
+        "members": {
+          "RequestCharacters": {
+            "target": "com.amazonaws.polly#RequestCharacters",
+            "traits": {
+              "smithy.api#default": 0,
+              "smithy.api#documentation": "\u003cp\u003eThe total number of characters synthesized during the streaming session.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eIndicates that the synthesis stream is closed and provides summary information.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.polly#SynthesisTask": {
+        "type": "structure",
+        "members": {
+          "CreationTime": {
+            "target": "com.amazonaws.polly#DateTime",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eTimestamp for the time the synthesis task was started.\u003c/p\u003e"
+            }
+          },
+          "Engine": {
+            "target": "com.amazonaws.polly#Engine",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies the engine (\u003ccode\u003estandard\u003c/code\u003e, \u003ccode\u003eneural\u003c/code\u003e,\n      \u003ccode\u003elong-form\u003c/code\u003e or \u003ccode\u003egenerative\u003c/code\u003e) for Amazon Polly to use\n      when processing input text for speech synthesis. Using a voice that\n      is not supported for the engine selected will result in an error.\u003c/p\u003e"
+            }
+          },
+          "LanguageCode": {
+            "target": "com.amazonaws.polly#LanguageCode",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eOptional language code for a synthesis task. This is only necessary if\n      using a bilingual voice, such as Aditi, which can be used for either\n      Indian English (en-IN) or Hindi (hi-IN). \u003c/p\u003e\n         \u003cp\u003eIf a bilingual voice is used and no language code is specified, Amazon Polly\n      uses the default language of the bilingual voice. The default language for\n      any voice is the one returned by the \u003ca href=\"https://docs.aws.amazon.com/polly/latest/dg/API_DescribeVoices.html\"\u003eDescribeVoices\u003c/a\u003e operation for the \u003ccode\u003eLanguageCode\u003c/code\u003e\n      parameter. For example, if no language code is specified, Aditi will use\n      Indian English rather than Hindi.\u003c/p\u003e"
+            }
+          },
+          "LexiconNames": {
+            "target": "com.amazonaws.polly#LexiconNameList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eList of one or more pronunciation lexicon names you want the service\n      to apply during synthesis. Lexicons are applied only if the language of\n      the lexicon is the same as the language of the voice. \u003c/p\u003e"
+            }
+          },
+          "OutputFormat": {
+            "target": "com.amazonaws.polly#OutputFormat",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe format in which the returned output will be encoded. For audio\n      stream, this will be mp3, ogg_vorbis, ogg_opus, mu-law, a-law, or pcm. For speech marks, this will\n      be json. \u003c/p\u003e"
+            }
+          },
+          "OutputUri": {
+            "target": "com.amazonaws.polly#OutputUri",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003ePathway for the output speech file.\u003c/p\u003e"
+            }
+          },
+          "RequestCharacters": {
+            "target": "com.amazonaws.polly#RequestCharacters",
+            "traits": {
+              "smithy.api#default": 0,
+              "smithy.api#documentation": "\u003cp\u003eNumber of billable characters synthesized.\u003c/p\u003e"
+            }
+          },
+          "SampleRate": {
+            "target": "com.amazonaws.polly#SampleRate",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe audio frequency specified in Hz.\u003c/p\u003e\n         \u003cp\u003eThe valid values for mp3 and ogg_vorbis are \"8000\", \"16000\", \"22050\",\n      and \"24000\". The default value for standard voices is \"22050\". The default\n      value for neural voices is \"24000\". The default value for long-form voices\n      is \"24000\". The default value for generative voices is \"24000\".\u003c/p\u003e\n         \u003cp\u003eValid values for pcm are \"8000\" and \"16000\" The default value is\n      \"16000\". \u003c/p\u003e\n         \u003cp\u003eValid value for ogg_opus is \"48000\". \u003c/p\u003e\n         \u003cp\u003eValid value for mu-law and a-law is \"8000\". \u003c/p\u003e"
+            }
+          },
+          "SnsTopicArn": {
+            "target": "com.amazonaws.polly#SnsTopicArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eARN for the SNS topic optionally used for providing status\n      notification for a speech synthesis task.\u003c/p\u003e"
+            }
+          },
+          "SpeechMarkTypes": {
+            "target": "com.amazonaws.polly#SpeechMarkTypeList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe type of speech marks returned for the input text.\u003c/p\u003e"
+            }
+          },
+          "TaskId": {
+            "target": "com.amazonaws.polly#TaskId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Polly generated identifier for a speech synthesis task.\u003c/p\u003e"
+            }
+          },
+          "TaskStatus": {
+            "target": "com.amazonaws.polly#TaskStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eCurrent status of the individual speech synthesis task.\u003c/p\u003e"
+            }
+          },
+          "TaskStatusReason": {
+            "target": "com.amazonaws.polly#TaskStatusReason",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eReason for the current status of a specific speech synthesis task,\n      including errors if the task has failed.\u003c/p\u003e"
+            }
+          },
+          "TextType": {
+            "target": "com.amazonaws.polly#TextType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies whether the input text is plain text or SSML. The default\n      value is plain text. \u003c/p\u003e"
+            }
+          },
+          "VoiceId": {
+            "target": "com.amazonaws.polly#VoiceId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eVoice ID to use for the synthesis. \u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eSynthesisTask object that provides information about a speech\n      synthesis task.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.polly#SynthesisTaskNotFoundException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "com.amazonaws.polly#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe Speech Synthesis task with requested Task ID cannot be\n      found.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.polly#SynthesisTasks": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.polly#SynthesisTask"
+        }
+      },
+      "com.amazonaws.polly#SynthesizeSpeech": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.polly#SynthesizeSpeechInput"
+        },
+        "output": {
+          "target": "com.amazonaws.polly#SynthesizeSpeechOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.polly#EngineNotSupportedException"
+          },
+          {
+            "target": "com.amazonaws.polly#InvalidSampleRateException"
+          },
+          {
+            "target": "com.amazonaws.polly#InvalidSsmlException"
+          },
+          {
+            "target": "com.amazonaws.polly#LanguageNotSupportedException"
+          },
+          {
+            "target": "com.amazonaws.polly#LexiconNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.polly#MarksNotSupportedForFormatException"
+          },
+          {
+            "target": "com.amazonaws.polly#ServiceFailureException"
+          },
+          {
+            "target": "com.amazonaws.polly#SsmlMarksNotSupportedForTextTypeException"
+          },
+          {
+            "target": "com.amazonaws.polly#TextLengthExceededException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eSynthesizes UTF-8 input, plain text or SSML, to a stream of bytes.\n      SSML input must be valid, well-formed SSML. Some alphabets might not be\n      available with all the voices (for example, Cyrillic might not be read at\n      all by English voices) unless phoneme mapping is used. For more\n      information, see \u003ca href=\"https://docs.aws.amazon.com/polly/latest/dg/how-text-to-speech-works.html\"\u003eHow it Works\u003c/a\u003e.\u003c/p\u003e",
+          "smithy.api#examples": [
+            {
+              "title": "To synthesize speech",
+              "documentation": "Synthesizes plain text or SSML into a file of human-like speech.",
+              "input": {
+                "LexiconNames": [
+                  "example"
+                ],
+                "OutputFormat": "mp3",
+                "SampleRate": "8000",
+                "Text": "All Gaul is divided into three parts",
+                "TextType": "text",
+                "VoiceId": "Joanna"
+              },
+              "output": {
+                "AudioStream": "TEXT",
+                "ContentType": "audio/mpeg",
+                "RequestCharacters": 37
+              }
+            }
+          ],
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/v1/speech",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.polly#SynthesizeSpeechInput": {
+        "type": "structure",
+        "members": {
+          "Engine": {
+            "target": "com.amazonaws.polly#Engine",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies the engine (\u003ccode\u003estandard\u003c/code\u003e, \u003ccode\u003eneural\u003c/code\u003e,\n      \u003ccode\u003elong-form\u003c/code\u003e, or \u003ccode\u003egenerative\u003c/code\u003e) for Amazon Polly\n      to use when processing input text for speech synthesis. Provide an engine\n      that is supported by the voice you select. If you don't provide an engine,\n      the standard engine is selected by default. If a chosen voice isn't supported\n      by the standard engine, this will result in an error. For information on\n      Amazon Polly voices and which voices are available for each engine, see \u003ca href=\"https://docs.aws.amazon.com/polly/latest/dg/voicelist.html\"\u003eAvailable Voices\u003c/a\u003e.\u003c/p\u003e"
+            }
+          },
+          "LanguageCode": {
+            "target": "com.amazonaws.polly#LanguageCode",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eOptional language code for the Synthesize Speech request. This is only\n      necessary if using a bilingual voice, such as Aditi, which can be used for\n      either Indian English (en-IN) or Hindi (hi-IN). \u003c/p\u003e\n         \u003cp\u003eIf a bilingual voice is used and no language code is specified, Amazon Polly\n      uses the default language of the bilingual voice. The default language for\n      any voice is the one returned by the \u003ca href=\"https://docs.aws.amazon.com/polly/latest/dg/API_DescribeVoices.html\"\u003eDescribeVoices\u003c/a\u003e operation for the \u003ccode\u003eLanguageCode\u003c/code\u003e\n      parameter. For example, if no language code is specified, Aditi will use\n      Indian English rather than Hindi.\u003c/p\u003e"
+            }
+          },
+          "LexiconNames": {
+            "target": "com.amazonaws.polly#LexiconNameList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eList of one or more pronunciation lexicon names you want the\n      service to apply during synthesis. Lexicons are applied only if the\n      language of the lexicon is the same as the language of the voice. For\n      information about storing lexicons, see \u003ca href=\"https://docs.aws.amazon.com/polly/latest/dg/API_PutLexicon.html\"\u003ePutLexicon\u003c/a\u003e.\u003c/p\u003e"
+            }
+          },
+          "OutputFormat": {
+            "target": "com.amazonaws.polly#OutputFormat",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003e The format in which the returned output will be encoded. For audio\n      stream, this will be mp3, ogg_vorbis, ogg_opus, mu-law, a-law or pcm. For speech marks, this will\n      be json. \u003c/p\u003e\n         \u003cp\u003eWhen pcm is used, the content returned is audio/pcm in a signed\n      16-bit, 1 channel (mono), little-endian format. \u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "SampleRate": {
+            "target": "com.amazonaws.polly#SampleRate",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe audio frequency specified in Hz.\u003c/p\u003e\n         \u003cp\u003eThe valid values for mp3 and ogg_vorbis are \"8000\", \"16000\", \"22050\", \"24000\", \"44100\" and \"48000\". The default value for standard voices is \"22050\". The default\n      value for neural voices is \"24000\". The default value for long-form voices\n      is \"24000\". The default value for generative voices is \"24000\".\u003c/p\u003e\n         \u003cp\u003eValid values for pcm are \"8000\" and \"16000\" The default value is\n      \"16000\". \u003c/p\u003e\n         \u003cp\u003eValid value for ogg_opus is \"48000\". \u003c/p\u003e\n         \u003cp\u003eValid value for mu-law and a-law is \"8000\". \u003c/p\u003e"
+            }
+          },
+          "SpeechMarkTypes": {
+            "target": "com.amazonaws.polly#SpeechMarkTypeList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe type of speech marks returned for the input text.\u003c/p\u003e"
+            }
+          },
+          "Text": {
+            "target": "com.amazonaws.polly#Text",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003e Input text to synthesize. If you specify \u003ccode\u003essml\u003c/code\u003e as the\n        \u003ccode\u003eTextType\u003c/code\u003e, follow the SSML format for the input text.\n    \u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "TextType": {
+            "target": "com.amazonaws.polly#TextType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003e Specifies whether the input text is plain text or SSML. The\n      default value is plain text. For more information, see \u003ca href=\"https://docs.aws.amazon.com/polly/latest/dg/ssml.html\"\u003eUsing\n        SSML\u003c/a\u003e.\u003c/p\u003e"
+            }
+          },
+          "VoiceId": {
+            "target": "com.amazonaws.polly#VoiceId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003e Voice ID to use for the synthesis. You can get a list of available\n      voice IDs by calling the \u003ca href=\"https://docs.aws.amazon.com/polly/latest/dg/API_DescribeVoices.html\"\u003eDescribeVoices\u003c/a\u003e operation. \u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.polly#SynthesizeSpeechOutput": {
+        "type": "structure",
+        "members": {
+          "AudioStream": {
+            "target": "com.amazonaws.polly#AudioStream",
+            "traits": {
+              "smithy.api#default": "",
+              "smithy.api#documentation": "\u003cp\u003e Stream containing the synthesized speech. \u003c/p\u003e",
+              "smithy.api#httpPayload": {}
+            }
+          },
+          "ContentType": {
+            "target": "com.amazonaws.polly#ContentType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003e Specifies the type audio stream. This should reflect the\n        \u003ccode\u003eOutputFormat\u003c/code\u003e parameter in your request. \u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e If you request \u003ccode\u003emp3\u003c/code\u003e as the\n            \u003ccode\u003eOutputFormat\u003c/code\u003e, the \u003ccode\u003eContentType\u003c/code\u003e returned is\n          audio/mpeg. \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e If you request \u003ccode\u003eogg_vorbis\u003c/code\u003e as the\n            \u003ccode\u003eOutputFormat\u003c/code\u003e, the \u003ccode\u003eContentType\u003c/code\u003e returned is\n          audio/ogg. \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e If you request \u003ccode\u003eogg_opus\u003c/code\u003e as the\n            \u003ccode\u003eOutputFormat\u003c/code\u003e, the \u003ccode\u003eContentType\u003c/code\u003e returned is\n          audio/ogg. \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e If you request \u003ccode\u003epcm\u003c/code\u003e as the\n            \u003ccode\u003eOutputFormat\u003c/code\u003e, the \u003ccode\u003eContentType\u003c/code\u003e returned is\n          audio/pcm in a signed 16-bit, 1 channel (mono), little-endian format.\n        \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e If you request \u003ccode\u003emu-law\u003c/code\u003e as the\n            \u003ccode\u003eOutputFormat\u003c/code\u003e, the \u003ccode\u003eContentType\u003c/code\u003e returned is\n          audio/mulaw.\n        \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e If you request \u003ccode\u003ea-law\u003c/code\u003e as the\n            \u003ccode\u003eOutputFormat\u003c/code\u003e, the \u003ccode\u003eContentType\u003c/code\u003e returned is\n          audio/alaw.\n        \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eIf you request \u003ccode\u003ejson\u003c/code\u003e as the\n            \u003ccode\u003eOutputFormat\u003c/code\u003e, the \u003ccode\u003eContentType\u003c/code\u003e returned is\n          application/x-json-stream.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e\n         \u003cp\u003e \u003c/p\u003e",
+              "smithy.api#httpHeader": "Content-Type"
+            }
+          },
+          "RequestCharacters": {
+            "target": "com.amazonaws.polly#RequestCharacters",
+            "traits": {
+              "smithy.api#default": 0,
+              "smithy.api#documentation": "\u003cp\u003eNumber of characters synthesized.\u003c/p\u003e",
+              "smithy.api#httpHeader": "x-amzn-RequestCharacters"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.polly#TaskId": {
+        "type": "string",
+        "traits": {
+          "smithy.api#pattern": "^[a-zA-Z0-9_-]{1,100}$"
+        }
+      },
+      "com.amazonaws.polly#TaskStatus": {
+        "type": "enum",
+        "members": {
+          "COMPLETED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "completed"
+            }
+          },
+          "FAILED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "failed"
+            }
+          },
+          "IN_PROGRESS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "inProgress"
+            }
+          },
+          "SCHEDULED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "scheduled"
+            }
+          }
+        }
+      },
+      "com.amazonaws.polly#TaskStatusReason": {
+        "type": "string"
+      },
+      "com.amazonaws.polly#Text": {
+        "type": "string"
+      },
+      "com.amazonaws.polly#TextEvent": {
+        "type": "structure",
+        "members": {
+          "FlushStreamConfiguration": {
+            "target": "com.amazonaws.polly#FlushStreamConfiguration",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eConfiguration for controlling when synthesized audio flushes to the output stream.\u003c/p\u003e"
+            }
+          },
+          "Text": {
+            "target": "com.amazonaws.polly#Text",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe text content to synthesize. If you specify \u003ccode\u003essml\u003c/code\u003e as the \n      \u003ccode\u003eTextType\u003c/code\u003e, follow the SSML format for the input text.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "TextType": {
+            "target": "com.amazonaws.polly#TextType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies whether the input text is plain text or SSML. Default: plain text.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eContains text content to be synthesized into speech.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.polly#TextLengthExceededException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "com.amazonaws.polly#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe value of the \"Text\" parameter is longer than the accepted\n      limits. For the \u003ccode\u003eSynthesizeSpeech\u003c/code\u003e API, the limit for input\n      text is a maximum of 6000 characters total, of which no more than 3000 can\n      be billed characters. For the \u003ccode\u003eStartSpeechSynthesisTask\u003c/code\u003e API,\n      the maximum is 200,000 characters, of which no more than 100,000 can be\n      billed characters. SSML tags are not counted as billed\n      characters.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.polly#TextType": {
+        "type": "enum",
+        "members": {
+          "SSML": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ssml"
+            }
+          },
+          "TEXT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "text"
+            }
+          }
+        }
+      },
+      "com.amazonaws.polly#ThrottlingException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "com.amazonaws.polly#AvailabilityErrorMessage"
+          },
+          "throttlingReasons": {
+            "target": "com.amazonaws.polly#ThrottlingReasonList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of reasons explaining why the request was throttled.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "aws.protocols#awsQueryError": {
+            "code": "Throttling",
+            "httpResponseCode": 400
+          },
+          "smithy.api#documentation": "\u003cp\u003eThe request was denied because of request throttling.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.polly#ThrottlingReason": {
+        "type": "structure",
+        "members": {
+          "reason": {
+            "target": "com.amazonaws.polly#CoralAvailabilityThrottlingReason",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe reason code explaining why the request was throttled.\u003c/p\u003e"
+            }
+          },
+          "resource": {
+            "target": "com.amazonaws.polly#CoralAvailabilityThrottledResource",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe resource that caused the throttling.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eProvides information about a specific throttling reason.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.polly#ThrottlingReasonList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.polly#ThrottlingReason"
+        }
+      },
+      "com.amazonaws.polly#UnsupportedPlsAlphabetException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "com.amazonaws.polly#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe alphabet specified by the lexicon is not a supported alphabet.\n      Valid values are \u003ccode\u003ex-sampa\u003c/code\u003e and \u003ccode\u003eipa\u003c/code\u003e.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.polly#UnsupportedPlsLanguageException": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "com.amazonaws.polly#ErrorMessage"
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe language specified in the lexicon is unsupported. For a list of\n      supported languages, see \u003ca href=\"https://docs.aws.amazon.com/polly/latest/dg/API_LexiconAttributes.html\"\u003eLexicon Attributes\u003c/a\u003e.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.polly#ValidationException": {
+        "type": "structure",
+        "members": {
+          "fields": {
+            "target": "com.amazonaws.polly#ValidationExceptionFieldList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe fields that caused the validation error.\u003c/p\u003e"
+            }
+          },
+          "message": {
+            "target": "com.amazonaws.polly#ErrorMessage",
+            "traits": {
+              "smithy.api#required": {}
+            }
+          },
+          "reason": {
+            "target": "com.amazonaws.polly#ValidationExceptionReason",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe reason the request failed validation.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe input fails to satisfy the constraints specified by the service.\u003c/p\u003e",
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.polly#ValidationExceptionField": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "com.amazonaws.polly#ValidationExceptionFieldMessage",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA message describing why the field failed validation.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "name": {
+            "target": "com.amazonaws.polly#ValidationExceptionFieldName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the field that failed validation.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eInformation about a field that failed validation.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.polly#ValidationExceptionFieldList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.polly#ValidationExceptionField"
+        }
+      },
+      "com.amazonaws.polly#ValidationExceptionFieldMessage": {
+        "type": "string"
+      },
+      "com.amazonaws.polly#ValidationExceptionFieldName": {
+        "type": "string"
+      },
+      "com.amazonaws.polly#ValidationExceptionReason": {
+        "type": "enum",
+        "members": {
+          "FIELD_VALIDATION_FAILED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "fieldValidationFailed"
+            }
+          },
+          "INVALID_INBOUND_EVENT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "invalidInboundEvent"
+            }
+          },
+          "OTHER": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "other"
+            }
+          },
+          "UNSUPPORTED_OPERATION": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "unsupportedOperation"
+            }
+          }
+        }
+      },
+      "com.amazonaws.polly#Voice": {
+        "type": "structure",
+        "members": {
+          "AdditionalLanguageCodes": {
+            "target": "com.amazonaws.polly#LanguageCodeList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAdditional codes for languages available for the specified voice in\n      addition to its default language. \u003c/p\u003e\n         \u003cp\u003eFor example, the default language for Aditi is Indian English (en-IN)\n      because it was first used for that language. Since Aditi is bilingual and\n      fluent in both Indian English and Hindi, this parameter would show the\n      code \u003ccode\u003ehi-IN\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "Gender": {
+            "target": "com.amazonaws.polly#Gender",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eGender of the voice.\u003c/p\u003e"
+            }
+          },
+          "Id": {
+            "target": "com.amazonaws.polly#VoiceId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAmazon Polly assigned voice ID. This is the ID that you specify when\n      calling the \u003ccode\u003eSynthesizeSpeech\u003c/code\u003e operation.\u003c/p\u003e"
+            }
+          },
+          "LanguageCode": {
+            "target": "com.amazonaws.polly#LanguageCode",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eLanguage code of the voice.\u003c/p\u003e"
+            }
+          },
+          "LanguageName": {
+            "target": "com.amazonaws.polly#LanguageName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eHuman readable name of the language in English.\u003c/p\u003e"
+            }
+          },
+          "Name": {
+            "target": "com.amazonaws.polly#VoiceName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eName of the voice (for example, Salli, Kendra, etc.). This provides\n      a human readable voice name that you might display in your\n      application.\u003c/p\u003e"
+            }
+          },
+          "SupportedEngines": {
+            "target": "com.amazonaws.polly#EngineList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies which engines (\u003ccode\u003estandard\u003c/code\u003e, \u003ccode\u003eneural\u003c/code\u003e,\n      \u003ccode\u003elong-form\u003c/code\u003e or \u003ccode\u003egenerative\u003c/code\u003e) are supported by a given voice.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eDescription of the voice.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.polly#VoiceId": {
+        "type": "enum",
+        "members": {
+          "Aditi": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Aditi"
+            }
+          },
+          "Adriano": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Adriano"
+            }
+          },
+          "Ambre": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Ambre"
+            }
+          },
+          "Amy": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Amy"
+            }
+          },
+          "Andres": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Andres"
+            }
+          },
+          "Aria": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Aria"
+            }
+          },
+          "Arlet": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Arlet"
+            }
+          },
+          "Arthur": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Arthur"
+            }
+          },
+          "Astrid": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Astrid"
+            }
+          },
+          "Ayanda": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Ayanda"
+            }
+          },
+          "Beatrice": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Beatrice"
+            }
+          },
+          "Bianca": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Bianca"
+            }
+          },
+          "Brian": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Brian"
+            }
+          },
+          "Burcu": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Burcu"
+            }
+          },
+          "Camila": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Camila"
+            }
+          },
+          "Carla": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Carla"
+            }
+          },
+          "Carmen": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Carmen"
+            }
+          },
+          "Celine": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Celine"
+            }
+          },
+          "Chantal": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Chantal"
+            }
+          },
+          "Conchita": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Conchita"
+            }
+          },
+          "Cristiano": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Cristiano"
+            }
+          },
+          "Daniel": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Daniel"
+            }
+          },
+          "Danielle": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Danielle"
+            }
+          },
+          "Dora": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Dora"
+            }
+          },
+          "Elin": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Elin"
+            }
+          },
+          "Emma": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Emma"
+            }
+          },
+          "Enrique": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Enrique"
+            }
+          },
+          "Ewa": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Ewa"
+            }
+          },
+          "Filiz": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Filiz"
+            }
+          },
+          "Florian": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Florian"
+            }
+          },
+          "Gabrielle": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Gabrielle"
+            }
+          },
+          "Geraint": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Geraint"
+            }
+          },
+          "Giorgio": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Giorgio"
+            }
+          },
+          "Gregory": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Gregory"
+            }
+          },
+          "Gwyneth": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Gwyneth"
+            }
+          },
+          "Hala": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Hala"
+            }
+          },
+          "Hannah": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Hannah"
+            }
+          },
+          "Hans": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Hans"
+            }
+          },
+          "Hiujin": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Hiujin"
+            }
+          },
+          "Ida": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Ida"
+            }
+          },
+          "Ines": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Ines"
+            }
+          },
+          "Isabelle": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Isabelle"
+            }
+          },
+          "Ivy": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Ivy"
+            }
+          },
+          "Jacek": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Jacek"
+            }
+          },
+          "Jan": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Jan"
+            }
+          },
+          "Jasmine": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Jasmine"
+            }
+          },
+          "Jihye": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Jihye"
+            }
+          },
+          "Jitka": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Jitka"
+            }
+          },
+          "Joanna": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Joanna"
+            }
+          },
+          "Joey": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Joey"
+            }
+          },
+          "Justin": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Justin"
+            }
+          },
+          "Kajal": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Kajal"
+            }
+          },
+          "Karl": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Karl"
+            }
+          },
+          "Kazuha": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Kazuha"
+            }
+          },
+          "Kendra": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Kendra"
+            }
+          },
+          "Kevin": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Kevin"
+            }
+          },
+          "Kimberly": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Kimberly"
+            }
+          },
+          "Laura": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Laura"
+            }
+          },
+          "Lea": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Lea"
+            }
+          },
+          "Lennart": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Lennart"
+            }
+          },
+          "Liam": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Liam"
+            }
+          },
+          "Lisa": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Lisa"
+            }
+          },
+          "Liv": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Liv"
+            }
+          },
+          "Lorenzo": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Lorenzo"
+            }
+          },
+          "Lotte": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Lotte"
+            }
+          },
+          "Lucia": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Lucia"
+            }
+          },
+          "Lupe": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Lupe"
+            }
+          },
+          "Mads": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Mads"
+            }
+          },
+          "Maja": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Maja"
+            }
+          },
+          "Marlene": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Marlene"
+            }
+          },
+          "Mathieu": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Mathieu"
+            }
+          },
+          "Matthew": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Matthew"
+            }
+          },
+          "Maxim": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Maxim"
+            }
+          },
+          "Mia": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Mia"
+            }
+          },
+          "Miguel": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Miguel"
+            }
+          },
+          "Mizuki": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Mizuki"
+            }
+          },
+          "Naja": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Naja"
+            }
+          },
+          "Niamh": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Niamh"
+            }
+          },
+          "Nicole": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Nicole"
+            }
+          },
+          "Ola": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Ola"
+            }
+          },
+          "Olivia": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Olivia"
+            }
+          },
+          "Pedro": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Pedro"
+            }
+          },
+          "Penelope": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Penelope"
+            }
+          },
+          "Raveena": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Raveena"
+            }
+          },
+          "Remi": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Remi"
+            }
+          },
+          "Ricardo": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Ricardo"
+            }
+          },
+          "Ruben": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Ruben"
+            }
+          },
+          "Russell": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Russell"
+            }
+          },
+          "Ruth": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Ruth"
+            }
+          },
+          "Sabrina": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Sabrina"
+            }
+          },
+          "Salli": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Salli"
+            }
+          },
+          "Seoyeon": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Seoyeon"
+            }
+          },
+          "Sergio": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Sergio"
+            }
+          },
+          "Sofie": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Sofie"
+            }
+          },
+          "Stephen": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Stephen"
+            }
+          },
+          "Suvi": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Suvi"
+            }
+          },
+          "Takumi": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Takumi"
+            }
+          },
+          "Tatyana": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Tatyana"
+            }
+          },
+          "Thiago": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Thiago"
+            }
+          },
+          "Tiffany": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Tiffany"
+            }
+          },
+          "Tomoko": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Tomoko"
+            }
+          },
+          "Vicki": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Vicki"
+            }
+          },
+          "Vitoria": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Vitoria"
+            }
+          },
+          "Zayd": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Zayd"
+            }
+          },
+          "Zeina": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Zeina"
+            }
+          },
+          "Zhiyu": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Zhiyu"
+            }
+          }
+        }
+      },
+      "com.amazonaws.polly#VoiceList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.polly#Voice"
+        }
+      },
+      "com.amazonaws.polly#VoiceName": {
+        "type": "string"
+      }
+    }
+  }
+}
