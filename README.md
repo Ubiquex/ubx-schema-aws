@@ -100,3 +100,13 @@ CloudFormation+Smithy group possible -- generation itself never needed
 that fix (`--generate-snapshot-group` already dispatched each member by
 its own `schema_source` before the dispatch layer existed), only
 serving a real pinned resolution did.
+
+<!-- README-GEN:BEGIN -->
+**Real, current published version:** `v1.0.0`
+
+## Links
+
+- Docs: https://docs.ubiquex.io
+- Internals (architecture and design): https://github.com/Ubiquex/ubiquex-internals
+- Linear board: https://linear.app/ubiquex
+<!-- README-GEN:END -->
