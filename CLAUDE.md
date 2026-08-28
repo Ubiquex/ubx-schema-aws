@@ -51,3 +51,13 @@ own `Generate<Source>Member` was unchanged by mixing.
   history is the reason `min_binary_version` exists at all (stamped at
   generation time, not derived from `schema_format`; see `ubx-provider-dynamic`'s
   own `CLAUDE.md`/`HISTORY.md`).
+
+## Architecture documentation
+
+This repo's own snapshot content is generated, never architectural on
+its own. A change to HOW it's generated — the pinning/versioning
+mechanism, `hash-watch.yml`/`publish.yml`'s own real logic, anything
+about `min_binary_version` or the diff/version-derivation rules — is
+architectural, and gets `ubiquex-internals`' own Provider System page
+(the developer documentation site) updated in the same body of work,
+never a follow-up. Matches `ubiquex` CLAUDE.md rule 10.
