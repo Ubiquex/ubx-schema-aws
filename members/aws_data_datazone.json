@@ -12414,6 +12414,14 @@
       "com.amazonaws.datazone#DeleteDomainInput": {
         "type": "structure",
         "members": {
+          "cascadeDelete": {
+            "target": "smithy.api#Boolean",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies whether to delete the domain along with all of its associated resources. When you use this parameter, Amazon DataZone deletes the domain and cleanly removes its associated resources without leaving orphaned resources behind. Amazon DataZone reports deletion progress in the \u003ccode\u003edeleteProgress\u003c/code\u003e field. Amazon DataZone reports any resources that it can't delete in the \u003ccode\u003efailureReasons\u003c/code\u003e field of the \u003ccode\u003eGetDomain\u003c/code\u003e response. You can't use this parameter together with \u003ccode\u003eskipDeletionCheck\u003c/code\u003e. If you don't specify a value, the default is \u003ccode\u003efalse\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#httpQuery": "cascadeDelete",
+              "smithy.api#notProperty": {}
+            }
+          },
           "clientToken": {
             "target": "smithy.api#String",
             "traits": {
@@ -12433,7 +12441,7 @@
           "skipDeletionCheck": {
             "target": "smithy.api#Boolean",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eSpecifies the optional flag to delete all child entities within the domain.\u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003eSpecifies whether to skip the check that prevents deletion of a domain that still contains resources. When you use this parameter, Amazon DataZone deletes the domain but might not remove its associated resources, which can leave orphaned resources behind. To delete a domain and fully clean up its associated resources, use \u003ccode\u003ecascadeDelete\u003c/code\u003e instead. You can't use this parameter together with \u003ccode\u003ecascadeDelete\u003c/code\u003e.\u003c/p\u003e",
               "smithy.api#httpQuery": "skipDeletionCheck",
               "smithy.api#notProperty": {}
             }
@@ -13260,6 +13268,20 @@
         "type": "structure",
         "traits": {
           "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.datazone#DeleteProgress": {
+        "type": "structure",
+        "members": {
+          "successfullyDeletedProjectCount": {
+            "target": "smithy.api#Integer",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe number of projects that Amazon DataZone successfully deleted during the domain deletion.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe progress of a domain deletion, including the number of projects that Amazon DataZone successfully deleted. Amazon DataZone returns this structure in the response to a \u003ccode\u003eGetDomain\u003c/code\u003e request while a cascade deletion is in progress.\u003c/p\u003e"
         }
       },
       "com.amazonaws.datazone#DeleteProject": {
@@ -15743,10 +15765,39 @@
           "smithy.api#documentation": "\u003cp\u003eSpecifies the error message that is returned if the operation cannot be successfully completed.\u003c/p\u003e"
         }
       },
+      "com.amazonaws.datazone#FailureReason": {
+        "type": "structure",
+        "members": {
+          "id": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier of the resource that failed to delete.\u003c/p\u003e"
+            }
+          },
+          "message": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe error message associated with the resource that failed to delete.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe details of a resource deletion failure during a cascade deletion of the domain.\u003c/p\u003e"
+        }
+      },
       "com.amazonaws.datazone#FailureReasons": {
         "type": "list",
         "member": {
           "target": "com.amazonaws.datazone#ProjectDeletionError"
+        }
+      },
+      "com.amazonaws.datazone#FailureReasonsList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.datazone#FailureReason"
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA list of \u003ccode\u003eFailureReason\u003c/code\u003e objects that describe the resources that Amazon DataZone could not delete during a cascade deletion. Amazon DataZone returns this list in the \u003ccode\u003efailureReasons\u003c/code\u003e field of the \u003ccode\u003eGetDomain\u003c/code\u003e response.\u003c/p\u003e"
         }
       },
       "com.amazonaws.datazone#FileFormat": {
@@ -17834,6 +17885,12 @@
               "smithy.api#documentation": "\u003cp\u003eThe timestamp of when the Amazon DataZone domain was created.\u003c/p\u003e"
             }
           },
+          "deleteProgress": {
+            "target": "com.amazonaws.datazone#DeleteProgress",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe progress of the current domain deletion, including the number of projects that Amazon DataZone successfully deleted.\u003c/p\u003e"
+            }
+          },
           "description": {
             "target": "smithy.api#String",
             "traits": {
@@ -17851,6 +17908,12 @@
             "target": "com.amazonaws.datazone#DomainVersion",
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe version of the domain.\u003c/p\u003e"
+            }
+          },
+          "failureReasons": {
+            "target": "com.amazonaws.datazone#FailureReasonsList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe list of failure reasons for resources that Amazon DataZone could not delete during a cascade deletion of the domain.\u003c/p\u003e"
             }
           },
           "id": {
@@ -44203,5 +44266,6 @@
         }
       }
     }
-  }
+  },
+  "schema_url": "https://raw.githubusercontent.com/aws/api-models-aws/main/models/datazone/service/2018-05-10/datazone-2018-05-10.json"
 }
