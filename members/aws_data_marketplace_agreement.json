@@ -1288,7 +1288,7 @@
           "renewalTerm": {
             "target": "com.amazonaws.marketplaceagreement#RenewalTerm",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eDefines that on graceful expiration of the agreement (when the agreement ends on its pre-defined end date), a new agreement will be created using the accepted terms on the existing agreement. In other words, the agreement will be renewed. Presence of \u003ccode\u003eRenewalTerm\u003c/code\u003e in the offer document means that auto-renewal is allowed. Buyers will have the option to accept or decline auto-renewal at the offer acceptance/agreement creation. Buyers can also change this flag from \u003ccode\u003eTrue\u003c/code\u003e to \u003ccode\u003eFalse\u003c/code\u003e or \u003ccode\u003eFalse\u003c/code\u003e to \u003ccode\u003eTrue\u003c/code\u003e at anytime during the agreement's lifecycle.\u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003eDefines that on graceful expiration of the agreement (when the agreement ends on its pre-defined end date), a new agreement will be created using the accepted terms on the existing agreement. In other words, the agreement will be renewed. Presence of \u003ccode\u003eRenewalTerm\u003c/code\u003e in the offer document means that auto-renewal is allowed. The acceptor will have the option to accept or decline auto-renewal at the offer acceptance/agreement creation. The acceptor can also change this flag from \u003ccode\u003eTrue\u003c/code\u003e to \u003ccode\u003eFalse\u003c/code\u003e or \u003ccode\u003eFalse\u003c/code\u003e to \u003ccode\u003eTrue\u003c/code\u003e, within the limits set by \u003ccode\u003eLockoutPeriod\u003c/code\u003e and \u003ccode\u003eMaxRenewals\u003c/code\u003e. Setting the flag to \u003ccode\u003eTrue\u003c/code\u003e doesn't by itself guarantee that the agreement renews, because the proposer can also opt out.\u003c/p\u003e"
             }
           },
           "supportTerm": {
@@ -1944,10 +1944,34 @@
               "smithy.api#documentation": "\u003cp\u003eThe date and time when the agreement ends. The field is \u003ccode\u003enull\u003c/code\u003e for pay-as-you-go agreements, which don\u2019t have end dates.\u003c/p\u003e"
             }
           },
+          "endTimeBehaviorReasonCode": {
+            "target": "com.amazonaws.marketplaceagreement#EndTimeBehaviorReasonCode",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe reason why the agreement doesn't renew at its end date. The field is \u003ccode\u003enull\u003c/code\u003e when the agreement renews.\u003c/p\u003e \u003cp\u003eMore than one reason can apply to the same agreement. When that happens, the operation returns only one reason code, and \u003ccode\u003ePROPOSER_RENEW_OPTED_OUT\u003c/code\u003e takes precedence over all others.\u003c/p\u003e \u003cp\u003eThe \u003ccode\u003eEnableAutoRenew\u003c/code\u003e field reflects only the acceptor's preference, and doesn't reflect the other reasons an agreement might not renew.\u003c/p\u003e \u003cp\u003eReason codes include:\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003ePROPOSER_RENEW_OPTED_OUT\u003c/code\u003e \u2013 The proposer opted out of renewing the agreement.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eACCEPTOR_RENEW_OPTED_OUT\u003c/code\u003e \u2013 The acceptor opted out of renewing the agreement.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eNO_RENEWAL_TERM\u003c/code\u003e \u2013 The accepted terms of the agreement don't include a renewal term, which is required for an agreement to renew.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eRENEWAL_LIMIT_EXHAUSTED\u003c/code\u003e \u2013 The agreement reached the maximum number of renewals allowed by its renewal term.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e"
+            }
+          },
+          "endTimeBehaviorType": {
+            "target": "com.amazonaws.marketplaceagreement#EndTimeBehaviorType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe behavior of the agreement when it reaches its end date. The field is \u003ccode\u003enull\u003c/code\u003e for agreements that have no end date, because those agreements never reach an end time.\u003c/p\u003e \u003cp\u003eTypes include:\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eRENEW\u003c/code\u003e \u2013 A new agreement is created from the accepted terms of this agreement.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eREPLACE\u003c/code\u003e \u2013 A new agreement is created from a different offer than the one this agreement was created from. This happens, for example, when a private offer reaches its end date and the acceptor transitions to the public offer for the product.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eEXPIRE\u003c/code\u003e \u2013 The agreement ends and isn't renewed or replaced.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e"
+            }
+          },
           "entitlements": {
             "target": "com.amazonaws.marketplaceagreement#EntitlementList",
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eA list of entitlements associated with the agreement.\u003c/p\u003e"
+            }
+          },
+          "initialAgreementId": {
+            "target": "com.amazonaws.marketplaceagreement#ResourceId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the very first agreement in a chain of related agreements, such as renewals or replacements. It stays the same across all agreements in that chain, which lets you trace an agreement back to the original. You can also use it as the \u003ccode\u003eInitialAgreementId\u003c/code\u003e filter value to return every agreement in the same chain.\u003c/p\u003e"
+            }
+          },
+          "lastUpdateTime": {
+            "target": "com.amazonaws.marketplaceagreement#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe date and time when the agreement was last updated. An agreement is updated when any of its attributes or accepted terms change. Amendments, renewals, and a party changing whether the agreement renews are all examples.\u003c/p\u003e \u003cp\u003eUse the \u003ccode\u003eBeforeLastUpdateTime\u003c/code\u003e and \u003ccode\u003eAfterLastUpdateTime\u003c/code\u003e filters to search on this value, and \u003ccode\u003eLastUpdateTime\u003c/code\u003e as the \u003ccode\u003eSortBy\u003c/code\u003e value to sort by it. Sorting by \u003ccode\u003eLastUpdateTime\u003c/code\u003e is supported only when \u003ccode\u003ePartyType\u003c/code\u003e is \u003ccode\u003eProposer\u003c/code\u003e.\u003c/p\u003e"
             }
           },
           "proposalSummary": {
@@ -2839,6 +2863,16 @@
           "smithy.api#pattern": "^ch-[a-zA-Z0-9]+$"
         }
       },
+      "com.amazonaws.marketplaceagreement#ChargePercentage": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 6
+          },
+          "smithy.api#pattern": "^(100(\\.0{1,2})?|[1-9]\\d?(\\.\\d{1,2})?|0\\.(0[1-9]|[1-9]\\d?))$"
+        }
+      },
       "com.amazonaws.marketplaceagreement#ChargeRevision": {
         "type": "long",
         "traits": {
@@ -3171,6 +3205,16 @@
           "smithy.api#pattern": "^[A-Z]+$"
         }
       },
+      "com.amazonaws.marketplaceagreement#DayDuration": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 3,
+            "max": 9
+          },
+          "smithy.api#pattern": "^P([1-9]\\d{0,6}D)$"
+        }
+      },
       "com.amazonaws.marketplaceagreement#DescribeAgreement": {
         "type": "operation",
         "input": {
@@ -3248,10 +3292,22 @@
               "smithy.api#documentation": "\u003cp\u003eThe date and time when the agreement ends. The field is \u003ccode\u003enull\u003c/code\u003e for pay-as-you-go agreements, which don\u2019t have end dates.\u003c/p\u003e"
             }
           },
+          "endTimeBehavior": {
+            "target": "com.amazonaws.marketplaceagreement#EndTimeBehavior",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe behavior of the agreement when it reaches its end date. For example, whether the agreement renews, and if it doesn't, the reason why.\u003c/p\u003e \u003cp\u003eThis field is present for every active agreement that has an end date. It is not present for an agreement that has no end date, because such an agreement never reaches an end time. Pay-as-you-go agreements are the most common example. It is also not present for an agreement that is no longer active.\u003c/p\u003e"
+            }
+          },
           "estimatedCharges": {
             "target": "com.amazonaws.marketplaceagreement#EstimatedCharges",
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe estimated cost of the agreement.\u003c/p\u003e"
+            }
+          },
+          "initialAgreementId": {
+            "target": "com.amazonaws.marketplaceagreement#ResourceId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the very first agreement in a chain of related agreements, such as renewals or replacements. It stays the same across all agreements in that chain, which lets you trace an agreement back to the original. When an agreement isn't derived from another agreement, its \u003ccode\u003eInitialAgreementId\u003c/code\u003e is its own \u003ccode\u003eAgreementId\u003c/code\u003e.\u003c/p\u003e"
             }
           },
           "proposalSummary": {
@@ -3275,7 +3331,7 @@
           "status": {
             "target": "com.amazonaws.marketplaceagreement#AgreementStatus",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe current status of the agreement.\u003c/p\u003e \u003cp\u003eStatuses include:\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eACTIVE\u003c/code\u003e \u2013 The terms of the agreement are active.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eARCHIVED\u003c/code\u003e \u2013 The agreement ended without a specified reason.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eCANCELLED\u003c/code\u003e \u2013 The acceptor ended the agreement before the defined end date.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eEXPIRED\u003c/code\u003e \u2013 The agreement ended on the defined end date.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eRENEWED\u003c/code\u003e \u2013 The agreement was renewed into a new agreement (for example, an auto-renewal).\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eREPLACED\u003c/code\u003e \u2013 The agreement was replaced using an agreement replacement offer.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eTERMINATED\u003c/code\u003e \u2013 The agreement ended before the defined end date because of an AWS termination (for example, a payment failure).\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e"
+              "smithy.api#documentation": "\u003cp\u003eThe current status of the agreement.\u003c/p\u003e \u003cp\u003eStatuses include:\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eACTIVE\u003c/code\u003e \u2013 The terms of the agreement are active.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eCANCELLED\u003c/code\u003e \u2013 The acceptor ended the agreement before the defined end date.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eEXPIRED\u003c/code\u003e \u2013 The agreement ended on the defined end date.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eRENEWED\u003c/code\u003e \u2013 The agreement was renewed into a new agreement (for example, an auto-renewal).\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eREPLACED\u003c/code\u003e \u2013 The agreement was replaced using an agreement replacement offer.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eTERMINATED\u003c/code\u003e \u2013 The agreement ended before the defined end date because of an AWS termination (for example, a payment failure).\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e"
             }
           }
         },
@@ -3347,6 +3403,85 @@
         "type": "list",
         "member": {
           "target": "com.amazonaws.marketplaceagreement#DocumentItem"
+        }
+      },
+      "com.amazonaws.marketplaceagreement#EndTimeBehavior": {
+        "type": "structure",
+        "members": {
+          "reasonCode": {
+            "target": "com.amazonaws.marketplaceagreement#EndTimeBehaviorReasonCode",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe reason why the agreement doesn't renew at its end date. The field is \u003ccode\u003enull\u003c/code\u003e when the agreement renews.\u003c/p\u003e \u003cp\u003eMore than one reason can apply to the same agreement. When that happens, the operation returns only one reason code, and \u003ccode\u003ePROPOSER_RENEW_OPTED_OUT\u003c/code\u003e takes precedence over all others.\u003c/p\u003e \u003cp\u003eThe \u003ccode\u003eEnableAutoRenew\u003c/code\u003e field reflects only the acceptor's preference, and doesn't reflect the other reasons an agreement might not renew.\u003c/p\u003e \u003cp\u003eReason codes include:\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003ePROPOSER_RENEW_OPTED_OUT\u003c/code\u003e \u2013 The proposer opted out of renewing the agreement.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eACCEPTOR_RENEW_OPTED_OUT\u003c/code\u003e \u2013 The acceptor opted out of renewing the agreement.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eNO_RENEWAL_TERM\u003c/code\u003e \u2013 The accepted terms of the agreement don't include a renewal term, which is required for an agreement to renew.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eRENEWAL_LIMIT_EXHAUSTED\u003c/code\u003e \u2013 The agreement reached the maximum number of renewals allowed by its renewal term.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e"
+            }
+          },
+          "renewalSummary": {
+            "target": "com.amazonaws.marketplaceagreement#RenewalSummary",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe details of the renewal that applies at the end date of the agreement. This field is present when \u003ccode\u003eType\u003c/code\u003e is \u003ccode\u003eRENEW\u003c/code\u003e. It is also present when \u003ccode\u003eReasonCode\u003c/code\u003e is \u003ccode\u003ePROPOSER_RENEW_OPTED_OUT\u003c/code\u003e or \u003ccode\u003eACCEPTOR_RENEW_OPTED_OUT\u003c/code\u003e. In those cases, it identifies the offer that the agreement would otherwise have renewed from. The field is \u003ccode\u003enull\u003c/code\u003e in all other cases.\u003c/p\u003e"
+            }
+          },
+          "type": {
+            "target": "com.amazonaws.marketplaceagreement#EndTimeBehaviorType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe behavior of the agreement when it reaches its end date.\u003c/p\u003e \u003cp\u003eTypes include:\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eRENEW\u003c/code\u003e \u2013 A new agreement is created from the accepted terms of this agreement.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eREPLACE\u003c/code\u003e \u2013 A new agreement is created from a different offer than the one this agreement was created from. This happens, for example, when a private offer reaches its end date and the acceptor transitions to the public offer for the product.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eEXPIRE\u003c/code\u003e \u2013 The agreement ends and isn't renewed or replaced.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe behavior of an agreement when it reaches its end date. For example, whether the agreement renews, and if it doesn't, the reason why.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.marketplaceagreement#EndTimeBehaviorReasonCode": {
+        "type": "enum",
+        "members": {
+          "ACCEPTOR_RENEW_OPTED_OUT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ACCEPTOR_RENEW_OPTED_OUT"
+            }
+          },
+          "NO_RENEWAL_TERM": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "NO_RENEWAL_TERM"
+            }
+          },
+          "PROPOSER_RENEW_OPTED_OUT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "PROPOSER_RENEW_OPTED_OUT"
+            }
+          },
+          "RENEWAL_LIMIT_EXHAUSTED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "RENEWAL_LIMIT_EXHAUSTED"
+            }
+          }
+        }
+      },
+      "com.amazonaws.marketplaceagreement#EndTimeBehaviorType": {
+        "type": "enum",
+        "members": {
+          "EXPIRE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "EXPIRE"
+            }
+          },
+          "RENEW": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "RENEW"
+            }
+          },
+          "REPLACE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "REPLACE"
+            }
+          }
         }
       },
       "com.amazonaws.marketplaceagreement#Entitlement": {
@@ -3525,9 +3660,9 @@
         "traits": {
           "smithy.api#length": {
             "min": 1,
-            "max": 64
+            "max": 256
           },
-          "smithy.api#pattern": "^[A-Za-z0-9+:_-]+$"
+          "smithy.api#pattern": "^[A-Za-z0-9.,+:/_-]+$"
         }
       },
       "com.amazonaws.marketplaceagreement#FilterValueList": {
@@ -3540,6 +3675,20 @@
             "min": 1,
             "max": 1
           }
+        }
+      },
+      "com.amazonaws.marketplaceagreement#FixedPercentage": {
+        "type": "structure",
+        "members": {
+          "value": {
+            "target": "com.amazonaws.marketplaceagreement#PriceIncreasePercentage",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe percentage by which the price increases at each renewal, from \u003ccode\u003e0.00\u003c/code\u003e to \u003ccode\u003e100.00\u003c/code\u003e with up to two decimal places. A value of \u003ccode\u003e0.00\u003c/code\u003e means that the agreement renews at the same price.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA fixed price increase that is applied each time the agreement renews.\u003c/p\u003e"
         }
       },
       "com.amazonaws.marketplaceagreement#FixedUpfrontPricingTerm": {
@@ -5088,6 +5237,16 @@
           "smithy.api#pattern": "^\\S{1,50}$"
         }
       },
+      "com.amazonaws.marketplaceagreement#OffsetDuration": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 3,
+            "max": 6
+          },
+          "smithy.api#pattern": "^P(\\d{1,4}M|\\d{1,4}D)$"
+        }
+      },
       "com.amazonaws.marketplaceagreement#PartyType": {
         "type": "string",
         "traits": {
@@ -5266,6 +5425,42 @@
           "target": "com.amazonaws.marketplaceagreement#PaymentRequestSummary"
         }
       },
+      "com.amazonaws.marketplaceagreement#PaymentScheduleEntry": {
+        "type": "structure",
+        "members": {
+          "chargeDateOffset": {
+            "target": "com.amazonaws.marketplaceagreement#OffsetDuration",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe time between the start date of the renewed agreement and the date this installment is charged. The duration is represented in the ISO 8601 format in either whole months or whole days (for example, \u003ccode\u003eP1M\u003c/code\u003e for 1 month or \u003ccode\u003eP30D\u003c/code\u003e for 30 days). All installments in a schedule use the same unit.\u003c/p\u003e"
+            }
+          },
+          "chargePercentage": {
+            "target": "com.amazonaws.marketplaceagreement#ChargePercentage",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe percentage of the total contract value of the renewed agreement that is charged in this installment. Valid values range from \u003ccode\u003e0.01\u003c/code\u003e to \u003ccode\u003e100.00\u003c/code\u003e, with up to two decimal places.\u003c/p\u003e"
+            }
+          },
+          "dayOfMonth": {
+            "target": "smithy.api#Integer",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe day of the month on which this installment is charged, from \u003ccode\u003e1\u003c/code\u003e to \u003ccode\u003e31\u003c/code\u003e. Use this field to anchor the charge to a specific calendar day within the month identified by \u003ccode\u003eChargeDateOffset\u003c/code\u003e. This field is supported only when \u003ccode\u003eChargeDateOffset\u003c/code\u003e is expressed in months.\u003c/p\u003e",
+              "smithy.api#range": {
+                "min": 1,
+                "max": 31
+              }
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA single installment in a payment schedule template. Because the start date of the renewed agreement isn't known when the offer is created, the charge date of each installment is expressed as an offset from that start date rather than as an absolute date.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.marketplaceagreement#PaymentScheduleEntryList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.marketplaceagreement#PaymentScheduleEntry"
+        }
+      },
       "com.amazonaws.marketplaceagreement#PaymentScheduleTerm": {
         "type": "structure",
         "members": {
@@ -5298,6 +5493,50 @@
           "smithy.api#documentation": "\u003cp\u003eDefines an installment-based pricing model where customers are charged a fixed price on different dates during the agreement validity period. This is used most commonly for flexible payment schedule pricing.\u003c/p\u003e"
         }
       },
+      "com.amazonaws.marketplaceagreement#PaymentScheduleTermTemplate": {
+        "type": "structure",
+        "members": {
+          "schedule": {
+            "target": "com.amazonaws.marketplaceagreement#PaymentScheduleEntryList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe installments that make up the payment schedule of the renewed agreement. The \u003ccode\u003eChargePercentage\u003c/code\u003e values of all installments add up to \u003ccode\u003e100\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#length": {
+                "min": 1,
+                "max": 200
+              }
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eDefines the payment schedule that is applied to the renewed agreement.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.marketplaceagreement#PercentageRange": {
+        "type": "structure",
+        "members": {
+          "defaultValue": {
+            "target": "com.amazonaws.marketplaceagreement#PriceIncreasePercentage",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe percentage that is applied if the proposer doesn't choose a value before the adjustment deadline. Valid values range from \u003ccode\u003e0.00\u003c/code\u003e to \u003ccode\u003e100.00\u003c/code\u003e, with up to two decimal places.\u003c/p\u003e"
+            }
+          },
+          "maxValue": {
+            "target": "com.amazonaws.marketplaceagreement#PriceIncreasePercentage",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe highest percentage that the proposer can choose, from \u003ccode\u003e0.00\u003c/code\u003e to \u003ccode\u003e100.00\u003c/code\u003e with up to two decimal places.\u003c/p\u003e"
+            }
+          },
+          "minValue": {
+            "target": "com.amazonaws.marketplaceagreement#PriceIncreasePercentage",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe lowest percentage that the proposer can choose, from \u003ccode\u003e0.00\u003c/code\u003e to \u003ccode\u003e100.00\u003c/code\u003e with up to two decimal places.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA range of price increase percentages that the proposer can choose from before the adjustment deadline of the agreement.\u003c/p\u003e \u003cp\u003e \u003ccode\u003eMinValue\u003c/code\u003e will be less than \u003ccode\u003eMaxValue\u003c/code\u003e, and \u003ccode\u003eDefaultValue\u003c/code\u003e will fall within the range. When the proposer authorizes a single percentage instead of a range, \u003ccode\u003ePriceIncrease\u003c/code\u003e is a \u003ccode\u003eFixedPercentage\u003c/code\u003e rather than a \u003ccode\u003ePercentageRange\u003c/code\u003e.\u003c/p\u003e"
+        }
+      },
       "com.amazonaws.marketplaceagreement#PositiveAmountUpto8Decimals": {
         "type": "string",
         "traits": {
@@ -5311,6 +5550,36 @@
           "smithy.api#range": {
             "min": 1
           }
+        }
+      },
+      "com.amazonaws.marketplaceagreement#PriceIncrease": {
+        "type": "union",
+        "members": {
+          "fixedPercentage": {
+            "target": "com.amazonaws.marketplaceagreement#FixedPercentage",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA fixed price increase percentage that is applied at each renewal.\u003c/p\u003e"
+            }
+          },
+          "percentageRange": {
+            "target": "com.amazonaws.marketplaceagreement#PercentageRange",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA range of price increase percentages that the proposer can choose from before the adjustment deadline of the agreement.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe price increase that is applied each time the agreement renews. Exactly one of the following fields is set.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.marketplaceagreement#PriceIncreasePercentage": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 6
+          },
+          "smithy.api#pattern": "^(100(\\.0{1,2})?|[1-9]\\d?(\\.\\d{1,2})?|0(\\.\\d{1,2})?)$"
         }
       },
       "com.amazonaws.marketplaceagreement#PricingCurrencyAmount": {
@@ -5751,9 +6020,29 @@
           "smithy.api#output": {}
         }
       },
+      "com.amazonaws.marketplaceagreement#RenewalSummary": {
+        "type": "structure",
+        "members": {
+          "offerId": {
+            "target": "com.amazonaws.marketplaceagreement#OfferId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the offer that provides the terms for the next renewal cycle. For most renewals, this is the same offer that the agreement was created from.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe details of the renewal that applies at the end date of an agreement.\u003c/p\u003e"
+        }
+      },
       "com.amazonaws.marketplaceagreement#RenewalTerm": {
         "type": "structure",
         "members": {
+          "adjustmentDeadline": {
+            "target": "com.amazonaws.marketplaceagreement#DayDuration",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe date by which the proposer must finalize the price increase for the next renewal, measured back from the end date of the agreement. The duration is represented in the ISO 8601 format in whole days (for example, \u003ccode\u003eP30D\u003c/code\u003e for 30 days or \u003ccode\u003eP60D\u003c/code\u003e for 60 days).\u003c/p\u003e \u003cp\u003eThis field applies only when \u003ccode\u003ePriceIncrease\u003c/code\u003e is a \u003ccode\u003ePercentageRange\u003c/code\u003e. The field is \u003ccode\u003enull\u003c/code\u003e when \u003ccode\u003ePriceIncrease\u003c/code\u003e is a \u003ccode\u003eFixedPercentage\u003c/code\u003e, because the price increase is already fixed and there is nothing for the proposer to finalize. If the proposer doesn't finalize a value by the adjustment deadline, the \u003ccode\u003eDefaultValue\u003c/code\u003e of the range applies.\u003c/p\u003e \u003cp\u003e \u003ccode\u003eAdjustmentDeadline\u003c/code\u003e must be greater than \u003ccode\u003eLockoutPeriod\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
           "configuration": {
             "target": "com.amazonaws.marketplaceagreement#RenewalTermConfiguration",
             "traits": {
@@ -5766,6 +6055,37 @@
               "smithy.api#documentation": "\u003cp\u003eThe unique identifier for the term.\u003c/p\u003e"
             }
           },
+          "lockoutPeriod": {
+            "target": "com.amazonaws.marketplaceagreement#DayDuration",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe renewal decision deadline, measured back from the end date of the agreement. This is the last day either party can opt in to or opt out of the renewal. The duration is represented in the ISO 8601 format in whole days (for example, \u003ccode\u003eP30D\u003c/code\u003e for 30 days or \u003ccode\u003eP60D\u003c/code\u003e for 60 days).\u003c/p\u003e \u003cp\u003eThe field is \u003ccode\u003enull\u003c/code\u003e when no renewal decision deadline is set. In that case, either party can change the auto-renewal decision up to the end date of the agreement.\u003c/p\u003e"
+            }
+          },
+          "maxRenewals": {
+            "target": "smithy.api#Integer",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of times the agreement can be renewed. The field is \u003ccode\u003enull\u003c/code\u003e when the number of renewals is unlimited.\u003c/p\u003e \u003cp\u003eAfter the agreement reaches this limit, it expires on its end date instead of renewing.\u003c/p\u003e",
+              "smithy.api#range": {
+                "min": 1
+              }
+            }
+          },
+          "priceIncrease": {
+            "target": "com.amazonaws.marketplaceagreement#PriceIncrease",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe price increase that is applied each time the agreement renews. The field is \u003ccode\u003enull\u003c/code\u003e when the price doesn't change at renewal.\u003c/p\u003e"
+            }
+          },
+          "termTemplates": {
+            "target": "com.amazonaws.marketplaceagreement#TermTemplateList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eDefines how specific terms change each time the agreement renews. The field is \u003ccode\u003enull\u003c/code\u003e when no terms change at renewal.\u003c/p\u003e",
+              "smithy.api#length": {
+                "min": 1,
+                "max": 10
+              }
+            }
+          },
           "type": {
             "target": "com.amazonaws.marketplaceagreement#UnversionedTermType",
             "traits": {
@@ -5774,7 +6094,7 @@
           }
         },
         "traits": {
-          "smithy.api#documentation": "\u003cp\u003eDefines that on graceful expiration of the agreement (when the agreement ends on its pre-defined end date), a new agreement will be created using the accepted terms on the existing agreement. In other words, the agreement will be renewed. The presence of \u003ccode\u003eRenewalTerm\u003c/code\u003e in the offer document means that auto-renewal is allowed. Buyers will have the option to accept or decline auto-renewal at the offer acceptance/agreement creation. Buyers can also change this flag from \u003ccode\u003eTrue\u003c/code\u003e to \u003ccode\u003eFalse\u003c/code\u003e or \u003ccode\u003eFalse\u003c/code\u003e to \u003ccode\u003eTrue\u003c/code\u003e at anytime during the agreement's lifecycle.\u003c/p\u003e"
+          "smithy.api#documentation": "\u003cp\u003eDefines that on graceful expiration of the agreement (when the agreement ends on its pre-defined end date), a new agreement will be created using the accepted terms on the existing agreement. In other words, the agreement will be renewed. Presence of \u003ccode\u003eRenewalTerm\u003c/code\u003e in the offer document means that auto-renewal is allowed. The acceptor will have the option to accept or decline auto-renewal at the offer acceptance/agreement creation. The acceptor can also change this flag from \u003ccode\u003eTrue\u003c/code\u003e to \u003ccode\u003eFalse\u003c/code\u003e or \u003ccode\u003eFalse\u003c/code\u003e to \u003ccode\u003eTrue\u003c/code\u003e, within the limits set by \u003ccode\u003eLockoutPeriod\u003c/code\u003e and \u003ccode\u003eMaxRenewals\u003c/code\u003e. Setting the flag to \u003ccode\u003eTrue\u003c/code\u003e doesn't by itself guarantee that the agreement renews, because the proposer can also opt out.\u003c/p\u003e"
         }
       },
       "com.amazonaws.marketplaceagreement#RenewalTermConfiguration": {
@@ -5783,7 +6103,7 @@
           "enableAutoRenew": {
             "target": "com.amazonaws.marketplaceagreement#Boolean",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eDefines whether the acceptor has chosen to auto-renew the agreement at the end of its lifecycle. Can be set to \u003ccode\u003eTrue\u003c/code\u003e or \u003ccode\u003eFalse\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003eDefines whether the acceptor has chosen to auto-renew the agreement when it reaches its end date. Can be set to \u003ccode\u003eTrue\u003c/code\u003e or \u003ccode\u003eFalse\u003c/code\u003e. The acceptor can change this value within the limits set by \u003ccode\u003eLockoutPeriod\u003c/code\u003e and \u003ccode\u003eMaxRenewals\u003c/code\u003e.\u003c/p\u003e",
               "smithy.api#required": {}
             }
           }
@@ -6024,7 +6344,7 @@
           }
         ],
         "traits": {
-          "smithy.api#documentation": "\u003cp\u003eSearches across all agreements that a proposer or an acceptor has in AWS Marketplace. The search returns a list of agreements with basic agreement information.\u003c/p\u003e \u003cp\u003eThe following filter combinations are supported when the \u003ccode\u003ePartyType\u003c/code\u003e is \u003ccode\u003eProposer\u003c/code\u003e:\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eEndTime\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eResourceType\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eResourceType\u003c/code\u003e + \u003ccode\u003eEndTime\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eResourceType\u003c/code\u003e + \u003ccode\u003eStatus\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eResourceType\u003c/code\u003e + \u003ccode\u003eStatus\u003c/code\u003e + \u003ccode\u003eEndTime\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eResourceIdentifier\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eResourceIdentifier\u003c/code\u003e + \u003ccode\u003eEndTime\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eResourceIdentifier\u003c/code\u003e + \u003ccode\u003eStatus\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eResourceIdentifier\u003c/code\u003e + \u003ccode\u003eStatus\u003c/code\u003e + \u003ccode\u003eEndTime\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eAcceptorAccountId\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eAcceptorAccountId\u003c/code\u003e + \u003ccode\u003eEndTime\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eAcceptorAccountId\u003c/code\u003e + \u003ccode\u003eStatus\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eAcceptorAccountId\u003c/code\u003e + \u003ccode\u003eStatus\u003c/code\u003e + \u003ccode\u003eEndTime\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eAcceptorAccountId\u003c/code\u003e + \u003ccode\u003eOfferId\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eAcceptorAccountId\u003c/code\u003e + \u003ccode\u003eOfferId\u003c/code\u003e + \u003ccode\u003eStatus\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eAcceptorAccountId\u003c/code\u003e + \u003ccode\u003eOfferId\u003c/code\u003e + \u003ccode\u003eEndTime\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eAcceptorAccountId\u003c/code\u003e + \u003ccode\u003eOfferId\u003c/code\u003e + \u003ccode\u003eStatus\u003c/code\u003e + \u003ccode\u003eEndTime\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eAcceptorAccountId\u003c/code\u003e + \u003ccode\u003eResourceIdentifier\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eAcceptorAccountId\u003c/code\u003e + \u003ccode\u003eResourceIdentifier\u003c/code\u003e + \u003ccode\u003eStatus\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eAcceptorAccountId\u003c/code\u003e + \u003ccode\u003eResourceIdentifier\u003c/code\u003e + \u003ccode\u003eEndTime\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eAcceptorAccountId\u003c/code\u003e + \u003ccode\u003eResourceIdentifier\u003c/code\u003e + \u003ccode\u003eStatus\u003c/code\u003e + \u003ccode\u003eEndTime\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eAcceptorAccountId\u003c/code\u003e + \u003ccode\u003eResourceType\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eAcceptorAccountId\u003c/code\u003e + \u003ccode\u003eResourceType\u003c/code\u003e + \u003ccode\u003eEndTime\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eAcceptorAccountId\u003c/code\u003e + \u003ccode\u003eResourceType\u003c/code\u003e + \u003ccode\u003eStatus\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eAcceptorAccountId\u003c/code\u003e + \u003ccode\u003eResourceType\u003c/code\u003e + \u003ccode\u003eStatus\u003c/code\u003e + \u003ccode\u003eEndTime\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eStatus\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eStatus\u003c/code\u003e + \u003ccode\u003eEndTime\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eOfferId\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eOfferId\u003c/code\u003e + \u003ccode\u003eEndTime\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eOfferId\u003c/code\u003e + \u003ccode\u003eStatus\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eOfferId\u003c/code\u003e + \u003ccode\u003eStatus\u003c/code\u003e + \u003ccode\u003eEndTime\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eOfferSetId\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eOfferSetId\u003c/code\u003e + \u003ccode\u003eEndTime\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eOfferSetId\u003c/code\u003e + \u003ccode\u003eStatus\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eOfferSetId\u003c/code\u003e + \u003ccode\u003eStatus\u003c/code\u003e + \u003ccode\u003eEndTime\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e \u003cnote\u003e \u003cp\u003e To filter by \u003ccode\u003eEndTime\u003c/code\u003e, you can use \u003ccode\u003eBeforeEndTime\u003c/code\u003e and/or \u003ccode\u003eAfterEndTime\u003c/code\u003e. Only \u003ccode\u003eEndTime\u003c/code\u003e is supported for sorting.\u003c/p\u003e \u003c/note\u003e \u003cp\u003eThe following filter combinations are supported when the \u003ccode\u003ePartyType\u003c/code\u003e is \u003ccode\u003eAcceptor\u003c/code\u003e:\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eStatus\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eEndTime\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eStatus\u003c/code\u003e + \u003ccode\u003eEndTime\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eResourceIdentifier\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eResourceIdentifier\u003c/code\u003e + \u003ccode\u003eEndTime\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eResourceIdentifier\u003c/code\u003e + \u003ccode\u003eStatus\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eResourceIdentifier\u003c/code\u003e + \u003ccode\u003eStatus\u003c/code\u003e + \u003ccode\u003eEndTime\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eResourceType\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eResourceType\u003c/code\u003e + \u003ccode\u003eEndTime\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eOfferId\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eOfferId\u003c/code\u003e + \u003ccode\u003eEndTime\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eOfferId\u003c/code\u003e + \u003ccode\u003eStatus\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eOfferId\u003c/code\u003e + \u003ccode\u003eStatus\u003c/code\u003e + \u003ccode\u003eEndTime\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eOfferSetId\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eOfferSetId\u003c/code\u003e + \u003ccode\u003eEndTime\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eOfferSetId\u003c/code\u003e + \u003ccode\u003eStatus\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eOfferSetId\u003c/code\u003e + \u003ccode\u003eStatus\u003c/code\u003e + \u003ccode\u003eEndTime\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e",
+          "smithy.api#documentation": "\u003cp\u003eSearches across all agreements that a proposer or an acceptor has in AWS Marketplace. The search returns a list of agreements with basic agreement information.\u003c/p\u003e",
           "smithy.api#paginated": {
             "inputToken": "nextToken",
             "outputToken": "nextToken",
@@ -6045,7 +6365,7 @@
           "filters": {
             "target": "com.amazonaws.marketplaceagreement#FilterList",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe filter name and value pair used to return a specific list of results.\u003c/p\u003e \u003cp\u003eThe following filters are supported:\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eResourceIdentifier\u003c/code\u003e \u2013 The unique identifier of the resource.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eResourceType\u003c/code\u003e \u2013 Type of the resource, which is the product (\u003ccode\u003eAmiProduct\u003c/code\u003e, \u003ccode\u003eContainerProduct\u003c/code\u003e, \u003ccode\u003eSaaSProduct\u003c/code\u003e, \u003ccode\u003eProfessionalServicesProduct\u003c/code\u003e, or \u003ccode\u003eMachineLearningProduct\u003c/code\u003e).\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003ePartyType\u003c/code\u003e \u2013 The party type of the caller. Use \u003ccode\u003eProposer\u003c/code\u003e or \u003ccode\u003eAcceptor\u003c/code\u003e.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAcceptorAccountId\u003c/code\u003e \u2013 The AWS account ID of the party accepting the agreement terms.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eOfferId\u003c/code\u003e \u2013 The unique identifier of the offer in which the terms are registered in the agreement token.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eStatus\u003c/code\u003e \u2013 The current status of the agreement. Values include \u003ccode\u003eACTIVE\u003c/code\u003e, \u003ccode\u003eARCHIVED\u003c/code\u003e, \u003ccode\u003eCANCELLED\u003c/code\u003e, \u003ccode\u003eEXPIRED\u003c/code\u003e, \u003ccode\u003eRENEWED\u003c/code\u003e, \u003ccode\u003eREPLACED\u003c/code\u003e, and \u003ccode\u003eTERMINATED\u003c/code\u003e.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eBeforeEndTime\u003c/code\u003e \u2013 A date used to filter agreements with a date before the \u003ccode\u003eendTime\u003c/code\u003e of an agreement.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAfterEndTime\u003c/code\u003e \u2013 A date used to filter agreements with a date after the \u003ccode\u003eendTime\u003c/code\u003e of an agreement.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e \u2013 The type of agreement. Supported value includes \u003ccode\u003ePurchaseAgreement\u003c/code\u003e.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eOfferSetId\u003c/code\u003e \u2013 A unique identifier for the offer set containing this offer. All agreements created from offers in this set include this identifier as context.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e"
+              "smithy.api#documentation": "\u003cp\u003eThe filter name and value pair used to return a specific list of results.\u003c/p\u003e \u003cp\u003eThe following filters are supported:\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eResourceIdentifier\u003c/code\u003e \u2013 The unique identifier of the resource.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eResourceType\u003c/code\u003e \u2013 Type of the resource, which is the product (\u003ccode\u003eAmiProduct\u003c/code\u003e, \u003ccode\u003eContainerProduct\u003c/code\u003e, \u003ccode\u003eSaaSProduct\u003c/code\u003e, \u003ccode\u003eProfessionalServicesProduct\u003c/code\u003e, or \u003ccode\u003eMachineLearningProduct\u003c/code\u003e).\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003ePartyType\u003c/code\u003e \u2013 The party type of the caller. Use \u003ccode\u003eProposer\u003c/code\u003e or \u003ccode\u003eAcceptor\u003c/code\u003e.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAcceptorAccountId\u003c/code\u003e \u2013 The AWS account ID of the party accepting the agreement terms.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eOfferId\u003c/code\u003e \u2013 The unique identifier of the offer in which the terms are registered in the agreement token.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eStatus\u003c/code\u003e \u2013 The current status of the agreement. Values include \u003ccode\u003eACTIVE\u003c/code\u003e, \u003ccode\u003eCANCELLED\u003c/code\u003e, \u003ccode\u003eEXPIRED\u003c/code\u003e, \u003ccode\u003eRENEWED\u003c/code\u003e, \u003ccode\u003eREPLACED\u003c/code\u003e, and \u003ccode\u003eTERMINATED\u003c/code\u003e.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eBeforeEndTime\u003c/code\u003e \u2013 A date used to filter agreements with a date before the \u003ccode\u003eendTime\u003c/code\u003e of an agreement.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAfterEndTime\u003c/code\u003e \u2013 A date used to filter agreements with a date after the \u003ccode\u003eendTime\u003c/code\u003e of an agreement.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eBeforeStartTime\u003c/code\u003e \u2013 A date used to filter agreements with a date before the \u003ccode\u003estartTime\u003c/code\u003e of an agreement.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAfterStartTime\u003c/code\u003e \u2013 A date used to filter agreements with a date after the \u003ccode\u003estartTime\u003c/code\u003e of an agreement.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eBeforeLastUpdateTime\u003c/code\u003e \u2013 A date used to filter agreements with a date before the \u003ccode\u003elastUpdateTime\u003c/code\u003e of an agreement.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAfterLastUpdateTime\u003c/code\u003e \u2013 A date used to filter agreements with a date after the \u003ccode\u003elastUpdateTime\u003c/code\u003e of an agreement.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e \u2013 The type of agreement. Supported value includes \u003ccode\u003ePurchaseAgreement\u003c/code\u003e.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eOfferSetId\u003c/code\u003e \u2013 A unique identifier for the offer set containing this offer. All agreements created from offers in this set include this identifier as context.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eEndTimeBehaviorType\u003c/code\u003e \u2013 What happens to the agreement when it reaches its end date. Values include \u003ccode\u003eRENEW\u003c/code\u003e, \u003ccode\u003eREPLACE\u003c/code\u003e, and \u003ccode\u003eEXPIRE\u003c/code\u003e.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eEndTimeBehaviorReasonCode\u003c/code\u003e \u2013 The reason why the agreement doesn't renew at its end date. Values include \u003ccode\u003ePROPOSER_RENEW_OPTED_OUT\u003c/code\u003e, \u003ccode\u003eACCEPTOR_RENEW_OPTED_OUT\u003c/code\u003e, \u003ccode\u003eNO_RENEWAL_TERM\u003c/code\u003e, and \u003ccode\u003eRENEWAL_LIMIT_EXHAUSTED\u003c/code\u003e.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eInitialAgreementId\u003c/code\u003e \u2013 The unique identifier of the very first agreement in a chain of related agreements. Use this filter to return every agreement in the same chain.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eLicenseArn\u003c/code\u003e \u2013 The Amazon Resource Name (ARN) of the AWS License Manager license associated with an entitlement granted by the agreement.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e \u003cp\u003eA proposer can use any combination of the preceding filters along with \u003ccode\u003eAgreementType\u003c/code\u003e, which is required.\u003c/p\u003e \u003cp\u003eThe following filter combinations are supported when the \u003ccode\u003ePartyType\u003c/code\u003e is \u003ccode\u003eAcceptor\u003c/code\u003e:\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eStatus\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eEndTime\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eStatus\u003c/code\u003e + \u003ccode\u003eEndTime\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eResourceIdentifier\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eResourceIdentifier\u003c/code\u003e + \u003ccode\u003eEndTime\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eResourceIdentifier\u003c/code\u003e + \u003ccode\u003eStatus\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eResourceIdentifier\u003c/code\u003e + \u003ccode\u003eStatus\u003c/code\u003e + \u003ccode\u003eEndTime\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eResourceType\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eResourceType\u003c/code\u003e + \u003ccode\u003eEndTime\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eOfferId\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eOfferId\u003c/code\u003e + \u003ccode\u003eEndTime\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eOfferId\u003c/code\u003e + \u003ccode\u003eStatus\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eOfferId\u003c/code\u003e + \u003ccode\u003eStatus\u003c/code\u003e + \u003ccode\u003eEndTime\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eOfferSetId\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eOfferSetId\u003c/code\u003e + \u003ccode\u003eEndTime\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eOfferSetId\u003c/code\u003e + \u003ccode\u003eStatus\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAgreementType\u003c/code\u003e + \u003ccode\u003eOfferSetId\u003c/code\u003e + \u003ccode\u003eStatus\u003c/code\u003e + \u003ccode\u003eEndTime\u003c/code\u003e \u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e \u003cnote\u003e \u003cp\u003eTo filter by \u003ccode\u003eEndTime\u003c/code\u003e, you can use \u003ccode\u003eBeforeEndTime\u003c/code\u003e, \u003ccode\u003eAfterEndTime\u003c/code\u003e, or both.\u003c/p\u003e \u003c/note\u003e"
             }
           },
           "maxResults": {
@@ -6063,7 +6383,7 @@
           "sort": {
             "target": "com.amazonaws.marketplaceagreement#Sort",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eAn object that contains the \u003ccode\u003eSortBy\u003c/code\u003e and \u003ccode\u003eSortOrder\u003c/code\u003e attributes. Only \u003ccode\u003eEndTime\u003c/code\u003e is supported for \u003ccode\u003eSearchAgreements\u003c/code\u003e. The default sort is \u003ccode\u003eEndTime\u003c/code\u003e descending.\u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003eAn object that contains the \u003ccode\u003eSortBy\u003c/code\u003e and \u003ccode\u003eSortOrder\u003c/code\u003e attributes. For \u003ccode\u003eSearchAgreements\u003c/code\u003e, \u003ccode\u003eSortBy\u003c/code\u003e supports \u003ccode\u003eEndTime\u003c/code\u003e for both party types, and \u003ccode\u003eStartTime\u003c/code\u003e and \u003ccode\u003eLastUpdateTime\u003c/code\u003e only when \u003ccode\u003ePartyType\u003c/code\u003e is \u003ccode\u003eProposer\u003c/code\u003e. The default \u003ccode\u003eSortBy\u003c/code\u003e value is \u003ccode\u003eEndTime\u003c/code\u003e.\u003c/p\u003e"
             }
           }
         },
@@ -6437,13 +6757,13 @@
           "sortBy": {
             "target": "com.amazonaws.marketplaceagreement#SortBy",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe attribute on which the data is grouped, which can be by \u003ccode\u003eStartTime\u003c/code\u003e and \u003ccode\u003eEndTime\u003c/code\u003e. The default value is \u003ccode\u003eEndTime\u003c/code\u003e.\u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003eThe attribute on which the data is grouped, which can be \u003ccode\u003eEndTime\u003c/code\u003e, \u003ccode\u003eStartTime\u003c/code\u003e, or \u003ccode\u003eLastUpdateTime\u003c/code\u003e. \u003ccode\u003eStartTime\u003c/code\u003e and \u003ccode\u003eLastUpdateTime\u003c/code\u003e are supported only when \u003ccode\u003ePartyType\u003c/code\u003e is \u003ccode\u003eProposer\u003c/code\u003e. The default value is \u003ccode\u003eEndTime\u003c/code\u003e.\u003c/p\u003e"
             }
           },
           "sortOrder": {
             "target": "com.amazonaws.marketplaceagreement#SortOrder",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe sorting order, which can be \u003ccode\u003eASCENDING\u003c/code\u003e or \u003ccode\u003eDESCENDING\u003c/code\u003e. The default value is \u003ccode\u003eDESCENDING\u003c/code\u003e.\u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003eThe sorting order, which can be \u003ccode\u003eASCENDING\u003c/code\u003e or \u003ccode\u003eDESCENDING\u003c/code\u003e. The default value is \u003ccode\u003eASCENDING\u003c/code\u003e.\u003c/p\u003e"
             }
           }
         },
@@ -6576,6 +6896,26 @@
             "max": 256
           },
           "smithy.api#pattern": "^[A-Za-z0-9+=;,.@\\-_]+$"
+        }
+      },
+      "com.amazonaws.marketplaceagreement#TermTemplate": {
+        "type": "union",
+        "members": {
+          "paymentScheduleTermTemplate": {
+            "target": "com.amazonaws.marketplaceagreement#PaymentScheduleTermTemplate",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eDefines the payment schedule that is applied to the renewed agreement.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eDefines how a specific type of term changes each time the agreement renews. Exactly one of the following fields is set.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.marketplaceagreement#TermTemplateList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.marketplaceagreement#TermTemplate"
         }
       },
       "com.amazonaws.marketplaceagreement#ThrottlingException": {

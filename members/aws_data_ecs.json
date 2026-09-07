@@ -4370,6 +4370,12 @@
               "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the cluster to create the daemon in.\u003c/p\u003e"
             }
           },
+          "critical": {
+            "target": "com.amazonaws.ecs#BoxedBoolean",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIf the \u003ccode\u003ecritical\u003c/code\u003e parameter of a daemon is \u003ccode\u003etrue\u003c/code\u003e, and the daemon task fails, stops, or becomes unhealthy, Amazon ECS drains the container instance and stops the other tasks running on it. If the \u003ccode\u003ecritical\u003c/code\u003e parameter is \u003ccode\u003efalse\u003c/code\u003e, the daemon task failure doesn't affect the other tasks on the instance. The default value is \u003ccode\u003etrue\u003c/code\u003e.\u003c/p\u003e \u003cp\u003eA non-critical daemon doesn't block instance registration. The container instance becomes active and continues to run your other tasks, whether the daemon task fails during scale-out or during a deployment.\u003c/p\u003e \u003cp\u003eAmazon ECS emits an EventBridge event when a daemon task fails to start, for both critical and non-critical daemons.\u003c/p\u003e \u003cp\u003eDaemon task launch failures during a deployment are still counted by the deployment circuit breaker. The circuit breaker can roll back an unstable target revision.\u003c/p\u003e"
+            }
+          },
           "daemonName": {
             "target": "com.amazonaws.ecs#String",
             "traits": {
@@ -5428,6 +5434,13 @@
               "smithy.api#default": 0,
               "smithy.api#documentation": "\u003cp\u003eThe number of daemon tasks running on this capacity provider.\u003c/p\u003e"
             }
+          },
+          "withoutDaemonCount": {
+            "target": "com.amazonaws.ecs#Integer",
+            "traits": {
+              "smithy.api#default": 0,
+              "smithy.api#documentation": "\u003cp\u003eThe number of instances on this capacity provider that are running without the daemon task. This applies to daemons that aren't critical, where the instance remains available for your other tasks even if the daemon task can't start or stops. These instances aren't included in \u003ccode\u003erunningCount\u003c/code\u003e.\u003c/p\u003e"
+            }
           }
         },
         "traits": {
@@ -5828,6 +5841,12 @@
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe number of instances running daemon tasks on this capacity provider.\u003c/p\u003e"
             }
+          },
+          "withoutDaemonInstanceCount": {
+            "target": "com.amazonaws.ecs#BoxedInteger",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe number of instances on this capacity provider that are running without the daemon task. This applies to daemons that aren't critical, where the instance remains available for your other tasks even if the daemon task can't start or stops. These instances aren't included in \u003ccode\u003erunningInstanceCount\u003c/code\u003e.\u003c/p\u003e"
+            }
           }
         },
         "traits": {
@@ -5918,6 +5937,12 @@
             "target": "com.amazonaws.ecs#BoxedInteger",
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe total number of instances running daemon tasks for this revision.\u003c/p\u003e"
+            }
+          },
+          "totalWithoutDaemonInstanceCount": {
+            "target": "com.amazonaws.ecs#BoxedInteger",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe total number of instances running without the daemon task for this revision, across all capacity providers. These instances aren't included in \u003ccode\u003etotalRunningInstanceCount\u003c/code\u003e.\u003c/p\u003e"
             }
           }
         },
@@ -6309,6 +6334,12 @@
               "smithy.api#documentation": "\u003cp\u003eThe Unix timestamp for the time when the daemon revision was created.\u003c/p\u003e"
             }
           },
+          "critical": {
+            "target": "com.amazonaws.ecs#BoxedBoolean",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIf the \u003ccode\u003ecritical\u003c/code\u003e parameter of this daemon revision is \u003ccode\u003etrue\u003c/code\u003e, and the daemon task fails, stops, or becomes unhealthy, Amazon ECS drains the container instance and stops the other tasks running on it. If the parameter is \u003ccode\u003efalse\u003c/code\u003e, the daemon task failure doesn't affect the other tasks on the instance, and doesn't block instance registration. The default value is \u003ccode\u003etrue\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
           "daemonArn": {
             "target": "com.amazonaws.ecs#String",
             "traits": {
@@ -6370,6 +6401,13 @@
             "traits": {
               "smithy.api#default": 0,
               "smithy.api#documentation": "\u003cp\u003eThe total number of daemon tasks running for this revision.\u003c/p\u003e"
+            }
+          },
+          "totalWithoutDaemonCount": {
+            "target": "com.amazonaws.ecs#Integer",
+            "traits": {
+              "smithy.api#default": 0,
+              "smithy.api#documentation": "\u003cp\u003eThe total number of instances running without the daemon task for this revision, across all capacity providers. These instances aren't included in \u003ccode\u003etotalRunningCount\u003c/code\u003e.\u003c/p\u003e"
             }
           }
         },
@@ -23982,6 +24020,12 @@
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Names (ARNs) of the capacity providers to associate with the daemon.\u003c/p\u003e",
               "smithy.api#required": {}
+            }
+          },
+          "critical": {
+            "target": "com.amazonaws.ecs#BoxedBoolean",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIf the \u003ccode\u003ecritical\u003c/code\u003e parameter of a daemon is \u003ccode\u003etrue\u003c/code\u003e, and the daemon task fails, stops, or becomes unhealthy, Amazon ECS drains the container instance and stops the other tasks running on it. If the \u003ccode\u003ecritical\u003c/code\u003e parameter is \u003ccode\u003efalse\u003c/code\u003e, the daemon task failure doesn't affect the other tasks on the instance. The default value is \u003ccode\u003etrue\u003c/code\u003e.\u003c/p\u003e \u003cp\u003eA non-critical daemon doesn't block instance registration. The container instance becomes active and continues to run your other tasks, whether the daemon task fails during scale-out or during a deployment.\u003c/p\u003e \u003cp\u003eAmazon ECS emits an EventBridge event when a daemon task fails to start, for both critical and non-critical daemons.\u003c/p\u003e \u003cp\u003eDaemon task launch failures during a deployment are still counted by the deployment circuit breaker. The circuit breaker can roll back an unstable target revision.\u003c/p\u003e"
             }
           },
           "daemonArn": {
