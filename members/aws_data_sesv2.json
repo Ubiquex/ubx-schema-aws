@@ -183,6 +183,73 @@
           "smithy.api#documentation": "\u003cp\u003eUsed to associate a configuration set with a MailManager archive.\u003c/p\u003e"
         }
       },
+      "com.amazonaws.sesv2#AssociateEmailIdentityCertificate": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.sesv2#AssociateEmailIdentityCertificateRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.sesv2#AssociateEmailIdentityCertificateResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.sesv2#AlreadyExistsException"
+          },
+          {
+            "target": "com.amazonaws.sesv2#BadRequestException"
+          },
+          {
+            "target": "com.amazonaws.sesv2#NotFoundException"
+          },
+          {
+            "target": "com.amazonaws.sesv2#TooManyRequestsException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eAssociates an S/MIME certificate with an email identity. After the certificate is\n            active, Amazon SES API v2 can add an S/MIME signature to messages that you send from the associated\n            address when signing is enabled on the configuration set used to send the message.\u003c/p\u003e\n         \u003cp\u003eThe certificate is an X.509 certificate that you manage in Certificate Manager\n            (ACM). You identify it by its Amazon Resource Name (ARN).\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003eIf the email identity is a domain, you must specify a \u003ccode\u003eFromAddress\u003c/code\u003e\n                    that belongs to that domain or one of its subdomains. The certificate applies to\n                    messages sent from that address.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eIf the email identity is an email address, \u003ccode\u003eFromAddress\u003c/code\u003e is\n                    optional. If you specify it, it must exactly match the email identity.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e\n         \u003cp\u003eWhen the association is created, the certificate begins provisioning and its status is\n            \u003ccode\u003ePROVISIONING\u003c/code\u003e. The status changes to \u003ccode\u003eACTIVE\u003c/code\u003e when the certificate\n            is ready to use for signing. Each email address can have only one certificate\n            association. If an association already exists for the address, this operation returns an\n            error, unless the existing association is in the \u003ccode\u003eDEPROVISIONING\u003c/code\u003e state.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/v2/email/identity/certificates",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.sesv2#AssociateEmailIdentityCertificateRequest": {
+        "type": "structure",
+        "members": {
+          "CertificateArn": {
+            "target": "com.amazonaws.sesv2#CertificateArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the Certificate Manager (ACM) certificate to\n            associate with the email identity.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "EmailIdentity": {
+            "target": "com.amazonaws.sesv2#Identity",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe email identity, either an email address or a domain, to associate the certificate\n            with.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "FromAddress": {
+            "target": "com.amazonaws.sesv2#EmailAddress",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe email address that the certificate applies to. This value is required when the\n            email identity is a domain, and the address must belong to that domain or one of its\n            subdomains. When the email identity is an email address, this value is optional. If you\n            specify it, it must exactly match the email identity.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA request to associate an S/MIME certificate with an email identity.\u003c/p\u003e",
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.sesv2#AssociateEmailIdentityCertificateResponse": {
+        "type": "structure",
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eAn HTTP 200 response if the request succeeds, or an error message if the request\n            fails.\u003c/p\u003e",
+          "smithy.api#output": {}
+        }
+      },
       "com.amazonaws.sesv2#Attachment": {
         "type": "structure",
         "members": {
@@ -857,6 +924,16 @@
       "com.amazonaws.sesv2#CaseId": {
         "type": "string"
       },
+      "com.amazonaws.sesv2#CertificateArn": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 20,
+            "max": 2048
+          },
+          "smithy.api#pattern": "^arn:[\\w+=/,.@-]+:[\\w+=/,.@-]+:[\\w+=/,.@-]*:[0-9]+:certificate/[\\w+=,.@-]+$"
+        }
+      },
       "com.amazonaws.sesv2#Charset": {
         "type": "string"
       },
@@ -1262,6 +1339,12 @@
             "target": "com.amazonaws.sesv2#DeliveryOptions",
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eAn object that defines the dedicated IP pool that is used to send emails that you send\n            using the configuration set.\u003c/p\u003e"
+            }
+          },
+          "MessageSecurityOptions": {
+            "target": "com.amazonaws.sesv2#MessageSecurityOptions",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe message security options to apply to the configuration set, such as the signing\n            scheme used for messages that you send with the configuration set.\u003c/p\u003e"
             }
           },
           "ReputationOptions": {
@@ -2561,6 +2644,12 @@
           "smithy.api#documentation": "\u003cp\u003eThe default value of the dimension that is published to Amazon CloudWatch if you don't provide the\n            value of the dimension when you send an email. This value has to meet the following\n            criteria:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003eIt can only contain ASCII letters (a\u2013z, A\u2013Z), numbers (0\u20139),\n                    underscores (_), or dashes (-).\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eIt can contain no more than 255 characters.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e"
         }
       },
+      "com.amazonaws.sesv2#DefaultSigningScheme": {
+        "type": "structure",
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eSpecifies the default signing scheme, in which Amazon SES API v2 doesn't apply S/MIME signing to\n            messages sent with the configuration set.\u003c/p\u003e"
+        }
+      },
       "com.amazonaws.sesv2#DeleteConfigurationSet": {
         "type": "operation",
         "input": {
@@ -3556,6 +3645,63 @@
             "min": 1,
             "max": 3
           }
+        }
+      },
+      "com.amazonaws.sesv2#DisassociateEmailIdentityCertificate": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.sesv2#DisassociateEmailIdentityCertificateRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.sesv2#DisassociateEmailIdentityCertificateResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.sesv2#BadRequestException"
+          },
+          {
+            "target": "com.amazonaws.sesv2#NotFoundException"
+          },
+          {
+            "target": "com.amazonaws.sesv2#TooManyRequestsException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eRemoves the association between an S/MIME certificate and an email identity. After the\n            association is removed, Amazon SES API v2 stops adding an S/MIME signature to messages sent from\n            that address.\u003c/p\u003e\n         \u003cp\u003eIf the email identity is a domain, specify the \u003ccode\u003eFromAddress\u003c/code\u003e whose\n            certificate association you want to remove.\u003c/p\u003e\n         \u003cp\u003eThis operation is idempotent. If the specified email identity exists but there's no\n            matching certificate association, the operation succeeds without making any changes.\n            Amazon SES API v2 returns a \u003ccode\u003eNotFoundException\u003c/code\u003e only when the specified email identity\n            doesn't exist.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/v2/email/identity/certificates/delete",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.sesv2#DisassociateEmailIdentityCertificateRequest": {
+        "type": "structure",
+        "members": {
+          "EmailIdentity": {
+            "target": "com.amazonaws.sesv2#Identity",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe email identity whose certificate association you want to remove.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "FromAddress": {
+            "target": "com.amazonaws.sesv2#EmailAddress",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe email address whose certificate association you want to remove. This value is\n            required when the email identity is a domain. When the email identity is an email\n            address, this value is optional.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA request to remove the association between an S/MIME certificate and an email\n            identity.\u003c/p\u003e",
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.sesv2#DisassociateEmailIdentityCertificateResponse": {
+        "type": "structure",
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eAn HTTP 200 response if the request succeeds, or an error message if the request\n            fails.\u003c/p\u003e",
+          "smithy.api#output": {}
         }
       },
       "com.amazonaws.sesv2#DisplayName": {
@@ -5170,6 +5316,12 @@
             "target": "com.amazonaws.sesv2#DeliveryOptions",
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eAn object that defines the dedicated IP pool that is used to send emails that you send\n            using the configuration set.\u003c/p\u003e"
+            }
+          },
+          "MessageSecurityOptions": {
+            "target": "com.amazonaws.sesv2#MessageSecurityOptions",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe message security options that are applied to the configuration set, such as the\n            signing scheme used for messages that you send with the configuration set.\u003c/p\u003e"
             }
           },
           "ReputationOptions": {
@@ -7011,6 +7163,82 @@
           }
         }
       },
+      "com.amazonaws.sesv2#IdentityCertificate": {
+        "type": "structure",
+        "members": {
+          "CertificateArn": {
+            "target": "com.amazonaws.sesv2#CertificateArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the Certificate Manager (ACM) certificate that's\n            associated with the email identity.\u003c/p\u003e"
+            }
+          },
+          "CertificateExpiryTime": {
+            "target": "com.amazonaws.sesv2#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe timestamp after which the certificate is no longer valid.\u003c/p\u003e"
+            }
+          },
+          "FromAddress": {
+            "target": "com.amazonaws.sesv2#EmailAddress",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe email address that the certificate applies to.\u003c/p\u003e"
+            }
+          },
+          "Status": {
+            "target": "com.amazonaws.sesv2#IdentityCertificateStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe status of the certificate association. A status of \u003ccode\u003eACTIVE\u003c/code\u003e indicates\n            that the certificate is ready to use for signing.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eAn object that contains information about an S/MIME certificate that's associated with\n            an email identity.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.sesv2#IdentityCertificateList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.sesv2#IdentityCertificate"
+        }
+      },
+      "com.amazonaws.sesv2#IdentityCertificateStatus": {
+        "type": "enum",
+        "members": {
+          "ACTIVE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ACTIVE"
+            }
+          },
+          "DEPROVISIONING": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "DEPROVISIONING"
+            }
+          },
+          "FAILED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "FAILED"
+            }
+          },
+          "INACTIVE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "INACTIVE"
+            }
+          },
+          "PROVISIONING": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "PROVISIONING"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe status of an S/MIME certificate that's associated with an email identity. The\n            status can be one of the following values:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003ePROVISIONING\u003c/code\u003e \u2013 The certificate association was created and\n                    the certificate is being prepared for use.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eACTIVE\u003c/code\u003e \u2013 The certificate is ready to use for signing.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eINACTIVE\u003c/code\u003e \u2013 The certificate is no longer used \n                for signing.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eDEPROVISIONING\u003c/code\u003e \u2013 The certificate association is being\n                    cleaned up.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eFAILED\u003c/code\u003e \u2013 The certificate couldn't be prepared for use, or\n                    the certificate has expired.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e"
+        }
+      },
       "com.amazonaws.sesv2#IdentityInfo": {
         "type": "structure",
         "members": {
@@ -8100,6 +8328,89 @@
         },
         "traits": {
           "smithy.api#documentation": "\u003cp\u003eA list of all of the identities that you've attempted to verify, regardless of whether\n            or not those identities were successfully verified.\u003c/p\u003e",
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.sesv2#ListEmailIdentityCertificates": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.sesv2#ListEmailIdentityCertificatesRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.sesv2#ListEmailIdentityCertificatesResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.sesv2#BadRequestException"
+          },
+          {
+            "target": "com.amazonaws.sesv2#NotFoundException"
+          },
+          {
+            "target": "com.amazonaws.sesv2#TooManyRequestsException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eLists the S/MIME certificates that are associated with the specified email identity.\n            The results include certificates in all states, such as \u003ccode\u003ePROVISIONING\u003c/code\u003e,\n            \u003ccode\u003eACTIVE\u003c/code\u003e, \u003ccode\u003eINACTIVE\u003c/code\u003e, \u003ccode\u003eDEPROVISIONING\u003c/code\u003e, and\n            \u003ccode\u003eFAILED\u003c/code\u003e.\u003c/p\u003e\n         \u003cp\u003eIf a certificate has passed its expiration time, it's returned with a status of\n            \u003ccode\u003eFAILED\u003c/code\u003e.\u003c/p\u003e\n         \u003cp\u003eWe recommend using pagination to ensure that the operation returns quickly and\n            successfully. When there are more results than fit in a single response, the response\n            includes a \u003ccode\u003eNextToken\u003c/code\u003e value that you use in a subsequent call to retrieve\n            the next set of results.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/v2/email/identity/certificates/list",
+            "code": 200
+          },
+          "smithy.api#paginated": {
+            "inputToken": "NextToken",
+            "outputToken": "NextToken",
+            "items": "Certificates",
+            "pageSize": "PageSize"
+          }
+        }
+      },
+      "com.amazonaws.sesv2#ListEmailIdentityCertificatesRequest": {
+        "type": "structure",
+        "members": {
+          "EmailIdentity": {
+            "target": "com.amazonaws.sesv2#Identity",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe email identity whose certificate associations you want to list.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "NextToken": {
+            "target": "com.amazonaws.sesv2#NextToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA token returned from a previous call to \u003ccode\u003eListEmailIdentityCertificates\u003c/code\u003e to\n            indicate the position in the list of certificates.\u003c/p\u003e"
+            }
+          },
+          "PageSize": {
+            "target": "com.amazonaws.sesv2#MaxItems",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe number of results to show in a single call to\n            \u003ccode\u003eListEmailIdentityCertificates\u003c/code\u003e. If the number of results is larger than the\n            number you specified in this parameter, then the response includes a\n            \u003ccode\u003eNextToken\u003c/code\u003e element, which you can use to obtain additional results.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA request to list the S/MIME certificates that are associated with an email\n            identity.\u003c/p\u003e",
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.sesv2#ListEmailIdentityCertificatesResponse": {
+        "type": "structure",
+        "members": {
+          "Certificates": {
+            "target": "com.amazonaws.sesv2#IdentityCertificateList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn array that contains the certificate associations for the email identity. Each entry\n            includes the from address, the certificate's status, its Amazon Resource Name (ARN),\n            and its expiry time.\u003c/p\u003e"
+            }
+          },
+          "NextToken": {
+            "target": "com.amazonaws.sesv2#NextToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA token that indicates that there are additional certificates to list. To view\n            additional certificates, issue another request to\n            \u003ccode\u003eListEmailIdentityCertificates\u003c/code\u003e, and pass this token in the\n            \u003ccode\u003eNextToken\u003c/code\u003e parameter.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eInformation about the S/MIME certificates that are associated with an email\n            identity.\u003c/p\u003e",
           "smithy.api#output": {}
         }
       },
@@ -9387,7 +9698,7 @@
           "MaxResults": {
             "target": "com.amazonaws.sesv2#MessageInsightsExportMaxResults",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe maximum number of results.\u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of results.\u003c/p\u003e\n         \u003cnote\u003e\n            \u003cp\u003eIf you don't specify \u003ccode\u003eMaxResults\u003c/code\u003e, the export returns a maximum of\n                1,000 results.\u003c/p\u003e\n         \u003c/note\u003e"
             }
           },
           "StartDate": {
@@ -9466,6 +9777,20 @@
           "smithy.api#documentation": "\u003cp\u003eThe message can't be sent because it contains invalid content.\u003c/p\u003e",
           "smithy.api#error": "client",
           "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.sesv2#MessageSecurityOptions": {
+        "type": "structure",
+        "members": {
+          "SigningScheme": {
+            "target": "com.amazonaws.sesv2#SigningScheme",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe signing scheme that Amazon SES API v2 applies to messages sent with the configuration\n            set.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eAn object that defines the message-level security options that apply to messages that\n            you send using the configuration set. Currently, these options determine whether Amazon SES API v2\n            adds an S/MIME signature to your messages and, if so, the format of that\n            signature.\u003c/p\u003e"
         }
       },
       "com.amazonaws.sesv2#MessageTag": {
@@ -12644,10 +12969,47 @@
           "smithy.api#default": 0
         }
       },
+      "com.amazonaws.sesv2#SignatureFormat": {
+        "type": "enum",
+        "members": {
+          "DETACHED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "DETACHED"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe format of the S/MIME signature that's applied to a message. The following value is\n            supported:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eDETACHED\u003c/code\u003e \u2013 The signature is carried in a separate MIME part\n                    alongside the signed content.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e"
+        }
+      },
+      "com.amazonaws.sesv2#SigningScheme": {
+        "type": "union",
+        "members": {
+          "DefaultScheme": {
+            "target": "com.amazonaws.sesv2#DefaultSigningScheme",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eUse the default signing behavior. When you select this option, Amazon SES API v2 doesn't add an\n            S/MIME signature to messages sent with the configuration set.\u003c/p\u003e"
+            }
+          },
+          "SmimeScheme": {
+            "target": "com.amazonaws.sesv2#SmimeSigningScheme",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSign messages sent with the configuration set using S/MIME. For signing to apply, the\n            email identity used to send a message must have an active S/MIME certificate\n            association.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eSpecifies the signing scheme to apply to messages sent with a configuration set. This\n            is a union type, so you specify exactly one of its members.\u003c/p\u003e"
+        }
+      },
       "com.amazonaws.sesv2#SimpleEmailService_v2": {
         "type": "service",
         "version": "2019-09-27",
         "operations": [
+          {
+            "target": "com.amazonaws.sesv2#AssociateEmailIdentityCertificate"
+          },
           {
             "target": "com.amazonaws.sesv2#BatchGetMetricData"
           },
@@ -12737,6 +13099,9 @@
           },
           {
             "target": "com.amazonaws.sesv2#DeleteTenantResourceAssociation"
+          },
+          {
+            "target": "com.amazonaws.sesv2#DisassociateEmailIdentityCertificate"
           },
           {
             "target": "com.amazonaws.sesv2#GetAccount"
@@ -12836,6 +13201,9 @@
           },
           {
             "target": "com.amazonaws.sesv2#ListEmailIdentities"
+          },
+          {
+            "target": "com.amazonaws.sesv2#ListEmailIdentityCertificates"
           },
           {
             "target": "com.amazonaws.sesv2#ListEmailTemplates"
@@ -12959,6 +13327,9 @@
           },
           {
             "target": "com.amazonaws.sesv2#UntagResource"
+          },
+          {
+            "target": "com.amazonaws.sesv2#UpdateConfigurationSet"
           },
           {
             "target": "com.amazonaws.sesv2#UpdateConfigurationSetEventDestination"
@@ -14905,6 +15276,20 @@
           }
         }
       },
+      "com.amazonaws.sesv2#SmimeSigningScheme": {
+        "type": "structure",
+        "members": {
+          "SignatureFormat": {
+            "target": "com.amazonaws.sesv2#SignatureFormat",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe format of the S/MIME signature that Amazon SES API v2 applies to messages.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eSpecifies that Amazon SES API v2 signs messages sent with the configuration set using\n            S/MIME.\u003c/p\u003e"
+        }
+      },
       "com.amazonaws.sesv2#SnsDestination": {
         "type": "structure",
         "members": {
@@ -15935,6 +16320,34 @@
           "smithy.api#output": {}
         }
       },
+      "com.amazonaws.sesv2#UpdateConfigurationSet": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.sesv2#UpdateConfigurationSetRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.sesv2#UpdateConfigurationSetResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.sesv2#BadRequestException"
+          },
+          {
+            "target": "com.amazonaws.sesv2#NotFoundException"
+          },
+          {
+            "target": "com.amazonaws.sesv2#TooManyRequestsException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eUpdates an existing configuration set.\u003c/p\u003e\n         \u003cp\u003eThis operation performs a partial update. Only the attributes that you include in the\n            request are updated; any omitted attribute is left unchanged.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/v2/email/update-configuration-sets",
+            "code": 200
+          }
+        }
+      },
       "com.amazonaws.sesv2#UpdateConfigurationSetEventDestination": {
         "type": "operation",
         "input": {
@@ -15996,6 +16409,35 @@
         }
       },
       "com.amazonaws.sesv2#UpdateConfigurationSetEventDestinationResponse": {
+        "type": "structure",
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eAn HTTP 200 response if the request succeeds, or an error message if the request\n            fails.\u003c/p\u003e",
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.sesv2#UpdateConfigurationSetRequest": {
+        "type": "structure",
+        "members": {
+          "ConfigurationSetName": {
+            "target": "com.amazonaws.sesv2#ConfigurationSetName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the configuration set to update.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "MessageSecurityOptions": {
+            "target": "com.amazonaws.sesv2#MessageSecurityOptions",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe security options that apply to the MIME message itself for messages sent with the\n            configuration set.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA request to update the configuration of an existing configuration set.\u003c/p\u003e",
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.sesv2#UpdateConfigurationSetResponse": {
         "type": "structure",
         "traits": {
           "smithy.api#documentation": "\u003cp\u003eAn HTTP 200 response if the request succeeds, or an error message if the request\n            fails.\u003c/p\u003e",
