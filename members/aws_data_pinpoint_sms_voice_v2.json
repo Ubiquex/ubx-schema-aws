@@ -390,7 +390,7 @@
         "traits": {
           "smithy.api#length": {
             "min": 1,
-            "max": 1572864
+            "max": 6990508
           }
         }
       },
@@ -647,6 +647,152 @@
         },
         "traits": {
           "smithy.api#documentation": "\u003cp\u003eContains the destination configuration to use when publishing message sending events. \u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.pinpointsmsvoicev2#ConditionOperator": {
+        "type": "string",
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe operator used to compare a dependency field's value in a \u003cb\u003eFieldCondition\u003c/b\u003e. Valid values are \u003cb\u003eEQUALS\u003c/b\u003e, \u003cb\u003eNOT_EQUALS\u003c/b\u003e, \u003cb\u003eIN\u003c/b\u003e, \u003cb\u003eNOT_IN\u003c/b\u003e, \u003cb\u003eHAS_VALUE\u003c/b\u003e, and \u003cb\u003eNO_VALUE\u003c/b\u003e. Unknown operators evaluate to false, which causes the containing rule to be skipped.\u003c/p\u003e",
+          "smithy.api#length": {
+            "min": 1,
+            "max": 64
+          },
+          "smithy.api#pattern": "^[A-Za-z0-9_]+$"
+        }
+      },
+      "com.amazonaws.pinpointsmsvoicev2#ConditionValue": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 256
+          }
+        }
+      },
+      "com.amazonaws.pinpointsmsvoicev2#ConditionValueList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.pinpointsmsvoicev2#ConditionValue"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "max": 20
+          }
+        }
+      },
+      "com.amazonaws.pinpointsmsvoicev2#ConditionalBehavior": {
+        "type": "structure",
+        "members": {
+          "DefaultBehavior": {
+            "target": "com.amazonaws.pinpointsmsvoicev2#ConditionalFieldBehavior",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe field behavior that applies when no conditional rule in \u003cb\u003eRules\u003c/b\u003e matches. Valid values are \u003cb\u003eREQUIRED\u003c/b\u003e, \u003cb\u003eOPTIONAL\u003c/b\u003e, and \u003cb\u003eDISALLOWED\u003c/b\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Rules": {
+            "target": "com.amazonaws.pinpointsmsvoicev2#ConditionalRuleList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn ordered list of conditional rules. Rules are evaluated top-to-bottom and the first rule whose conditions all evaluate to true determines the field's behavior. Rules whose conditions do not all match are skipped and evaluation continues to the next rule.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe set of conditional rules that determine a field's resolved requirement based on the values of other fields in the same registration form. Attached to fields whose \u003cb\u003eFieldRequirement\u003c/b\u003e is \u003cb\u003eCONDITIONAL\u003c/b\u003e.\u003c/p\u003e \u003cp\u003eEvaluation proceeds top-to-bottom through \u003cb\u003eRules\u003c/b\u003e. The first rule whose conditions all evaluate to true wins and its behavior is returned. If no rule matches, the \u003cb\u003eDefaultBehavior\u003c/b\u003e is returned.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.pinpointsmsvoicev2#ConditionalFieldBehavior": {
+        "type": "string",
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe resolved requirement for a field when a conditional rule matches. Valid values are:\u003c/p\u003e \u003cp\u003e \u003cb\u003eREQUIRED\u003c/b\u003e \u2014 the field must be present; absence causes a validation error at submission time.\u003c/p\u003e \u003cp\u003e \u003cb\u003eOPTIONAL\u003c/b\u003e \u2014 the field may be present.\u003c/p\u003e \u003cp\u003e \u003cb\u003eDISALLOWED\u003c/b\u003e \u2014 the field must not be present; a submitted value is rejected with a validation error.\u003c/p\u003e",
+          "smithy.api#length": {
+            "min": 1,
+            "max": 64
+          },
+          "smithy.api#pattern": "^[A-Za-z0-9_]+$"
+        }
+      },
+      "com.amazonaws.pinpointsmsvoicev2#ConditionalRule": {
+        "type": "structure",
+        "members": {
+          "ConditionalValidation": {
+            "target": "com.amazonaws.pinpointsmsvoicev2#ConditionalValidation",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eOptional per-rule validation constraints (minimum length, maximum length, regex pattern, allowed select values) that override the field's default validation when this rule matches.\u003c/p\u003e"
+            }
+          },
+          "Conditions": {
+            "target": "com.amazonaws.pinpointsmsvoicev2#FieldConditionList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe conditions that must all evaluate to true for this rule to match. Conditions are combined with logical AND. Use multiple rules with the same \u003cb\u003eRuleBehavior\u003c/b\u003e to express logical OR.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "RuleBehavior": {
+            "target": "com.amazonaws.pinpointsmsvoicev2#ConditionalFieldBehavior",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe field behavior that applies when all conditions in this rule match. Valid values are \u003cb\u003eREQUIRED\u003c/b\u003e, \u003cb\u003eOPTIONAL\u003c/b\u003e, and \u003cb\u003eDISALLOWED\u003c/b\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA single conditional rule that resolves to a field behavior when all of its conditions evaluate to true. Conditions within a rule are combined with logical AND: all conditions must match for the rule to fire.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.pinpointsmsvoicev2#ConditionalRuleList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.pinpointsmsvoicev2#ConditionalRule"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 20
+          }
+        }
+      },
+      "com.amazonaws.pinpointsmsvoicev2#ConditionalValidation": {
+        "type": "structure",
+        "members": {
+          "AllowedValues": {
+            "target": "com.amazonaws.pinpointsmsvoicev2#SelectChoiceList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe allowed values for a select field when this rule applies. A subset of the field's full option list.\u003c/p\u003e"
+            }
+          },
+          "MaxLength": {
+            "target": "smithy.api#Integer",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe maximum length for the field value when this rule applies.\u003c/p\u003e",
+              "smithy.api#range": {
+                "min": 0
+              }
+            }
+          },
+          "MinLength": {
+            "target": "smithy.api#Integer",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe minimum length for the field value when this rule applies.\u003c/p\u003e",
+              "smithy.api#range": {
+                "min": 0
+              }
+            }
+          },
+          "Pattern": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA regular expression that the field value must match when this rule applies.\u003c/p\u003e",
+              "smithy.api#length": {
+                "min": 1,
+                "max": 2048
+              }
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003ePer-rule validation constraints that override the field's default validation when the containing rule matches. All fields are optional; only the constraints that need to differ from the field's default validation are provided.\u003c/p\u003e"
         }
       },
       "com.amazonaws.pinpointsmsvoicev2#ConfigurationSetFilter": {
@@ -2361,7 +2507,7 @@
           }
         ],
         "traits": {
-          "smithy.api#documentation": "\u003cp\u003eCreate a new registration attachment to use for uploading a file or a URL to a file. The maximum file size is 500KB and valid file extensions are PDF, JPEG and PNG. For example, many sender ID registrations require a signed \u201cletter of authorization\u201d (LOA) to be submitted.\u003c/p\u003e \u003cp\u003eUse either \u003ccode\u003eAttachmentUrl\u003c/code\u003e or \u003ccode\u003eAttachmentBody\u003c/code\u003e to upload your attachment. If both are specified then an exception is returned.\u003c/p\u003e"
+          "smithy.api#documentation": "\u003cp\u003eCreate a new registration attachment to use for uploading a file or a URL to a file. The maximum file size is 5MB and valid file extensions are PDF, JPEG and PNG. For example, many sender ID registrations require a signed \u201cletter of authorization\u201d (LOA) to be submitted.\u003c/p\u003e \u003cp\u003eUse either \u003ccode\u003eAttachmentUrl\u003c/code\u003e or \u003ccode\u003eAttachmentBody\u003c/code\u003e to upload your attachment. If both are specified then an exception is returned.\u003c/p\u003e"
         }
       },
       "com.amazonaws.pinpointsmsvoicev2#CreateRegistrationAttachmentRequest": {
@@ -2370,7 +2516,7 @@
           "AttachmentBody": {
             "target": "com.amazonaws.pinpointsmsvoicev2#AttachmentBody",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe registration file to upload. The maximum file size is 500KB and valid file extensions are PDF, JPEG and PNG.\u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003eThe registration file to upload. The maximum file size is 5MB and valid file extensions are PDF, JPEG and PNG.\u003c/p\u003e"
             }
           },
           "AttachmentUrl": {
@@ -7517,6 +7663,46 @@
           "smithy.api#length": {
             "min": 1,
             "max": 52
+          }
+        }
+      },
+      "com.amazonaws.pinpointsmsvoicev2#FieldCondition": {
+        "type": "structure",
+        "members": {
+          "DependsOnFieldPath": {
+            "target": "com.amazonaws.pinpointsmsvoicev2#FieldPath",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe path of the field whose value determines this condition, for example \u003cb\u003ecompanyInfo.businessType\u003c/b\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Operator": {
+            "target": "com.amazonaws.pinpointsmsvoicev2#ConditionOperator",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe comparison operator to apply between the dependency field's value and \u003cb\u003eValues\u003c/b\u003e. Valid values are \u003cb\u003eEQUALS\u003c/b\u003e, \u003cb\u003eNOT_EQUALS\u003c/b\u003e, \u003cb\u003eIN\u003c/b\u003e, \u003cb\u003eNOT_IN\u003c/b\u003e, \u003cb\u003eHAS_VALUE\u003c/b\u003e, and \u003cb\u003eNO_VALUE\u003c/b\u003e. Operators not in this list are treated as evaluating to false, which causes the containing rule to be skipped. This allows forward-compatible additions of new operators without breaking older SDK clients.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Values": {
+            "target": "com.amazonaws.pinpointsmsvoicev2#ConditionValueList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe values to compare the dependency field's value against. Required for the \u003cb\u003eEQUALS\u003c/b\u003e, \u003cb\u003eNOT_EQUALS\u003c/b\u003e, \u003cb\u003eIN\u003c/b\u003e, and \u003cb\u003eNOT_IN\u003c/b\u003e operators. Omitted for \u003cb\u003eHAS_VALUE\u003c/b\u003e and \u003cb\u003eNO_VALUE\u003c/b\u003e, which test only presence.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA single condition on a dependency field's value. Conditions are combined into a \u003cb\u003eConditionalRule\u003c/b\u003e and evaluated together with logical AND.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.pinpointsmsvoicev2#FieldConditionList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.pinpointsmsvoicev2#FieldCondition"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 5
           }
         }
       },
@@ -13738,6 +13924,12 @@
       "com.amazonaws.pinpointsmsvoicev2#RegistrationFieldDefinition": {
         "type": "structure",
         "members": {
+          "ConditionalBehavior": {
+            "target": "com.amazonaws.pinpointsmsvoicev2#ConditionalBehavior",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe conditional behavior rules for this field. Only present when \u003cb\u003eFieldRequirement\u003c/b\u003e is \u003cb\u003eCONDITIONAL\u003c/b\u003e. Rules are evaluated in order and the first matching rule determines the field's resolved requirement. If no rule matches, the \u003cb\u003eDefaultBehavior\u003c/b\u003e applies.\u003c/p\u003e"
+            }
+          },
           "DisplayHints": {
             "target": "com.amazonaws.pinpointsmsvoicev2#RegistrationFieldDisplayHints",
             "traits": {

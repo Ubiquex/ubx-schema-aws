@@ -1342,6 +1342,21 @@
           }
         }
       },
+      "com.amazonaws.marketplacediscovery#FixedPercentage": {
+        "type": "structure",
+        "members": {
+          "percentageValue": {
+            "target": "com.amazonaws.marketplacediscovery#BoundedString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe percentage value applied at each renewal cycle.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA single fixed price increase percentage applied at each renewal cycle.\u003c/p\u003e"
+        }
+      },
       "com.amazonaws.marketplacediscovery#FixedUpfrontPricingTerm": {
         "type": "structure",
         "members": {
@@ -3030,7 +3045,80 @@
                   {
                     "renewalTerm": {
                       "id": "term-renewal-001",
-                      "type": "RenewalTerm"
+                      "type": "RenewalTerm",
+                      "maxRenewals": 3,
+                      "lockoutPeriod": "P30D",
+                      "adjustmentDeadline": "P30D",
+                      "priceIncrease": {
+                        "percentageRange": {
+                          "minimumValue": "3.00",
+                          "maximumValue": "10.00",
+                          "defaultValue": "5.00"
+                        }
+                      },
+                      "termTemplates": [
+                        {
+                          "paymentScheduleTermTemplate": {
+                            "schedule": [
+                              {
+                                "chargeDateOffset": "P0D",
+                                "chargePercentage": "50.00"
+                              },
+                              {
+                                "chargeDateOffset": "P6M",
+                                "chargePercentage": "25.00",
+                                "dayOfMonth": 1
+                              },
+                              {
+                                "chargeDateOffset": "P12M",
+                                "chargePercentage": "25.00",
+                                "dayOfMonth": 1
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "title": "GetOfferTerms for renewal term with fixed percentage",
+              "input": {
+                "offerId": "offer-sampleRenewalFixedId"
+              },
+              "output": {
+                "offerTerms": [
+                  {
+                    "renewalTerm": {
+                      "id": "term-renewal-002",
+                      "type": "RenewalTerm",
+                      "maxRenewals": 5,
+                      "lockoutPeriod": "P60D",
+                      "priceIncrease": {
+                        "fixedPercentage": {
+                          "percentageValue": "5.00"
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "title": "GetOfferTerms for renewal term with identical pricing (no price increase)",
+              "input": {
+                "offerId": "offer-sampleRenewalNoPriceIncreaseId"
+              },
+              "output": {
+                "offerTerms": [
+                  {
+                    "renewalTerm": {
+                      "id": "term-renewal-003",
+                      "type": "RenewalTerm",
+                      "maxRenewals": 2,
+                      "lockoutPeriod": "P30D"
                     }
                   }
                 ]
@@ -4994,6 +5082,50 @@
           "target": "com.amazonaws.marketplacediscovery#OfferTerm"
         }
       },
+      "com.amazonaws.marketplacediscovery#PaymentScheduleEntry": {
+        "type": "structure",
+        "members": {
+          "chargeDateOffset": {
+            "target": "com.amazonaws.marketplacediscovery#BoundedString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe relative offset from the renewal agreement start date when this installment is due, in ISO 8601 duration format. The offset uses months only or days only (for example, P1M or P30D); mixed units are not supported, and every offset in a schedule uses the same unit.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "chargePercentage": {
+            "target": "com.amazonaws.marketplacediscovery#BoundedString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe percentage of the increased TCV to charge in this installment. All entries in a schedule sum to 100.00.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "dayOfMonth": {
+            "target": "smithy.api#Integer",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe optional calendar day of month on which the charge occurs. When absent, the charge day is derived from \u003ccode\u003echargeDateOffset\u003c/code\u003e, and this field does not apply when \u003ccode\u003echargeDateOffset\u003c/code\u003e is expressed in days. For months with fewer days than the specified day, the charge occurs on the last day of the month. For example, if \u003ccode\u003edayOfMonth\u003c/code\u003e is 31, the charge in April occurs on April 30.\u003c/p\u003e",
+              "smithy.api#range": {
+                "min": 1,
+                "max": 31
+              }
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA single installment entry in the renewal payment schedule.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.marketplacediscovery#PaymentScheduleEntryList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.marketplacediscovery#PaymentScheduleEntry"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 200
+          }
+        }
+      },
       "com.amazonaws.marketplacediscovery#PaymentScheduleTerm": {
         "type": "structure",
         "members": {
@@ -5028,6 +5160,70 @@
         },
         "traits": {
           "smithy.api#documentation": "\u003cp\u003eDefines a payment schedule term with installment payments at specified dates.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.marketplacediscovery#PaymentScheduleTermTemplate": {
+        "type": "structure",
+        "members": {
+          "schedule": {
+            "target": "com.amazonaws.marketplacediscovery#PaymentScheduleEntryList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn ordered list of installment entries for the renewal payment schedule.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA template for the payment schedule term on the renewal offer.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.marketplacediscovery#PercentageRange": {
+        "type": "structure",
+        "members": {
+          "defaultValue": {
+            "target": "com.amazonaws.marketplacediscovery#BoundedString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe percentage increase applied by default when no other value is finalized before the adjustment deadline. Falls between \u003ccode\u003eminimumValue\u003c/code\u003e and \u003ccode\u003emaximumValue\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "maximumValue": {
+            "target": "com.amazonaws.marketplacediscovery#BoundedString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe maximum percentage by which the price can increase at each renewal cycle.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "minimumValue": {
+            "target": "com.amazonaws.marketplacediscovery#BoundedString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe minimum percentage by which the price can increase at each renewal cycle.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA price increase percentage range with minimum, maximum, and default values.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.marketplacediscovery#PriceIncrease": {
+        "type": "union",
+        "members": {
+          "fixedPercentage": {
+            "target": "com.amazonaws.marketplacediscovery#FixedPercentage",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA single fixed percentage applied uniformly at every renewal cycle.\u003c/p\u003e"
+            }
+          },
+          "percentageRange": {
+            "target": "com.amazonaws.marketplacediscovery#PercentageRange",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA percentage band with minimum, maximum, and default values that bound the price increase at each renewal cycle.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe pricing adjustment that applies at each renewal cycle, expressed as either a fixed percentage or a percentage range. Exactly one variant is present.\u003c/p\u003e"
         }
       },
       "com.amazonaws.marketplacediscovery#PricingModel": {
@@ -5410,6 +5606,12 @@
       "com.amazonaws.marketplacediscovery#PurchaseOptionBadgeType": {
         "type": "enum",
         "members": {
+          "AUTO_RENEW": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "AUTO_RENEW"
+            }
+          },
           "FUTURE_DATED": {
             "target": "smithy.api#Unit",
             "traits": {
@@ -5733,11 +5935,44 @@
       "com.amazonaws.marketplacediscovery#RenewalTerm": {
         "type": "structure",
         "members": {
+          "adjustmentDeadline": {
+            "target": "com.amazonaws.marketplacediscovery#BoundedString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe duration before the agreement end date by which the renewal price is finalized, represented in ISO 8601 format (for example, P30D). Only applicable with \u003ccode\u003ePercentageRange\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
           "id": {
             "target": "com.amazonaws.marketplacediscovery#TermId",
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the term.\u003c/p\u003e",
               "smithy.api#required": {}
+            }
+          },
+          "lockoutPeriod": {
+            "target": "com.amazonaws.marketplacediscovery#BoundedString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe duration before the agreement end date when the lockout window begins, in ISO 8601 format (for example, P30D). Absent means no lockout.\u003c/p\u003e"
+            }
+          },
+          "maxRenewals": {
+            "target": "smithy.api#Integer",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of renewals allowed on this offer. Absent means unlimited renewals.\u003c/p\u003e",
+              "smithy.api#range": {
+                "min": 1
+              }
+            }
+          },
+          "priceIncrease": {
+            "target": "com.amazonaws.marketplacediscovery#PriceIncrease",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe price increase applied at each renewal cycle. Absent means identical pricing on renewal.\u003c/p\u003e"
+            }
+          },
+          "termTemplates": {
+            "target": "com.amazonaws.marketplacediscovery#TermTemplateList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eStructural templates defining how specific terms are reshaped on each renewal cycle. Absent for upfront-only offers.\u003c/p\u003e"
             }
           },
           "type": {
@@ -6973,6 +7208,31 @@
             "max": 256
           },
           "smithy.api#pattern": "^[A-Za-z0-9+=;,.@\\-_]+$"
+        }
+      },
+      "com.amazonaws.marketplacediscovery#TermTemplate": {
+        "type": "union",
+        "members": {
+          "paymentScheduleTermTemplate": {
+            "target": "com.amazonaws.marketplacediscovery#PaymentScheduleTermTemplate",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe installment schedule used to structure payments on the renewal offer.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA structural template defining how a specific term type is reshaped on each renewal cycle. Exactly one variant is present.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.marketplacediscovery#TermTemplateList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.marketplacediscovery#TermTemplate"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "max": 10
+          }
         }
       },
       "com.amazonaws.marketplacediscovery#TermType": {
