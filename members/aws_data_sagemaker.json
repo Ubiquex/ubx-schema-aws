@@ -46014,6 +46014,47 @@
           }
         }
       },
+      "com.amazonaws.sagemaker#InstancePreference": {
+        "type": "structure",
+        "members": {
+          "InstanceCount": {
+            "target": "com.amazonaws.sagemaker#TrainingInstanceCount",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe number of instances to launch if this instance type is selected. Specify the instance count for the training job in one of the following two ways:\u003c/p\u003e \u003col\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003ePer preference\u003c/b\u003e \u2013 Set \u003ccode\u003eInstanceCount\u003c/code\u003e on every preference in the \u003ccode\u003eInstancePreferences\u003c/code\u003e list and don't set \u003ccode\u003eResourceConfig$InstanceCount\u003c/code\u003e. Use this when each instance type needs a different number of instances to deliver equivalent compute.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eOne count for the job\u003c/b\u003e \u2013 Set \u003ccode\u003eResourceConfig$InstanceCount\u003c/code\u003e and omit it from every preference. SageMaker applies this to all instance types in the list.\u003c/p\u003e \u003c/li\u003e \u003c/ol\u003e \u003cp\u003eFor example, in a list of five preferences, either all five specify \u003ccode\u003eInstanceCount\u003c/code\u003e or none of them do. SageMaker rejects requests that set \u003ccode\u003eInstanceCount\u003c/code\u003e on only some preferences, that set it both per preference and in \u003ccode\u003eResourceConfig\u003c/code\u003e, or that omit it in both places.\u003c/p\u003e"
+            }
+          },
+          "InstanceType": {
+            "target": "com.amazonaws.sagemaker#TrainingInstanceType",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe ML compute instance type. An instance type can appear only once in an \u003ccode\u003eInstancePreferences\u003c/code\u003e list.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "TrainingPlanArns": {
+            "target": "com.amazonaws.sagemaker#TrainingPlanArnList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of a training plan to use if this instance type is selected. The plan's instance type must match \u003ccode\u003eInstanceType\u003c/code\u003e. A preference with a training plan uses that plan's reserved capacity; a preference without one uses on-demand capacity. Per-preference \u003ccode\u003eTrainingPlanArns\u003c/code\u003e is mutually exclusive with the job-level \u003ccode\u003eTrainingPlanArn\u003c/code\u003e in \u003ccode\u003eResourceConfig\u003c/code\u003e.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA candidate instance type preference in an \u003ccode\u003eInstancePreferences\u003c/code\u003e list.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.sagemaker#InstancePreferenceList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.sagemaker#InstancePreference"
+        },
+        "traits": {
+          "smithy.api#documentation": "Ordered list of candidate instance types, in priority order.",
+          "smithy.api#length": {
+            "min": 1,
+            "max": 5
+          }
+        }
+      },
       "com.amazonaws.sagemaker#InstanceRequirementsEniConfiguration": {
         "type": "structure",
         "members": {
@@ -58315,7 +58356,7 @@
         "traits": {
           "smithy.api#documentation": "Maximum job scheduler pending time in seconds.",
           "smithy.api#range": {
-            "min": 7200,
+            "min": 1800,
             "max": 2419200
           }
         }
@@ -67256,11 +67297,29 @@
               "smithy.api#documentation": "\u003cp\u003eThe number of ML compute instances to use in the processing job. For distributed processing jobs, specify a value greater than 1. The default value is 1.\u003c/p\u003e"
             }
           },
+          "InstancePreferences": {
+            "target": "com.amazonaws.sagemaker#ProcessingInstancePreferenceList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn ordered list of ML compute instance types for the processing job, in priority order. Amazon SageMaker launches the job on the first instance type in the list that has available capacity. If capacity is insufficient, Amazon SageMaker evaluates the next instance type in the list. Exactly one instance type is selected for the job.\u003c/p\u003e \u003cp\u003e \u003ccode\u003eInstancePreferences\u003c/code\u003e is mutually exclusive with \u003ccode\u003eInstanceType\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
           "InstanceType": {
             "target": "com.amazonaws.sagemaker#ProcessingInstanceType",
             "traits": {
               "smithy.api#clientOptional": {},
               "smithy.api#documentation": "\u003cp\u003eThe ML compute instance type for the processing job.\u003c/p\u003e"
+            }
+          },
+          "SelectedInstanceCount": {
+            "target": "com.amazonaws.sagemaker#ProcessingInstanceCount",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe number of instances of \u003ccode\u003eSelectedInstanceType\u003c/code\u003e that the job launched with. The job is billed for this instance type and count. Returned by \u003ccode\u003eDescribeProcessingJob\u003c/code\u003e after an instance type is selected. This field is read-only and isn't accepted in \u003ccode\u003eCreateProcessingJob\u003c/code\u003e requests.\u003c/p\u003e"
+            }
+          },
+          "SelectedInstanceType": {
+            "target": "com.amazonaws.sagemaker#ProcessingInstanceType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe instance type that Amazon SageMaker selected for the job from \u003ccode\u003eInstancePreferences\u003c/code\u003e. Returned by \u003ccode\u003e \u003ca href=\"https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_DescribeProcessingJob.html\"\u003eDescribeProcessingJob\u003c/a\u003e \u003c/code\u003e after an instance type is selected. This field is read-only and isn't accepted in \u003ccode\u003eCreateProcessingJob\u003c/code\u003e requests.\u003c/p\u003e"
             }
           },
           "VolumeKmsKeyId": {
@@ -67385,6 +67444,41 @@
           "smithy.api#range": {
             "min": 1,
             "max": 100
+          }
+        }
+      },
+      "com.amazonaws.sagemaker#ProcessingInstancePreference": {
+        "type": "structure",
+        "members": {
+          "InstanceCount": {
+            "target": "com.amazonaws.sagemaker#ProcessingInstanceCount",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe number of instances to launch if this instance type is selected. Specify the instance count for the processing job in one of the following two ways:\u003c/p\u003e \u003col\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003ePer preference\u003c/b\u003e \u2013 Set \u003ccode\u003eInstanceCount\u003c/code\u003e on every preference in the \u003ccode\u003eInstancePreferences\u003c/code\u003e list and don't set \u003ccode\u003eProcessingClusterConfig$InstanceCount\u003c/code\u003e. Use this when each instance type needs a different number of instances to deliver equivalent compute.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eOne count for the job\u003c/b\u003e \u2013 Set \u003ccode\u003eProcessingClusterConfig$InstanceCount\u003c/code\u003e and omit it from every preference. Amazon SageMaker applies this to all instance types in the list.\u003c/p\u003e \u003c/li\u003e \u003c/ol\u003e \u003cp\u003eFor example, in a list of five preferences, either all five specify \u003ccode\u003eInstanceCount\u003c/code\u003e or none of them do. Amazon SageMaker rejects requests that set \u003ccode\u003eInstanceCount\u003c/code\u003e on only some preferences, that set it both per preference and in \u003ccode\u003eProcessingClusterConfig\u003c/code\u003e, or that omit it in both places.\u003c/p\u003e"
+            }
+          },
+          "InstanceType": {
+            "target": "com.amazonaws.sagemaker#ProcessingInstanceType",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe ML compute instance type. An instance type can appear only once in an \u003ccode\u003eInstancePreferences\u003c/code\u003e list.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA candidate instance type preference in a processing \u003ccode\u003eInstancePreferences\u003c/code\u003e list.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.sagemaker#ProcessingInstancePreferenceList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.sagemaker#ProcessingInstancePreference"
+        },
+        "traits": {
+          "smithy.api#documentation": "Ordered list of candidate instance types, in priority order.",
+          "smithy.api#length": {
+            "min": 1,
+            "max": 5
           }
         }
       },
@@ -73855,6 +73949,12 @@
               "smithy.api#documentation": "\u003cp\u003eConfiguration for how training job instances are placed and allocated within UltraServers. Only applicable for UltraServer capacity.\u003c/p\u003e"
             }
           },
+          "InstancePreferences": {
+            "target": "com.amazonaws.sagemaker#InstancePreferenceList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn ordered list of ML compute instance types for the training job, in priority order. SageMaker launches the training job on the first instance type in the list that has available capacity. If capacity is insufficient, SageMaker evaluates the next instance type in the preferred list. Exactly one instance type is selected for the job.\u003c/p\u003e \u003cp\u003e \u003ccode\u003eInstancePreferences\u003c/code\u003e is mutually exclusive with \u003ccode\u003eInstanceType\u003c/code\u003e, \u003ccode\u003eInstanceGroups\u003c/code\u003e, \u003ccode\u003eInstancePlacementConfig\u003c/code\u003e, and \u003ccode\u003eEnableManagedSpotTraining\u003c/code\u003e, and supports only Flexible Training Plans (FTP) and On-Demand capacity.\u003c/p\u003e"
+            }
+          },
           "InstanceType": {
             "target": "com.amazonaws.sagemaker#TrainingInstanceType",
             "traits": {
@@ -73865,6 +73965,18 @@
             "target": "com.amazonaws.sagemaker#KeepAlivePeriodInSeconds",
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe duration of time in seconds to retain configured resources in a warm pool for subsequent training jobs.\u003c/p\u003e"
+            }
+          },
+          "SelectedInstanceCount": {
+            "target": "com.amazonaws.sagemaker#TrainingInstanceCount",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe number of instances of \u003ccode\u003eSelectedInstanceType\u003c/code\u003e that the training job launched with. The job is billed for this instance type and count. Returned by \u003ccode\u003eDescribeTrainingJob\u003c/code\u003e after an instance type is selected. This field is read-only and isn't accepted in \u003ccode\u003eCreateTrainingJob\u003c/code\u003e requests.\u003c/p\u003e"
+            }
+          },
+          "SelectedInstanceType": {
+            "target": "com.amazonaws.sagemaker#TrainingInstanceType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe instance type that SageMaker selected for the job from the provided \u003ccode\u003eInstancePreferences\u003c/code\u003e. The job is billed for this instance type and count. Returned by \u003ccode\u003e \u003ca href=\"https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_DescribeTrainingJob.html\"\u003eDescribeTrainingJob\u003c/a\u003e \u003c/code\u003e after an instance type is selected. This field is read-only and isn't accepted in \u003ccode\u003eCreateTrainingJob\u003c/code\u003e requests.\u003c/p\u003e"
             }
           },
           "TrainingPlanArn": {
@@ -81114,7 +81226,7 @@
           "MaxPendingTimeInSeconds": {
             "target": "com.amazonaws.sagemaker#MaxPendingTimeInSeconds",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe maximum length of time, in seconds, that a training or compilation job can be pending before it is stopped.\u003c/p\u003e \u003cnote\u003e \u003cp\u003eWhen working with training jobs that use capacity from \u003ca href=\"https://docs.aws.amazon.com/sagemaker/latest/dg/reserve-capacity-with-training-plans.html\"\u003etraining plans\u003c/a\u003e, not all \u003ccode\u003ePending\u003c/code\u003e job states count against the \u003ccode\u003eMaxPendingTimeInSeconds\u003c/code\u003e limit. The following scenarios do not increment the \u003ccode\u003eMaxPendingTimeInSeconds\u003c/code\u003e counter:\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003eThe plan is in a \u003ccode\u003eScheduled\u003c/code\u003e state: Jobs queued (in \u003ccode\u003ePending\u003c/code\u003e status) before a plan's start date (waiting for scheduled start time)\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003eBetween capacity reservations: Jobs temporarily back to \u003ccode\u003ePending\u003c/code\u003e status between two capacity reservation periods\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e \u003cp\u003e \u003ccode\u003eMaxPendingTimeInSeconds\u003c/code\u003e only increments when jobs are actively waiting for capacity in an \u003ccode\u003eActive\u003c/code\u003e plan.\u003c/p\u003e \u003c/note\u003e"
+              "smithy.api#documentation": "\u003cp\u003eThe maximum length of time, in seconds, that a training or compilation job can be pending before it is stopped.\u003c/p\u003e \u003cnote\u003e \u003cp\u003eWhen working with training jobs that use capacity from \u003ca href=\"https://docs.aws.amazon.com/sagemaker/latest/dg/reserve-capacity-with-training-plans.html\"\u003etraining plans\u003c/a\u003e, not all \u003ccode\u003ePending\u003c/code\u003e job states count against the \u003ccode\u003eMaxPendingTimeInSeconds\u003c/code\u003e limit. The following scenarios do not increment the \u003ccode\u003eMaxPendingTimeInSeconds\u003c/code\u003e counter:\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003eThe plan is in a \u003ccode\u003eScheduled\u003c/code\u003e state: Jobs queued (in \u003ccode\u003ePending\u003c/code\u003e status) before a plan's start date (waiting for scheduled start time)\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003eBetween capacity reservations: Jobs temporarily back to \u003ccode\u003ePending\u003c/code\u003e status between two capacity reservation periods\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e \u003cp\u003e \u003ccode\u003eMaxPendingTimeInSeconds\u003c/code\u003e only increments when jobs are actively waiting for capacity in an \u003ccode\u003eActive\u003c/code\u003e plan.\u003c/p\u003e \u003c/note\u003e \u003cnote\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eMaxPendingTimeInSeconds\u003c/code\u003e takes effect only for jobs that request accelerated computing instance types, such as instances in the \u003ccode\u003eml.p\u003c/code\u003e, \u003ccode\u003eml.g\u003c/code\u003e, and \u003ccode\u003eml.trn\u003c/code\u003e families. It has no effect on jobs that request CPU-only instance types.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003eIf the job specifies \u003ccode\u003eInstancePreferences\u003c/code\u003e, \u003ccode\u003eMaxPendingTimeInSeconds\u003c/code\u003e bounds the total time SageMaker spends working through your list of instance types. It is not applied per instance type preference, and takes effect only when the list includes at least one accelerated computing instance type.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e \u003c/note\u003e"
             }
           },
           "MaxRuntimeInSeconds": {
@@ -84669,6 +84781,19 @@
             "max": 2048
           },
           "smithy.api#pattern": "^arn:aws[a-z\\-]*:sagemaker:[a-z0-9\\-]*:[0-9]{12}:training-plan/"
+        }
+      },
+      "com.amazonaws.sagemaker#TrainingPlanArnList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.sagemaker#TrainingPlanArn"
+        },
+        "traits": {
+          "smithy.api#documentation": "Training plan ARNs for a single instance preference.",
+          "smithy.api#length": {
+            "min": 1,
+            "max": 1
+          }
         }
       },
       "com.amazonaws.sagemaker#TrainingPlanArns": {

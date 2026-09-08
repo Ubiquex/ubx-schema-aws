@@ -1004,6 +1004,10 @@
               "value": "RUNS_DELETING"
             },
             {
+              "name": "RUNS_DELETE_FAILED",
+              "value": "RUNS_DELETE_FAILED"
+            },
+            {
               "name": "RUNS_DELETED",
               "value": "RUNS_DELETED"
             }
@@ -2964,7 +2968,7 @@
           }
         ],
         "traits": {
-          "smithy.api#documentation": "\u003cp\u003eCreates a cross-account shared resource. The resource owner makes an offer to share the resource with the principal subscriber (an AWS user with a different account than the resource owner).\u003c/p\u003e \u003cp\u003eThe following resources support cross-account sharing:\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003eHealthOmics variant stores\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003eHealthOmics annotation stores\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003ePrivate workflows\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e",
+          "smithy.api#documentation": "\u003cp\u003eCreates a cross-account shared resource. The resource owner makes an offer to share the resource with the principal subscriber (an Amazon Web Services user with a different account than the resource owner).\u003c/p\u003e \u003cp\u003eThe following resources support cross-account sharing:\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003eHealthOmics variant stores\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003eHealthOmics annotation stores\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003ePrivate workflows\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e",
           "smithy.api#endpoint": {
             "hostPrefix": "analytics-"
           },
@@ -3690,7 +3694,7 @@
           "outputBucketOwnerId": {
             "target": "com.amazonaws.omics#AwsAccountId",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe expected AWS account ID of the owner of the output S3 bucket. Can be overridden per run.\u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003eThe expected Amazon Web Services account ID of the owner of the output S3 bucket. Can be overridden per run.\u003c/p\u003e"
             }
           },
           "outputUri": {
@@ -3724,7 +3728,7 @@
           "roleArn": {
             "target": "com.amazonaws.omics#RunRoleArn",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe IAM role ARN that grants HealthOmics permissions to access required AWS resources such as Amazon S3 and CloudWatch. The role must have the same permissions required for individual \u003ccode\u003eStartRun\u003c/code\u003e calls.\u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003eThe IAM role ARN that grants HealthOmics permissions to access required Amazon Web Services resources such as Amazon S3 and CloudWatch. The role must have the same permissions required for individual \u003ccode\u003eStartRun\u003c/code\u003e calls.\u003c/p\u003e",
               "smithy.api#required": {}
             }
           },
@@ -3737,13 +3741,19 @@
           "runTags": {
             "target": "com.amazonaws.omics#TagMap",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eAWS tags to associate with each workflow run. Merged with per-run \u003ccode\u003erunTags\u003c/code\u003e; run-specific values take precedence when keys overlap.\u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003eAmazon Web Services tags to associate with each workflow run. Merged with per-run \u003ccode\u003erunTags\u003c/code\u003e; run-specific values take precedence when keys overlap.\u003c/p\u003e"
             }
           },
           "scratchStorageMode": {
             "target": "com.amazonaws.omics#ScratchStorageMode",
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eOptional configuration for enabling scratch ephemeral storage mounted at /tmp. If not specified, this will default to SHARED. This configuration is applicable only for CPU tasks. For tasks using GPUs, scratch storage is always LOCAL.\u003c/p\u003e"
+            }
+          },
+          "sessionPolicy": {
+            "target": "com.amazonaws.omics#SessionPolicy",
+            "traits": {
+              "smithy.api#documentation": "Optional inline policy json for scoping down permissions via a session policy on the IAM role provided in the roleArn parameter."
             }
           },
           "storageCapacity": {
@@ -3772,7 +3782,7 @@
           "workflowOwnerId": {
             "target": "com.amazonaws.omics#WorkflowOwnerId",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe AWS account ID of the workflow owner, used for cross-account workflow sharing.\u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Web Services account ID of the workflow owner, used for cross-account workflow sharing.\u003c/p\u003e"
             }
           },
           "workflowType": {
@@ -4068,7 +4078,7 @@
           }
         ],
         "traits": {
-          "smithy.api#documentation": "\u003cp\u003eDeletes a run batch resource and its associated metadata. This operation does not delete the individual workflow runs. To delete the runs, call \u003ccode\u003eDeleteRunBatch\u003c/code\u003e before calling \u003ccode\u003eDeleteBatch\u003c/code\u003e.\u003c/p\u003e \u003cp\u003e \u003ccode\u003eDeleteBatch\u003c/code\u003e requires the batch to be in a terminal state: \u003ccode\u003ePROCESSED\u003c/code\u003e, \u003ccode\u003eFAILED\u003c/code\u003e, \u003ccode\u003eCANCELLED\u003c/code\u003e, or \u003ccode\u003eRUNS_DELETED\u003c/code\u003e. After \u003ccode\u003eDeleteBatch\u003c/code\u003e completes, the batch metadata is no longer accessible. You cannot call \u003ccode\u003eGetBatch\u003c/code\u003e, \u003ccode\u003eListRunsInBatch\u003c/code\u003e, \u003ccode\u003eDeleteRunBatch\u003c/code\u003e, or \u003ccode\u003eCancelRunBatch\u003c/code\u003e on a deleted batch.\u003c/p\u003e",
+          "smithy.api#documentation": "\u003cp\u003eDeletes a run batch resource and its associated metadata. This operation does not delete the individual workflow runs. To delete the runs, call \u003ccode\u003eDeleteRunBatch\u003c/code\u003e before calling \u003ccode\u003eDeleteBatch\u003c/code\u003e.\u003c/p\u003e \u003cp\u003e \u003ccode\u003eDeleteBatch\u003c/code\u003e requires the batch to be in a terminal state: \u003ccode\u003ePROCESSED\u003c/code\u003e, \u003ccode\u003eFAILED\u003c/code\u003e, \u003ccode\u003eCANCELLED\u003c/code\u003e, \u003ccode\u003eRUNS_DELETE_FAILED\u003c/code\u003e, or \u003ccode\u003eRUNS_DELETED\u003c/code\u003e. After \u003ccode\u003eDeleteBatch\u003c/code\u003e completes, the batch metadata is no longer accessible. You cannot call \u003ccode\u003eGetBatch\u003c/code\u003e, \u003ccode\u003eListRunsInBatch\u003c/code\u003e, \u003ccode\u003eDeleteRunBatch\u003c/code\u003e, or \u003ccode\u003eCancelRunBatch\u003c/code\u003e on a deleted batch.\u003c/p\u003e",
           "smithy.api#endpoint": {
             "hostPrefix": "workflows-"
           },
@@ -6306,7 +6316,7 @@
           "status": {
             "target": "com.amazonaws.omics#BatchStatus",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe current status of the run batch. Possible values: \u003ccode\u003eCREATING\u003c/code\u003e (initial setup), \u003ccode\u003ePENDING\u003c/code\u003e (ready to submit runs), \u003ccode\u003eSUBMITTING\u003c/code\u003e (submitting runs), \u003ccode\u003eINPROGRESS\u003c/code\u003e (runs executing), \u003ccode\u003eSTOPPING\u003c/code\u003e (cancellation in progress), \u003ccode\u003ePROCESSED\u003c/code\u003e (all runs completed), \u003ccode\u003eCANCELLED\u003c/code\u003e (batch cancelled), \u003ccode\u003eFAILED\u003c/code\u003e (batch failed), \u003ccode\u003eRUNS_DELETING\u003c/code\u003e (deleting runs), \u003ccode\u003eRUNS_DELETED\u003c/code\u003e (runs deleted).\u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003eThe current status of the run batch. Possible values: \u003ccode\u003eCREATING\u003c/code\u003e (initial setup), \u003ccode\u003ePENDING\u003c/code\u003e (ready to submit runs), \u003ccode\u003eSUBMITTING\u003c/code\u003e (submitting runs), \u003ccode\u003eINPROGRESS\u003c/code\u003e (runs executing), \u003ccode\u003eSTOPPING\u003c/code\u003e (cancellation in progress), \u003ccode\u003ePROCESSED\u003c/code\u003e (all runs completed), \u003ccode\u003eCANCELLED\u003c/code\u003e (batch cancelled), \u003ccode\u003eFAILED\u003c/code\u003e (batch failed), \u003ccode\u003eRUNS_DELETING\u003c/code\u003e (deleting runs), \u003ccode\u003eRUNS_DELETE_FAILED\u003c/code\u003e (run deletion failed for some or all runs), \u003ccode\u003eRUNS_DELETED\u003c/code\u003e (runs deleted).\u003c/p\u003e"
             }
           },
           "submissionSummary": {
@@ -6324,7 +6334,7 @@
           "tags": {
             "target": "com.amazonaws.omics#TagMap",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eAWS tags associated with the run batch.\u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003eAmazon Web Services tags associated with the run batch.\u003c/p\u003e"
             }
           },
           "totalRuns": {
@@ -8584,6 +8594,12 @@
               "smithy.api#documentation": "\u003cp\u003eOptional configuration for enabling scratch ephemeral storage mounted at /tmp. If absent, this will default to SHARED. This configuration is applicable only for CPU tasks. For tasks using GPUs, scratch storage is always LOCAL.\u003c/p\u003e"
             }
           },
+          "sessionPolicy": {
+            "target": "com.amazonaws.omics#SessionPolicy",
+            "traits": {
+              "smithy.api#documentation": "Inline policy json for scoping down permissions via a session policy on the IAM role."
+            }
+          },
           "startTime": {
             "target": "com.amazonaws.omics#RunTimestamp",
             "traits": {
@@ -10778,7 +10794,7 @@
           "outputBucketOwnerId": {
             "target": "com.amazonaws.omics#AwsAccountId",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe expected AWS account ID of the owner of the output S3 bucket for this run.\u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003eThe expected Amazon Web Services account ID of the owner of the output S3 bucket for this run.\u003c/p\u003e"
             }
           },
           "outputUri": {
@@ -10813,7 +10829,7 @@
           "runTags": {
             "target": "com.amazonaws.omics#TagMap",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003ePer-run AWS tags. Merged with \u003ccode\u003edefaultRunSetting.runTags\u003c/code\u003e; values in this object take precedence when keys overlap.\u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003ePer-run Amazon Web Services tags. Merged with \u003ccode\u003edefaultRunSetting.runTags\u003c/code\u003e; values in this object take precedence when keys overlap.\u003c/p\u003e"
             }
           }
         },
@@ -17829,6 +17845,16 @@
           "smithy.api#httpError": 402
         }
       },
+      "com.amazonaws.omics#SessionPolicy": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 2048
+          },
+          "smithy.api#pattern": "^[\\p{L}\\p{M}\\p{Z}\\p{S}\\p{N}\\p{P}\\t\\n\\r]+$"
+        }
+      },
       "com.amazonaws.omics#Share": {
         "type": "resource"
       },
@@ -18208,7 +18234,7 @@
         ],
         "traits": {
           "aws.iam#actionPermissionDescription": "Grants permission to start a Read Set activation job from the given Sequence Store",
-          "smithy.api#documentation": "\u003cp\u003eActivates an archived read set and returns its metadata in a JSON formatted output. AWS HealthOmics automatically archives unused read sets after 30 days. To monitor the status of your read set activation job, use the \u003ccode\u003eGetReadSetActivationJob\u003c/code\u003e operation.\u003c/p\u003e \u003cp\u003eTo learn more, see \u003ca href=\"https://docs.aws.amazon.com/omics/latest/dev/activating-read-sets.html\"\u003eActivating read sets\u003c/a\u003e in the \u003ci\u003eAmazon Web Services HealthOmics User Guide\u003c/i\u003e.\u003c/p\u003e",
+          "smithy.api#documentation": "\u003cp\u003eActivates an archived read set and returns its metadata in a JSON formatted output. Amazon Web Services HealthOmics automatically archives unused read sets after 30 days. To monitor the status of your read set activation job, use the \u003ccode\u003eGetReadSetActivationJob\u003c/code\u003e operation.\u003c/p\u003e \u003cp\u003eTo learn more, see \u003ca href=\"https://docs.aws.amazon.com/omics/latest/dev/activating-read-sets.html\"\u003eActivating read sets\u003c/a\u003e in the \u003ci\u003eAmazon Web Services HealthOmics User Guide\u003c/i\u003e.\u003c/p\u003e",
           "smithy.api#endpoint": {
             "hostPrefix": "control-storage-"
           },
@@ -18935,7 +18961,7 @@
           "tags": {
             "target": "com.amazonaws.omics#TagMap",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eAWS tags to associate with the batch resource. These tags are not inherited by individual runs. To tag individual runs, use \u003ccode\u003edefaultRunSetting.runTags\u003c/code\u003e.\u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003eAmazon Web Services tags to associate with the batch resource. These tags are not inherited by individual runs. To tag individual runs, use \u003ccode\u003edefaultRunSetting.runTags\u003c/code\u003e.\u003c/p\u003e"
             }
           }
         },
@@ -18967,7 +18993,7 @@
           "tags": {
             "target": "com.amazonaws.omics#TagMap",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eAWS tags associated with the run batch.\u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003eAmazon Web Services tags associated with the run batch.\u003c/p\u003e"
             }
           },
           "uuid": {
@@ -19066,7 +19092,7 @@
           "roleArn": {
             "target": "com.amazonaws.omics#RunRoleArn",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eA service role for the run. The \u003ccode\u003eroleArn\u003c/code\u003e requires access to Amazon Web Services HealthOmics, S3, Cloudwatch logs, and EC2. An example \u003ccode\u003eroleArn\u003c/code\u003e is \u003ccode\u003earn:aws:iam::123456789012:role/omics-service-role-serviceRole-W8O1XMPL7QZ\u003c/code\u003e. In this example, the AWS account ID is \u003ccode\u003e123456789012\u003c/code\u003e and the role name is \u003ccode\u003eomics-service-role-serviceRole-W8O1XMPL7QZ\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003eA service role for the run. The \u003ccode\u003eroleArn\u003c/code\u003e requires access to Amazon Web Services HealthOmics, S3, Cloudwatch logs, and EC2. An example \u003ccode\u003eroleArn\u003c/code\u003e is \u003ccode\u003earn:aws:iam::123456789012:role/omics-service-role-serviceRole-W8O1XMPL7QZ\u003c/code\u003e. In this example, the Amazon Web Services account ID is \u003ccode\u003e123456789012\u003c/code\u003e and the role name is \u003ccode\u003eomics-service-role-serviceRole-W8O1XMPL7QZ\u003c/code\u003e.\u003c/p\u003e",
               "smithy.api#required": {}
             }
           },
@@ -19086,6 +19112,12 @@
             "target": "com.amazonaws.omics#ScratchStorageMode",
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eOptional configuration for enabling scratch ephemeral storage mounted at /tmp. If not specified, this will default to SHARED. This configuration is applicable only for CPU tasks. For tasks using GPUs, scratch storage is always LOCAL.\u003c/p\u003e"
+            }
+          },
+          "sessionPolicy": {
+            "target": "com.amazonaws.omics#SessionPolicy",
+            "traits": {
+              "smithy.api#documentation": "Optional inline policy json for scoping down permissions via a session policy on the IAM role provided in the roleArn parameter."
             }
           },
           "storageCapacity": {
@@ -21240,7 +21272,7 @@
           }
         },
         "traits": {
-          "smithy.api#documentation": "\u003cp\u003eThe input fails to satisfy the constraints specified by an AWS service.\u003c/p\u003e",
+          "smithy.api#documentation": "\u003cp\u003eThe input fails to satisfy the constraints specified by an Amazon Web Services service.\u003c/p\u003e",
           "smithy.api#error": "client",
           "smithy.api#httpError": 400
         }

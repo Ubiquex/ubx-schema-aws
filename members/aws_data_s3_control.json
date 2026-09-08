@@ -22317,6 +22317,23 @@
           }
         }
       },
+      "com.amazonaws.s3control#S3AnnotationDirective": {
+        "type": "enum",
+        "members": {
+          "COPY": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "COPY"
+            }
+          },
+          "EXCLUDE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "EXCLUDE"
+            }
+          }
+        }
+      },
       "com.amazonaws.s3control#S3BucketArnString": {
         "type": "string",
         "traits": {
@@ -22525,6 +22542,12 @@
               "smithy.api#documentation": "\u003cp\u003e\u003c/p\u003e\n         \u003cnote\u003e\n            \u003cp\u003eThis functionality is not supported by directory buckets.\u003c/p\u003e\n         \u003c/note\u003e"
             }
           },
+          "AnnotationDirective": {
+            "target": "com.amazonaws.s3control#S3AnnotationDirective",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies whether the Batch Operations copy job copies object annotations from the source\n         object or skips them. If this property isn't specified, \u003ccode\u003eCOPY\u003c/code\u003e is the default\n         behavior.\u003c/p\u003e\n         \u003cp\u003eValid Values: \u003ccode\u003eCOPY | EXCLUDE\u003c/code\u003e\n         \u003c/p\u003e\n         \u003cnote\u003e\n            \u003cp\u003eThis functionality is not supported by directory buckets.\u003c/p\u003e\n         \u003c/note\u003e"
+            }
+          },
           "BucketKeyEnabled": {
             "target": "com.amazonaws.s3control#Boolean",
             "traits": {
@@ -22566,6 +22589,18 @@
             "target": "com.amazonaws.s3control#S3TagSet",
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eSpecifies a list of tags to add to the destination objects after they are copied. \n         If \u003ccode\u003eNewObjectTagging\u003c/code\u003e is not specified, the tags of the source objects are copied to destination objects by default.\u003c/p\u003e\n         \u003cnote\u003e\n            \u003cp\u003e\n               \u003cb\u003eDirectory buckets\u003c/b\u003e - Tags aren't supported by directory buckets. \n         If your source objects have tags and your destination bucket is a directory bucket, specify an empty tag set in the \u003ccode\u003eNewObjectTagging\u003c/code\u003e field \n         to prevent copying the source object tags to the directory bucket.\u003c/p\u003e\n         \u003c/note\u003e"
+            }
+          },
+          "ObjectLockEventHold": {
+            "target": "com.amazonaws.s3control#S3ObjectLockEventHold",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe event hold status to be applied to all objects in the Batch Operations copy job. Set to\n         \u003ccode\u003eON\u003c/code\u003e to enable an event hold or \u003ccode\u003eOFF\u003c/code\u003e to disable it.\u003c/p\u003e\n         \u003cnote\u003e\n            \u003cp\u003eThis functionality is not supported by directory buckets.\u003c/p\u003e\n         \u003c/note\u003e"
+            }
+          },
+          "ObjectLockEventHoldDuration": {
+            "target": "com.amazonaws.s3control#S3ObjectLockEventHoldDuration",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe event hold duration to be applied to all objects in the Batch Operations copy job. The\n         duration specifies how long the object remains protected after the event hold is\n         released.\u003c/p\u003e\n         \u003cnote\u003e\n            \u003cp\u003eThis functionality is not supported by directory buckets.\u003c/p\u003e\n         \u003c/note\u003e"
             }
           },
           "ObjectLockLegalHoldStatus": {
@@ -22793,7 +22828,7 @@
           "ExpectedBucketOwner": {
             "target": "com.amazonaws.s3control#AccountId",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe Amazon Web Services account ID that owns the bucket the generated manifest is written to. If\n         provided the generated manifest bucket's owner Amazon Web Services account ID must match this value, else\n         the job fails.\u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Web Services account ID that owns the source bucket specified in \u003ccode\u003eSourceBucket\u003c/code\u003e. If\n         provided, the manifest source bucket owner's Amazon Web Services account ID must match this value, else\n         the job fails.\u003c/p\u003e"
             }
           },
           "Filter": {
@@ -22887,6 +22922,61 @@
           }
         }
       },
+      "com.amazonaws.s3control#S3ObjectLockEventHold": {
+        "type": "enum",
+        "members": {
+          "OFF": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "OFF"
+            }
+          },
+          "ON": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ON"
+            }
+          }
+        }
+      },
+      "com.amazonaws.s3control#S3ObjectLockEventHoldDuration": {
+        "type": "structure",
+        "members": {
+          "Days": {
+            "target": "com.amazonaws.s3control#S3ObjectLockEventHoldDurationDays",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe number of days for the event hold duration. The minimum value is 1 and the maximum\n         value is 36,500.\u003c/p\u003e"
+            }
+          },
+          "Years": {
+            "target": "com.amazonaws.s3control#S3ObjectLockEventHoldDurationYears",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe number of years for the event hold duration. The minimum value is 1 and the maximum\n         value is 100.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eContains the duration configuration for an event hold, specified in either days or\n         years.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.s3control#S3ObjectLockEventHoldDurationDays": {
+        "type": "integer",
+        "traits": {
+          "smithy.api#range": {
+            "min": 1,
+            "max": 36500
+          }
+        }
+      },
+      "com.amazonaws.s3control#S3ObjectLockEventHoldDurationYears": {
+        "type": "integer",
+        "traits": {
+          "smithy.api#range": {
+            "min": 1,
+            "max": 100
+          }
+        }
+      },
       "com.amazonaws.s3control#S3ObjectLockLegalHold": {
         "type": "structure",
         "members": {
@@ -22933,6 +23023,61 @@
             "traits": {
               "smithy.api#enumValue": "GOVERNANCE"
             }
+          }
+        }
+      },
+      "com.amazonaws.s3control#S3ObjectLockRetentionEventHold": {
+        "type": "enum",
+        "members": {
+          "OFF": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "OFF"
+            }
+          },
+          "ON": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ON"
+            }
+          }
+        }
+      },
+      "com.amazonaws.s3control#S3ObjectLockRetentionEventHoldDuration": {
+        "type": "structure",
+        "members": {
+          "Days": {
+            "target": "com.amazonaws.s3control#S3ObjectLockRetentionEventHoldDurationDays",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe number of days for the event hold duration. The minimum value is 1 and the maximum\n         value is 36,500.\u003c/p\u003e"
+            }
+          },
+          "Years": {
+            "target": "com.amazonaws.s3control#S3ObjectLockRetentionEventHoldDurationYears",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe number of years for the event hold duration. The minimum value is 1 and the maximum\n         value is 100.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eContains the duration configuration for an event hold, specified in either days or\n         years.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.s3control#S3ObjectLockRetentionEventHoldDurationDays": {
+        "type": "integer",
+        "traits": {
+          "smithy.api#range": {
+            "min": 1,
+            "max": 36500
+          }
+        }
+      },
+      "com.amazonaws.s3control#S3ObjectLockRetentionEventHoldDurationYears": {
+        "type": "integer",
+        "traits": {
+          "smithy.api#range": {
+            "min": 1,
+            "max": 100
           }
         }
       },
@@ -23152,6 +23297,18 @@
       "com.amazonaws.s3control#S3Retention": {
         "type": "structure",
         "members": {
+          "EventHold": {
+            "target": "com.amazonaws.s3control#S3ObjectLockRetentionEventHold",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe event hold status to be applied to all objects in the Batch Operations job. Set to\n         \u003ccode\u003eON\u003c/code\u003e to enable an event hold or \u003ccode\u003eOFF\u003c/code\u003e to disable it.\u003c/p\u003e"
+            }
+          },
+          "EventHoldDuration": {
+            "target": "com.amazonaws.s3control#S3ObjectLockRetentionEventHoldDuration",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe event hold duration to be applied to all objects in the Batch Operations job. The duration\n         specifies how long the object remains protected after the event hold is released.\u003c/p\u003e"
+            }
+          },
           "Mode": {
             "target": "com.amazonaws.s3control#S3ObjectLockRetentionMode",
             "traits": {
@@ -23568,7 +23725,7 @@
           "MinStorageBytesPercentage": {
             "target": "com.amazonaws.s3control#MinStorageBytesPercentage",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe minimum number of storage bytes percentage whose metrics will be selected.\u003c/p\u003e\n         \u003cnote\u003e\n            \u003cp\u003eYou must choose a value greater than or equal to \u003ccode\u003e1.0\u003c/code\u003e.\u003c/p\u003e\n         \u003c/note\u003e"
+              "smithy.api#documentation": "\u003cp\u003eThe minimum percentage of total bucket storage that a prefix must hold for its metrics to be included.\u003c/p\u003e"
             }
           }
         },
