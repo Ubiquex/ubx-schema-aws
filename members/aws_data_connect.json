@@ -7880,6 +7880,29 @@
           "target": "com.amazonaws.connect#IntegerCount"
         }
       },
+      "com.amazonaws.connect#ChannelWorkloadBehaviorType": {
+        "type": "enum",
+        "members": {
+          "ROUTE_ANY_CHANNEL_ANY_WORKLOAD_TYPE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ROUTE_ANY_CHANNEL_ANY_WORKLOAD_TYPE"
+            }
+          },
+          "ROUTE_CURRENT_CHANNEL_ANY_WORKLOADTYPE_ONLY": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ROUTE_CURRENT_CHANNEL_ANY_WORKLOADTYPE_ONLY"
+            }
+          },
+          "ROUTE_CURRENT_CHANNEL_CURRENT_WORKLOADTYPE_ONLY": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ROUTE_CURRENT_CHANNEL_CURRENT_WORKLOADTYPE_ONLY"
+            }
+          }
+        }
+      },
       "com.amazonaws.connect#Channels": {
         "type": "list",
         "member": {
@@ -8466,7 +8489,7 @@
         "type": "integer",
         "traits": {
           "smithy.api#range": {
-            "min": 1,
+            "min": 0,
             "max": 10
           }
         }
@@ -15753,6 +15776,20 @@
         },
         "traits": {
           "smithy.api#documentation": "\u003cp\u003eDefines the cross-channel routing behavior that allows an agent working on a contact in one channel to be\n   offered a contact from a different channel.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.connect#CrossChannelWorkloadBehavior": {
+        "type": "structure",
+        "members": {
+          "ChannelWorkloadBehaviorType": {
+            "target": "com.amazonaws.connect#ChannelWorkloadBehaviorType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies the routing behavior for an agent handling their current channel and workload type.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eDefines the cross-channel and workload type routing behavior that allows an agent working on a contact to be\n   offered a contact from a different channel or workload type.\u003c/p\u003e"
         }
       },
       "com.amazonaws.connect#CurrentMetric": {
@@ -41428,14 +41465,21 @@
           "Concurrency": {
             "target": "com.amazonaws.connect#Concurrency",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe number of contacts an agent can have on a channel simultaneously.\u003c/p\u003e\n         \u003cp\u003eValid Range for \u003ccode\u003eVOICE\u003c/code\u003e: Minimum value of 1. Maximum value of 1.\u003c/p\u003e\n         \u003cp\u003eValid Range for \u003ccode\u003eCHAT\u003c/code\u003e: Minimum value of 1. Maximum value of 10.\u003c/p\u003e\n         \u003cp\u003eValid Range for \u003ccode\u003eTASK\u003c/code\u003e: Minimum value of 1. Maximum value of 10.\u003c/p\u003e",
-              "smithy.api#required": {}
+              "smithy.api#addedDefault": {},
+              "smithy.api#default": 0,
+              "smithy.api#documentation": "\u003cp\u003eThe number of contacts an agent can have on a channel simultaneously.\u003c/p\u003e\n         \u003cp\u003eValid Range for \u003ccode\u003eVOICE\u003c/code\u003e: Minimum value of 1. Maximum value of 1.\u003c/p\u003e\n         \u003cp\u003eValid Range for \u003ccode\u003eCHAT\u003c/code\u003e: Minimum value of 1. Maximum value of 10.\u003c/p\u003e\n         \u003cp\u003eValid Range for \u003ccode\u003eTASK\u003c/code\u003e: Minimum value of 1. Maximum value of 10.\u003c/p\u003e"
             }
           },
           "CrossChannelBehavior": {
             "target": "com.amazonaws.connect#CrossChannelBehavior",
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eDefines the cross-channel routing behavior for each channel that is enabled for this Routing Profile. For\n   example, this allows you to offer an agent a different contact from another channel when they are currently working\n   with a contact from a Voice channel.\u003c/p\u003e"
+            }
+          },
+          "WorkloadTypeConcurrencies": {
+            "target": "com.amazonaws.connect#WorkloadTypeConcurrencies",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eDefines the list of workload type concurrency configurations for a channel. When provided, enables granular\n   concurrency control based on workload type values.\u003c/p\u003e"
             }
           }
         },
@@ -69355,6 +69399,58 @@
         },
         "traits": {
           "smithy.api#documentation": "\u003cp\u003eInformation about Connect Customer Wisdom.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.connect#WorkloadType": {
+        "type": "string"
+      },
+      "com.amazonaws.connect#WorkloadTypeConcurrencies": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.connect#WorkloadTypeConcurrency"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 5
+          }
+        }
+      },
+      "com.amazonaws.connect#WorkloadTypeConcurrency": {
+        "type": "structure",
+        "members": {
+          "Concurrency": {
+            "target": "com.amazonaws.connect#WorkloadTypeConcurrencyType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of contacts an agent can handle simultaneously for a specific channel and workload type\n   combination.\u003c/p\u003e\n         \u003cp\u003eValid Range for \u003ccode\u003eVOICE\u003c/code\u003e: Minimum value of 1. Maximum value of 1.\u003c/p\u003e\n         \u003cp\u003eValid Range for \u003ccode\u003eCHAT\u003c/code\u003e: Minimum value of 1. Maximum value of 10.\u003c/p\u003e\n         \u003cp\u003eValid Range for \u003ccode\u003eTASK\u003c/code\u003e: Minimum value of 1. Maximum value of 10.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "CrossChannelWorkloadBehavior": {
+            "target": "com.amazonaws.connect#CrossChannelWorkloadBehavior",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eDefines the cross-channel and workload type routing behavior for each channel and workload type combination\n   that is enabled for this Routing Profile.\u003c/p\u003e"
+            }
+          },
+          "WorkloadType": {
+            "target": "com.amazonaws.connect#WorkloadType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe value of the workload type.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eDefines the maximum number of contacts an agent can handle simultaneously for a specific channel and workload\n   type combination.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.connect#WorkloadTypeConcurrencyType": {
+        "type": "integer",
+        "traits": {
+          "smithy.api#range": {
+            "min": 1,
+            "max": 10
+          }
         }
       },
       "com.amazonaws.connect#Workspace": {
