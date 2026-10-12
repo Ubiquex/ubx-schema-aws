@@ -2607,7 +2607,7 @@
         "traits": {
           "smithy.api#length": {
             "min": 0,
-            "max": 262144
+            "max": 1048576
           },
           "smithy.api#sensitive": {},
           "smithy.api#tags": [
@@ -5533,7 +5533,7 @@
           "Timeout": {
             "target": "com.amazonaws.lambda#Timeout",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe amount of time (in seconds) that Lambda allows a function to run before stopping it. The default is 3 seconds. The maximum allowed value is 900 seconds. For more information, see \u003ca href=\"https://docs.aws.amazon.com/lambda/latest/dg/runtimes-context.html\"\u003eLambda execution environment\u003c/a\u003e.\u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003eThe amount of time (in seconds) that Lambda allows a function to run before stopping it. The default is 3 seconds, and the maximum allowed value is 900 seconds. For functions using Lambda Managed Instances, asynchronous invocations and event source mapping invocations (except Amazon MQ and Amazon DocumentDB) support a maximum allowed value of 5,400 seconds (90 minutes). For more information, see \u003ca href=\"https://docs.aws.amazon.com/lambda/latest/dg/runtimes-context.html\"\u003eLambda execution environment\u003c/a\u003e.\u003c/p\u003e",
               "smithy.api#tags": [
                 "feature:public"
               ]
@@ -6891,7 +6891,7 @@
             "traits": {
               "smithy.api#enumValue": "AUTO",
               "smithy.api#tags": [
-                "feature:s3files-rbp"
+                "feature:public"
               ]
             }
           },
@@ -6900,7 +6900,7 @@
             "traits": {
               "smithy.api#enumValue": "DISABLED",
               "smithy.api#tags": [
-                "feature:s3files-rbp"
+                "feature:public"
               ]
             }
           },
@@ -6909,14 +6909,14 @@
             "traits": {
               "smithy.api#enumValue": "ENABLED",
               "smithy.api#tags": [
-                "feature:s3files-rbp"
+                "feature:public"
               ]
             }
           }
         },
         "traits": {
           "smithy.api#tags": [
-            "feature:s3files-rbp"
+            "feature:public"
           ]
         }
       },
@@ -9241,7 +9241,7 @@
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe configuration for how your function accesses data on an Amazon S3 file system. Valid only when the file system access point ARN is an Amazon S3 Files access point. If you specify a different access point type (for example, Amazon Elastic File System), the operation returns an \u003ccode\u003eInvalidParameterException\u003c/code\u003e.\u003c/p\u003e",
               "smithy.api#tags": [
-                "feature:s3files-rbp"
+                "feature:public"
               ]
             }
           }
@@ -14749,6 +14749,15 @@
         },
         "errors": [
           {
+            "target": "com.amazonaws.lambda#CodeArtifactUserDeletedException"
+          },
+          {
+            "target": "com.amazonaws.lambda#CodeArtifactUserFailedException"
+          },
+          {
+            "target": "com.amazonaws.lambda#CodeArtifactUserPendingException"
+          },
+          {
             "target": "com.amazonaws.lambda#EC2AccessDeniedException"
           },
           {
@@ -15268,7 +15277,7 @@
           "Type": {
             "target": "com.amazonaws.lambda#KafkaSchemaRegistryAuthType",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003e The type of authentication Lambda uses to access your schema registry. \u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003e The type of authentication Lambda uses to access your schema registry. \u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eBASIC_AUTH\u003c/code\u003e \u2013 The Secrets Manager ARN of your secret key used for basic authentication with your Confluent schema registry.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eCLIENT_CERTIFICATE_TLS_AUTH\u003c/code\u003e \u2013 The Secrets Manager ARN of your secret key containing the certificate chain (X.509 PEM), private key (PKCS#8 PEM), and private key password (optional) used for mutual TLS authentication with your Confluent schema registry.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eSERVER_ROOT_CA_CERTIFICATE\u003c/code\u003e \u2013 The Secrets Manager ARN of your secret key containing the root CA certificate (X.509 PEM) used for TLS encryption with your Confluent schema registry.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eOAUTHBEARER_AUTH\u003c/code\u003e \u2013 The Secrets Manager ARN of your secret key containing the OAuth 2.0 credentials that Lambda uses to acquire an access token for your Confluent schema registry. For the contents of the secret, see \u003ca href=\"https://docs.aws.amazon.com/lambda/latest/dg/kafka-cluster-auth.html#smaa-auth-oauth-secret\"\u003eConfiguring the OAuth secret\u003c/a\u003e.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e",
               "smithy.api#tags": [
                 "feature:public"
               ]
@@ -15325,6 +15334,15 @@
               "smithy.api#enumValue": "CLIENT_CERTIFICATE_TLS_AUTH",
               "smithy.api#tags": [
                 "feature:public"
+              ]
+            }
+          },
+          "OAUTHBEARER_AUTH": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "OAUTHBEARER_AUTH",
+              "smithy.api#tags": [
+                "feature:kafka-oauthbearer-auth"
               ]
             }
           },
@@ -16811,7 +16829,7 @@
           "Qualifier": {
             "target": "com.amazonaws.lambda#NumericLatestPublishedOrAliasQualifier",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe function version or alias. If not specified, lists executions for the $LATEST version.\u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003eThe function version to filter executions by. If you don't specify a qualifier, this operation returns executions across all versions of the Lambda function.\u003c/p\u003e",
               "smithy.api#httpQuery": "Qualifier",
               "smithy.api#tags": [
                 "feature:public"
@@ -19733,7 +19751,7 @@
             "min": 0,
             "max": 256
           },
-          "smithy.api#pattern": "^arn:(aws[a-zA-Z-]*)?:lambda:(eusc-)?[a-z]{2}((-gov)|(-iso([a-z]?)))?-[a-z]+-\\d{1}:\\d{12}:function:[a-zA-Z0-9-_]+(:(\\$LATEST(\\.PUBLISHED)?|[a-zA-Z0-9-_])+)?$",
+          "smithy.api#pattern": "^arn:(aws[a-zA-Z-]*)?:lambda:(eusc-)?[a-z]{2}((-gov)|(-iso([a-z]?)))?-[a-z]+-\\d{1}:\\d{12}:(runtime/|function:)[a-zA-Z0-9-_]+(:(\\$LATEST(\\.PUBLISHED)?|[a-zA-Z0-9-_])+)?$",
           "smithy.api#tags": [
             "feature:public"
           ]
@@ -22422,7 +22440,7 @@
             "traits": {
               "smithy.api#enumValue": "nodejs26.x",
               "smithy.api#tags": [
-                "feature:nodejs-26"
+                "feature:public"
               ]
             }
           },
@@ -22548,7 +22566,7 @@
             "traits": {
               "smithy.api#enumValue": "python3.15",
               "smithy.api#tags": [
-                "feature:python-315"
+                "feature:public"
               ]
             }
           },
@@ -22741,7 +22759,7 @@
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eSpecifies if a function reads from the file system for the lowest latency, or through Amazon S3 Files feature \"direct Amazon S3 bucket reads\" for the highest throughput. Valid values:\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAUTO\u003c/code\u003e (default) \u2013 Direct reads are active for functions you configure with 512 MB or more of memory.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eENABLED\u003c/code\u003e \u2013 Enforces all reads are directly from the Amazon S3 bucket, regardless of available memory (less than 512 MB).\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eDISABLED\u003c/code\u003e \u2013 Routes all reads through the file system, regardless of memory configuration.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e \u003cp\u003eTo use direct reads, you must grant the execution role the \u003ccode\u003es3:GetObject\u003c/code\u003e and \u003ccode\u003es3:GetObjectVersion\u003c/code\u003e permissions. If a direct read fails, Lambda automatically falls back to reading through the file system.\u003c/p\u003e",
               "smithy.api#tags": [
-                "feature:s3files-rbp"
+                "feature:public"
               ]
             }
           }
@@ -22749,7 +22767,7 @@
         "traits": {
           "smithy.api#documentation": "\u003cp\u003eSetting controls how your function accesses data from an Amazon S3 file system.\u003c/p\u003e",
           "smithy.api#tags": [
-            "feature:s3files-rbp"
+            "feature:public"
           ]
         }
       },
@@ -23678,7 +23696,7 @@
           "Type": {
             "target": "com.amazonaws.lambda#SourceAccessType",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe type of authentication protocol, VPC components, or virtual host for your event source. For example: \u003ccode\u003e\"Type\":\"SASL_SCRAM_512_AUTH\"\u003c/code\u003e.\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eBASIC_AUTH\u003c/code\u003e \u2013 (Amazon MQ) The Secrets Manager secret that stores your broker credentials.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eBASIC_AUTH\u003c/code\u003e \u2013 (Self-managed Apache Kafka) The Secrets Manager ARN of your secret key used for SASL/PLAIN authentication of your Apache Kafka brokers.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eVPC_SUBNET\u003c/code\u003e \u2013 (Self-managed Apache Kafka) The subnets associated with your VPC. Lambda connects to these subnets to fetch data from your self-managed Apache Kafka cluster.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eVPC_SECURITY_GROUP\u003c/code\u003e \u2013 (Self-managed Apache Kafka) The VPC security group used to manage access to your self-managed Apache Kafka brokers.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eSASL_SCRAM_256_AUTH\u003c/code\u003e \u2013 (Self-managed Apache Kafka) The Secrets Manager ARN of your secret key used for SASL SCRAM-256 authentication of your self-managed Apache Kafka brokers.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eSASL_SCRAM_512_AUTH\u003c/code\u003e \u2013 (Amazon MSK, Self-managed Apache Kafka) The Secrets Manager ARN of your secret key used for SASL SCRAM-512 authentication of your self-managed Apache Kafka brokers.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eVIRTUAL_HOST\u003c/code\u003e \u2013- (RabbitMQ) The name of the virtual host in your RabbitMQ broker. Lambda uses this RabbitMQ host as the event source. This property cannot be specified in an UpdateEventSourceMapping API call.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eCLIENT_CERTIFICATE_TLS_AUTH\u003c/code\u003e \u2013 (Amazon MSK, self-managed Apache Kafka) The Secrets Manager ARN of your secret key containing the certificate chain (X.509 PEM), private key (PKCS#8 PEM), and private key password (optional) used for mutual TLS authentication of your MSK/Apache Kafka brokers.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eSERVER_ROOT_CA_CERTIFICATE\u003c/code\u003e \u2013 (Self-managed Apache Kafka) The Secrets Manager ARN of your secret key containing the root CA certificate (X.509 PEM) used for TLS encryption of your Apache Kafka brokers. \u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e",
+              "smithy.api#documentation": "\u003cp\u003eThe type of authentication protocol, VPC components, or virtual host for your event source. For example: \u003ccode\u003e\"Type\":\"SASL_SCRAM_512_AUTH\"\u003c/code\u003e.\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eBASIC_AUTH\u003c/code\u003e \u2013 (Amazon MQ) The Secrets Manager secret that stores your broker credentials.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eBASIC_AUTH\u003c/code\u003e \u2013 (Self-managed Apache Kafka) The Secrets Manager ARN of your secret key used for SASL/PLAIN authentication of your Apache Kafka brokers.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eVPC_SUBNET\u003c/code\u003e \u2013 (Self-managed Apache Kafka) The subnets associated with your VPC. Lambda connects to these subnets to fetch data from your self-managed Apache Kafka cluster.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eVPC_SECURITY_GROUP\u003c/code\u003e \u2013 (Self-managed Apache Kafka) The VPC security group used to manage access to your self-managed Apache Kafka brokers.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eSASL_SCRAM_256_AUTH\u003c/code\u003e \u2013 (Self-managed Apache Kafka) The Secrets Manager ARN of your secret key used for SASL SCRAM-256 authentication of your self-managed Apache Kafka brokers.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eSASL_SCRAM_512_AUTH\u003c/code\u003e \u2013 (Amazon MSK, Self-managed Apache Kafka) The Secrets Manager ARN of your secret key used for SASL SCRAM-512 authentication of your self-managed Apache Kafka brokers.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eVIRTUAL_HOST\u003c/code\u003e \u2013- (RabbitMQ) The name of the virtual host in your RabbitMQ broker. Lambda uses this RabbitMQ host as the event source. This property cannot be specified in an UpdateEventSourceMapping API call.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eCLIENT_CERTIFICATE_TLS_AUTH\u003c/code\u003e \u2013 (Amazon MSK, self-managed Apache Kafka) The Secrets Manager ARN of your secret key containing the certificate chain (X.509 PEM), private key (PKCS#8 PEM), and private key password (optional) used for mutual TLS authentication of your MSK/Apache Kafka brokers.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eSERVER_ROOT_CA_CERTIFICATE\u003c/code\u003e \u2013 (Self-managed Apache Kafka) The Secrets Manager ARN of your secret key containing the root CA certificate (X.509 PEM) used for TLS encryption of your Apache Kafka brokers. \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eOAUTHBEARER_AUTH\u003c/code\u003e \u2013 (Self-managed Apache Kafka) The Secrets Manager ARN of your secret key containing the OAuth 2.0 credentials that Lambda uses for SASL/OAUTHBEARER authentication with your Apache Kafka brokers. For the contents of the secret, see \u003ca href=\"https://docs.aws.amazon.com/lambda/latest/dg/kafka-cluster-auth.html#smaa-auth-oauth-secret\"\u003eConfiguring the OAuth secret\u003c/a\u003e.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eOAUTHBEARER_SCOPE\u003c/code\u003e \u2013 (Self-managed Apache Kafka) The OAuth 2.0 scope that Lambda requests when it acquires an access token. The \u003ccode\u003eURI\u003c/code\u003e field holds the scope value, not a secret ARN. This type requires \u003ccode\u003eOAUTHBEARER_AUTH\u003c/code\u003e.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eOAUTHBEARER_AUDIENCE\u003c/code\u003e \u2013 (Self-managed Apache Kafka) The OAuth 2.0 audience that Lambda requests when it acquires an access token. The \u003ccode\u003eURI\u003c/code\u003e field holds the audience value, not a secret ARN. This type requires either \u003ccode\u003eOAUTHBEARER_AUTH\u003c/code\u003e or \u003ccode\u003eIAM_OAUTHBEARER_AUTH\u003c/code\u003e.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eOAUTHBEARER_LOGICAL_CLUSTER\u003c/code\u003e \u2013 (Self-managed Apache Kafka) The logical cluster identifier that Lambda sends to a Confluent Cloud broker. The \u003ccode\u003eURI\u003c/code\u003e field holds the identifier, not a secret ARN. This type requires \u003ccode\u003eOAUTHBEARER_AUTH\u003c/code\u003e.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eOAUTHBEARER_IDENTITY_POOL\u003c/code\u003e \u2013 (Self-managed Apache Kafka) The identity pool identifier that Lambda sends to a Confluent Cloud broker. The \u003ccode\u003eURI\u003c/code\u003e field holds the identifier, not a secret ARN. This type requires \u003ccode\u003eOAUTHBEARER_AUTH\u003c/code\u003e.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eIAM_AUTH\u003c/code\u003e \u2013 (Self-managed Apache Kafka) Authenticate with Identity and Access Management (IAM). Your function's execution role signs each connection, so there is no secret to provide. Omit the \u003ccode\u003eURI\u003c/code\u003e field for this type.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eIAM_OAUTHBEARER_AUTH\u003c/code\u003e \u2013 (Self-managed Apache Kafka) Authenticate with an Amazon Web Services web identity token over SASL/OAUTHBEARER. Lambda requests the token for your function's execution role, so there is no secret to provide. Omit the \u003ccode\u003eURI\u003c/code\u003e field for this type. This type requires \u003ccode\u003eOAUTHBEARER_AUDIENCE\u003c/code\u003e and does not support the other \u003ccode\u003eOAUTHBEARER\u003c/code\u003e types.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e",
               "smithy.api#tags": [
                 "feature:public"
               ]
@@ -23739,6 +23757,69 @@
               "smithy.api#enumValue": "CLIENT_CERTIFICATE_TLS_AUTH",
               "smithy.api#tags": [
                 "feature:public"
+              ]
+            }
+          },
+          "IAM_AUTH": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "IAM_AUTH",
+              "smithy.api#tags": [
+                "feature:kafka-oauthbearer-auth"
+              ]
+            }
+          },
+          "IAM_OAUTHBEARER_AUTH": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "IAM_OAUTHBEARER_AUTH",
+              "smithy.api#tags": [
+                "feature:kafka-oauthbearer-auth"
+              ]
+            }
+          },
+          "OAUTHBEARER_AUDIENCE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "OAUTHBEARER_AUDIENCE",
+              "smithy.api#tags": [
+                "feature:kafka-oauthbearer-auth"
+              ]
+            }
+          },
+          "OAUTHBEARER_AUTH": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "OAUTHBEARER_AUTH",
+              "smithy.api#tags": [
+                "feature:kafka-oauthbearer-auth"
+              ]
+            }
+          },
+          "OAUTHBEARER_IDENTITY_POOL": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "OAUTHBEARER_IDENTITY_POOL",
+              "smithy.api#tags": [
+                "feature:kafka-oauthbearer-auth"
+              ]
+            }
+          },
+          "OAUTHBEARER_LOGICAL_CLUSTER": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "OAUTHBEARER_LOGICAL_CLUSTER",
+              "smithy.api#tags": [
+                "feature:kafka-oauthbearer-auth"
+              ]
+            }
+          },
+          "OAUTHBEARER_SCOPE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "OAUTHBEARER_SCOPE",
+              "smithy.api#tags": [
+                "feature:kafka-oauthbearer-auth"
               ]
             }
           },
@@ -26612,7 +26693,7 @@
           "Timeout": {
             "target": "com.amazonaws.lambda#Timeout",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe amount of time (in seconds) that Lambda allows a function to run before stopping it. The default is 3 seconds. The maximum allowed value is 900 seconds. For more information, see \u003ca href=\"https://docs.aws.amazon.com/lambda/latest/dg/runtimes-context.html\"\u003eLambda execution environment\u003c/a\u003e.\u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003eThe amount of time (in seconds) that Lambda allows a function to run before stopping it. The default is 3 seconds, and the maximum allowed value is 900 seconds. For functions using Lambda Managed Instances, asynchronous invocations and event source mapping invocations (except Amazon MQ and Amazon DocumentDB) support a maximum allowed value of 5,400 seconds (90 minutes). For more information, see \u003ca href=\"https://docs.aws.amazon.com/lambda/latest/dg/runtimes-context.html\"\u003eLambda execution environment\u003c/a\u003e.\u003c/p\u003e",
               "smithy.api#tags": [
                 "feature:public"
               ]

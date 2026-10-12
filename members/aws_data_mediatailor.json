@@ -256,6 +256,12 @@
               "smithy.api#enumValue": "BEACON_FIRED"
             }
           },
+          "BEACON_RECEIVED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "BEACON_RECEIVED"
+            }
+          },
           "EMPTY_VAST_RESPONSE": {
             "target": "smithy.api#Unit",
             "traits": {
@@ -906,6 +912,94 @@
           "smithy.api#documentation": "\u003cp\u003eThe configuration for avail suppression, also known as ad suppression. For more information about ad suppression, see \u003ca href=\"https://docs.aws.amazon.com/mediatailor/latest/ug/ad-behavior.html\"\u003eAd Suppression\u003c/a\u003e.\u003c/p\u003e"
         }
       },
+      "com.amazonaws.mediatailor#AwsServiceRequestConfiguration": {
+        "type": "structure",
+        "members": {
+          "Body": {
+            "target": "com.amazonaws.mediatailor#__string",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn expression that evaluates to the request body for the AWS service API call. The body must conform to the input format that the target service operation expects. Applies only when the target operation accepts a request body. The maximum size after evaluation is 64 KB.\u003c/p\u003e"
+            }
+          },
+          "Cache": {
+            "target": "com.amazonaws.mediatailor#HttpRequestCacheConfiguration",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe optional response-caching configuration for the function. When present, MediaTailor caches the responses that the function receives from the AWS service, within the time-to-live (TTL) bounds that you specify. Omit this configuration to disable response caching.\u003c/p\u003e"
+            }
+          },
+          "Headers": {
+            "target": "com.amazonaws.mediatailor#__mapOf__string",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA map of HTTP header names to expression values. MediaTailor evaluates each header value expression at runtime and includes the result in the outbound request to the AWS service. Use this to pass any headers required by the target service operation. You can include a maximum of 50 headers.\u003c/p\u003e"
+            }
+          },
+          "MethodType": {
+            "target": "com.amazonaws.mediatailor#MethodType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies how the function sends the request to the target service. The value must match what the target service operation requires. Valid values:\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eGET\u003c/code\u003e \u2013 Retrieves data from the target service.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003ePOST\u003c/code\u003e \u2013 Submits a request body to the target service.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Output": {
+            "target": "com.amazonaws.mediatailor#__mapOf__string",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA map of output bindings. Each key is a namespaced output path, such as \u003ccode\u003eplayer_params.device_type\u003c/code\u003e. Each value is an expression that MediaTailor evaluates at runtime and can reference the \u003ccode\u003eresponse\u003c/code\u003e object from the target service. For more information, see \u003ca href=\"https://docs.aws.amazon.com/mediatailor/latest/ug/monetization-functions-jsonata.html\"\u003eJSONata expression reference\u003c/a\u003e in the \u003ci\u003eMediaTailor User Guide\u003c/i\u003e.\u003c/p\u003e"
+            }
+          },
+          "RequestTimeoutMilliseconds": {
+            "target": "com.amazonaws.mediatailor#__integer",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe maximum time, in milliseconds, that MediaTailor waits for a response from the AWS service. If the call exceeds this timeout, MediaTailor sets the response status code to \u003ccode\u003enull\u003c/code\u003e and proceeds with output expression evaluation. Valid values: \u003ccode\u003e100\u003c/code\u003e to \u003ccode\u003e2000\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Runtime": {
+            "target": "com.amazonaws.mediatailor#RuntimeType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe expression language used to evaluate expressions in the function configuration. The only supported value is \u003ccode\u003eJSONata\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "TargetRegion": {
+            "target": "com.amazonaws.mediatailor#__string",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe AWS Region for the target service. Specify a static Region code (for example, \u003ccode\u003eus-east-1\u003c/code\u003e) or a JSONata expression that resolves to a Region code at runtime (for example, \u003ccode\u003e{%inference.region%}\u003c/code\u003e).\u003c/p\u003e",
+              "smithy.api#length": {
+                "min": 1,
+                "max": 256
+              },
+              "smithy.api#required": {}
+            }
+          },
+          "TargetService": {
+            "target": "com.amazonaws.mediatailor#AwsTargetService",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe AWS service to call. Valid value: \u003ccode\u003eelemental-inference\u003c/code\u003e (AWS Elemental Inference).\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Url": {
+            "target": "com.amazonaws.mediatailor#__string",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn expression that evaluates to the endpoint URL for the target AWS service API operation. Use \u003ccode\u003e{%...%}\u003c/code\u003e delimiters for dynamic expressions. The URL must correspond to a valid endpoint for the service specified in \u003ccode\u003eTargetService\u003c/code\u003e. The maximum length after evaluation is 2,048 characters.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe configuration for an \u003ccode\u003eAWS_SERVICE_REQUEST\u003c/code\u003e function. Contains the target service, target Region, and request parameters that the function uses to call an AWS service API. For more information, see \u003ca href=\"https://docs.aws.amazon.com/mediatailor/latest/ug/monetization-functions-types-aws-service-request.html\"\u003eAWS_SERVICE_REQUEST\u003c/a\u003e in the \u003ci\u003eMediaTailor User Guide\u003c/i\u003e.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.mediatailor#AwsTargetService": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 63
+          },
+          "smithy.api#pattern": "^[a-z0-9-]+$"
+        }
+      },
       "com.amazonaws.mediatailor#BadRequestException": {
         "type": "structure",
         "members": {
@@ -917,6 +1011,58 @@
           "smithy.api#documentation": "\u003cp\u003eA request contains unexpected data.\u003c/p\u003e",
           "smithy.api#error": "client",
           "smithy.api#httpError": 400
+        }
+      },
+      "com.amazonaws.mediatailor#BeaconEventType": {
+        "type": "enum",
+        "members": {
+          "MUTE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "MUTE"
+            }
+          },
+          "PAUSE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "PAUSE"
+            }
+          },
+          "SKIP": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "SKIP"
+            }
+          },
+          "UNMUTE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "UNMUTE"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA player operation event that MediaTailor can report on. Only the player can detect when a viewer performs this action, so MediaTailor doesn't send these beacons itself.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.mediatailor#BeaconEventTypeList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.mediatailor#BeaconEventType"
+        }
+      },
+      "com.amazonaws.mediatailor#BeaconingConfiguration": {
+        "type": "structure",
+        "members": {
+          "ClientSide": {
+            "target": "com.amazonaws.mediatailor#ClientSideBeaconingConfiguration",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe beaconing settings for client-side reporting sessions. If you omit this object, MediaTailor uses \u003ccode\u003eINSIGHTS\u003c/code\u003e reporting mode.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe beaconing configuration for a playback configuration. Beaconing controls whether MediaTailor includes its own beacons in the ad tracking response, in addition to the ad server beacons.\u003c/p\u003e"
         }
       },
       "com.amazonaws.mediatailor#Bumper": {
@@ -1126,6 +1272,46 @@
             "target": "smithy.api#Unit",
             "traits": {
               "smithy.api#enumValue": "STOPPED"
+            }
+          }
+        }
+      },
+      "com.amazonaws.mediatailor#ClientSideBeaconingConfiguration": {
+        "type": "structure",
+        "members": {
+          "AdditionalEventTypes": {
+            "target": "com.amazonaws.mediatailor#BeaconEventTypeList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe player operation events to report on, in addition to the ad progress events that MediaTailor always reports on. The default is an empty list. This parameter is valid only when \u003ccode\u003eReportingMode\u003c/code\u003e is \u003ccode\u003eINSIGHTS\u003c/code\u003e. MediaTailor rejects the request if you specify a value while \u003ccode\u003eReportingMode\u003c/code\u003e is \u003ccode\u003eDISABLED\u003c/code\u003e, or if you specify duplicate values.\u003c/p\u003e"
+            }
+          },
+          "ReportingMode": {
+            "target": "com.amazonaws.mediatailor#ClientSideBeaconingMode",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies whether MediaTailor includes its beacons in the ad tracking response. Valid values, which are case-sensitive:\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eINSIGHTS\u003c/code\u003e \u2013 MediaTailor includes its beacons in the ad tracking response.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eDISABLED\u003c/code\u003e \u2013 MediaTailor doesn't include its beacons in the ad tracking response.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e \u003cp\u003eIf you send a \u003ccode\u003eClientSide\u003c/code\u003e object, this setting is required. If you omit \u003ccode\u003eBeaconingConfiguration\u003c/code\u003e or \u003ccode\u003eClientSide\u003c/code\u003e entirely, MediaTailor uses \u003ccode\u003eINSIGHTS\u003c/code\u003e.\u003c/p\u003e \u003cp\u003e \u003ccode\u003ePutPlaybackConfiguration\u003c/code\u003e replaces the whole playback configuration. To keep beaconing off, include \u003ccode\u003eDISABLED\u003c/code\u003e in every subsequent write.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe beaconing settings that apply to client-side reporting sessions: whether MediaTailor includes its beacons in the ad tracking response, and which player operation events it reports on.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.mediatailor#ClientSideBeaconingMode": {
+        "type": "enum",
+        "members": {
+          "DISABLED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#documentation": "Tracking response returned unmodified.",
+              "smithy.api#enumValue": "DISABLED"
+            }
+          },
+          "INSIGHTS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#documentation": "EMT beacon URLs added alongside the ad server's. Effective default when\nBeaconingConfiguration is absent.",
+              "smithy.api#enumValue": "INSIGHTS"
             }
           }
         }
@@ -3515,6 +3701,12 @@
               "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the function.\u003c/p\u003e"
             }
           },
+          "AwsServiceRequestConfiguration": {
+            "target": "com.amazonaws.mediatailor#AwsServiceRequestConfiguration",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe configuration for an \u003ccode\u003eAWS_SERVICE_REQUEST\u003c/code\u003e function. Specifies the target service, target Region, and request parameters.\u003c/p\u003e"
+            }
+          },
           "ConcurrentExecutorConfiguration": {
             "target": "com.amazonaws.mediatailor#ConcurrentExecutorConfiguration",
             "traits": {
@@ -3631,6 +3823,12 @@
       "com.amazonaws.mediatailor#FunctionType": {
         "type": "enum",
         "members": {
+          "AWS_SERVICE_REQUEST": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "AWS_SERVICE_REQUEST"
+            }
+          },
           "CONCURRENT_EXECUTOR": {
             "target": "smithy.api#Unit",
             "traits": {
@@ -3865,6 +4063,12 @@
               "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the function.\u003c/p\u003e"
             }
           },
+          "AwsServiceRequestConfiguration": {
+            "target": "com.amazonaws.mediatailor#AwsServiceRequestConfiguration",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe configuration for an \u003ccode\u003eAWS_SERVICE_REQUEST\u003c/code\u003e function. Specifies the target service, target Region, and request parameters.\u003c/p\u003e"
+            }
+          },
           "ConcurrentExecutorConfiguration": {
             "target": "com.amazonaws.mediatailor#ConcurrentExecutorConfiguration",
             "traits": {
@@ -4014,6 +4218,12 @@
             "target": "com.amazonaws.mediatailor#AvailSuppression",
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe configuration for avail suppression, also known as ad suppression. For more information about ad suppression, see \u003ca href=\"https://docs.aws.amazon.com/mediatailor/latest/ug/ad-behavior.html\"\u003eAd Suppression\u003c/a\u003e.\u003c/p\u003e"
+            }
+          },
+          "BeaconingConfiguration": {
+            "target": "com.amazonaws.mediatailor#BeaconingConfiguration",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe beaconing configuration for this playback configuration, which controls whether MediaTailor includes beacons of its own in the ad tracking response. MediaTailor always returns this setting. If you created the playback configuration before this setting existed, MediaTailor reports \u003ccode\u003eReportingMode\u003c/code\u003e as \u003ccode\u003eINSIGHTS\u003c/code\u003e. This is also the value MediaTailor uses for that configuration at playback time.\u003c/p\u003e"
             }
           },
           "Bumper": {
@@ -4386,6 +4596,34 @@
           "smithy.api#documentation": "\u003cp\u003eHTTP request configuration parameters that define how MediaTailor communicates with the ad decision server.\u003c/p\u003e"
         }
       },
+      "com.amazonaws.mediatailor#HttpRequestCacheConfiguration": {
+        "type": "structure",
+        "members": {
+          "Key": {
+            "target": "com.amazonaws.mediatailor#__string",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA JSONata expression that MediaTailor evaluates to a custom cache key. By default, the cache key is a hash of the HTTP URL, the request body, and the HTTP method; request headers are not included. You can specify a custom cache key expression to vary caching by request headers and more. The evaluated key must be smaller than 1 KB; otherwise the HTTP function will fail.\u003c/p\u003e"
+            }
+          },
+          "TtlMaximumSeconds": {
+            "target": "com.amazonaws.mediatailor#__integerMin1",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe upper bound, in seconds, on how long MediaTailor caches a response. This value must be greater than or equal to \u003ccode\u003eTtlMinimumSeconds\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "TtlMinimumSeconds": {
+            "target": "com.amazonaws.mediatailor#__integerMin1",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe lower bound, in seconds, on how long MediaTailor caches a response. MediaTailor also uses this value as the cache duration when a response has no \u003ccode\u003eCache-Control\u003c/code\u003e \u003ccode\u003emax-age\u003c/code\u003e directive.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe optional response-caching configuration shared by the HTTP-based function types (\u003ccode\u003eHTTP_REQUEST\u003c/code\u003e, \u003ccode\u003eAWS_SERVICE_REQUEST\u003c/code\u003e, and \u003ccode\u003eVAST_REQUEST\u003c/code\u003e). When you provide this configuration, MediaTailor caches the function's responses that have one of the following HTTP status codes: \u003ccode\u003e200\u003c/code\u003e, \u003ccode\u003e203\u003c/code\u003e, \u003ccode\u003e204\u003c/code\u003e, \u003ccode\u003e404\u003c/code\u003e, \u003ccode\u003e405\u003c/code\u003e, \u003ccode\u003e410\u003c/code\u003e, \u003ccode\u003e414\u003c/code\u003e, and \u003ccode\u003e501\u003c/code\u003e. For a cacheable response, MediaTailor caches it for the number of seconds given by the response's \u003ccode\u003eCache-Control\u003c/code\u003e \u003ccode\u003emax-age\u003c/code\u003e directive, limited to the range between \u003ccode\u003eTtlMinimumSeconds\u003c/code\u003e and \u003ccode\u003eTtlMaximumSeconds\u003c/code\u003e. If the response has no \u003ccode\u003eCache-Control\u003c/code\u003e \u003ccode\u003emax-age\u003c/code\u003e directive, MediaTailor caches it for \u003ccode\u003eTtlMinimumSeconds\u003c/code\u003e seconds. Cached HTTP responses are scoped per playback configuration, not per function.\u003c/p\u003e"
+        }
+      },
       "com.amazonaws.mediatailor#HttpRequestConfiguration": {
         "type": "structure",
         "members": {
@@ -4393,6 +4631,12 @@
             "target": "com.amazonaws.mediatailor#__string",
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eAn expression that evaluates to the request body. Used with \u003ccode\u003ePOST\u003c/code\u003e requests. The maximum size after evaluation is 64 KB.\u003c/p\u003e"
+            }
+          },
+          "Cache": {
+            "target": "com.amazonaws.mediatailor#HttpRequestCacheConfiguration",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe optional response-caching configuration for the function. When present, MediaTailor caches the responses that the function receives from the HTTP endpoint, within the time-to-live (TTL) bounds that you specify. Omit this configuration to disable response caching.\u003c/p\u003e"
             }
           },
           "Headers": {
@@ -6818,6 +7062,12 @@
               "smithy.api#documentation": "\u003cp\u003eThe configuration for avail suppression, also known as ad suppression. For more information about ad suppression, see \u003ca href=\"https://docs.aws.amazon.com/mediatailor/latest/ug/ad-behavior.html\"\u003eAd Suppression\u003c/a\u003e.\u003c/p\u003e"
             }
           },
+          "BeaconingConfiguration": {
+            "target": "com.amazonaws.mediatailor#BeaconingConfiguration",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe beaconing configuration for this playback configuration, which controls whether MediaTailor includes beacons of its own in the ad tracking response.\u003c/p\u003e"
+            }
+          },
           "Bumper": {
             "target": "com.amazonaws.mediatailor#Bumper",
             "traits": {
@@ -7313,6 +7563,12 @@
       "com.amazonaws.mediatailor#PutFunctionRequest": {
         "type": "structure",
         "members": {
+          "AwsServiceRequestConfiguration": {
+            "target": "com.amazonaws.mediatailor#AwsServiceRequestConfiguration",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe configuration for an \u003ccode\u003eAWS_SERVICE_REQUEST\u003c/code\u003e function. You must specify this parameter when \u003ccode\u003eFunctionType\u003c/code\u003e is \u003ccode\u003eAWS_SERVICE_REQUEST\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
           "ConcurrentExecutorConfiguration": {
             "target": "com.amazonaws.mediatailor#ConcurrentExecutorConfiguration",
             "traits": {
@@ -7342,7 +7598,7 @@
           "FunctionType": {
             "target": "com.amazonaws.mediatailor#FunctionType",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe type of the function. The function type determines what the function can do at runtime. Valid values: \u003ccode\u003eCUSTOM_OUTPUT\u003c/code\u003e evaluates expressions and produces output bindings with no external calls. \u003ccode\u003eHTTP_REQUEST\u003c/code\u003e makes an HTTP call to an external service and evaluates output expressions that can reference the response. \u003ccode\u003eVAST_REQUEST\u003c/code\u003e calls a VAST endpoint, parses the response as VAST, and makes the parsed ads available to output expressions. \u003ccode\u003eSEQUENTIAL_EXECUTOR\u003c/code\u003e runs a sequence of child functions in order, passing data between steps through temporary data. \u003ccode\u003eCONCURRENT_EXECUTOR\u003c/code\u003e runs a set of child functions in parallel, up to a maximum concurrency, and combines their output when all functions complete. For more information, see \u003ca href=\"https://docs.aws.amazon.com/mediatailor/latest/ug/monetization-functions-types.html\"\u003eFunction types and composition\u003c/a\u003e in the \u003ci\u003eMediaTailor User Guide\u003c/i\u003e.\u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003eThe type of the function, which determines what the function can do at runtime. Valid values:\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eCUSTOM_OUTPUT\u003c/code\u003e \u2013 Evaluates expressions and produces output bindings with no external calls.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eHTTP_REQUEST\u003c/code\u003e \u2013 Makes an HTTP call to an external service and evaluates output expressions that can reference the response.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAWS_SERVICE_REQUEST\u003c/code\u003e \u2013 Makes an authenticated request to a supported AWS service API and evaluates output expressions that can reference the response.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eVAST_REQUEST\u003c/code\u003e \u2013 Calls a VAST endpoint, parses the response as VAST, and makes the parsed ads available to output expressions.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eSEQUENTIAL_EXECUTOR\u003c/code\u003e \u2013 Runs a sequence of child functions in order, passing data between steps through temporary data.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eCONCURRENT_EXECUTOR\u003c/code\u003e \u2013 Runs a set of child functions in parallel, up to a maximum concurrency, and combines their output when all functions complete.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e \u003cp\u003eFor more information, see \u003ca href=\"https://docs.aws.amazon.com/mediatailor/latest/ug/monetization-functions-types.html\"\u003eFunction types and composition\u003c/a\u003e in the \u003ci\u003eMediaTailor User Guide\u003c/i\u003e.\u003c/p\u003e",
               "smithy.api#required": {}
             }
           },
@@ -7389,6 +7645,12 @@
             "target": "com.amazonaws.mediatailor#__string",
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the function.\u003c/p\u003e"
+            }
+          },
+          "AwsServiceRequestConfiguration": {
+            "target": "com.amazonaws.mediatailor#AwsServiceRequestConfiguration",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe configuration for an \u003ccode\u003eAWS_SERVICE_REQUEST\u003c/code\u003e function. Specifies the target service, target Region, and request parameters.\u003c/p\u003e"
             }
           },
           "ConcurrentExecutorConfiguration": {
@@ -7532,6 +7794,12 @@
               "smithy.api#documentation": "\u003cp\u003eThe configuration for avail suppression, also known as ad suppression. For more information about ad suppression, see \u003ca href=\"https://docs.aws.amazon.com/mediatailor/latest/ug/ad-behavior.html\"\u003eAd Suppression\u003c/a\u003e.\u003c/p\u003e"
             }
           },
+          "BeaconingConfiguration": {
+            "target": "com.amazonaws.mediatailor#BeaconingConfiguration",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe beaconing configuration for this playback configuration, which controls whether MediaTailor includes beacons of its own in the ad tracking response. If you omit this setting, MediaTailor uses \u003ccode\u003eINSIGHTS\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
           "Bumper": {
             "target": "com.amazonaws.mediatailor#Bumper",
             "traits": {
@@ -7664,6 +7932,12 @@
             "target": "com.amazonaws.mediatailor#AvailSuppression",
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe configuration for avail suppression, also known as ad suppression. For more information about ad suppression, see \u003ca href=\"https://docs.aws.amazon.com/mediatailor/latest/ug/ad-behavior.html\"\u003eAd Suppression\u003c/a\u003e.\u003c/p\u003e"
+            }
+          },
+          "BeaconingConfiguration": {
+            "target": "com.amazonaws.mediatailor#BeaconingConfiguration",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe beaconing configuration for this playback configuration, which controls whether MediaTailor includes beacons of its own in the ad tracking response.\u003c/p\u003e"
             }
           },
           "Bumper": {
@@ -9617,7 +9891,13 @@
           "Body": {
             "target": "com.amazonaws.mediatailor#__string",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eAn expression that evaluates to the request body. Used with \u003ccode\u003ePOST\u003c/code\u003e requests, for example to send an OpenRTB bid request. The maximum length is 100,000 characters.\u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003eAn expression that evaluates to the request body, for example to send an OpenRTB bid request. The expression can be up to 100,000 characters, and the body after evaluation can be up to 64 KB.\u003c/p\u003e"
+            }
+          },
+          "Cache": {
+            "target": "com.amazonaws.mediatailor#HttpRequestCacheConfiguration",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe optional response-caching configuration for the function. When present, MediaTailor caches the responses that the function receives from the HTTP endpoint, within the time-to-live (TTL) bounds that you specify. Omit this configuration to disable response caching.\u003c/p\u003e"
             }
           },
           "Headers": {
@@ -9656,7 +9936,7 @@
           "Url": {
             "target": "com.amazonaws.mediatailor#__string",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eAn expression that evaluates to the VAST endpoint URL. Use \u003ccode\u003e{%...%}\u003c/code\u003e delimiters for dynamic expressions. A literal value must be an \u003ccode\u003ehttps://\u003c/code\u003e URL. The maximum length is 25,000 characters.\u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003eAn expression that evaluates to the VAST endpoint URL. Use \u003ccode\u003e{%...%}\u003c/code\u003e delimiters for dynamic expressions. A literal value must be an \u003ccode\u003ehttps://\u003c/code\u003e URL. The expression can be up to 25,000 characters, and the URL after evaluation can be up to 2,048 characters.\u003c/p\u003e",
               "smithy.api#required": {}
             }
           }

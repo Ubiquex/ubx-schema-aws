@@ -2576,6 +2576,12 @@
               }
             }
           },
+          "sessionTraceIds": {
+            "target": "com.amazonaws.bedrockagentcore#SessionTraceIdsList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of session and trace ID pairs that restrict evaluation to specific traces within a session. If specified, only the listed traces are evaluated instead of the entire session.\u003c/p\u003e"
+            }
+          },
           "timeRange": {
             "target": "com.amazonaws.bedrockagentcore#SessionFilterConfig",
             "traits": {
@@ -8719,6 +8725,112 @@
           "smithy.api#documentation": "\u003cp\u003eConfiguration for a Google Gemini model provider. Requires an API key stored in AgentCore Identity.\u003c/p\u003e"
         }
       },
+      "com.amazonaws.bedrockagentcore#HarnessHookDecision": {
+        "type": "enum",
+        "members": {
+          "ALLOW": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "allow"
+            }
+          },
+          "DENY": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "deny"
+            }
+          }
+        }
+      },
+      "com.amazonaws.bedrockagentcore#HarnessHookEvent": {
+        "type": "structure",
+        "members": {
+          "decision": {
+            "target": "com.amazonaws.bedrockagentcore#HarnessHookDecision",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe decision applied to the hook event. This field is present only for blocking Lambda targets.\u003c/p\u003e"
+            }
+          },
+          "hookEventId": {
+            "target": "com.amazonaws.bedrockagentcore#HarnessHookEventId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier for this hook event.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "name": {
+            "target": "com.amazonaws.bedrockagentcore#HarnessHookName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the hook that ran.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "reason": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe optional reason for the applied decision.\u003c/p\u003e",
+              "smithy.api#length": {
+                "max": 1024
+              }
+            }
+          },
+          "type": {
+            "target": "com.amazonaws.bedrockagentcore#HarnessHookEventType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe type of lifecycle hook event.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA lifecycle hook event emitted in the invocation stream for visibility into hook decisions.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.bedrockagentcore#HarnessHookEventId": {
+        "type": "string",
+        "traits": {
+          "smithy.api#pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+        }
+      },
+      "com.amazonaws.bedrockagentcore#HarnessHookEventType": {
+        "type": "enum",
+        "members": {
+          "AFTER_INVOCATION": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "after_invocation"
+            }
+          },
+          "AFTER_TOOL_CALL": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "after_tool_call"
+            }
+          },
+          "BEFORE_INVOCATION": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "before_invocation"
+            }
+          },
+          "BEFORE_TOOL_CALL": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "before_tool_call"
+            }
+          }
+        }
+      },
+      "com.amazonaws.bedrockagentcore#HarnessHookName": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 64
+          },
+          "smithy.api#pattern": "^[a-zA-Z0-9_-]+$"
+        }
+      },
       "com.amazonaws.bedrockagentcore#HarnessInlineFunctionConfig": {
         "type": "structure",
         "members": {
@@ -8924,6 +9036,16 @@
           "smithy.api#documentation": "\u003cp\u003eSpecification of which model to use.\u003c/p\u003e"
         }
       },
+      "com.amazonaws.bedrockagentcore#HarnessOpenAiApiBase": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 16383
+          },
+          "smithy.api#sensitive": {}
+        }
+      },
       "com.amazonaws.bedrockagentcore#HarnessOpenAiApiFormat": {
         "type": "enum",
         "members": {
@@ -8950,6 +9072,12 @@
             "target": "smithy.api#Document",
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eProvider-specific parameters passed through to the model provider unchanged.\u003c/p\u003e"
+            }
+          },
+          "apiBase": {
+            "target": "com.amazonaws.bedrockagentcore#HarnessOpenAiApiBase",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eOptional custom endpoint URL for an OpenAI-compatible endpoint.\u003c/p\u003e"
             }
           },
           "apiFormat": {
@@ -9253,6 +9381,12 @@
             "target": "smithy.api#Unit",
             "traits": {
               "smithy.api#enumValue": "end_turn"
+            }
+          },
+          "HOOK_STOPPED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "hook_stopped"
             }
           },
           "INTERRUPTED": {
@@ -11400,6 +11534,12 @@
             "target": "com.amazonaws.bedrockagentcore#HarnessContentBlockStopEvent",
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eIndicates the end of the current content block.\u003c/p\u003e"
+            }
+          },
+          "hookEvent": {
+            "target": "com.amazonaws.bedrockagentcore#HarnessHookEvent",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA lifecycle hook event emitted when a configured hook runs.\u003c/p\u003e"
             }
           },
           "internalServerException": {
@@ -17186,6 +17326,40 @@
           "target": "com.amazonaws.bedrockagentcore#SessionSummary"
         }
       },
+      "com.amazonaws.bedrockagentcore#SessionTraceIds": {
+        "type": "structure",
+        "members": {
+          "sessionId": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the session that contains the traces to evaluate.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "traceIds": {
+            "target": "com.amazonaws.bedrockagentcore#TraceIdList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe list of trace IDs within the session to evaluate.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA pairing of a session with the specific trace IDs to evaluate within that session. Use this to evaluate individual traces rather than an entire session.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.bedrockagentcore#SessionTraceIdsList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.bedrockagentcore#SessionTraceIds"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 500
+          }
+        }
+      },
       "com.amazonaws.bedrockagentcore#SessionType": {
         "type": "string",
         "traits": {
@@ -19531,6 +19705,18 @@
           "smithy.api#length": {
             "min": 32,
             "max": 32
+          }
+        }
+      },
+      "com.amazonaws.bedrockagentcore#TraceIdList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.bedrockagentcore#TraceId"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 100
           }
         }
       },

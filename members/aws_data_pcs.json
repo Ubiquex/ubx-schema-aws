@@ -1587,6 +1587,12 @@
       "com.amazonaws.pcs#ComputeNodeGroupSlurmConfiguration": {
         "type": "structure",
         "members": {
+          "gresCustomSettings": {
+            "target": "com.amazonaws.pcs#GresCustomSettings",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe additional Slurm \u003ccode\u003egres.conf\u003c/code\u003e records for the compute node group. Each item is a map of \u003ccode\u003egres.conf\u003c/code\u003e attribute names to values that describes one \u003ccode\u003egres.conf\u003c/code\u003e record, such as a GPU topology, MIG, MPS, or custom GRES entry. PCS adds the \u003ccode\u003eNodeName=\u003c/code\u003e prefix and merges these records with the GPU record it derives from the instance type.\u003c/p\u003e"
+            }
+          },
           "scaleDownIdleTimeInSeconds": {
             "target": "smithy.api#Integer",
             "traits": {
@@ -1611,6 +1617,12 @@
       "com.amazonaws.pcs#ComputeNodeGroupSlurmConfigurationRequest": {
         "type": "structure",
         "members": {
+          "gresCustomSettings": {
+            "target": "com.amazonaws.pcs#GresCustomSettings",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe additional Slurm \u003ccode\u003egres.conf\u003c/code\u003e records for the compute node group. Each item is a map of \u003ccode\u003egres.conf\u003c/code\u003e attribute names to values that describes one \u003ccode\u003egres.conf\u003c/code\u003e record, such as a GPU topology, MIG, MPS, or custom GRES entry. PCS adds the \u003ccode\u003eNodeName=\u003c/code\u003e prefix and merges these records with the GPU record it derives from the instance type.\u003c/p\u003e"
+            }
+          },
           "scaleDownIdleTimeInSeconds": {
             "target": "smithy.api#Integer",
             "traits": {
@@ -2788,6 +2800,24 @@
         },
         "traits": {
           "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.pcs#GresCustomSettingMap": {
+        "type": "map",
+        "key": {
+          "target": "smithy.api#String"
+        },
+        "value": {
+          "target": "smithy.api#String"
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA single Slurm \u003ccode\u003egres.conf\u003c/code\u003e record, expressed as a map of \u003ccode\u003egres.conf\u003c/code\u003e attribute names to their values. For example, \u003ccode\u003e{\"Name\": \"gpu\", \"Type\": \"a100\", \"File\": \"/dev/nvidia[0-7]\"}\u003c/code\u003e or \u003ccode\u003e{\"AutoDetect\": \"nvml\"}\u003c/code\u003e. PCS adds the \u003ccode\u003eNodeName=\u003c/code\u003e prefix for the compute node group.\u003c/p\u003e \u003cimportant\u003e \u003cp\u003ePCS supports a subset of \u003ccode\u003egres.conf\u003c/code\u003e settings. For more information, see \u003ca href=\"https://docs.aws.amazon.com/pcs/latest/userguide/gres-custom-settings.html\"\u003eConfiguring custom GRES settings in PCS\u003c/a\u003e in the \u003ci\u003ePCS User Guide\u003c/i\u003e.\u003c/p\u003e \u003c/important\u003e"
+        }
+      },
+      "com.amazonaws.pcs#GresCustomSettings": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.pcs#GresCustomSettingMap"
         }
       },
       "com.amazonaws.pcs#InstanceConfig": {
@@ -4037,7 +4067,7 @@
           "version": {
             "target": "smithy.api#String",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe version of the specified scheduling software that PCS uses to manage cluster scaling and job scheduling. You can update this version using the \u003ccode\u003eUpdateCluster\u003c/code\u003e API action. For more information, see \u003ca href=\"https://docs.aws.amazon.com/pcs/latest/userguide/working-with_clusters_version_update.html\"\u003eUpdating the scheduler version on a cluster\u003c/a\u003e and \u003ca href=\"https://docs.aws.amazon.com/pcs/latest/userguide/slurm-versions.html\"\u003eSlurm versions in PCS\u003c/a\u003e in the \u003ci\u003ePCS User Guide\u003c/i\u003e.\u003c/p\u003e \u003cp\u003eValid Values: \u003ccode\u003e23.11 | 24.05 | 24.11 | 25.05 | 25.11\u003c/code\u003e \u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003eThe version of the specified scheduling software that PCS uses to manage cluster scaling and job scheduling. You can update this version using the \u003ccode\u003eUpdateCluster\u003c/code\u003e API action. For more information, see \u003ca href=\"https://docs.aws.amazon.com/pcs/latest/userguide/working-with_clusters_version_update.html\"\u003eUpdating the scheduler version on a cluster\u003c/a\u003e and \u003ca href=\"https://docs.aws.amazon.com/pcs/latest/userguide/slurm-versions.html\"\u003eSlurm versions in PCS\u003c/a\u003e in the \u003ci\u003ePCS User Guide\u003c/i\u003e.\u003c/p\u003e \u003cp\u003eValid Values: \u003ccode\u003e23.11 | 24.05 | 24.11 | 25.05 | 25.11 | 26.05\u003c/code\u003e \u003c/p\u003e",
               "smithy.api#required": {}
             }
           }
@@ -4059,7 +4089,7 @@
           "version": {
             "target": "smithy.api#String",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe version of the specified scheduling software that PCS uses to manage cluster scaling and job scheduling. For more information, see \u003ca href=\"https://docs.aws.amazon.com/pcs/latest/userguide/slurm-versions.html\"\u003eSlurm versions in PCS\u003c/a\u003e in the \u003ci\u003ePCS User Guide\u003c/i\u003e.\u003c/p\u003e \u003cp\u003eValid Values: \u003ccode\u003e24.11 | 25.05 | 25.11\u003c/code\u003e \u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003eThe version of the specified scheduling software that PCS uses to manage cluster scaling and job scheduling. For more information, see \u003ca href=\"https://docs.aws.amazon.com/pcs/latest/userguide/slurm-versions.html\"\u003eSlurm versions in PCS\u003c/a\u003e in the \u003ci\u003ePCS User Guide\u003c/i\u003e.\u003c/p\u003e \u003cp\u003eValid Values: \u003ccode\u003e24.11 | 25.05 | 25.11 | 26.05\u003c/code\u003e \u003c/p\u003e",
               "smithy.api#required": {}
             }
           }
@@ -4910,6 +4940,12 @@
       "com.amazonaws.pcs#UpdateComputeNodeGroupSlurmConfigurationRequest": {
         "type": "structure",
         "members": {
+          "gresCustomSettings": {
+            "target": "com.amazonaws.pcs#GresCustomSettings",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe additional Slurm \u003ccode\u003egres.conf\u003c/code\u003e records for the compute node group. Each item is a map of \u003ccode\u003egres.conf\u003c/code\u003e attribute names to values that describes one \u003ccode\u003egres.conf\u003c/code\u003e record, such as a GPU topology, MIG, MPS, or custom GRES entry. PCS adds the \u003ccode\u003eNodeName=\u003c/code\u003e prefix and merges these records with the GPU record it derives from the instance type.\u003c/p\u003e"
+            }
+          },
           "scaleDownIdleTimeInSeconds": {
             "target": "smithy.api#Integer",
             "traits": {
@@ -5064,7 +5100,7 @@
           "version": {
             "target": "smithy.api#String",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe scheduler version to update the cluster to. You can only update to a newer version. For more information about supported versions and update paths, see \u003ca href=\"https://docs.aws.amazon.com/pcs/latest/userguide/working-with_clusters_version_update.html\"\u003eUpdating the scheduler version on a cluster\u003c/a\u003e in the \u003ci\u003ePCS User Guide\u003c/i\u003e.\u003c/p\u003e \u003cp\u003eValid Values: \u003ccode\u003e24.05 | 24.11 | 25.05 | 25.11\u003c/code\u003e \u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003eThe scheduler version to update the cluster to. You can only update to a newer version. For more information about supported versions and update paths, see \u003ca href=\"https://docs.aws.amazon.com/pcs/latest/userguide/working-with_clusters_version_update.html\"\u003eUpdating the scheduler version on a cluster\u003c/a\u003e in the \u003ci\u003ePCS User Guide\u003c/i\u003e.\u003c/p\u003e \u003cp\u003eValid Values: \u003ccode\u003e24.05 | 24.11 | 25.05 | 25.11 | 26.05\u003c/code\u003e \u003c/p\u003e",
               "smithy.api#required": {}
             }
           }

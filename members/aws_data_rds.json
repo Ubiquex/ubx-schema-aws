@@ -4293,6 +4293,12 @@
               "smithy.api#documentation": "\u003cp\u003eThe amount of Provisioned IOPS (input/output operations per second) to allocate for the green DB instance. For information about valid IOPS values, see \u003ca href=\"https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html\"\u003eAmazon RDS DB instance storage\u003c/a\u003e in the \u003ci\u003eAmazon RDS User Guide\u003c/i\u003e.\u003c/p\u003e \u003cp\u003eThis setting doesn't apply to Amazon Aurora blue/green deployments.\u003c/p\u003e"
             }
           },
+          "TargetResourceConfigurations": {
+            "target": "com.amazonaws.rds#TargetResourceConfigurationList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies resource-level configuration overrides for the green environment.\u003c/p\u003e \u003cp\u003eEach entry identifies a resource in the blue environment by its Amazon Resource Name (ARN). It defines the desired configuration for the corresponding resource in the green environment. Any resource that you don't include in this parameter retains the same configuration as its counterpart in the blue environment.\u003c/p\u003e \u003cp\u003eUse this parameter when one or more resources in the green environment require a different configuration than what they have in the blue environment.\u003c/p\u003e \u003cp\u003eConstraints:\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003eYou can't specify the same \u003ccode\u003eSourceArn\u003c/code\u003e in more than one entry.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e"
+            }
+          },
           "TargetStorageThroughput": {
             "target": "com.amazonaws.rds#IntegerOptional",
             "traits": {
@@ -7942,6 +7948,16 @@
               "smithy.api#enumValue": "inactive-except-restore"
             }
           }
+        }
+      },
+      "com.amazonaws.rds#DBAndClusterArn": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 39,
+            "max": 255
+          },
+          "smithy.api#pattern": "^arn:aws[a-z-]*:rds(-[a-z]+)?:[a-z0-9-]*:[0-9]{12}:(cluster|db):[a-zA-Z][a-zA-Z0-9-]{0,62}$"
         }
       },
       "com.amazonaws.rds#DBCluster": {
@@ -33981,6 +33997,41 @@
         "type": "list",
         "member": {
           "target": "com.amazonaws.rds#DBProxyTarget"
+        }
+      },
+      "com.amazonaws.rds#TargetResourceConfiguration": {
+        "type": "structure",
+        "members": {
+          "SourceArn": {
+            "target": "com.amazonaws.rds#DBAndClusterArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the DB cluster or DB instance in the blue environment to which this configuration applies.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "TargetKmsKeyId": {
+            "target": "com.amazonaws.rds#KmsKeyIdOrArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Web Services KMS key identifier for encryption of the corresponding resource in the green environment.\u003c/p\u003e \u003cp\u003eThe Amazon Web Services KMS key identifier is the key ARN, key ID, alias ARN, or alias name for the KMS key.\u003c/p\u003e \u003cp\u003eSpecify this setting in either of the following cases:\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003eYou want the green resource to use a different KMS key than the blue resource.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003eThe blue resource is unencrypted and you want to encrypt the green resource.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e \u003cp\u003eFor Aurora, encryption applies at the DB cluster level. Specify a DB cluster ARN in \u003ccode\u003eSourceArn\u003c/code\u003e. All DB instances in that cluster use the same KMS key.\u003c/p\u003e \u003cp\u003eFor RDS, encryption applies at the DB instance level. Specify a DB instance ARN in \u003ccode\u003eSourceArn\u003c/code\u003e. To encrypt read replicas, include a separate entry for each one. Each entry can specify a different KMS key.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe configuration for a single resource in the green environment of a blue/green deployment.\u003c/p\u003e \u003cp\u003eUse \u003ccode\u003eSourceArn\u003c/code\u003e to identify a resource in the blue environment. Amazon RDS creates the corresponding resource in the green environment using this configuration.\u003c/p\u003e \u003cp\u003eThis data type is a request parameter of the \u003ccode\u003eCreateBlueGreenDeployment\u003c/code\u003e operation.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.rds#TargetResourceConfigurationList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.rds#TargetResourceConfiguration",
+          "traits": {
+            "smithy.api#xmlName": "TargetResourceConfiguration"
+          }
+        },
+        "traits": {
+          "smithy.api#length": {
+            "max": 20
+          }
         }
       },
       "com.amazonaws.rds#TargetRole": {

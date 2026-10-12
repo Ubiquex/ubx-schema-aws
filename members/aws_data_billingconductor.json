@@ -33,6 +33,9 @@
             "target": "com.amazonaws.billingconductor#GetBillingGroupCostReport"
           },
           {
+            "target": "com.amazonaws.billingconductor#GetBillingTransferPreference"
+          },
+          {
             "target": "com.amazonaws.billingconductor#ListAccountAssociations"
           },
           {
@@ -46,6 +49,9 @@
           },
           {
             "target": "com.amazonaws.billingconductor#UntagResource"
+          },
+          {
+            "target": "com.amazonaws.billingconductor#UpdateBillingTransferPreference"
           }
         ],
         "resources": [
@@ -85,6 +91,11 @@
               "type": "String",
               "documentation": "Filters access based on the tag keys that are passed in the request",
               "externalDocumentation": "${DocHomeURL}IAM/latest/UserGuide/reference_policies_condition-keys.html#condition-keys-tagkeys"
+            },
+            "billingconductor:PricingPlanArn": {
+              "type": "ARN",
+              "documentation": "Filters access based on the pricing plan ARN that is passed in the request",
+              "relativeDocumentation": "security_iam_service-with-iam.html#security_iam_service-with-iam-id-based-policies-conditionkeys"
             }
           },
           "aws.protocols#restJson1": {},
@@ -1397,6 +1408,27 @@
           "target": "com.amazonaws.billingconductor#Attribute"
         }
       },
+      "com.amazonaws.billingconductor#AutoTransferBillingGroupCreationPreference": {
+        "type": "structure",
+        "members": {
+          "Enabled": {
+            "target": "smithy.api#Boolean",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003e Specifies whether Billing Conductor automatically creates billing groups for the billing transfer. The preference is disabled by default. \u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "PricingPlanArn": {
+            "target": "com.amazonaws.billingconductor#PricingPlanArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003e The Amazon Resource Name (ARN) of the pricing plan to apply to the automatically created billing groups. This value is required when \u003ccode\u003eEnabled\u003c/code\u003e is \u003ccode\u003etrue\u003c/code\u003e, and must be omitted when \u003ccode\u003eEnabled\u003c/code\u003e is \u003ccode\u003efalse\u003c/code\u003e. \u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003e The auto billing group creation preference for a billing transfer. When the preference is enabled, Billing Conductor automatically creates an indirect billing transfer billing group, with the specified pricing plan, for each account that transfers its bill to the bill source account of the billing transfer. \u003c/p\u003e"
+        }
+      },
       "com.amazonaws.billingconductor#BatchAssociateResourcesToCustomLineItem": {
         "type": "operation",
         "input": {
@@ -2002,6 +2034,12 @@
               "smithy.api#enumValue": "PRICING_PLAN_ATTACHED_TO_BILLING_GROUP_DELETE_CONFLICT"
             }
           },
+          "PRICING_PLAN_REFERENCED_BY_PREFERENCE_DELETE_CONFLICT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "PRICING_PLAN_REFERENCED_BY_PREFERENCE_DELETE_CONFLICT"
+            }
+          },
           "PRICING_RULE_ATTACHED_TO_PRICING_PLAN_DELETE_CONFLICT": {
             "target": "smithy.api#Unit",
             "traits": {
@@ -2515,11 +2553,16 @@
       "com.amazonaws.billingconductor#CreateTieringInput": {
         "type": "structure",
         "members": {
+          "CustomTiers": {
+            "target": "com.amazonaws.billingconductor#CustomTiersList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003e The set of custom tiers for the pricing rule. \u003c/p\u003e"
+            }
+          },
           "FreeTier": {
             "target": "com.amazonaws.billingconductor#CreateFreeTierConfig",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003e The possible Amazon Web Services Free Tier configurations. \u003c/p\u003e",
-              "smithy.api#required": {}
+              "smithy.api#documentation": "\u003cp\u003e The possible Amazon Web Services Free Tier configurations. \u003c/p\u003e"
             }
           }
         },
@@ -3018,6 +3061,70 @@
         },
         "traits": {
           "smithy.api#documentation": "\u003cp\u003eA representation of a custom line item version.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.billingconductor#CustomTier": {
+        "type": "structure",
+        "members": {
+          "BeginRangeInclusive": {
+            "target": "com.amazonaws.billingconductor#CustomTierBeginRangeInclusive",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003e The inclusive start of the usage range that this tier applies to. \u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "EndRangeExclusive": {
+            "target": "com.amazonaws.billingconductor#CustomTierEndRangeExclusive",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003e The exclusive end of the usage range that this tier applies to. If you don't specify a value, this tier applies to all usage that is greater than or equal to \u003ccode\u003eBeginRangeInclusive\u003c/code\u003e. \u003c/p\u003e"
+            }
+          },
+          "RateValue": {
+            "target": "com.amazonaws.billingconductor#CustomTierRateValue",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003e The rate that's applied to the usage that falls within this tier. \u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003e A custom tier for the pricing rule. Each custom tier applies a rate to the usage that falls within the tier's range. \u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.billingconductor#CustomTierBeginRangeInclusive": {
+        "type": "double",
+        "traits": {
+          "smithy.api#range": {
+            "min": 0
+          }
+        }
+      },
+      "com.amazonaws.billingconductor#CustomTierEndRangeExclusive": {
+        "type": "double",
+        "traits": {
+          "smithy.api#range": {
+            "min": 0
+          }
+        }
+      },
+      "com.amazonaws.billingconductor#CustomTierRateValue": {
+        "type": "double",
+        "traits": {
+          "smithy.api#range": {
+            "min": 0
+          }
+        }
+      },
+      "com.amazonaws.billingconductor#CustomTiersList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.billingconductor#CustomTier"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 10
+          }
         }
       },
       "com.amazonaws.billingconductor#DeleteBillingGroup": {
@@ -3522,6 +3629,85 @@
             "target": "com.amazonaws.billingconductor#Token",
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe pagination token used on subsequent calls to get reports.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.billingconductor#GetBillingTransferPreference": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.billingconductor#GetBillingTransferPreferenceInput"
+        },
+        "output": {
+          "target": "com.amazonaws.billingconductor#GetBillingTransferPreferenceOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.billingconductor#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.billingconductor#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.billingconductor#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.billingconductor#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.billingconductor#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eRetrieves the auto billing group creation preference for a billing transfer.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/get-billing-transfer-preference",
+            "code": 200
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.billingconductor#GetBillingTransferPreferenceInput": {
+        "type": "structure",
+        "members": {
+          "ResponsibilityTransferArn": {
+            "target": "com.amazonaws.billingconductor#ResponsibilityTransferArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the billing transfer whose preference you want to retrieve.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.billingconductor#GetBillingTransferPreferenceOutput": {
+        "type": "structure",
+        "members": {
+          "AutoBillingTransferBillingGroupCreation": {
+            "target": "com.amazonaws.billingconductor#AutoTransferBillingGroupCreationPreference",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe auto billing group creation preference for the billing transfer.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "LastModifiedTime": {
+            "target": "com.amazonaws.billingconductor#Instant",
+            "traits": {
+              "smithy.api#default": null,
+              "smithy.api#documentation": "\u003cp\u003eThe most recent time when the preference was modified. This value is empty if the preference has never been set for the billing transfer.\u003c/p\u003e"
+            }
+          },
+          "ResponsibilityTransferArn": {
+            "target": "com.amazonaws.billingconductor#ResponsibilityTransferArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the billing transfer that the preference applies to.\u003c/p\u003e",
+              "smithy.api#required": {}
             }
           }
         },
@@ -5806,11 +5992,16 @@
       "com.amazonaws.billingconductor#Tiering": {
         "type": "structure",
         "members": {
+          "CustomTiers": {
+            "target": "com.amazonaws.billingconductor#CustomTiersList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003e The set of custom tiers for the pricing rule. \u003c/p\u003e"
+            }
+          },
           "FreeTier": {
             "target": "com.amazonaws.billingconductor#FreeTierConfig",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003e The possible Amazon Web Services Free Tier configurations. \u003c/p\u003e",
-              "smithy.api#required": {}
+              "smithy.api#documentation": "\u003cp\u003e The possible Amazon Web Services Free Tier configurations. \u003c/p\u003e"
             }
           }
         },
@@ -6080,6 +6271,107 @@
               "smithy.api#documentation": "\u003cp\u003e The reason why the billing group is in its current status. \u003c/p\u003e"
             }
           }
+        }
+      },
+      "com.amazonaws.billingconductor#UpdateBillingTransferPreference": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.billingconductor#UpdateBillingTransferPreferenceInput"
+        },
+        "output": {
+          "target": "com.amazonaws.billingconductor#UpdateBillingTransferPreferenceOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.billingconductor#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.billingconductor#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.billingconductor#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.billingconductor#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.billingconductor#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.billingconductor#ValidationException"
+          }
+        ],
+        "traits": {
+          "aws.iam#conditionKeys": [
+            "billingconductor:PricingPlanArn"
+          ],
+          "smithy.api#documentation": "\u003cp\u003eSets the auto billing group creation preference for a billing transfer. When the preference is enabled, Billing Conductor automatically creates an indirect billing transfer billing group in your account, with the pricing plan that you specify, for each account that transfers its bill to the bill source account of this billing transfer. The preference applies only to billing groups that are created after you enable it.\u003c/p\u003e \u003cp\u003eEnabling the preference requires the \u003ccode\u003eiam:CreateServiceLinkedRole\u003c/code\u003e permission. While a pricing plan is specified in an enabled preference, you can't delete that pricing plan.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "PUT",
+            "uri": "/update-billing-transfer-preference",
+            "code": 200
+          },
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.billingconductor#UpdateBillingTransferPreferenceInput": {
+        "type": "structure",
+        "members": {
+          "AutoBillingTransferBillingGroupCreation": {
+            "target": "com.amazonaws.billingconductor#AutoTransferBillingGroupCreationPreference",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe auto billing group creation preference to set for the billing transfer.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "ClientToken": {
+            "target": "com.amazonaws.billingconductor#ClientToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA unique, case-sensitive identifier that you specify to ensure idempotency of the request. Idempotency ensures that an API request completes no more than one time. With an idempotent request, if the original request completes successfully, any subsequent retries complete successfully without performing any further actions.\u003c/p\u003e",
+              "smithy.api#httpHeader": "X-Amzn-Client-Token",
+              "smithy.api#idempotencyToken": {}
+            }
+          },
+          "ResponsibilityTransferArn": {
+            "target": "com.amazonaws.billingconductor#ResponsibilityTransferArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the billing transfer whose preference you want to set.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.billingconductor#UpdateBillingTransferPreferenceOutput": {
+        "type": "structure",
+        "members": {
+          "AutoBillingTransferBillingGroupCreation": {
+            "target": "com.amazonaws.billingconductor#AutoTransferBillingGroupCreationPreference",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe updated auto billing group creation preference for the billing transfer.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "LastModifiedTime": {
+            "target": "com.amazonaws.billingconductor#Instant",
+            "traits": {
+              "smithy.api#default": 0,
+              "smithy.api#documentation": "\u003cp\u003eThe most recent time when the preference was modified.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "ResponsibilityTransferArn": {
+            "target": "com.amazonaws.billingconductor#ResponsibilityTransferArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the billing transfer that the preference applies to.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
         }
       },
       "com.amazonaws.billingconductor#UpdateCustomLineItem": {
@@ -6540,11 +6832,16 @@
       "com.amazonaws.billingconductor#UpdateTieringInput": {
         "type": "structure",
         "members": {
+          "CustomTiers": {
+            "target": "com.amazonaws.billingconductor#CustomTiersList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003e The set of custom tiers for the pricing rule. \u003c/p\u003e"
+            }
+          },
           "FreeTier": {
             "target": "com.amazonaws.billingconductor#UpdateFreeTierConfig",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003e The possible Amazon Web Services Free Tier configurations. \u003c/p\u003e",
-              "smithy.api#required": {}
+              "smithy.api#documentation": "\u003cp\u003e The possible Amazon Web Services Free Tier configurations. \u003c/p\u003e"
             }
           }
         },

@@ -39,29 +39,15 @@
           }
         ],
         "version": "2020-06-15",
-        "operations": [
-          {
-            "target": "com.amazonaws.identitystore#GetGroupId"
-          },
-          {
-            "target": "com.amazonaws.identitystore#GetGroupMembershipId"
-          },
-          {
-            "target": "com.amazonaws.identitystore#GetUserId"
-          },
-          {
-            "target": "com.amazonaws.identitystore#IsMemberInGroups"
-          },
-          {
-            "target": "com.amazonaws.identitystore#ListGroupMembershipsForMember"
-          }
-        ],
         "resources": [
           {
             "target": "com.amazonaws.identitystore#GroupMembershipResource"
           },
           {
             "target": "com.amazonaws.identitystore#GroupResource"
+          },
+          {
+            "target": "com.amazonaws.identitystore#IdentityStoreResource"
           },
           {
             "target": "com.amazonaws.identitystore#UserResource"
@@ -79,7 +65,7 @@
             "name": "identitystore"
           },
           "aws.protocols#awsJson1_1": {},
-          "smithy.api#documentation": "\u003cp\u003eThe Identity Store service used by IAM Identity Center provides a single place to retrieve all of your identities (users and groups). For more information, see the \u003ca href=\"https://docs.aws.amazon.com/singlesignon/latest/userguide/what-is.html\"\u003e IAM Identity Center User Guide\u003c/a\u003e.\u003c/p\u003e \u003cp\u003eThis reference guide describes the identity store operations that you can call programmatically and includes detailed information about data types and errors.\u003c/p\u003e \u003cnote\u003e \u003cp\u003e IAM Identity Center uses the \u003ccode\u003esso\u003c/code\u003e, \u003ccode\u003esso-directory\u003c/code\u003e, and \u003ccode\u003eidentitystore\u003c/code\u003e API namespaces. The \u003ccode\u003esso-directory\u003c/code\u003e and \u003ccode\u003eidentitystore\u003c/code\u003e namespaces authorize access to data in the Identity Store. Make sure your policies with IAM actions from these two namespaces are consistent to avoid conflicting authorization to the same data.\u003c/p\u003e \u003c/note\u003e",
+          "smithy.api#documentation": "\u003cnote\u003e \u003cp\u003e IAM Identity Center uses the \u003ccode\u003esso\u003c/code\u003e, \u003ccode\u003esso-directory\u003c/code\u003e, and \u003ccode\u003eidentitystore\u003c/code\u003e API namespaces. The \u003ccode\u003esso-directory\u003c/code\u003e and \u003ccode\u003eidentitystore\u003c/code\u003e namespaces authorize access to data in the Identity Store. Make sure your policies with IAM actions from these two namespaces are consistent to avoid conflicting authorization to the same data.\u003c/p\u003e \u003c/note\u003e \u003cp\u003eThe Identity Store service used by IAM Identity Center provides a single place to retrieve all of your identities (users and groups). You can use the identity store API operations in this guide to manage your identity data programmatically. The scope of these APIs allows you to create, read, update, delete, and list users, groups, and memberships.\u003c/p\u003e \u003cp\u003eThis guide also describes identity store operations that you can call and includes detailed information about data types and errors.\u003c/p\u003e \u003cimportant\u003e \u003cp\u003eIf you use an external identity provider or Active Directory as your identity source, we recommend that you use the \u003ccode\u003eCreate\u003c/code\u003e, \u003ccode\u003eUpdate\u003c/code\u003e, and \u003ccode\u003eDelete\u003c/code\u003e APIs with caution. Because IAM Identity Center doesn't support outbound synchronization, your identity source won't automatically update with the changes that you make to users or groups using these APIs.\u003c/p\u003e \u003c/important\u003e \u003cp\u003eAmazon Web Services provides SDKs that consist of libraries and sample code for various programming languages and platforms (Java, Ruby, .Net, iOS, Android, and more). The SDKs provide a convenient way to programmatically access the identity store and other Amazon Web Services services. For more information about the Amazon Web Services SDKs, including how to download and install them, see \u003ca href=\"http://aws.amazon.com/tools/\"\u003eAmazon Web Services Builder Center Toolbox\u003c/a\u003e.\u003c/p\u003e",
           "smithy.api#title": "AWS SSO Identity Store",
           "smithy.rules#endpointBdd": {
             "version": "1.1",
@@ -1366,14 +1352,14 @@
           "GroupId": {
             "target": "com.amazonaws.identitystore#ResourceId",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe identifier for a group in the identity store.\u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003eThe identifier for a group in the identity store.\u003c/p\u003e \u003cp\u003eYou can specify the group by ID or by Amazon Resource Name (ARN). For example, group ID \u003ccode\u003ea1b2c3d4-5678-90ab-cdef-EXAMPLE22222\u003c/code\u003e or group ARN \u003ccode\u003earn:aws:identitystore:::group/a1b2c3d4-5678-90ab-cdef-EXAMPLE22222\u003c/code\u003e.\u003c/p\u003e",
               "smithy.api#required": {}
             }
           },
           "IdentityStoreId": {
             "target": "com.amazonaws.identitystore#IdentityStoreId",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe globally unique identifier for the identity store.\u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003eThe globally unique identifier for the identity store.\u003c/p\u003e \u003cp\u003eYou can specify the identity store by ID or by Amazon Resource Name (ARN). For example, identity store ID \u003ccode\u003ed-1234567890\u003c/code\u003e or identity store ARN \u003ccode\u003earn:aws:identitystore::111122223333:identitystore/d-1234567890\u003c/code\u003e.\u003c/p\u003e",
               "smithy.api#required": {}
             }
           },
@@ -1384,6 +1370,17 @@
               "smithy.api#required": {}
             }
           }
+        },
+        "traits": {
+          "smithy.api#input": {},
+          "smithy.api#references": [
+            {
+              "resource": "com.amazonaws.identitystore#GroupResource"
+            },
+            {
+              "resource": "com.amazonaws.identitystore#IdentityStoreResource"
+            }
+          ]
         }
       },
       "com.amazonaws.identitystore#CreateGroupMembershipResponse": {
@@ -1396,6 +1393,13 @@
               "smithy.api#required": {}
             }
           },
+          "MembershipArn": {
+            "target": "com.amazonaws.identitystore#ResourceArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the newly created group membership in the identity store. For example, \u003ccode\u003earn:aws:identitystore:::membership/a1b2c3d4-5678-90ab-cdef-EXAMPLE33333\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
           "MembershipId": {
             "target": "com.amazonaws.identitystore#ResourceId",
             "traits": {
@@ -1403,6 +1407,14 @@
               "smithy.api#required": {}
             }
           }
+        },
+        "traits": {
+          "smithy.api#output": {},
+          "smithy.api#references": [
+            {
+              "resource": "com.amazonaws.identitystore#IdentityStoreResource"
+            }
+          ]
         }
       },
       "com.amazonaws.identitystore#CreateGroupRequest": {
@@ -1423,15 +1435,30 @@
           "IdentityStoreId": {
             "target": "com.amazonaws.identitystore#IdentityStoreId",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe globally unique identifier for the identity store.\u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003eThe globally unique identifier for the identity store.\u003c/p\u003e \u003cp\u003eYou can specify the identity store by ID or by Amazon Resource Name (ARN). For example, identity store ID \u003ccode\u003ed-1234567890\u003c/code\u003e or identity store ARN \u003ccode\u003earn:aws:identitystore::111122223333:identitystore/d-1234567890\u003c/code\u003e.\u003c/p\u003e",
               "smithy.api#required": {}
             }
           }
+        },
+        "traits": {
+          "smithy.api#input": {},
+          "smithy.api#references": [
+            {
+              "resource": "com.amazonaws.identitystore#IdentityStoreResource"
+            }
+          ]
         }
       },
       "com.amazonaws.identitystore#CreateGroupResponse": {
         "type": "structure",
         "members": {
+          "GroupArn": {
+            "target": "com.amazonaws.identitystore#ResourceArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the newly created group in the identity store. For example, \u003ccode\u003earn:aws:identitystore:::group/a1b2c3d4-5678-90ab-cdef-EXAMPLE22222\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
           "GroupId": {
             "target": "com.amazonaws.identitystore#ResourceId",
             "traits": {
@@ -1445,7 +1472,22 @@
               "smithy.api#documentation": "\u003cp\u003eThe globally unique identifier for the identity store.\u003c/p\u003e",
               "smithy.api#required": {}
             }
+          },
+          "Revision": {
+            "target": "com.amazonaws.identitystore#ResourceRevision",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe revision of the newly created group in the identity store.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
           }
+        },
+        "traits": {
+          "smithy.api#output": {},
+          "smithy.api#references": [
+            {
+              "resource": "com.amazonaws.identitystore#IdentityStoreResource"
+            }
+          ]
         }
       },
       "com.amazonaws.identitystore#CreateUser": {
@@ -1510,7 +1552,7 @@
           "IdentityStoreId": {
             "target": "com.amazonaws.identitystore#IdentityStoreId",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe globally unique identifier for the identity store.\u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003eThe globally unique identifier for the identity store.\u003c/p\u003e \u003cp\u003eYou can specify the identity store by ID or by Amazon Resource Name (ARN). For example, identity store ID \u003ccode\u003ed-1234567890\u003c/code\u003e or identity store ARN \u003ccode\u003earn:aws:identitystore::111122223333:identitystore/d-1234567890\u003c/code\u003e.\u003c/p\u003e",
               "smithy.api#required": {}
             }
           },
@@ -1592,6 +1634,14 @@
               "smithy.api#documentation": "\u003cp\u003eThe user's personal website or blog URL. This field allows users to provide a link to their personal or professional website.\u003c/p\u003e"
             }
           }
+        },
+        "traits": {
+          "smithy.api#input": {},
+          "smithy.api#references": [
+            {
+              "resource": "com.amazonaws.identitystore#IdentityStoreResource"
+            }
+          ]
         }
       },
       "com.amazonaws.identitystore#CreateUserResponse": {
@@ -1604,6 +1654,20 @@
               "smithy.api#required": {}
             }
           },
+          "Revision": {
+            "target": "com.amazonaws.identitystore#ResourceRevision",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe revision of the newly created user in the identity store.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "UserArn": {
+            "target": "com.amazonaws.identitystore#ResourceArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the newly created user in the identity store. For example, \u003ccode\u003earn:aws:identitystore:::user/a1b2c3d4-5678-90ab-cdef-EXAMPLE11111\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
           "UserId": {
             "target": "com.amazonaws.identitystore#ResourceId",
             "traits": {
@@ -1611,6 +1675,14 @@
               "smithy.api#required": {}
             }
           }
+        },
+        "traits": {
+          "smithy.api#output": {},
+          "smithy.api#references": [
+            {
+              "resource": "com.amazonaws.identitystore#IdentityStoreResource"
+            }
+          ]
         }
       },
       "com.amazonaws.identitystore#DateType": {
@@ -1670,21 +1742,32 @@
           "IdentityStoreId": {
             "target": "com.amazonaws.identitystore#IdentityStoreId",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe globally unique identifier for the identity store.\u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003eThe globally unique identifier for the identity store.\u003c/p\u003e \u003cp\u003eYou can specify the identity store by ID or by Amazon Resource Name (ARN). For example, identity store ID \u003ccode\u003ed-1234567890\u003c/code\u003e or identity store ARN \u003ccode\u003earn:aws:identitystore::111122223333:identitystore/d-1234567890\u003c/code\u003e.\u003c/p\u003e",
               "smithy.api#required": {}
             }
           },
           "MembershipId": {
             "target": "com.amazonaws.identitystore#ResourceId",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe identifier for a \u003ccode\u003eGroupMembership\u003c/code\u003e in an identity store.\u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003eThe identifier for a \u003ccode\u003eGroupMembership\u003c/code\u003e in an identity store.\u003c/p\u003e \u003cp\u003eYou can specify the group membership by ID or by Amazon Resource Name (ARN). For example, membership ID \u003ccode\u003ea1b2c3d4-5678-90ab-cdef-EXAMPLE33333\u003c/code\u003e or membership ARN \u003ccode\u003earn:aws:identitystore:::membership/a1b2c3d4-5678-90ab-cdef-EXAMPLE33333\u003c/code\u003e.\u003c/p\u003e",
               "smithy.api#required": {}
             }
           }
+        },
+        "traits": {
+          "smithy.api#input": {},
+          "smithy.api#references": [
+            {
+              "resource": "com.amazonaws.identitystore#IdentityStoreResource"
+            }
+          ]
         }
       },
       "com.amazonaws.identitystore#DeleteGroupMembershipResponse": {
-        "type": "structure"
+        "type": "structure",
+        "traits": {
+          "smithy.api#output": {}
+        }
       },
       "com.amazonaws.identitystore#DeleteGroupRequest": {
         "type": "structure",
@@ -1692,21 +1775,38 @@
           "GroupId": {
             "target": "com.amazonaws.identitystore#ResourceId",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe identifier for a group in the identity store.\u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003eThe identifier for a group in the identity store.\u003c/p\u003e \u003cp\u003eYou can specify the group by ID or by Amazon Resource Name (ARN). For example, group ID \u003ccode\u003ea1b2c3d4-5678-90ab-cdef-EXAMPLE22222\u003c/code\u003e or group ARN \u003ccode\u003earn:aws:identitystore:::group/a1b2c3d4-5678-90ab-cdef-EXAMPLE22222\u003c/code\u003e.\u003c/p\u003e",
               "smithy.api#required": {}
             }
           },
           "IdentityStoreId": {
             "target": "com.amazonaws.identitystore#IdentityStoreId",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe globally unique identifier for the identity store.\u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003eThe globally unique identifier for the identity store.\u003c/p\u003e \u003cp\u003eYou can specify the identity store by ID or by Amazon Resource Name (ARN). For example, identity store ID \u003ccode\u003ed-1234567890\u003c/code\u003e or identity store ARN \u003ccode\u003earn:aws:identitystore::111122223333:identitystore/d-1234567890\u003c/code\u003e.\u003c/p\u003e",
               "smithy.api#required": {}
             }
+          },
+          "Revision": {
+            "target": "com.amazonaws.identitystore#ResourceRevision",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe expected current revision of the group. When you provide this value, the group is deleted only if it matches the current revision of the group in the identity store. If the value doesn't match, the operation fails with a \u003ccode\u003eConflictException\u003c/code\u003e. If you don't provide this value, the group is deleted regardless of its current revision.\u003c/p\u003e"
+            }
           }
+        },
+        "traits": {
+          "smithy.api#input": {},
+          "smithy.api#references": [
+            {
+              "resource": "com.amazonaws.identitystore#IdentityStoreResource"
+            }
+          ]
         }
       },
       "com.amazonaws.identitystore#DeleteGroupResponse": {
-        "type": "structure"
+        "type": "structure",
+        "traits": {
+          "smithy.api#output": {}
+        }
       },
       "com.amazonaws.identitystore#DeleteUser": {
         "type": "operation",
@@ -1738,21 +1838,38 @@
           "IdentityStoreId": {
             "target": "com.amazonaws.identitystore#IdentityStoreId",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe globally unique identifier for the identity store.\u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003eThe globally unique identifier for the identity store.\u003c/p\u003e \u003cp\u003eYou can specify the identity store by ID or by Amazon Resource Name (ARN). For example, identity store ID \u003ccode\u003ed-1234567890\u003c/code\u003e or identity store ARN \u003ccode\u003earn:aws:identitystore::111122223333:identitystore/d-1234567890\u003c/code\u003e.\u003c/p\u003e",
               "smithy.api#required": {}
+            }
+          },
+          "Revision": {
+            "target": "com.amazonaws.identitystore#ResourceRevision",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe expected current revision of the user. When you provide this value, the user is deleted only if it matches the current revision of the user in the identity store. If the value doesn't match, the operation fails with a \u003ccode\u003eConflictException\u003c/code\u003e. If you don't provide this value, the user is deleted regardless of its current revision.\u003c/p\u003e"
             }
           },
           "UserId": {
             "target": "com.amazonaws.identitystore#ResourceId",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe identifier for a user in the identity store.\u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003eThe identifier for a user in the identity store.\u003c/p\u003e \u003cp\u003eYou can specify the user by ID or by Amazon Resource Name (ARN). For example, user ID \u003ccode\u003ea1b2c3d4-5678-90ab-cdef-EXAMPLE11111\u003c/code\u003e or user ARN \u003ccode\u003earn:aws:identitystore:::user/a1b2c3d4-5678-90ab-cdef-EXAMPLE11111\u003c/code\u003e.\u003c/p\u003e",
               "smithy.api#required": {}
             }
           }
+        },
+        "traits": {
+          "smithy.api#input": {},
+          "smithy.api#references": [
+            {
+              "resource": "com.amazonaws.identitystore#IdentityStoreResource"
+            }
+          ]
         }
       },
       "com.amazonaws.identitystore#DeleteUserResponse": {
-        "type": "structure"
+        "type": "structure",
+        "traits": {
+          "smithy.api#output": {}
+        }
       },
       "com.amazonaws.identitystore#DescribeGroup": {
         "type": "operation",
@@ -1802,17 +1919,25 @@
           "IdentityStoreId": {
             "target": "com.amazonaws.identitystore#IdentityStoreId",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe globally unique identifier for the identity store.\u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003eThe globally unique identifier for the identity store.\u003c/p\u003e \u003cp\u003eYou can specify the identity store by ID or by Amazon Resource Name (ARN). For example, identity store ID \u003ccode\u003ed-1234567890\u003c/code\u003e or identity store ARN \u003ccode\u003earn:aws:identitystore::111122223333:identitystore/d-1234567890\u003c/code\u003e.\u003c/p\u003e",
               "smithy.api#required": {}
             }
           },
           "MembershipId": {
             "target": "com.amazonaws.identitystore#ResourceId",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe identifier for a \u003ccode\u003eGroupMembership\u003c/code\u003e in an identity store.\u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003eThe identifier for a \u003ccode\u003eGroupMembership\u003c/code\u003e in an identity store.\u003c/p\u003e \u003cp\u003eYou can specify the group membership by ID or by Amazon Resource Name (ARN). For example, membership ID \u003ccode\u003ea1b2c3d4-5678-90ab-cdef-EXAMPLE33333\u003c/code\u003e or membership ARN \u003ccode\u003earn:aws:identitystore:::membership/a1b2c3d4-5678-90ab-cdef-EXAMPLE33333\u003c/code\u003e.\u003c/p\u003e",
               "smithy.api#required": {}
             }
           }
+        },
+        "traits": {
+          "smithy.api#input": {},
+          "smithy.api#references": [
+            {
+              "resource": "com.amazonaws.identitystore#IdentityStoreResource"
+            }
+          ]
         }
       },
       "com.amazonaws.identitystore#DescribeGroupMembershipResponse": {
@@ -1850,6 +1975,13 @@
               "smithy.api#required": {}
             }
           },
+          "MembershipArn": {
+            "target": "com.amazonaws.identitystore#ResourceArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the group membership in the identity store. For example, \u003ccode\u003earn:aws:identitystore:::membership/a1b2c3d4-5678-90ab-cdef-EXAMPLE33333\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
           "MembershipId": {
             "target": "com.amazonaws.identitystore#ResourceId",
             "traits": {
@@ -1869,6 +2001,17 @@
               "smithy.api#documentation": "\u003cp\u003eThe identifier of the user or system that last updated the group membership.\u003c/p\u003e"
             }
           }
+        },
+        "traits": {
+          "smithy.api#output": {},
+          "smithy.api#references": [
+            {
+              "resource": "com.amazonaws.identitystore#GroupResource"
+            },
+            {
+              "resource": "com.amazonaws.identitystore#IdentityStoreResource"
+            }
+          ]
         }
       },
       "com.amazonaws.identitystore#DescribeGroupRequest": {
@@ -1877,17 +2020,25 @@
           "GroupId": {
             "target": "com.amazonaws.identitystore#ResourceId",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe identifier for a group in the identity store.\u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003eThe identifier for a group in the identity store.\u003c/p\u003e \u003cp\u003eYou can specify the group by ID or by Amazon Resource Name (ARN). For example, group ID \u003ccode\u003ea1b2c3d4-5678-90ab-cdef-EXAMPLE22222\u003c/code\u003e or group ARN \u003ccode\u003earn:aws:identitystore:::group/a1b2c3d4-5678-90ab-cdef-EXAMPLE22222\u003c/code\u003e.\u003c/p\u003e",
               "smithy.api#required": {}
             }
           },
           "IdentityStoreId": {
             "target": "com.amazonaws.identitystore#IdentityStoreId",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe globally unique identifier for the identity store, such as \u003ccode\u003ed-1234567890\u003c/code\u003e. In this example, \u003ccode\u003ed-\u003c/code\u003e is a fixed prefix, and \u003ccode\u003e1234567890\u003c/code\u003e is a randomly generated string that contains numbers and lower case letters. This value is generated at the time that a new identity store is created.\u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003eThe globally unique identifier for the identity store, such as \u003ccode\u003ed-1234567890\u003c/code\u003e. In this example, \u003ccode\u003ed-\u003c/code\u003e is a fixed prefix, and \u003ccode\u003e1234567890\u003c/code\u003e is a randomly generated string that contains numbers and lower case letters. This value is generated at the time that a new identity store is created.\u003c/p\u003e \u003cp\u003eYou can specify the identity store by ID or by Amazon Resource Name (ARN). For example, identity store ID \u003ccode\u003ed-1234567890\u003c/code\u003e or identity store ARN \u003ccode\u003earn:aws:identitystore::111122223333:identitystore/d-1234567890\u003c/code\u003e.\u003c/p\u003e",
               "smithy.api#required": {}
             }
           }
+        },
+        "traits": {
+          "smithy.api#input": {},
+          "smithy.api#references": [
+            {
+              "resource": "com.amazonaws.identitystore#IdentityStoreResource"
+            }
+          ]
         }
       },
       "com.amazonaws.identitystore#DescribeGroupResponse": {
@@ -1923,6 +2074,13 @@
               "smithy.api#documentation": "\u003cp\u003eA list of \u003ccode\u003eExternalId\u003c/code\u003e objects that contains the identifiers issued to this resource by an external identity provider.\u003c/p\u003e"
             }
           },
+          "GroupArn": {
+            "target": "com.amazonaws.identitystore#ResourceArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the group in the identity store. For example, \u003ccode\u003earn:aws:identitystore:::group/a1b2c3d4-5678-90ab-cdef-EXAMPLE22222\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
           "GroupId": {
             "target": "com.amazonaws.identitystore#ResourceId",
             "traits": {
@@ -1934,6 +2092,13 @@
             "target": "com.amazonaws.identitystore#IdentityStoreId",
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe globally unique identifier for the identity store.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Revision": {
+            "target": "com.amazonaws.identitystore#ResourceRevision",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe current revision of the group in the identity store. This value changes each time the group is modified.\u003c/p\u003e",
               "smithy.api#required": {}
             }
           },
@@ -1949,6 +2114,78 @@
               "smithy.api#documentation": "\u003cp\u003eThe identifier of the user or system that last updated the group.\u003c/p\u003e"
             }
           }
+        },
+        "traits": {
+          "smithy.api#output": {},
+          "smithy.api#references": [
+            {
+              "resource": "com.amazonaws.identitystore#IdentityStoreResource"
+            }
+          ]
+        }
+      },
+      "com.amazonaws.identitystore#DescribeIdentityStore": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.identitystore#DescribeIdentityStoreRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.identitystore#DescribeIdentityStoreResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.identitystore#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.identitystore#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eRetrieves details about the specified identity store, including its Amazon Resource Name (ARN) and network configuration.\u003c/p\u003e",
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.identitystore#DescribeIdentityStoreRequest": {
+        "type": "structure",
+        "members": {
+          "IdentityStoreId": {
+            "target": "com.amazonaws.identitystore#IdentityStoreId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe globally unique identifier for the identity store.\u003c/p\u003e \u003cp\u003eYou can specify the identity store by ID or by Amazon Resource Name (ARN). For example, identity store ID \u003ccode\u003ed-1234567890\u003c/code\u003e or identity store ARN \u003ccode\u003earn:aws:identitystore::111122223333:identitystore/d-1234567890\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.identitystore#DescribeIdentityStoreResponse": {
+        "type": "structure",
+        "members": {
+          "IdentityStoreArn": {
+            "target": "com.amazonaws.identitystore#IdentityStoreArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the identity store. For example, \u003ccode\u003earn:aws:identitystore::111122223333:identitystore/d-1234567890\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "IdentityStoreId": {
+            "target": "com.amazonaws.identitystore#IdentityStoreId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe globally unique identifier for the identity store.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "NetworkConfiguration": {
+            "target": "com.amazonaws.identitystore#NetworkConfigurationDetails",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe network configuration of the identity store. This configuration controls whether access through a virtual private cloud (VPC) endpoint is required, and which source VPCs and IP addresses are allowed.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
         }
       },
       "com.amazonaws.identitystore#DescribeUser": {
@@ -1984,17 +2221,25 @@
           "IdentityStoreId": {
             "target": "com.amazonaws.identitystore#IdentityStoreId",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe globally unique identifier for the identity store, such as \u003ccode\u003ed-1234567890\u003c/code\u003e. In this example, \u003ccode\u003ed-\u003c/code\u003e is a fixed prefix, and \u003ccode\u003e1234567890\u003c/code\u003e is a randomly generated string that contains numbers and lower case letters. This value is generated at the time that a new identity store is created.\u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003eThe globally unique identifier for the identity store, such as \u003ccode\u003ed-1234567890\u003c/code\u003e. In this example, \u003ccode\u003ed-\u003c/code\u003e is a fixed prefix, and \u003ccode\u003e1234567890\u003c/code\u003e is a randomly generated string that contains numbers and lower case letters. This value is generated at the time that a new identity store is created.\u003c/p\u003e \u003cp\u003eYou can specify the identity store by ID or by Amazon Resource Name (ARN). For example, identity store ID \u003ccode\u003ed-1234567890\u003c/code\u003e or identity store ARN \u003ccode\u003earn:aws:identitystore::111122223333:identitystore/d-1234567890\u003c/code\u003e.\u003c/p\u003e",
               "smithy.api#required": {}
             }
           },
           "UserId": {
             "target": "com.amazonaws.identitystore#ResourceId",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe identifier for a user in the identity store.\u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003eThe identifier for a user in the identity store.\u003c/p\u003e \u003cp\u003eYou can specify the user by ID or by Amazon Resource Name (ARN). For example, user ID \u003ccode\u003ea1b2c3d4-5678-90ab-cdef-EXAMPLE11111\u003c/code\u003e or user ARN \u003ccode\u003earn:aws:identitystore:::user/a1b2c3d4-5678-90ab-cdef-EXAMPLE11111\u003c/code\u003e.\u003c/p\u003e",
               "smithy.api#required": {}
             }
           }
+        },
+        "traits": {
+          "smithy.api#input": {},
+          "smithy.api#references": [
+            {
+              "resource": "com.amazonaws.identitystore#IdentityStoreResource"
+            }
+          ]
         }
       },
       "com.amazonaws.identitystore#DescribeUserResponse": {
@@ -2097,6 +2342,13 @@
               "smithy.api#documentation": "\u003cp\u003eA URL link for the user's profile.\u003c/p\u003e"
             }
           },
+          "Revision": {
+            "target": "com.amazonaws.identitystore#ResourceRevision",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe current revision of the user in the identity store. This value changes each time the user is modified.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
           "Roles": {
             "target": "com.amazonaws.identitystore#Roles",
             "traits": {
@@ -2125,6 +2377,13 @@
             "target": "com.amazonaws.identitystore#StringType",
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe identifier of the user or system that last updated the user.\u003c/p\u003e"
+            }
+          },
+          "UserArn": {
+            "target": "com.amazonaws.identitystore#ResourceArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the user in the identity store. For example, \u003ccode\u003earn:aws:identitystore:::user/a1b2c3d4-5678-90ab-cdef-EXAMPLE11111\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
             }
           },
           "UserId": {
@@ -2158,6 +2417,14 @@
               "smithy.api#documentation": "\u003cp\u003eThe user's personal website or blog URL. Returns the stored website information for the user.\u003c/p\u003e"
             }
           }
+        },
+        "traits": {
+          "smithy.api#output": {},
+          "smithy.api#references": [
+            {
+              "resource": "com.amazonaws.identitystore#IdentityStoreResource"
+            }
+          ]
         }
       },
       "com.amazonaws.identitystore#Email": {
@@ -2364,15 +2631,30 @@
           "IdentityStoreId": {
             "target": "com.amazonaws.identitystore#IdentityStoreId",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe globally unique identifier for the identity store.\u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003eThe globally unique identifier for the identity store.\u003c/p\u003e \u003cp\u003eYou can specify the identity store by ID or by Amazon Resource Name (ARN). For example, identity store ID \u003ccode\u003ed-1234567890\u003c/code\u003e or identity store ARN \u003ccode\u003earn:aws:identitystore::111122223333:identitystore/d-1234567890\u003c/code\u003e.\u003c/p\u003e",
               "smithy.api#required": {}
             }
           }
+        },
+        "traits": {
+          "smithy.api#input": {},
+          "smithy.api#references": [
+            {
+              "resource": "com.amazonaws.identitystore#IdentityStoreResource"
+            }
+          ]
         }
       },
       "com.amazonaws.identitystore#GetGroupIdResponse": {
         "type": "structure",
         "members": {
+          "GroupArn": {
+            "target": "com.amazonaws.identitystore#ResourceArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the group in the identity store. For example, \u003ccode\u003earn:aws:identitystore:::group/a1b2c3d4-5678-90ab-cdef-EXAMPLE22222\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
           "GroupId": {
             "target": "com.amazonaws.identitystore#ResourceId",
             "traits": {
@@ -2387,6 +2669,17 @@
               "smithy.api#required": {}
             }
           }
+        },
+        "traits": {
+          "smithy.api#output": {},
+          "smithy.api#references": [
+            {
+              "resource": "com.amazonaws.identitystore#GroupResource"
+            },
+            {
+              "resource": "com.amazonaws.identitystore#IdentityStoreResource"
+            }
+          ]
         }
       },
       "com.amazonaws.identitystore#GetGroupMembershipId": {
@@ -2416,14 +2709,14 @@
           "GroupId": {
             "target": "com.amazonaws.identitystore#ResourceId",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe identifier for a group in the identity store.\u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003eThe identifier for a group in the identity store.\u003c/p\u003e \u003cp\u003eYou can specify the group by ID or by Amazon Resource Name (ARN). For example, group ID \u003ccode\u003ea1b2c3d4-5678-90ab-cdef-EXAMPLE22222\u003c/code\u003e or group ARN \u003ccode\u003earn:aws:identitystore:::group/a1b2c3d4-5678-90ab-cdef-EXAMPLE22222\u003c/code\u003e.\u003c/p\u003e",
               "smithy.api#required": {}
             }
           },
           "IdentityStoreId": {
             "target": "com.amazonaws.identitystore#IdentityStoreId",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe globally unique identifier for the identity store.\u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003eThe globally unique identifier for the identity store.\u003c/p\u003e \u003cp\u003eYou can specify the identity store by ID or by Amazon Resource Name (ARN). For example, identity store ID \u003ccode\u003ed-1234567890\u003c/code\u003e or identity store ARN \u003ccode\u003earn:aws:identitystore::111122223333:identitystore/d-1234567890\u003c/code\u003e.\u003c/p\u003e",
               "smithy.api#required": {}
             }
           },
@@ -2434,6 +2727,17 @@
               "smithy.api#required": {}
             }
           }
+        },
+        "traits": {
+          "smithy.api#input": {},
+          "smithy.api#references": [
+            {
+              "resource": "com.amazonaws.identitystore#GroupResource"
+            },
+            {
+              "resource": "com.amazonaws.identitystore#IdentityStoreResource"
+            }
+          ]
         }
       },
       "com.amazonaws.identitystore#GetGroupMembershipIdResponse": {
@@ -2446,6 +2750,13 @@
               "smithy.api#required": {}
             }
           },
+          "MembershipArn": {
+            "target": "com.amazonaws.identitystore#ResourceArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the group membership in the identity store. For example, \u003ccode\u003earn:aws:identitystore:::membership/a1b2c3d4-5678-90ab-cdef-EXAMPLE33333\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
           "MembershipId": {
             "target": "com.amazonaws.identitystore#ResourceId",
             "traits": {
@@ -2453,6 +2764,17 @@
               "smithy.api#required": {}
             }
           }
+        },
+        "traits": {
+          "smithy.api#output": {},
+          "smithy.api#references": [
+            {
+              "resource": "com.amazonaws.identitystore#IdentityStoreResource"
+            },
+            {
+              "resource": "com.amazonaws.identitystore#GroupMembershipResource"
+            }
+          ]
         }
       },
       "com.amazonaws.identitystore#GetUserId": {
@@ -2489,10 +2811,18 @@
           "IdentityStoreId": {
             "target": "com.amazonaws.identitystore#IdentityStoreId",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe globally unique identifier for the identity store.\u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003eThe globally unique identifier for the identity store.\u003c/p\u003e \u003cp\u003eYou can specify the identity store by ID or by Amazon Resource Name (ARN). For example, identity store ID \u003ccode\u003ed-1234567890\u003c/code\u003e or identity store ARN \u003ccode\u003earn:aws:identitystore::111122223333:identitystore/d-1234567890\u003c/code\u003e.\u003c/p\u003e",
               "smithy.api#required": {}
             }
           }
+        },
+        "traits": {
+          "smithy.api#input": {},
+          "smithy.api#references": [
+            {
+              "resource": "com.amazonaws.identitystore#IdentityStoreResource"
+            }
+          ]
         }
       },
       "com.amazonaws.identitystore#GetUserIdResponse": {
@@ -2505,6 +2835,13 @@
               "smithy.api#required": {}
             }
           },
+          "UserArn": {
+            "target": "com.amazonaws.identitystore#ResourceArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the user in the identity store. For example, \u003ccode\u003earn:aws:identitystore:::user/a1b2c3d4-5678-90ab-cdef-EXAMPLE11111\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
           "UserId": {
             "target": "com.amazonaws.identitystore#ResourceId",
             "traits": {
@@ -2512,6 +2849,17 @@
               "smithy.api#required": {}
             }
           }
+        },
+        "traits": {
+          "smithy.api#output": {},
+          "smithy.api#references": [
+            {
+              "resource": "com.amazonaws.identitystore#IdentityStoreResource"
+            },
+            {
+              "resource": "com.amazonaws.identitystore#UserResource"
+            }
+          ]
         }
       },
       "com.amazonaws.identitystore#Group": {
@@ -2547,6 +2895,13 @@
               "smithy.api#documentation": "\u003cp\u003eA list of \u003ccode\u003eExternalId\u003c/code\u003e objects that contains the identifiers issued to this resource by an external identity provider.\u003c/p\u003e"
             }
           },
+          "GroupArn": {
+            "target": "com.amazonaws.identitystore#ResourceArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the group in the identity store. For example, \u003ccode\u003earn:aws:identitystore:::group/a1b2c3d4-5678-90ab-cdef-EXAMPLE22222\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
           "GroupId": {
             "target": "com.amazonaws.identitystore#ResourceId",
             "traits": {
@@ -2558,6 +2913,13 @@
             "target": "com.amazonaws.identitystore#IdentityStoreId",
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe globally unique identifier for the identity store.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Revision": {
+            "target": "com.amazonaws.identitystore#ResourceRevision",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe current revision of the group in the identity store. This value changes each time the group is modified. You can provide it as the \u003ccode\u003eRevision\u003c/code\u003e parameter of an \u003ccode\u003eUpdateGroup\u003c/code\u003e or \u003ccode\u003eDeleteGroup\u003c/code\u003e request to make the operation conditional on the group not having changed. Treat this value as an opaque token: don't parse it or rely on its format or ordering.\u003c/p\u003e",
               "smithy.api#required": {}
             }
           },
@@ -2575,7 +2937,12 @@
           }
         },
         "traits": {
-          "smithy.api#documentation": "\u003cp\u003eA group object that contains the metadata and attributes for a specified group.\u003c/p\u003e"
+          "smithy.api#documentation": "\u003cp\u003eA group object that contains the metadata and attributes for a specified group.\u003c/p\u003e",
+          "smithy.api#references": [
+            {
+              "resource": "com.amazonaws.identitystore#IdentityStoreResource"
+            }
+          ]
         }
       },
       "com.amazonaws.identitystore#GroupDisplayName": {
@@ -2585,7 +2952,7 @@
             "min": 1,
             "max": 1024
           },
-          "smithy.api#pattern": "^[\\p{L}\\p{M}\\p{S}\\p{N}\\p{P}\\t\\n\\r \u00a0]+$",
+          "smithy.api#pattern": "^[\\p{L}\\p{M}\\p{S}\\p{N}\\p{P}\\t\\n\\r \u00a0\u3000]+$",
           "smithy.api#sensitive": {}
         }
       },
@@ -2635,10 +3002,18 @@
               "smithy.api#documentation": "\u003cp\u003eAn object that contains the identifier of a group member. Setting the \u003ccode\u003eUserID\u003c/code\u003e field to the specific identifier for a user indicates that the user is a member of the group.\u003c/p\u003e"
             }
           },
+          "MembershipArn": {
+            "target": "com.amazonaws.identitystore#ResourceArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the group membership in the identity store. For example, \u003ccode\u003earn:aws:identitystore:::membership/a1b2c3d4-5678-90ab-cdef-EXAMPLE33333\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
           "MembershipId": {
             "target": "com.amazonaws.identitystore#ResourceId",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe identifier for a \u003ccode\u003eGroupMembership\u003c/code\u003e object in an identity store.\u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003eThe identifier for a \u003ccode\u003eGroupMembership\u003c/code\u003e object in an identity store.\u003c/p\u003e",
+              "smithy.api#required": {}
             }
           },
           "UpdatedAt": {
@@ -2655,7 +3030,15 @@
           }
         },
         "traits": {
-          "smithy.api#documentation": "\u003cp\u003eContains the identifiers for a group, a group member, and a \u003ccode\u003eGroupMembership\u003c/code\u003e object in the identity store.\u003c/p\u003e"
+          "smithy.api#documentation": "\u003cp\u003eContains the identifiers for a group, a group member, and a \u003ccode\u003eGroupMembership\u003c/code\u003e object in the identity store.\u003c/p\u003e",
+          "smithy.api#references": [
+            {
+              "resource": "com.amazonaws.identitystore#GroupResource"
+            },
+            {
+              "resource": "com.amazonaws.identitystore#IdentityStoreResource"
+            }
+          ]
         }
       },
       "com.amazonaws.identitystore#GroupMembershipExistenceResult": {
@@ -2682,7 +3065,12 @@
           }
         },
         "traits": {
-          "smithy.api#documentation": "\u003cp\u003eIndicates whether a resource is a member of a group in the identity store.\u003c/p\u003e"
+          "smithy.api#documentation": "\u003cp\u003eIndicates whether a resource is a member of a group in the identity store.\u003c/p\u003e",
+          "smithy.api#references": [
+            {
+              "resource": "com.amazonaws.identitystore#GroupResource"
+            }
+          ]
         }
       },
       "com.amazonaws.identitystore#GroupMembershipExistenceResults": {
@@ -2697,7 +3085,7 @@
           "aws.cloudformation#cfnResource": {
             "name": "GroupMembership"
           },
-          "smithy.api#documentation": "Resource Type definition for AWS:IdentityStore::GroupMembership"
+          "smithy.api#documentation": "Resource Type definition for AWS::IdentityStore::GroupMembership"
         }
       },
       "com.amazonaws.identitystore#GroupMemberships": {
@@ -2721,14 +3109,58 @@
           "target": "com.amazonaws.identitystore#Group"
         }
       },
+      "com.amazonaws.identitystore#IdentityStore": {
+        "type": "structure",
+        "members": {
+          "IdentityStoreArn": {
+            "target": "com.amazonaws.identitystore#IdentityStoreArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the identity store. For example, \u003ccode\u003earn:aws:identitystore::111122223333:identitystore/d-1234567890\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "IdentityStoreId": {
+            "target": "com.amazonaws.identitystore#IdentityStoreId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe globally unique identifier for the identity store.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA structure that contains the identifiers for an identity store: its globally unique identifier (ID) and Amazon Resource Name (ARN).\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.identitystore#IdentityStoreArn": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 62,
+            "max": 93
+          },
+          "smithy.api#pattern": "^arn:aws[a-z-]*:identitystore::\\d{12}:identitystore/(d-[0-9a-f]{10}|[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$"
+        }
+      },
       "com.amazonaws.identitystore#IdentityStoreId": {
         "type": "string",
         "traits": {
           "smithy.api#length": {
             "min": 1,
-            "max": 36
+            "max": 93
           },
-          "smithy.api#pattern": "^d-[0-9a-f]{10}$|^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+          "smithy.api#pattern": "^(arn:aws[a-z-]*:identitystore::\\d{12}:identitystore/)?(d-[0-9a-f]{10}|[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$"
+        }
+      },
+      "com.amazonaws.identitystore#IdentityStoreResource": {
+        "type": "resource",
+        "traits": {
+          "smithy.api#documentation": "Resource Type definition for IdentityStore"
+        }
+      },
+      "com.amazonaws.identitystore#IdentityStores": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.identitystore#IdentityStore"
         }
       },
       "com.amazonaws.identitystore#InternalServerException": {
@@ -2759,6 +3191,29 @@
           "smithy.api#retryable": {}
         }
       },
+      "com.amazonaws.identitystore#IpCidrList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.identitystore#IpCidrType"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 50
+          },
+          "smithy.api#uniqueItems": {}
+        }
+      },
+      "com.amazonaws.identitystore#IpCidrType": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 2,
+            "max": 43
+          },
+          "smithy.api#pattern": "^((([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/(3[0-2]|[1-2][0-9]|[0-9]))?|(([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:(:[0-9a-fA-F]{1,4}){1,6}|:((:[0-9a-fA-F]{1,4}){1,7}|:))(\\/(12[0-8]|1[0-1][0-9]|[1-9][0-9]|[0-9]))?)$"
+        }
+      },
       "com.amazonaws.identitystore#IsMemberInGroups": {
         "type": "operation",
         "input": {
@@ -2786,14 +3241,14 @@
           "GroupIds": {
             "target": "com.amazonaws.identitystore#GroupIds",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eA list of identifiers for groups in the identity store.\u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003eA list of identifiers for groups in the identity store.\u003c/p\u003e \u003cp\u003eYou can specify each group by ID or by Amazon Resource Name (ARN). For example, group ID \u003ccode\u003ea1b2c3d4-5678-90ab-cdef-EXAMPLE22222\u003c/code\u003e or group ARN \u003ccode\u003earn:aws:identitystore:::group/a1b2c3d4-5678-90ab-cdef-EXAMPLE22222\u003c/code\u003e.\u003c/p\u003e",
               "smithy.api#required": {}
             }
           },
           "IdentityStoreId": {
             "target": "com.amazonaws.identitystore#IdentityStoreId",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe globally unique identifier for the identity store.\u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003eThe globally unique identifier for the identity store.\u003c/p\u003e \u003cp\u003eYou can specify the identity store by ID or by Amazon Resource Name (ARN). For example, identity store ID \u003ccode\u003ed-1234567890\u003c/code\u003e or identity store ARN \u003ccode\u003earn:aws:identitystore::111122223333:identitystore/d-1234567890\u003c/code\u003e.\u003c/p\u003e",
               "smithy.api#required": {}
             }
           },
@@ -2804,6 +3259,14 @@
               "smithy.api#required": {}
             }
           }
+        },
+        "traits": {
+          "smithy.api#input": {},
+          "smithy.api#references": [
+            {
+              "resource": "com.amazonaws.identitystore#IdentityStoreResource"
+            }
+          ]
         }
       },
       "com.amazonaws.identitystore#IsMemberInGroupsResponse": {
@@ -2816,6 +3279,9 @@
               "smithy.api#required": {}
             }
           }
+        },
+        "traits": {
+          "smithy.api#output": {}
         }
       },
       "com.amazonaws.identitystore#ListGroupMemberships": {
@@ -2878,7 +3344,7 @@
           "IdentityStoreId": {
             "target": "com.amazonaws.identitystore#IdentityStoreId",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe globally unique identifier for the identity store.\u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003eThe globally unique identifier for the identity store.\u003c/p\u003e \u003cp\u003eYou can specify the identity store by ID or by Amazon Resource Name (ARN). For example, identity store ID \u003ccode\u003ed-1234567890\u003c/code\u003e or identity store ARN \u003ccode\u003earn:aws:identitystore::111122223333:identitystore/d-1234567890\u003c/code\u003e.\u003c/p\u003e",
               "smithy.api#required": {}
             }
           },
@@ -2888,7 +3354,7 @@
               "smithy.api#addedDefault": {},
               "smithy.api#clientOptional": {},
               "smithy.api#default": 100,
-              "smithy.api#documentation": "\u003cp\u003eThe maximum number of results to be returned per request. This parameter is used in the \u003ccode\u003e ListUsers\u003c/code\u003e and \u003ccode\u003eListGroups\u003c/code\u003e requests to specify how many results to return in one page. The length limit is 50 characters.\u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of results to be returned per request. This parameter is used in all \u003ccode\u003eList\u003c/code\u003e requests to specify how many results to return in one page.\u003c/p\u003e"
             }
           },
           "MemberId": {
@@ -2901,9 +3367,17 @@
           "NextToken": {
             "target": "com.amazonaws.identitystore#NextToken",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe pagination token used for the \u003ccode\u003eListUsers\u003c/code\u003e, \u003ccode\u003eListGroups\u003c/code\u003e, and \u003ccode\u003e ListGroupMemberships\u003c/code\u003e API operations. This value is generated by the identity store service. It is returned in the API response if the total results are more than the size of one page. This token is also returned when it is used in the API request to search for the next page.\u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003eThe pagination token used for the \u003ccode\u003eListUsers\u003c/code\u003e, \u003ccode\u003eListGroups\u003c/code\u003e, and \u003ccode\u003e ListGroupMemberships\u003c/code\u003e API operations. This value is generated by the identity store service. It is returned in the API response if the total results are more than the size of one page. This token is also returned when it is used in the API request to retrieve the next page of results.\u003c/p\u003e"
             }
           }
+        },
+        "traits": {
+          "smithy.api#input": {},
+          "smithy.api#references": [
+            {
+              "resource": "com.amazonaws.identitystore#IdentityStoreResource"
+            }
+          ]
         }
       },
       "com.amazonaws.identitystore#ListGroupMembershipsForMemberResponse": {
@@ -2919,9 +3393,12 @@
           "NextToken": {
             "target": "com.amazonaws.identitystore#NextToken",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe pagination token used for the \u003ccode\u003eListUsers\u003c/code\u003e, \u003ccode\u003eListGroups\u003c/code\u003e, and \u003ccode\u003e ListGroupMemberships\u003c/code\u003e API operations. This value is generated by the identity store service. It is returned in the API response if the total results are more than the size of one page. This token is also returned when it is used in the API request to search for the next page. \u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003eThe pagination token used for the \u003ccode\u003eListUsers\u003c/code\u003e, \u003ccode\u003eListGroups\u003c/code\u003e, and \u003ccode\u003e ListGroupMemberships\u003c/code\u003e API operations. This value is generated by the identity store service. It is returned in the API response if the total results are more than the size of one page. This token is also returned when it is used in the API request to retrieve the next page of results. \u003c/p\u003e"
             }
           }
+        },
+        "traits": {
+          "smithy.api#output": {}
         }
       },
       "com.amazonaws.identitystore#ListGroupMembershipsRequest": {
@@ -2930,14 +3407,14 @@
           "GroupId": {
             "target": "com.amazonaws.identitystore#ResourceId",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe identifier for a group in the identity store.\u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003eThe identifier for a group in the identity store.\u003c/p\u003e \u003cp\u003eYou can specify the group by ID or by Amazon Resource Name (ARN). For example, group ID \u003ccode\u003ea1b2c3d4-5678-90ab-cdef-EXAMPLE22222\u003c/code\u003e or group ARN \u003ccode\u003earn:aws:identitystore:::group/a1b2c3d4-5678-90ab-cdef-EXAMPLE22222\u003c/code\u003e.\u003c/p\u003e",
               "smithy.api#required": {}
             }
           },
           "IdentityStoreId": {
             "target": "com.amazonaws.identitystore#IdentityStoreId",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe globally unique identifier for the identity store.\u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003eThe globally unique identifier for the identity store.\u003c/p\u003e \u003cp\u003eYou can specify the identity store by ID or by Amazon Resource Name (ARN). For example, identity store ID \u003ccode\u003ed-1234567890\u003c/code\u003e or identity store ARN \u003ccode\u003earn:aws:identitystore::111122223333:identitystore/d-1234567890\u003c/code\u003e.\u003c/p\u003e",
               "smithy.api#required": {}
             }
           },
@@ -2953,9 +3430,20 @@
           "NextToken": {
             "target": "com.amazonaws.identitystore#NextToken",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe pagination token used for the \u003ccode\u003eListUsers\u003c/code\u003e, \u003ccode\u003eListGroups\u003c/code\u003e and \u003ccode\u003e ListGroupMemberships\u003c/code\u003e API operations. This value is generated by the identity store service. It is returned in the API response if the total results are more than the size of one page. This token is also returned when it is used in the API request to search for the next page.\u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003eThe pagination token used for the \u003ccode\u003eListUsers\u003c/code\u003e, \u003ccode\u003eListGroups\u003c/code\u003e and \u003ccode\u003e ListGroupMemberships\u003c/code\u003e API operations. This value is generated by the identity store service. It is returned in the API response if the total results are more than the size of one page. This token is also returned when it is used in the API request to retrieve the next page of results.\u003c/p\u003e"
             }
           }
+        },
+        "traits": {
+          "smithy.api#input": {},
+          "smithy.api#references": [
+            {
+              "resource": "com.amazonaws.identitystore#GroupResource"
+            },
+            {
+              "resource": "com.amazonaws.identitystore#IdentityStoreResource"
+            }
+          ]
         }
       },
       "com.amazonaws.identitystore#ListGroupMembershipsResponse": {
@@ -2971,9 +3459,12 @@
           "NextToken": {
             "target": "com.amazonaws.identitystore#NextToken",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe pagination token used for the \u003ccode\u003eListUsers\u003c/code\u003e, \u003ccode\u003eListGroups\u003c/code\u003e, and \u003ccode\u003e ListGroupMemberships\u003c/code\u003e API operations. This value is generated by the identity store service. It is returned in the API response if the total results are more than the size of one page. This token is also returned when it is used in the API request to search for the next page.\u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003eThe pagination token used for the \u003ccode\u003eListUsers\u003c/code\u003e, \u003ccode\u003eListGroups\u003c/code\u003e, and \u003ccode\u003e ListGroupMemberships\u003c/code\u003e API operations. This value is generated by the identity store service. It is returned in the API response if the total results are more than the size of one page. This token is also returned when it is used in the API request to retrieve the next page of results.\u003c/p\u003e"
             }
           }
+        },
+        "traits": {
+          "smithy.api#output": {}
         }
       },
       "com.amazonaws.identitystore#ListGroups": {
@@ -3018,7 +3509,7 @@
           "IdentityStoreId": {
             "target": "com.amazonaws.identitystore#IdentityStoreId",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe globally unique identifier for the identity store, such as \u003ccode\u003ed-1234567890\u003c/code\u003e. In this example, \u003ccode\u003ed-\u003c/code\u003e is a fixed prefix, and \u003ccode\u003e1234567890\u003c/code\u003e is a randomly generated string that contains numbers and lower case letters. This value is generated at the time that a new identity store is created.\u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003eThe globally unique identifier for the identity store, such as \u003ccode\u003ed-1234567890\u003c/code\u003e. In this example, \u003ccode\u003ed-\u003c/code\u003e is a fixed prefix, and \u003ccode\u003e1234567890\u003c/code\u003e is a randomly generated string that contains numbers and lower case letters. This value is generated at the time that a new identity store is created.\u003c/p\u003e \u003cp\u003eYou can specify the identity store by ID or by Amazon Resource Name (ARN). For example, identity store ID \u003ccode\u003ed-1234567890\u003c/code\u003e or identity store ARN \u003ccode\u003earn:aws:identitystore::111122223333:identitystore/d-1234567890\u003c/code\u003e.\u003c/p\u003e",
               "smithy.api#required": {}
             }
           },
@@ -3028,15 +3519,23 @@
               "smithy.api#addedDefault": {},
               "smithy.api#clientOptional": {},
               "smithy.api#default": 100,
-              "smithy.api#documentation": "\u003cp\u003eThe maximum number of results to be returned per request. This parameter is used in the \u003ccode\u003e ListUsers\u003c/code\u003e and \u003ccode\u003eListGroups\u003c/code\u003e requests to specify how many results to return in one page. The length limit is 50 characters.\u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of results to be returned per request. This parameter is used in all \u003ccode\u003eList\u003c/code\u003e requests to specify how many results to return in one page.\u003c/p\u003e"
             }
           },
           "NextToken": {
             "target": "com.amazonaws.identitystore#NextToken",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe pagination token used for the \u003ccode\u003eListUsers\u003c/code\u003e and \u003ccode\u003eListGroups\u003c/code\u003e API operations. This value is generated by the identity store service. It is returned in the API response if the total results are more than the size of one page. This token is also returned when it is used in the API request to search for the next page.\u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003eThe pagination token used for the \u003ccode\u003eListUsers\u003c/code\u003e and \u003ccode\u003eListGroups\u003c/code\u003e API operations. This value is generated by the identity store service. It is returned in the API response if the total results are more than the size of one page. This token is also returned when it is used in the API request to retrieve the next page of results.\u003c/p\u003e"
             }
           }
+        },
+        "traits": {
+          "smithy.api#input": {},
+          "smithy.api#references": [
+            {
+              "resource": "com.amazonaws.identitystore#IdentityStoreResource"
+            }
+          ]
         }
       },
       "com.amazonaws.identitystore#ListGroupsResponse": {
@@ -3052,9 +3551,77 @@
           "NextToken": {
             "target": "com.amazonaws.identitystore#NextToken",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe pagination token used for the \u003ccode\u003eListUsers\u003c/code\u003e and \u003ccode\u003eListGroups\u003c/code\u003e API operations. This value is generated by the identity store service. It is returned in the API response if the total results are more than the size of one page. This token is also returned when it is used in the API request to search for the next page.\u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003eThe pagination token used for the \u003ccode\u003eListUsers\u003c/code\u003e and \u003ccode\u003eListGroups\u003c/code\u003e API operations. This value is generated by the identity store service. It is returned in the API response if the total results are more than the size of one page. This token is also returned when it is used in the API request to retrieve the next page of results.\u003c/p\u003e"
             }
           }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.identitystore#ListIdentityStores": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.identitystore#ListIdentityStoresRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.identitystore#ListIdentityStoresResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.identitystore#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eLists the identity stores that you have access to. This operation returns only the identity store ID and Amazon Resource Name (ARN) of each identity store. To obtain additional information about an identity store, call \u003ccode\u003eDescribeIdentityStore\u003c/code\u003e.\u003c/p\u003e \u003cp\u003eThis operation returns results in paginated form. Use the \u003ccode\u003eNextToken\u003c/code\u003e parameter to retrieve additional pages of results.\u003c/p\u003e",
+          "smithy.api#paginated": {
+            "inputToken": "NextToken",
+            "items": "IdentityStores",
+            "outputToken": "NextToken",
+            "pageSize": "MaxResults"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.identitystore#ListIdentityStoresRequest": {
+        "type": "structure",
+        "members": {
+          "MaxResults": {
+            "target": "com.amazonaws.identitystore#MaxResults",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of results to return per request. This parameter is used in all \u003ccode\u003e List\u003c/code\u003e operations to specify how many results to return on one page. If you don't specify a value, the operation uses a default page size.\u003c/p\u003e"
+            }
+          },
+          "NextToken": {
+            "target": "com.amazonaws.identitystore#NextToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe pagination token used for the \u003ccode\u003eListIdentityStores\u003c/code\u003e API operation. This value is generated by the identity store service. It is returned in the API response if the total results are more than the size of one page. This token is also returned when it is used in the API request to retrieve the next page of results.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.identitystore#ListIdentityStoresResponse": {
+        "type": "structure",
+        "members": {
+          "IdentityStores": {
+            "target": "com.amazonaws.identitystore#IdentityStores",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of \u003ccode\u003eIdentityStore\u003c/code\u003e objects, each of which contains the identifiers for an identity store that you have access to.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "NextToken": {
+            "target": "com.amazonaws.identitystore#NextToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe pagination token used for the \u003ccode\u003eListIdentityStores\u003c/code\u003e API operation. This value is generated by the identity store service. It is returned in the API response if the total results are more than the size of one page. This token is also returned when it is used in the API request to retrieve the next page of results.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
         }
       },
       "com.amazonaws.identitystore#ListUsers": {
@@ -3097,7 +3664,7 @@
             "target": "com.amazonaws.identitystore#Filters",
             "traits": {
               "smithy.api#deprecated": {
-                "message": "Using filters with ListUsers API is deprecated, please use GetGroupId API instead."
+                "message": "Using filters with ListUsers API is deprecated, please use GetUserId API instead."
               },
               "smithy.api#documentation": "\u003cp\u003eA list of \u003ccode\u003eFilter\u003c/code\u003e objects, which is used in the \u003ccode\u003eListUsers\u003c/code\u003e and \u003ccode\u003e ListGroups\u003c/code\u003e requests. \u003c/p\u003e"
             }
@@ -3105,7 +3672,7 @@
           "IdentityStoreId": {
             "target": "com.amazonaws.identitystore#IdentityStoreId",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe globally unique identifier for the identity store, such as \u003ccode\u003ed-1234567890\u003c/code\u003e. In this example, \u003ccode\u003ed-\u003c/code\u003e is a fixed prefix, and \u003ccode\u003e1234567890\u003c/code\u003e is a randomly generated string that contains numbers and lower case letters. This value is generated at the time that a new identity store is created.\u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003eThe globally unique identifier for the identity store, such as \u003ccode\u003ed-1234567890\u003c/code\u003e. In this example, \u003ccode\u003ed-\u003c/code\u003e is a fixed prefix, and \u003ccode\u003e1234567890\u003c/code\u003e is a randomly generated string that contains numbers and lower case letters. This value is generated at the time that a new identity store is created.\u003c/p\u003e \u003cp\u003eYou can specify the identity store by ID or by Amazon Resource Name (ARN). For example, identity store ID \u003ccode\u003ed-1234567890\u003c/code\u003e or identity store ARN \u003ccode\u003earn:aws:identitystore::111122223333:identitystore/d-1234567890\u003c/code\u003e.\u003c/p\u003e",
               "smithy.api#required": {}
             }
           },
@@ -3115,15 +3682,23 @@
               "smithy.api#addedDefault": {},
               "smithy.api#clientOptional": {},
               "smithy.api#default": 100,
-              "smithy.api#documentation": "\u003cp\u003eThe maximum number of results to be returned per request. This parameter is used in the \u003ccode\u003e ListUsers\u003c/code\u003e and \u003ccode\u003eListGroups\u003c/code\u003e requests to specify how many results to return in one page. The length limit is 50 characters.\u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of results to be returned per request. This parameter is used in all \u003ccode\u003eList\u003c/code\u003e requests to specify how many results to return in one page.\u003c/p\u003e"
             }
           },
           "NextToken": {
             "target": "com.amazonaws.identitystore#NextToken",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe pagination token used for the \u003ccode\u003eListUsers\u003c/code\u003e and \u003ccode\u003eListGroups\u003c/code\u003e API operations. This value is generated by the identity store service. It is returned in the API response if the total results are more than the size of one page. This token is also returned when it is used in the API request to search for the next page.\u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003eThe pagination token used for the \u003ccode\u003eListUsers\u003c/code\u003e and \u003ccode\u003eListGroups\u003c/code\u003e API operations. This value is generated by the identity store service. It is returned in the API response if the total results are more than the size of one page. This token is also returned when it is used in the API request to retrieve the next page of results.\u003c/p\u003e"
             }
           }
+        },
+        "traits": {
+          "smithy.api#input": {},
+          "smithy.api#references": [
+            {
+              "resource": "com.amazonaws.identitystore#IdentityStoreResource"
+            }
+          ]
         }
       },
       "com.amazonaws.identitystore#ListUsersResponse": {
@@ -3132,7 +3707,7 @@
           "NextToken": {
             "target": "com.amazonaws.identitystore#NextToken",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe pagination token used for the \u003ccode\u003eListUsers\u003c/code\u003e and \u003ccode\u003eListGroups\u003c/code\u003e API operations. This value is generated by the identity store service. It is returned in the API response if the total results are more than the size of one page. This token is also returned when it is used in the API request to search for the next page.\u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003eThe pagination token used for the \u003ccode\u003eListUsers\u003c/code\u003e and \u003ccode\u003eListGroups\u003c/code\u003e API operations. This value is generated by the identity store service. It is returned in the API response if the total results are more than the size of one page. This token is also returned when it is used in the API request to retrieve the next page of results.\u003c/p\u003e"
             }
           },
           "Users": {
@@ -3142,6 +3717,9 @@
               "smithy.api#required": {}
             }
           }
+        },
+        "traits": {
+          "smithy.api#output": {}
         }
       },
       "com.amazonaws.identitystore#MaxResults": {
@@ -3159,7 +3737,10 @@
           "UserId": {
             "target": "com.amazonaws.identitystore#ResourceId",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eAn object containing the identifiers of resources that can be members.\u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003eThe identifier for a user in the identity store.\u003c/p\u003e \u003cp\u003eYou can specify the user by ID or by Amazon Resource Name (ARN). For example, user ID \u003ccode\u003ea1b2c3d4-5678-90ab-cdef-EXAMPLE11111\u003c/code\u003e or user ARN \u003ccode\u003earn:aws:identitystore:::user/a1b2c3d4-5678-90ab-cdef-EXAMPLE11111\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#suppress": [
+                "MemberShouldReferenceResource"
+              ]
             }
           }
         },
@@ -3211,6 +3792,74 @@
           "smithy.api#documentation": "\u003cp\u003eThe full name of the user.\u003c/p\u003e"
         }
       },
+      "com.amazonaws.identitystore#NetworkConfiguration": {
+        "type": "structure",
+        "members": {
+          "ApiAllowSourceIps": {
+            "target": "com.amazonaws.identitystore#IpCidrList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of IP address CIDR ranges that are allowed to access the identity store API operations. A request from an IP address in this list bypasses the identity store's other API network controls: it's permitted even if it doesn't come through a VPC endpoint required by \u003ccode\u003eVpceAccessRequired\u003c/code\u003e, and even if it doesn't originate from a VPC in \u003ccode\u003eApiRestrictSourceVpcs\u003c/code\u003e. If you don't specify a value, no such IP address exception applies.\u003c/p\u003e"
+            }
+          },
+          "ApiRestrictSourceVpcs": {
+            "target": "com.amazonaws.identitystore#VpcIdList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of virtual private cloud (VPC) IDs that are allowed to access the identity store API operations. A request is denied unless it originates from a VPC in this list, or from an IP address in \u003ccode\u003eApiAllowSourceIps\u003c/code\u003e if you specified one. If you don't specify a value, access isn't restricted to specific VPCs, but the VPC endpoint requirement set by \u003ccode\u003eVpceAccessRequired\u003c/code\u003e still applies.\u003c/p\u003e"
+            }
+          },
+          "ScimAllowSourceIps": {
+            "target": "com.amazonaws.identitystore#IpCidrList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of IP address CIDR ranges that are allowed to access the identity store through the System for Cross-domain Identity Management (SCIM) protocol. Requests from IP addresses outside these ranges are denied. If you don't specify a value, SCIM requests remain subject to the identity store's other network controls, such as the VPC endpoint requirement set by \u003ccode\u003eVpceAccessRequired\u003c/code\u003e.\u003c/p\u003e \u003cp\u003eFor example, to allow SCIM traffic from the public internet while still requiring the identity store API operations to be accessed through a VPC endpoint, set \u003ccode\u003eVpceAccessRequired\u003c/code\u003e to \u003ccode\u003etrue\u003c/code\u003e and set this value to \u003ccode\u003e0.0.0.0/0\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "VpceAccessRequired": {
+            "target": "com.amazonaws.identitystore#BooleanType",
+            "traits": {
+              "smithy.api#default": null,
+              "smithy.api#documentation": "\u003cp\u003eSpecifies whether the identity store can be accessed only through a virtual private cloud (VPC) endpoint. When set to \u003ccode\u003etrue\u003c/code\u003e, requests must originate from a VPC endpoint.\u003c/p\u003e \u003cp\u003eThis value must be set to either \u003ccode\u003etrue\u003c/code\u003e or \u003ccode\u003efalse\u003c/code\u003e when you provide \u003ccode\u003eNetworkConfiguration\u003c/code\u003e in a request.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe network configuration that controls how an identity store can be accessed. You provide this object in a request.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.identitystore#NetworkConfigurationDetails": {
+        "type": "structure",
+        "members": {
+          "ApiAllowSourceIps": {
+            "target": "com.amazonaws.identitystore#IpCidrList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of IP address CIDR ranges that are allowed to access the identity store API operations. A request from an IP address in this list bypasses the identity store's other API network controls: it's permitted even if it doesn't come through a VPC endpoint required by \u003ccode\u003eVpceAccessRequired\u003c/code\u003e, and even if it doesn't originate from a VPC in \u003ccode\u003eApiRestrictSourceVpcs\u003c/code\u003e. If this field is empty, no such IP address exception applies.\u003c/p\u003e"
+            }
+          },
+          "ApiRestrictSourceVpcs": {
+            "target": "com.amazonaws.identitystore#VpcIdList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of virtual private cloud (VPC) IDs that are allowed to access the identity store API operations. A request is denied unless it originates from a VPC in this list, or from an IP address in \u003ccode\u003eApiAllowSourceIps\u003c/code\u003e if one is configured. If this field is empty, access isn't restricted to specific VPCs, but the VPC endpoint requirement from \u003ccode\u003eVpceAccessRequired\u003c/code\u003e still applies.\u003c/p\u003e"
+            }
+          },
+          "ScimAllowSourceIps": {
+            "target": "com.amazonaws.identitystore#IpCidrList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of IP address CIDR ranges that are allowed to access the identity store through the System for Cross-domain Identity Management (SCIM) protocol. Requests from IP addresses outside these ranges are denied. If this field is empty, SCIM requests remain subject to the identity store's other network controls, such as the VPC endpoint requirement.\u003c/p\u003e"
+            }
+          },
+          "VpceAccessRequired": {
+            "target": "com.amazonaws.identitystore#BooleanType",
+            "traits": {
+              "smithy.api#default": null,
+              "smithy.api#documentation": "\u003cp\u003eSpecifies whether the identity store can be accessed only through a virtual private cloud (VPC) endpoint. When set to \u003ccode\u003etrue\u003c/code\u003e, requests must originate from a VPC endpoint.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe network configuration that controls how an identity store can be accessed. This object is returned as part of service API responses.\u003c/p\u003e"
+        }
+      },
       "com.amazonaws.identitystore#NextToken": {
         "type": "string",
         "traits": {
@@ -3240,7 +3889,7 @@
           "Value": {
             "target": "com.amazonaws.identitystore#SensitiveStringType",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eA string containing a phone number. For example, \"8675309\" or \"+1 (800) 123-4567\". \u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003eA string containing a phone number. For example, \"8675309\" or \"+1 (800) 123-4567\".\u003c/p\u003e"
             }
           }
         },
@@ -3316,14 +3965,24 @@
           "smithy.api#pattern": "^[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$"
         }
       },
+      "com.amazonaws.identitystore#ResourceArn": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 60,
+            "max": 100
+          },
+          "smithy.api#pattern": "^arn:aws[a-z-]*:identitystore:::(user|group|membership)/([0-9a-f]{10}-|)[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$"
+        }
+      },
       "com.amazonaws.identitystore#ResourceId": {
         "type": "string",
         "traits": {
           "smithy.api#length": {
             "min": 1,
-            "max": 47
+            "max": 100
           },
-          "smithy.api#pattern": "^([0-9a-f]{10}-|)[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$"
+          "smithy.api#pattern": "^(arn:aws[a-z-]*:identitystore:::(user|group|membership)/)?([0-9a-f]{10}-|)[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$"
         }
       },
       "com.amazonaws.identitystore#ResourceNotFoundException": {
@@ -3372,6 +4031,16 @@
               "smithy.api#enumValue": "KMS_KEY_NOT_FOUND"
             }
           }
+        }
+      },
+      "com.amazonaws.identitystore#ResourceRevision": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 64
+          },
+          "smithy.api#pattern": "^[0-9]+$"
         }
       },
       "com.amazonaws.identitystore#ResourceType": {
@@ -3588,6 +4257,53 @@
           "GroupId": {
             "target": "com.amazonaws.identitystore#ResourceId",
             "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier for a group in the identity store.\u003c/p\u003e \u003cp\u003eYou can specify the group by ID or by Amazon Resource Name (ARN). For example, group ID \u003ccode\u003ea1b2c3d4-5678-90ab-cdef-EXAMPLE22222\u003c/code\u003e or group ARN \u003ccode\u003earn:aws:identitystore:::group/a1b2c3d4-5678-90ab-cdef-EXAMPLE22222\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "IdentityStoreId": {
+            "target": "com.amazonaws.identitystore#IdentityStoreId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe globally unique identifier for the identity store.\u003c/p\u003e \u003cp\u003eYou can specify the identity store by ID or by Amazon Resource Name (ARN). For example, identity store ID \u003ccode\u003ed-1234567890\u003c/code\u003e or identity store ARN \u003ccode\u003earn:aws:identitystore::111122223333:identitystore/d-1234567890\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Operations": {
+            "target": "com.amazonaws.identitystore#AttributeOperations",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of \u003ccode\u003eAttributeOperation\u003c/code\u003e objects to apply to the requested group. These operations might add, replace, or remove an attribute. For more information on the attributes that can be added, replaced, or removed, see \u003ca href=\"https://docs.aws.amazon.com/singlesignon/latest/IdentityStoreAPIReference/API_Group.html\"\u003eGroup\u003c/a\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Revision": {
+            "target": "com.amazonaws.identitystore#ResourceRevision",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe expected current revision of the group. When you provide this value, the update is applied only if it matches the current revision of the group in the identity store, which prevents you from overwriting concurrent changes. If the value doesn't match, the operation fails with a \u003ccode\u003eConflictException\u003c/code\u003e. If you don't provide this value, the update is applied unconditionally.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {},
+          "smithy.api#references": [
+            {
+              "resource": "com.amazonaws.identitystore#IdentityStoreResource"
+            }
+          ]
+        }
+      },
+      "com.amazonaws.identitystore#UpdateGroupResponse": {
+        "type": "structure",
+        "members": {
+          "GroupArn": {
+            "target": "com.amazonaws.identitystore#ResourceArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the group in the identity store. For example, \u003ccode\u003earn:aws:identitystore:::group/a1b2c3d4-5678-90ab-cdef-EXAMPLE22222\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "GroupId": {
+            "target": "com.amazonaws.identitystore#ResourceId",
+            "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe identifier for a group in the identity store.\u003c/p\u003e",
               "smithy.api#required": {}
             }
@@ -3599,17 +4315,88 @@
               "smithy.api#required": {}
             }
           },
-          "Operations": {
-            "target": "com.amazonaws.identitystore#AttributeOperations",
+          "Revision": {
+            "target": "com.amazonaws.identitystore#ResourceRevision",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eA list of \u003ccode\u003eAttributeOperation\u003c/code\u003e objects to apply to the requested group. These operations might add, replace, or remove an attribute. For more information on the attributes that can be added, replaced, or removed, see \u003ca href=\"https://docs.aws.amazon.com/singlesignon/latest/IdentityStoreAPIReference/API_Group.html\"\u003eGroup\u003c/a\u003e.\u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003eThe revision of the group after the requested update is applied.\u003c/p\u003e",
               "smithy.api#required": {}
             }
           }
+        },
+        "traits": {
+          "smithy.api#output": {},
+          "smithy.api#references": [
+            {
+              "resource": "com.amazonaws.identitystore#IdentityStoreResource"
+            }
+          ]
         }
       },
-      "com.amazonaws.identitystore#UpdateGroupResponse": {
-        "type": "structure"
+      "com.amazonaws.identitystore#UpdateIdentityStore": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.identitystore#UpdateIdentityStoreRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.identitystore#UpdateIdentityStoreResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.identitystore#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.identitystore#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.identitystore#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eUpdates the configuration of the specified identity store, including its network configuration.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.identitystore#UpdateIdentityStoreRequest": {
+        "type": "structure",
+        "members": {
+          "IdentityStoreId": {
+            "target": "com.amazonaws.identitystore#IdentityStoreId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe globally unique identifier for the identity store.\u003c/p\u003e \u003cp\u003eYou can specify the identity store by ID or by Amazon Resource Name (ARN). For example, identity store ID \u003ccode\u003ed-1234567890\u003c/code\u003e or identity store ARN \u003ccode\u003earn:aws:identitystore::111122223333:identitystore/d-1234567890\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "NetworkConfiguration": {
+            "target": "com.amazonaws.identitystore#NetworkConfiguration",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe network configuration to apply to the identity store. This controls whether access through a virtual private cloud (VPC) endpoint is required and the source VPCs and IP addresses that are allowed to access the identity store.\u003c/p\u003e \u003cp\u003eWhen you provide \u003ccode\u003eNetworkConfiguration\u003c/code\u003e in a request, the service performs a full replacement of the identity store's current network configuration with the values you specify. Any values that you omit are cleared. To preserve or change the allowed source VPCs or IP address ranges, include the complete set of values that you want in the request. To clear a list, omit it; an empty list is not accepted.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.identitystore#UpdateIdentityStoreResponse": {
+        "type": "structure",
+        "members": {
+          "IdentityStoreArn": {
+            "target": "com.amazonaws.identitystore#IdentityStoreArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the identity store. For example, \u003ccode\u003earn:aws:identitystore::111122223333:identitystore/d-1234567890\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "IdentityStoreId": {
+            "target": "com.amazonaws.identitystore#IdentityStoreId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe globally unique identifier for the identity store.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
       },
       "com.amazonaws.identitystore#UpdateUser": {
         "type": "operation",
@@ -3643,7 +4430,7 @@
           "IdentityStoreId": {
             "target": "com.amazonaws.identitystore#IdentityStoreId",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe globally unique identifier for the identity store.\u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003eThe globally unique identifier for the identity store.\u003c/p\u003e \u003cp\u003eYou can specify the identity store by ID or by Amazon Resource Name (ARN). For example, identity store ID \u003ccode\u003ed-1234567890\u003c/code\u003e or identity store ARN \u003ccode\u003earn:aws:identitystore::111122223333:identitystore/d-1234567890\u003c/code\u003e.\u003c/p\u003e",
               "smithy.api#required": {}
             }
           },
@@ -3654,6 +4441,53 @@
               "smithy.api#required": {}
             }
           },
+          "Revision": {
+            "target": "com.amazonaws.identitystore#ResourceRevision",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe expected current revision of the user. When you provide this value, the update is applied only if it matches the current revision of the user in the identity store, which prevents you from overwriting concurrent changes. If the value doesn't match, the operation fails with a \u003ccode\u003eConflictException\u003c/code\u003e. If you don't provide this value, the update is applied unconditionally.\u003c/p\u003e"
+            }
+          },
+          "UserId": {
+            "target": "com.amazonaws.identitystore#ResourceId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier for a user in the identity store.\u003c/p\u003e \u003cp\u003eYou can specify the user by ID or by Amazon Resource Name (ARN). For example, user ID \u003ccode\u003ea1b2c3d4-5678-90ab-cdef-EXAMPLE11111\u003c/code\u003e or user ARN \u003ccode\u003earn:aws:identitystore:::user/a1b2c3d4-5678-90ab-cdef-EXAMPLE11111\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {},
+          "smithy.api#references": [
+            {
+              "resource": "com.amazonaws.identitystore#IdentityStoreResource"
+            }
+          ]
+        }
+      },
+      "com.amazonaws.identitystore#UpdateUserResponse": {
+        "type": "structure",
+        "members": {
+          "IdentityStoreId": {
+            "target": "com.amazonaws.identitystore#IdentityStoreId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe globally unique identifier for the identity store.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Revision": {
+            "target": "com.amazonaws.identitystore#ResourceRevision",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe revision of the user after the requested update is applied.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "UserArn": {
+            "target": "com.amazonaws.identitystore#ResourceArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the user in the identity store. For example, \u003ccode\u003earn:aws:identitystore:::user/a1b2c3d4-5678-90ab-cdef-EXAMPLE11111\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
           "UserId": {
             "target": "com.amazonaws.identitystore#ResourceId",
             "traits": {
@@ -3661,10 +4495,15 @@
               "smithy.api#required": {}
             }
           }
+        },
+        "traits": {
+          "smithy.api#output": {},
+          "smithy.api#references": [
+            {
+              "resource": "com.amazonaws.identitystore#IdentityStoreResource"
+            }
+          ]
         }
-      },
-      "com.amazonaws.identitystore#UpdateUserResponse": {
-        "type": "structure"
       },
       "com.amazonaws.identitystore#User": {
         "type": "structure",
@@ -3766,6 +4605,13 @@
               "smithy.api#documentation": "\u003cp\u003eA string containing a URL that might be associated with the user.\u003c/p\u003e"
             }
           },
+          "Revision": {
+            "target": "com.amazonaws.identitystore#ResourceRevision",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe current revision of the user in the identity store. This value changes each time the user is modified. You can provide it as the \u003ccode\u003eRevision\u003c/code\u003e parameter of an \u003ccode\u003eUpdateUser\u003c/code\u003e or \u003ccode\u003eDeleteUser\u003c/code\u003e request to make the operation conditional on the user not having changed. Treat this value as an opaque token: don't parse it or rely on its format or ordering.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
           "Roles": {
             "target": "com.amazonaws.identitystore#Roles",
             "traits": {
@@ -3794,6 +4640,13 @@
             "target": "com.amazonaws.identitystore#StringType",
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe identifier of the user or system that last updated the user.\u003c/p\u003e"
+            }
+          },
+          "UserArn": {
+            "target": "com.amazonaws.identitystore#ResourceArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the user in the identity store. For example, \u003ccode\u003earn:aws:identitystore:::user/a1b2c3d4-5678-90ab-cdef-EXAMPLE11111\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
             }
           },
           "UserId": {
@@ -3829,7 +4682,12 @@
           }
         },
         "traits": {
-          "smithy.api#documentation": "\u003cp\u003eA user object that contains the metadata and attributes for a specified user.\u003c/p\u003e"
+          "smithy.api#documentation": "\u003cp\u003eA user object that contains the metadata and attributes for a specified user.\u003c/p\u003e",
+          "smithy.api#references": [
+            {
+              "resource": "com.amazonaws.identitystore#IdentityStoreResource"
+            }
+          ]
         }
       },
       "com.amazonaws.identitystore#UserName": {
@@ -3849,7 +4707,7 @@
           "aws.cloudformation#cfnResource": {
             "name": "User"
           },
-          "smithy.api#documentation": "Resource Type definition for AWS:IdentityStore::User"
+          "smithy.api#documentation": "Resource Type definition for AWS::IdentityStore::User"
         }
       },
       "com.amazonaws.identitystore#UserStatus": {
@@ -3927,6 +4785,29 @@
               "smithy.api#enumValue": "KMS_INVALID_STATE"
             }
           }
+        }
+      },
+      "com.amazonaws.identitystore#VpcIdList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.identitystore#VpcIdType"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 50
+          },
+          "smithy.api#uniqueItems": {}
+        }
+      },
+      "com.amazonaws.identitystore#VpcIdType": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 12,
+            "max": 21
+          },
+          "smithy.api#pattern": "^vpc-([0-9a-f]){8}(([0-9a-f]){9})?$"
         }
       }
     }

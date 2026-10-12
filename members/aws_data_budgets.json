@@ -4578,6 +4578,12 @@
               "smithy.api#documentation": "\u003cp\u003eReturn results that match either Dimension object.\u003c/p\u003e"
             }
           },
+          "ProductAttributes": {
+            "target": "com.amazonaws.budgets#ProductAttributeValues",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe filter that limits results based on the values of specific product attributes.\u003c/p\u003e"
+            }
+          },
           "Tags": {
             "target": "com.amazonaws.budgets#TagValues",
             "traits": {
@@ -5244,6 +5250,43 @@
             "max": 130
           },
           "smithy.api#pattern": "^p-[0-9a-zA-Z_]{8,128}$"
+        }
+      },
+      "com.amazonaws.budgets#ProductAttributeName": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 1024
+          },
+          "smithy.api#pattern": "^[\\S\\s]*$"
+        }
+      },
+      "com.amazonaws.budgets#ProductAttributeValues": {
+        "type": "structure",
+        "members": {
+          "Key": {
+            "target": "com.amazonaws.budgets#ProductAttributeName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the product attribute to filter on. Valid values are the following:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003efeature\u003c/code\u003e \u2013 The feature that was used, such as\n\t\t\t\t\t\u003ccode\u003eOn-demand Inference\u003c/code\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003einferenceType\u003c/code\u003e \u2013 The type of inference usage, such as\n\t\t\t\t\t\u003ccode\u003eInput tokens\u003c/code\u003e or \u003ccode\u003eOutput tokens\u003c/code\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003emodel\u003c/code\u003e \u2013 The model, such as \u003ccode\u003eClaude Sonnet 5\u003c/code\u003e or\n\t\t\t\t\t\u003ccode\u003eClaude Haiku 4.5\u003c/code\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eprovider\u003c/code\u003e \u2013 The model provider, such as \u003ccode\u003eAnthropic\u003c/code\u003e,\n\t\t\t\t\t\u003ccode\u003eCohere\u003c/code\u003e, or \u003ccode\u003eAmazon\u003c/code\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e\n         \u003cp\u003eKeys are case-sensitive.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "MatchOptions": {
+            "target": "com.amazonaws.budgets#MatchOptions",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe match options for the \u003ccode\u003eProductAttributes\u003c/code\u003e filter. Valid values:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eABSENT\u003c/code\u003e \u2013 Matches costs that have no value for the attribute.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eCASE_SENSITIVE\u003c/code\u003e \u2013 Requires an exact case match.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eEQUALS\u003c/code\u003e \u2013 Matches costs where the attribute equals the specified\n\t\t\t\t\tvalue.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e\n         \u003cp\u003eSpecify either \u003ccode\u003eEQUALS\u003c/code\u003e or \u003ccode\u003eABSENT\u003c/code\u003e. You can add\n\t\t\t\u003ccode\u003eCASE_SENSITIVE\u003c/code\u003e to \u003ccode\u003eEQUALS\u003c/code\u003e, but you can't use it by itself or\n\t\t\twith \u003ccode\u003eABSENT\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "Values": {
+            "target": "com.amazonaws.budgets#Values",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe specific values of the product attribute, such as \u003ccode\u003eClaude Sonnet 5\u003c/code\u003e for\n\t\t\tthe \u003ccode\u003emodel\u003c/code\u003e key. Values are matched exactly.\u003c/p\u003e\n         \u003cp\u003e\n            \u003ccode\u003eValues\u003c/code\u003e is required unless \u003ccode\u003eMatchOptions\u003c/code\u003e is\n\t\t\t\u003ccode\u003eABSENT\u003c/code\u003e. To match costs that have no value for the key, set\n\t\t\t\u003ccode\u003eMatchOptions\u003c/code\u003e to \u003ccode\u003eABSENT\u003c/code\u003e and omit \u003ccode\u003eValues\u003c/code\u003e.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe product attribute values used for filtering the costs by key and value pairs.\n\t\t\tProduct attributes are supported for Amazon Bedrock only.\u003c/p\u003e"
         }
       },
       "com.amazonaws.budgets#Region": {

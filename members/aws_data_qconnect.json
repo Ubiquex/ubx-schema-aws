@@ -128,6 +128,13 @@
               "smithy.api#documentation": "\u003cp\u003eThe ID of the AI Agent to be configured.\u003c/p\u003e",
               "smithy.api#required": {}
             }
+          },
+          "enabled": {
+            "target": "smithy.api#Boolean",
+            "traits": {
+              "smithy.api#default": null,
+              "smithy.api#documentation": "\u003cp\u003eIndicates whether the AI Agent configured for this AI Agent type is enabled. When this value is omitted or set to true, the configured AI Agent runs; when set to false, the AI Agent ID is retained but no AI Agent runs for the AI Agent type. Setting this value to false is currently supported only for the \u003ccode\u003eANSWER_RECOMMENDATION\u003c/code\u003e AI Agent type; other requests to set it to false are rejected with a validation error.\u003c/p\u003e"
+            }
           }
         },
         "traits": {
@@ -1368,13 +1375,33 @@
           "smithy.api#documentation": "\u003cp\u003eInformation about an agent.\u003c/p\u003e"
         }
       },
+      "com.amazonaws.qconnect#AgentTarget": {
+        "type": "union",
+        "members": {
+          "aiAgentId": {
+            "target": "com.amazonaws.qconnect#NonEmptyString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier of an Amazon Connect AI Agent to use as the collaborator agent.\u003c/p\u003e"
+            }
+          },
+          "applicationId": {
+            "target": "com.amazonaws.qconnect#NonEmptyString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier of a third-party agent to use as the collaborator agent.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA union that identifies a collaborator agent to engage. Specify either an Amazon Connect AI Agent or a third-party agent.\u003c/p\u003e"
+        }
+      },
       "com.amazonaws.qconnect#AmazonConnectGuideAssociationData": {
         "type": "structure",
         "members": {
           "flowId": {
             "target": "com.amazonaws.qconnect#GenericArn",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003e The Amazon Resource Name (ARN) of an Amazon Connect flow. Step-by-step guides are a type of flow.\u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003e The Amazon Resource Name (ARN) of an Connect Customer flow. Step-by-step guides are a type of flow.\u003c/p\u003e"
             }
           }
         },
@@ -1627,7 +1654,7 @@
         "traits": {
           "smithy.api#length": {
             "min": 1,
-            "max": 1
+            "max": 5
           }
         }
       },
@@ -2371,7 +2398,7 @@
           "connectConfiguration": {
             "target": "com.amazonaws.qconnect#ConnectConfiguration",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe configuration information of the Amazon Connect data source.\u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003eThe configuration information of the Connect Customer data source.\u003c/p\u003e"
             }
           }
         },
@@ -2398,12 +2425,12 @@
           "instanceId": {
             "target": "com.amazonaws.qconnect#NonEmptyString",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe identifier of the Amazon Connect instance. You can find the instanceId in the ARN of the instance.\u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003eThe identifier of the Connect Customer instance. You can find the instanceId in the ARN of the instance.\u003c/p\u003e"
             }
           }
         },
         "traits": {
-          "smithy.api#documentation": "\u003cp\u003eThe configuration information of the Amazon Connect data source.\u003c/p\u003e"
+          "smithy.api#documentation": "\u003cp\u003eThe configuration information of the Connect Customer data source.\u003c/p\u003e"
         }
       },
       "com.amazonaws.qconnect#ContactAttributeKey": {
@@ -4028,7 +4055,7 @@
           }
         ],
         "traits": {
-          "smithy.api#documentation": "\u003cp\u003eCreates an association between a content resource in a knowledge base and \u003ca href=\"https://docs.aws.amazon.com/connect/latest/adminguide/step-by-step-guided-experiences.html\"\u003estep-by-step guides\u003c/a\u003e. Step-by-step guides offer instructions to agents for resolving common customer issues. You create a content association to integrate Amazon Q in Connect and step-by-step guides. \u003c/p\u003e \u003cp\u003eAfter you integrate Amazon Q and step-by-step guides, when Amazon Q provides a recommendation to an agent based on the intent that it's detected, it also provides them with the option to start the step-by-step guide that you have associated with the content.\u003c/p\u003e \u003cp\u003eNote the following limitations:\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003eYou can create only one content association for each content resource in a knowledge base.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003eYou can associate a step-by-step guide with multiple content resources.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e \u003cp\u003eFor more information, see \u003ca href=\"https://docs.aws.amazon.com/connect/latest/adminguide/integrate-q-with-guides.html\"\u003eIntegrate Amazon Q in Connect with step-by-step guides\u003c/a\u003e in the \u003ci\u003eAmazon Connect Administrator Guide\u003c/i\u003e. \u003c/p\u003e",
+          "smithy.api#documentation": "\u003cp\u003eCreates an association between a content resource in a knowledge base and \u003ca href=\"https://docs.aws.amazon.com/connect/latest/adminguide/step-by-step-guided-experiences.html\"\u003estep-by-step guides\u003c/a\u003e. Step-by-step guides offer instructions to agents for resolving common customer issues. You create a content association to integrate Amazon Q in Connect and step-by-step guides. \u003c/p\u003e \u003cp\u003eAfter you integrate Amazon Q and step-by-step guides, when Amazon Q provides a recommendation to an agent based on the intent that it's detected, it also provides them with the option to start the step-by-step guide that you have associated with the content.\u003c/p\u003e \u003cp\u003eNote the following limitations:\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003eYou can create only one content association for each content resource in a knowledge base.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003eYou can associate a step-by-step guide with multiple content resources.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e \u003cp\u003eFor more information, see \u003ca href=\"https://docs.aws.amazon.com/connect/latest/adminguide/integrate-q-with-guides.html\"\u003eIntegrate Amazon Q in Connect with step-by-step guides\u003c/a\u003e in the \u003ci\u003eConnect Customer Administrator Guide\u003c/i\u003e. \u003c/p\u003e",
           "smithy.api#http": {
             "uri": "/knowledgeBases/{knowledgeBaseId}/contents/{contentId}/associations",
             "method": "POST"
@@ -4630,7 +4657,7 @@
           "channels": {
             "target": "com.amazonaws.qconnect#Channels",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe Amazon Connect channels this quick response applies to.\u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003eThe Connect Customer channels this quick response applies to.\u003c/p\u003e"
             }
           },
           "clientToken": {
@@ -4752,7 +4779,7 @@
           }
         ],
         "traits": {
-          "smithy.api#documentation": "\u003cp\u003eCreates a session. A session is a contextual container used for generating recommendations. Amazon Connect creates a new Amazon Q in Connect session for each contact on which Amazon Q in Connect is enabled.\u003c/p\u003e",
+          "smithy.api#documentation": "\u003cp\u003eCreates a session. A session is a contextual container used for generating recommendations. Connect Customer creates a new Amazon Q in Connect session for each contact on which Amazon Q in Connect is enabled.\u003c/p\u003e",
           "smithy.api#http": {
             "uri": "/assistants/{assistantId}/sessions",
             "method": "POST"
@@ -4787,7 +4814,7 @@
           "contactArn": {
             "target": "com.amazonaws.qconnect#GenericArn",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the email contact in Amazon Connect. Used to retrieve email content and establish session context for AI-powered email assistance.\u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the email contact in Connect Customer. Used to retrieve email content and establish session context for AI-powered email assistance.\u003c/p\u003e"
             }
           },
           "description": {
@@ -5291,6 +5318,12 @@
               "smithy.api#documentation": "\u003cp\u003eDetails about notes data.\u003c/p\u003e"
             }
           },
+          "proactiveRecommendationData": {
+            "target": "com.amazonaws.qconnect#ProactiveRecommendationDataDetails",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eDetails about a proactive recommendation, including the token used to retrieve its chunked response with \u003ccode\u003eGetNextMessage\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
           "sourceContentData": {
             "target": "com.amazonaws.qconnect#SourceContentDataDetails",
             "traits": {
@@ -5450,6 +5483,27 @@
         },
         "traits": {
           "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.qconnect#DelegateAgentConfiguration": {
+        "type": "structure",
+        "members": {
+          "agentTarget": {
+            "target": "com.amazonaws.qconnect#AgentTarget",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe collaborator agent to delegate to.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "instruction": {
+            "target": "com.amazonaws.qconnect#MultiAgentInstruction",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe instruction that tells the Orchestration AI Agent when and how to delegate to this collaborator agent.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA collaborator agent configuration in which the Orchestration AI Agent invokes the collaborator, resuming when the collaborator returns.\u003c/p\u003e"
         }
       },
       "com.amazonaws.qconnect#DeleteAIAgent": {
@@ -6042,7 +6096,7 @@
           }
         ],
         "traits": {
-          "smithy.api#documentation": "\u003cp\u003eDeletes the content association. \u003c/p\u003e \u003cp\u003eFor more information about content associations--what they are and when they are used--see \u003ca href=\"https://docs.aws.amazon.com/connect/latest/adminguide/integrate-q-with-guides.html\"\u003eIntegrate Amazon Q in Connect with step-by-step guides\u003c/a\u003e in the \u003ci\u003eAmazon Connect Administrator Guide\u003c/i\u003e. \u003c/p\u003e",
+          "smithy.api#documentation": "\u003cp\u003eDeletes the content association. \u003c/p\u003e \u003cp\u003eFor more information about content associations--what they are and when they are used--see \u003ca href=\"https://docs.aws.amazon.com/connect/latest/adminguide/integrate-q-with-guides.html\"\u003eIntegrate Amazon Q in Connect with step-by-step guides\u003c/a\u003e in the \u003ci\u003eConnect Customer Administrator Guide\u003c/i\u003e. \u003c/p\u003e",
           "smithy.api#http": {
             "uri": "/knowledgeBases/{knowledgeBaseId}/contents/{contentId}/associations/{contentAssociationId}",
             "method": "DELETE",
@@ -7582,7 +7636,7 @@
           }
         ],
         "traits": {
-          "smithy.api#documentation": "\u003cp\u003eReturns the content association.\u003c/p\u003e \u003cp\u003eFor more information about content associations--what they are and when they are used--see \u003ca href=\"https://docs.aws.amazon.com/connect/latest/adminguide/integrate-q-with-guides.html\"\u003eIntegrate Amazon Q in Connect with step-by-step guides\u003c/a\u003e in the \u003ci\u003eAmazon Connect Administrator Guide\u003c/i\u003e.\u003c/p\u003e",
+          "smithy.api#documentation": "\u003cp\u003eReturns the content association.\u003c/p\u003e \u003cp\u003eFor more information about content associations--what they are and when they are used--see \u003ca href=\"https://docs.aws.amazon.com/connect/latest/adminguide/integrate-q-with-guides.html\"\u003eIntegrate Amazon Q in Connect with step-by-step guides\u003c/a\u003e in the \u003ci\u003eConnect Customer Administrator Guide\u003c/i\u003e.\u003c/p\u003e",
           "smithy.api#http": {
             "uri": "/knowledgeBases/{knowledgeBaseId}/contents/{contentId}/associations/{contentAssociationId}",
             "method": "GET"
@@ -8134,7 +8188,7 @@
           "smithy.api#deprecated": {
             "message": "GetRecommendations API will be discontinued starting June 1, 2024. To receive generative responses after March 1, 2024 you will need to create a new Assistant in the Connect console and integrate the Amazon Q in Connect JavaScript library (amazon-q-connectjs) into your applications."
           },
-          "smithy.api#documentation": "\u003cimportant\u003e \u003cp\u003eThis API will be discontinued starting June 1, 2024. To receive generative responses after March 1, 2024, you will need to create a new Assistant in the Amazon Connect console and integrate the Amazon Q in Connect JavaScript library (amazon-q-connectjs) into your applications.\u003c/p\u003e \u003c/important\u003e \u003cp\u003eRetrieves recommendations for the specified session. To avoid retrieving the same recommendations in subsequent calls, use \u003ca href=\"https://docs.aws.amazon.com/amazon-q-connect/latest/APIReference/API_NotifyRecommendationsReceived.html\"\u003eNotifyRecommendationsReceived\u003c/a\u003e. This API supports long-polling behavior with the \u003ccode\u003ewaitTimeSeconds\u003c/code\u003e parameter. Short poll is the default behavior and only returns recommendations already available. To perform a manual query against an assistant, use \u003ca href=\"https://docs.aws.amazon.com/amazon-q-connect/latest/APIReference/API_QueryAssistant.html\"\u003eQueryAssistant\u003c/a\u003e.\u003c/p\u003e",
+          "smithy.api#documentation": "\u003cimportant\u003e \u003cp\u003eThis API will be discontinued starting June 1, 2024. To receive generative responses after March 1, 2024, you will need to create a new Assistant in the Connect Customer console and integrate the Amazon Q in Connect JavaScript library (amazon-q-connectjs) into your applications.\u003c/p\u003e \u003c/important\u003e \u003cp\u003eRetrieves recommendations for the specified session. To avoid retrieving the same recommendations in subsequent calls, use \u003ca href=\"https://docs.aws.amazon.com/amazon-q-connect/latest/APIReference/API_NotifyRecommendationsReceived.html\"\u003eNotifyRecommendationsReceived\u003c/a\u003e. This API supports long-polling behavior with the \u003ccode\u003ewaitTimeSeconds\u003c/code\u003e parameter. Short poll is the default behavior and only returns recommendations already available. To perform a manual query against an assistant, use \u003ca href=\"https://docs.aws.amazon.com/amazon-q-connect/latest/APIReference/API_QueryAssistant.html\"\u003eQueryAssistant\u003c/a\u003e.\u003c/p\u003e",
           "smithy.api#http": {
             "uri": "/assistants/{assistantId}/sessions/{sessionId}/recommendations",
             "method": "GET"
@@ -8285,7 +8339,7 @@
           "values": {
             "target": "com.amazonaws.qconnect#GroupingValues",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe list of values that define different groups of Amazon Q in Connect users.\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003eWhen setting \u003ccode\u003ecriteria\u003c/code\u003e to \u003ccode\u003eRoutingProfileArn\u003c/code\u003e, you need to provide a list of ARNs of \u003ca href=\"https://docs.aws.amazon.com/connect/latest/APIReference/API_RoutingProfile.html\"\u003eAmazon Connect routing profiles\u003c/a\u003e as values of this parameter.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e"
+              "smithy.api#documentation": "\u003cp\u003eThe list of values that define different groups of Amazon Q in Connect users.\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003eWhen setting \u003ccode\u003ecriteria\u003c/code\u003e to \u003ccode\u003eRoutingProfileArn\u003c/code\u003e, you need to provide a list of ARNs of \u003ca href=\"https://docs.aws.amazon.com/connect/latest/APIReference/API_RoutingProfile.html\"\u003eConnect Customer routing profiles\u003c/a\u003e as values of this parameter.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e"
             }
           }
         },
@@ -8568,7 +8622,7 @@
           "type": {
             "target": "com.amazonaws.qconnect#GuardrailPiiEntityType",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eConfigure AI Guardrail type when the PII entity is detected.\u003c/p\u003e \u003cp\u003eThe following PIIs are used to block or mask sensitive information:\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eGeneral\u003c/b\u003e \u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eADDRESS\u003c/b\u003e \u003c/p\u003e \u003cp\u003eA physical address, such as \"100 Main Street, Anytown, USA\" or \"Suite #12, Building 123\". An address can include information such as the street, building, location, city, state, country, county, zip code, precinct, and neighborhood. \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eAGE\u003c/b\u003e \u003c/p\u003e \u003cp\u003eAn individual's age, including the quantity and unit of time. For example, in the phrase \"I am 40 years old,\" Guarrails recognizes \"40 years\" as an age. \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eNAME\u003c/b\u003e \u003c/p\u003e \u003cp\u003eAn individual's name. This entity type does not include titles, such as Dr., Mr., Mrs., or Miss. AI Guardrail doesn't apply this entity type to names that are part of organizations or addresses. For example, AI Guardrail recognizes the \"John Doe Organization\" as an organization, and it recognizes \"Jane Doe Street\" as an address. \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eEMAIL\u003c/b\u003e \u003c/p\u003e \u003cp\u003eAn email address, such as \u003ci\u003emarymajor@email.com\u003c/i\u003e.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003ePHONE\u003c/b\u003e \u003c/p\u003e \u003cp\u003eA phone number. This entity type also includes fax and pager numbers. \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eUSERNAME\u003c/b\u003e \u003c/p\u003e \u003cp\u003eA user name that identifies an account, such as a login name, screen name, nick name, or handle. \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003ePASSWORD\u003c/b\u003e \u003c/p\u003e \u003cp\u003eAn alphanumeric string that is used as a password, such as \"*\u003ci\u003e very20special#pass*\u003c/i\u003e\". \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eDRIVER_ID\u003c/b\u003e \u003c/p\u003e \u003cp\u003eThe number assigned to a driver's license, which is an official document permitting an individual to operate one or more motorized vehicles on a public road. A driver's license number consists of alphanumeric characters. \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eLICENSE_PLATE\u003c/b\u003e \u003c/p\u003e \u003cp\u003eA license plate for a vehicle is issued by the state or country where the vehicle is registered. The format for passenger vehicles is typically five to eight digits, consisting of upper-case letters and numbers. The format varies depending on the location of the issuing state or country. \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eVEHICLE_IDENTIFICATION_NUMBER\u003c/b\u003e \u003c/p\u003e \u003cp\u003eA Vehicle Identification Number (VIN) uniquely identifies a vehicle. VIN content and format are defined in the \u003ci\u003eISO 3779\u003c/i\u003e specification. Each country has specific codes and formats for VINs. \u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eFinance\u003c/b\u003e \u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eCREDIT_DEBIT_CARD_CVV\u003c/b\u003e \u003c/p\u003e \u003cp\u003eA three-digit card verification code (CVV) that is present on VISA, MasterCard, and Discover credit and debit cards. For American Express credit or debit cards, the CVV is a four-digit numeric code. \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eCREDIT_DEBIT_CARD_EXPIRY\u003c/b\u003e \u003c/p\u003e \u003cp\u003eThe expiration date for a credit or debit card. This number is usually four digits long and is often formatted as \u003ci\u003emonth/year\u003c/i\u003e or \u003ci\u003eMM/YY\u003c/i\u003e. AI Guardrail recognizes expiration dates such as \u003ci\u003e01/21\u003c/i\u003e, \u003ci\u003e01/2021\u003c/i\u003e, and \u003ci\u003eJan 2021\u003c/i\u003e. \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eCREDIT_DEBIT_CARD_NUMBER\u003c/b\u003e \u003c/p\u003e \u003cp\u003eThe number for a credit or debit card. These numbers can vary from 13 to 16 digits in length. However, Amazon Comprehend also recognizes credit or debit card numbers when only the last four digits are present. \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003ePIN\u003c/b\u003e \u003c/p\u003e \u003cp\u003eA four-digit personal identification number (PIN) with which you can access your bank account. \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eINTERNATIONAL_BANK_ACCOUNT_NUMBER\u003c/b\u003e \u003c/p\u003e \u003cp\u003eAn International Bank Account Number has specific formats in each country. For more information, see \u003ca href=\"https://www.iban.com/structure\"\u003e www.iban.com/structure\u003c/a\u003e.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eSWIFT_CODE\u003c/b\u003e \u003c/p\u003e \u003cp\u003eA SWIFT code is a standard format of Bank Identifier Code (BIC) used to specify a particular bank or branch. Banks use these codes for money transfers such as international wire transfers.\u003c/p\u003e \u003cp\u003eSWIFT codes consist of eight or 11 characters. The 11-digit codes refer to specific branches, while eight-digit codes (or 11-digit codes ending in 'XXX') refer to the head or primary office.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eIT\u003c/b\u003e \u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eIP_ADDRESS\u003c/b\u003e \u003c/p\u003e \u003cp\u003eAn IPv4 address, such as \u003ci\u003e198.51.100.0\u003c/i\u003e. \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eMAC_ADDRESS\u003c/b\u003e \u003c/p\u003e \u003cp\u003eA \u003ci\u003emedia access control\u003c/i\u003e (MAC) address is a unique identifier assigned to a network interface controller (NIC). \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eURL\u003c/b\u003e \u003c/p\u003e \u003cp\u003eA web address, such as \u003ci\u003ewww.example.com\u003c/i\u003e. \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eAWS_ACCESS_KEY\u003c/b\u003e \u003c/p\u003e \u003cp\u003eA unique identifier that's associated with a secret access key; you use the access key ID and secret access key to sign programmatic Amazon Web Services requests cryptographically. \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eAWS_SECRET_KEY\u003c/b\u003e \u003c/p\u003e \u003cp\u003eA unique identifier that's associated with an access key. You use the access key ID and secret access key to sign programmatic Amazon Web Services requests cryptographically. \u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eUSA specific\u003c/b\u003e \u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eUS_BANK_ACCOUNT_NUMBER\u003c/b\u003e \u003c/p\u003e \u003cp\u003eA US bank account number, which is typically 10 to 12 digits long. \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eUS_BANK_ROUTING_NUMBER\u003c/b\u003e \u003c/p\u003e \u003cp\u003eA US bank account routing number. These are typically nine digits long, \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eUS_INDIVIDUAL_TAX_IDENTIFICATION_NUMBER\u003c/b\u003e \u003c/p\u003e \u003cp\u003eA US Individual Taxpayer Identification Number (ITIN) is a nine-digit number that starts with a \"9\" and contain a \"7\" or \"8\" as the fourth digit. An ITIN can be formatted with a space or a dash after the third and forth digits. \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eUS_PASSPORT_NUMBER\u003c/b\u003e \u003c/p\u003e \u003cp\u003eA US passport number. Passport numbers range from six to nine alphanumeric characters. \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eUS_SOCIAL_SECURITY_NUMBER\u003c/b\u003e \u003c/p\u003e \u003cp\u003eA US Social Security Number (SSN) is a nine-digit number that is issued to US citizens, permanent residents, and temporary working residents. \u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eCanada specific\u003c/b\u003e \u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eCA_HEALTH_NUMBER\u003c/b\u003e \u003c/p\u003e \u003cp\u003eA Canadian Health Service Number is a 10-digit unique identifier, required for individuals to access healthcare benefits. \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eCA_SOCIAL_INSURANCE_NUMBER\u003c/b\u003e \u003c/p\u003e \u003cp\u003eA Canadian Social Insurance Number (SIN) is a nine-digit unique identifier, required for individuals to access government programs and benefits.\u003c/p\u003e \u003cp\u003eThe SIN is formatted as three groups of three digits, such as \u003ci\u003e 123-456-789\u003c/i\u003e. A SIN can be validated through a simple check-digit process called the \u003ca href=\"https://www.wikipedia.org/wiki/Luhn_algorithm\"\u003eLuhn algorithm\u003c/a\u003e .\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eUK Specific\u003c/b\u003e \u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eUK_NATIONAL_HEALTH_SERVICE_NUMBER\u003c/b\u003e \u003c/p\u003e \u003cp\u003eA UK National Health Service Number is a 10-17 digit number, such as \u003ci\u003e485 555 3456\u003c/i\u003e. The current system formats the 10-digit number with spaces after the third and sixth digits. The final digit is an error-detecting checksum.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eUK_NATIONAL_INSURANCE_NUMBER\u003c/b\u003e \u003c/p\u003e \u003cp\u003eA UK National Insurance Number (NINO) provides individuals with access to National Insurance (social security) benefits. It is also used for some purposes in the UK tax system.\u003c/p\u003e \u003cp\u003eThe number is nine digits long and starts with two letters, followed by six numbers and one letter. A NINO can be formatted with a space or a dash after the two letters and after the second, forth, and sixth digits.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eUK_UNIQUE_TAXPAYER_REFERENCE_NUMBER\u003c/b\u003e \u003c/p\u003e \u003cp\u003eA UK Unique Taxpayer Reference (UTR) is a 10-digit number that identifies a taxpayer or a business. \u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eCustom\u003c/b\u003e \u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eRegex filter\u003c/b\u003e - You can use a regular expressions to define patterns for an AI Guardrail to recognize and act upon such as serial number, booking ID etc..\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e \u003c/li\u003e \u003c/ul\u003e",
+              "smithy.api#documentation": "\u003cp\u003eConfigure AI Guardrail type when the PII entity is detected.\u003c/p\u003e \u003cp\u003eThe following PIIs are used to block or mask sensitive information:\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eGeneral\u003c/b\u003e \u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eADDRESS\u003c/b\u003e \u003c/p\u003e \u003cp\u003eA physical address, such as \"100 Main Street, Anytown, USA\" or \"Suite #12, Building 123\". An address can include information such as the street, building, location, city, state, country, county, zip code, precinct, and neighborhood. \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eAGE\u003c/b\u003e \u003c/p\u003e \u003cp\u003eAn individual's age, including the quantity and unit of time. For example, in the phrase \"I am 40 years old,\" Guarrails recognizes \"40 years\" as an age. \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eNAME\u003c/b\u003e \u003c/p\u003e \u003cp\u003eAn individual's name. This entity type does not include titles, such as Dr., Mr., Mrs., or Miss. AI Guardrail doesn't apply this entity type to names that are part of organizations or addresses. For example, AI Guardrail recognizes the \"John Doe Organization\" as an organization, and it recognizes \"Jane Doe Street\" as an address. \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eEMAIL\u003c/b\u003e \u003c/p\u003e \u003cp\u003eAn email address, such as \u003ci\u003emarymajor@email.com\u003c/i\u003e.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003ePHONE\u003c/b\u003e \u003c/p\u003e \u003cp\u003eA phone number. This entity type also includes fax and pager numbers. \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eUSERNAME\u003c/b\u003e \u003c/p\u003e \u003cp\u003eA user name that identifies an account, such as a login name, screen name, nick name, or handle. \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003ePASSWORD\u003c/b\u003e \u003c/p\u003e \u003cp\u003eAn alphanumeric string that is used as a password, such as \"*\u003ci\u003e very20special#pass*\u003c/i\u003e\". \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eDRIVER_ID\u003c/b\u003e \u003c/p\u003e \u003cp\u003eThe number assigned to a driver's license, which is an official document permitting an individual to operate one or more motorized vehicles on a public road. A driver's license number consists of alphanumeric characters. \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eLICENSE_PLATE\u003c/b\u003e \u003c/p\u003e \u003cp\u003eA license plate for a vehicle is issued by the state or country where the vehicle is registered. The format for passenger vehicles is typically five to eight digits, consisting of upper-case letters and numbers. The format varies depending on the location of the issuing state or country. \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eVEHICLE_IDENTIFICATION_NUMBER\u003c/b\u003e \u003c/p\u003e \u003cp\u003eA Vehicle Identification Number (VIN) uniquely identifies a vehicle. VIN content and format are defined in the \u003ci\u003eISO 3779\u003c/i\u003e specification. Each country has specific codes and formats for VINs. \u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eFinance\u003c/b\u003e \u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eCREDIT_DEBIT_CARD_CVV\u003c/b\u003e \u003c/p\u003e \u003cp\u003eA three-digit card verification code (CVV) that is present on VISA, MasterCard, and Discover credit and debit cards. For American Express credit or debit cards, the CVV is a four-digit numeric code. \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eCREDIT_DEBIT_CARD_EXPIRY\u003c/b\u003e \u003c/p\u003e \u003cp\u003eThe expiration date for a credit or debit card. This number is usually four digits long and is often formatted as \u003ci\u003emonth/year\u003c/i\u003e or \u003ci\u003eMM/YY\u003c/i\u003e. AI Guardrail recognizes expiration dates such as \u003ci\u003e01/21\u003c/i\u003e, \u003ci\u003e01/2021\u003c/i\u003e, and \u003ci\u003eJan 2021\u003c/i\u003e. \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eCREDIT_DEBIT_CARD_NUMBER\u003c/b\u003e \u003c/p\u003e \u003cp\u003eThe number for a credit or debit card. These numbers can vary from 13 to 16 digits in length. However, Amazon Comprehend also recognizes credit or debit card numbers when only the last four digits are present. \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003ePIN\u003c/b\u003e \u003c/p\u003e \u003cp\u003eA four-digit personal identification number (PIN) with which you can access your bank account. \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eINTERNATIONAL_BANK_ACCOUNT_NUMBER\u003c/b\u003e \u003c/p\u003e \u003cp\u003eAn International Bank Account Number has specific formats in each country. For more information, see \u003ca href=\"https://www.iban.com/structure\"\u003e www.iban.com/structure\u003c/a\u003e.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eSWIFT_CODE\u003c/b\u003e \u003c/p\u003e \u003cp\u003eA SWIFT code is a standard format of Bank Identifier Code (BIC) used to specify a particular bank or branch. Banks use these codes for money transfers such as international wire transfers.\u003c/p\u003e \u003cp\u003eSWIFT codes consist of eight or 11 characters. The 11-digit codes refer to specific branches, while eight-digit codes (or 11-digit codes ending in 'XXX') refer to the head or primary office.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eIT\u003c/b\u003e \u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eIP_ADDRESS\u003c/b\u003e \u003c/p\u003e \u003cp\u003eAn IPv4 address, such as \u003ci\u003e198.51.100.0\u003c/i\u003e. \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eMAC_ADDRESS\u003c/b\u003e \u003c/p\u003e \u003cp\u003eA \u003ci\u003emedia access control\u003c/i\u003e (MAC) address is a unique identifier assigned to a network interface controller (NIC). \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eURL\u003c/b\u003e \u003c/p\u003e \u003cp\u003eA web address, such as \u003ci\u003ewww.example.com\u003c/i\u003e. \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eAWS_ACCESS_KEY\u003c/b\u003e \u003c/p\u003e \u003cp\u003eA unique identifier that's associated with a secret access key; you use the access key ID and secret access key to sign programmatic Amazon Web Services requests cryptographically. \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eAWS_SECRET_KEY\u003c/b\u003e \u003c/p\u003e \u003cp\u003eA unique identifier that's associated with an access key. You use the access key ID and secret access key to sign programmatic Amazon Web Services requests cryptographically. \u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eUSA specific\u003c/b\u003e \u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eUS_BANK_ACCOUNT_NUMBER\u003c/b\u003e \u003c/p\u003e \u003cp\u003eA US bank account number, which is typically 10 to 12 digits long. \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eUS_BANK_ROUTING_NUMBER\u003c/b\u003e \u003c/p\u003e \u003cp\u003eA US bank account routing number. These are typically nine digits long, \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eUS_INDIVIDUAL_TAX_IDENTIFICATION_NUMBER\u003c/b\u003e \u003c/p\u003e \u003cp\u003eA US Individual Taxpayer Identification Number (ITIN) is a nine-digit number that starts with a \"9\" and contain a \"7\" or \"8\" as the fourth digit. An ITIN can be formatted with a space or a dash after the third and forth digits. \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eUS_PASSPORT_NUMBER\u003c/b\u003e \u003c/p\u003e \u003cp\u003eA US passport number. Passport numbers range from six to nine alphanumeric characters. \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eUS_SOCIAL_SECURITY_NUMBER\u003c/b\u003e \u003c/p\u003e \u003cp\u003eA US Social Security Number (SSN) is a nine-digit number that is issued to US citizens, permanent residents, and temporary working residents. \u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eCanada specific\u003c/b\u003e \u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eCA_HEALTH_NUMBER\u003c/b\u003e \u003c/p\u003e \u003cp\u003eA Canadian Health Service Number is a 10-digit unique identifier, required for individuals to access healthcare benefits. \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eCA_SOCIAL_INSURANCE_NUMBER\u003c/b\u003e \u003c/p\u003e \u003cp\u003eA Canadian Social Insurance Number (SIN) is a nine-digit unique identifier, required for individuals to access government programs and benefits.\u003c/p\u003e \u003cp\u003eThe SIN is formatted as three groups of three digits, such as \u003ci\u003e 123-456-789\u003c/i\u003e. A SIN can be validated through a simple check-digit process called the Luhn algorithm. For more information, see \u003ca href=\"https://www.wikipedia.org/wiki/Luhn_algorithm\"\u003eLuhn algorithm\u003c/a\u003e on the Wikipedia website.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eUK Specific\u003c/b\u003e \u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eUK_NATIONAL_HEALTH_SERVICE_NUMBER\u003c/b\u003e \u003c/p\u003e \u003cp\u003eA UK National Health Service Number is a 10-17 digit number, such as \u003ci\u003e485 555 3456\u003c/i\u003e. The current system formats the 10-digit number with spaces after the third and sixth digits. The final digit is an error-detecting checksum.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eUK_NATIONAL_INSURANCE_NUMBER\u003c/b\u003e \u003c/p\u003e \u003cp\u003eA UK National Insurance Number (NINO) provides individuals with access to National Insurance (social security) benefits. It is also used for some purposes in the UK tax system.\u003c/p\u003e \u003cp\u003eThe number is nine digits long and starts with two letters, followed by six numbers and one letter. A NINO can be formatted with a space or a dash after the two letters and after the second, forth, and sixth digits.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eUK_UNIQUE_TAXPAYER_REFERENCE_NUMBER\u003c/b\u003e \u003c/p\u003e \u003cp\u003eA UK Unique Taxpayer Reference (UTR) is a 10-digit number that identifies a taxpayer or a business. \u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eCustom\u003c/b\u003e \u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003cb\u003eRegex filter\u003c/b\u003e - You can use a regular expressions to define patterns for an AI Guardrail to recognize and act upon such as serial number, booking ID etc..\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e \u003c/li\u003e \u003c/ul\u003e",
               "smithy.api#required": {}
             }
           }
@@ -9037,6 +9091,39 @@
           }
         }
       },
+      "com.amazonaws.qconnect#HandoffAgentConfiguration": {
+        "type": "structure",
+        "members": {
+          "agentTarget": {
+            "target": "com.amazonaws.qconnect#AgentTarget",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe collaborator agent to hand off to.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "audioStreamingEnabled": {
+            "target": "smithy.api#Boolean",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies whether the caller's audio is streamed directly to the collaborator agent and the collaborator's audio response is played back during the handoff. This applies only to voice handoffs.\u003c/p\u003e"
+            }
+          },
+          "immediateHandoff": {
+            "target": "smithy.api#Boolean",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies whether the conversation is handed off to this collaborator agent immediately on the first turn, without any orchestration reasoning. At most one handoff in an AI Agent's configuration can set this to \u003ccode\u003etrue\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "instruction": {
+            "target": "com.amazonaws.qconnect#MultiAgentInstruction",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe instruction that tells the Orchestration AI Agent when and how to hand off to this collaborator agent.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA collaborator agent configuration in which the Orchestration AI Agent transfers control of the conversation to the collaborator agent.\u003c/p\u003e"
+        }
+      },
       "com.amazonaws.qconnect#Headers": {
         "type": "map",
         "key": {
@@ -9401,10 +9488,32 @@
           "smithy.api#documentation": "\u003cp\u003eInformation about the Amazon Q intent.\u003c/p\u003e"
         }
       },
+      "com.amazonaws.qconnect#InteractionMode": {
+        "type": "string",
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eHow an orchestrator agent engaged a collaborator agent.\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eDELEGATE\u003c/code\u003e indicates that the orchestrator invoked the collaborator agent and retained control of the conversation, resuming when the collaborator returns.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eHANDOFF\u003c/code\u003e indicates that the orchestrator transferred control of the conversation to the collaborator agent.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e",
+          "smithy.api#enum": [
+            {
+              "value": "DELEGATE",
+              "name": "DELEGATE"
+            },
+            {
+              "value": "HANDOFF",
+              "name": "HANDOFF"
+            }
+          ]
+        }
+      },
       "com.amazonaws.qconnect#JSONDocument": {
         "type": "document",
         "traits": {
           "smithy.api#sensitive": {}
+        }
+      },
+      "com.amazonaws.qconnect#JSONDocumentList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.qconnect#JSONDocument"
         }
       },
       "com.amazonaws.qconnect#KnowledgeBase": {
@@ -10565,7 +10674,7 @@
           }
         ],
         "traits": {
-          "smithy.api#documentation": "\u003cp\u003eLists the content associations.\u003c/p\u003e \u003cp\u003eFor more information about content associations--what they are and when they are used--see \u003ca href=\"https://docs.aws.amazon.com/connect/latest/adminguide/integrate-q-with-guides.html\"\u003eIntegrate Amazon Q in Connect with step-by-step guides\u003c/a\u003e in the \u003ci\u003eAmazon Connect Administrator Guide\u003c/i\u003e.\u003c/p\u003e",
+          "smithy.api#documentation": "\u003cp\u003eLists the content associations.\u003c/p\u003e \u003cp\u003eFor more information about content associations--what they are and when they are used--see \u003ca href=\"https://docs.aws.amazon.com/connect/latest/adminguide/integrate-q-with-guides.html\"\u003eIntegrate Amazon Q in Connect with step-by-step guides\u003c/a\u003e in the \u003ci\u003eConnect Customer Administrator Guide\u003c/i\u003e.\u003c/p\u003e",
           "smithy.api#http": {
             "uri": "/knowledgeBases/{knowledgeBaseId}/contents/{contentId}/associations",
             "method": "GET"
@@ -11582,6 +11691,12 @@
       "com.amazonaws.qconnect#MessageData": {
         "type": "union",
         "members": {
+          "data": {
+            "target": "com.amazonaws.qconnect#JSONDocument",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe message data as a structured JSON document. This is the payload for a message of type \u003ccode\u003eDATA\u003c/code\u003e, and must be a JSON object at the root level.\u003c/p\u003e"
+            }
+          },
           "text": {
             "target": "com.amazonaws.qconnect#TextMessage",
             "traits": {
@@ -12642,6 +12757,10 @@
             {
               "value": "TOOL_USE_RESULT",
               "name": "TOOL_USE_RESULT"
+            },
+            {
+              "value": "DATA",
+              "name": "DATA"
             }
           ]
         }
@@ -12741,6 +12860,59 @@
         "type": "list",
         "member": {
           "target": "com.amazonaws.qconnect#ModelSummary"
+        }
+      },
+      "com.amazonaws.qconnect#MultiAgentConfiguration": {
+        "type": "union",
+        "members": {
+          "delegateAgentConfiguration": {
+            "target": "com.amazonaws.qconnect#DelegateAgentConfiguration",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eConfigures the collaborator agent as a delegate that the Orchestration AI Agent invokes while retaining control of the conversation.\u003c/p\u003e"
+            }
+          },
+          "handoffAgentConfiguration": {
+            "target": "com.amazonaws.qconnect#HandoffAgentConfiguration",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eConfigures the collaborator agent as a handoff target that the Orchestration AI Agent transfers control of the conversation to.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA union that configures a single collaborator agent for an Orchestration AI Agent, as either a delegate or a handoff.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.qconnect#MultiAgentConfigurationList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.qconnect#MultiAgentConfiguration"
+        }
+      },
+      "com.amazonaws.qconnect#MultiAgentExampleList": {
+        "type": "list",
+        "member": {
+          "target": "smithy.api#String"
+        }
+      },
+      "com.amazonaws.qconnect#MultiAgentInstruction": {
+        "type": "structure",
+        "members": {
+          "examples": {
+            "target": "com.amazonaws.qconnect#MultiAgentExampleList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eExample interactions that illustrate when the Orchestration AI Agent should engage the collaborator agent.\u003c/p\u003e"
+            }
+          },
+          "instruction": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe natural-language instruction that tells the Orchestration AI Agent when and how to engage the collaborator agent.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe instruction that guides how the Orchestration AI Agent works with a collaborator agent.\u003c/p\u003e",
+          "smithy.api#sensitive": {}
         }
       },
       "com.amazonaws.qconnect#Name": {
@@ -12999,10 +13171,26 @@
               "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the Amazon Connect instance used by the Orchestration AI Agent.\u003c/p\u003e"
             }
           },
+          "inputSchemas": {
+            "target": "com.amazonaws.qconnect#JSONDocumentList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe JSON schemas that define the structure of the structured data input accepted by the Orchestration AI Agent. The data in a \u003ccode\u003eDATA\u003c/code\u003e message sent to the agent is validated against these schemas. You can specify at most one schema.\u003c/p\u003e",
+              "smithy.api#length": {
+                "min": 0,
+                "max": 1
+              }
+            }
+          },
           "locale": {
             "target": "com.amazonaws.qconnect#NonEmptyString",
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe locale setting for the Orchestration AI Agent.\u003c/p\u003e"
+            }
+          },
+          "multiAgentConfigurations": {
+            "target": "com.amazonaws.qconnect#MultiAgentConfigurationList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe collaborator agents that the Orchestration AI Agent can work with. Each entry defines another agent that the orchestrator either delegates to or hands the conversation off to.\u003c/p\u003e"
             }
           },
           "orchestrationAIGuardrailId": {
@@ -13014,8 +13202,17 @@
           "orchestrationAIPromptId": {
             "target": "com.amazonaws.qconnect#UuidWithQualifier",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe AI Prompt identifier used by the Orchestration AI Agent.\u003c/p\u003e",
-              "smithy.api#required": {}
+              "smithy.api#documentation": "\u003cp\u003eThe AI Prompt identifier used by the Orchestration AI Agent.\u003c/p\u003e"
+            }
+          },
+          "outputSchemas": {
+            "target": "com.amazonaws.qconnect#JSONDocumentList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe JSON schemas that define the structure of the structured output generated by the Orchestration AI Agent. You can specify at most one schema.\u003c/p\u003e",
+              "smithy.api#length": {
+                "min": 0,
+                "max": 1
+              }
             }
           },
           "toolConfigurations": {
@@ -13191,6 +13388,21 @@
               "name": "LOW"
             }
           ]
+        }
+      },
+      "com.amazonaws.qconnect#ProactiveRecommendationDataDetails": {
+        "type": "structure",
+        "members": {
+          "nextMessageToken": {
+            "target": "com.amazonaws.qconnect#NextToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe token used to retrieve the next message in the proactive recommendation. Pass this token in a \u003ccode\u003eGetNextMessage\u003c/code\u003e request to continue receiving the chunked proactive response. Each response returns the next token to use until the chunked response is complete.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eDetails about a proactive recommendation, including the token used to retrieve its chunked response with \u003ccode\u003eGetNextMessage\u003c/code\u003e.\u003c/p\u003e"
         }
       },
       "com.amazonaws.qconnect#Probability": {
@@ -13624,7 +13836,7 @@
           "smithy.api#deprecated": {
             "message": "QueryAssistant API will be discontinued starting June 1, 2024. To receive generative responses after March 1, 2024 you will need to create a new Assistant in the Connect console and integrate the Amazon Q in Connect JavaScript library (amazon-q-connectjs) into your applications."
           },
-          "smithy.api#documentation": "\u003cimportant\u003e \u003cp\u003eThis API will be discontinued starting June 1, 2024. To receive generative responses after March 1, 2024, you will need to create a new Assistant in the Amazon Connect console and integrate the Amazon Q in Connect JavaScript library (amazon-q-connectjs) into your applications.\u003c/p\u003e \u003c/important\u003e \u003cp\u003ePerforms a manual search against the specified assistant. To retrieve recommendations for an assistant, use \u003ca href=\"https://docs.aws.amazon.com/amazon-q-connect/latest/APIReference/API_GetRecommendations.html\"\u003eGetRecommendations\u003c/a\u003e. \u003c/p\u003e",
+          "smithy.api#documentation": "\u003cimportant\u003e \u003cp\u003eThis API will be discontinued starting June 1, 2024. To receive generative responses after March 1, 2024, you will need to create a new Assistant in the Connect Customer console and integrate the Amazon Q in Connect JavaScript library (amazon-q-connectjs) into your applications.\u003c/p\u003e \u003c/important\u003e \u003cp\u003ePerforms a manual search against the specified assistant. To retrieve recommendations for an assistant, use \u003ca href=\"https://docs.aws.amazon.com/amazon-q-connect/latest/APIReference/API_GetRecommendations.html\"\u003eGetRecommendations\u003c/a\u003e. \u003c/p\u003e",
           "smithy.api#http": {
             "uri": "/assistants/{assistantId}/query",
             "method": "POST"
@@ -13942,7 +14154,7 @@
         "traits": {
           "smithy.api#length": {
             "min": 1,
-            "max": 1024
+            "max": 4000
           },
           "smithy.api#sensitive": {}
         }
@@ -13981,7 +14193,7 @@
           "channels": {
             "target": "com.amazonaws.qconnect#Channels",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe Amazon Connect contact channels this quick response applies to. The supported contact channel types include \u003ccode\u003eChat\u003c/code\u003e.\u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003eThe Connect Customer contact channels this quick response applies to. The supported contact channel types include \u003ccode\u003eChat\u003c/code\u003e.\u003c/p\u003e"
             }
           },
           "contentType": {
@@ -14380,7 +14592,7 @@
           "channels": {
             "target": "com.amazonaws.qconnect#Channels",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe Amazon Connect contact channels this quick response applies to. The supported contact channel types include \u003ccode\u003eChat\u003c/code\u003e.\u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003eThe Connect Customer contact channels this quick response applies to. The supported contact channel types include \u003ccode\u003eChat\u003c/code\u003e.\u003c/p\u003e"
             }
           },
           "contentType": {
@@ -14562,7 +14774,7 @@
           "channels": {
             "target": "com.amazonaws.qconnect#Channels",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe Amazon Connect contact channels this quick response applies to. The supported contact channel types include \u003ccode\u003eChat\u003c/code\u003e.\u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003eThe Connect Customer contact channels this quick response applies to. The supported contact channel types include \u003ccode\u003eChat\u003c/code\u003e.\u003c/p\u003e"
             }
           },
           "contentType": {
@@ -14937,6 +15149,10 @@
             {
               "value": "BLOCKED_NOTES_CHUNK",
               "name": "BLOCKED_NOTES_CHUNK"
+            },
+            {
+              "value": "PROACTIVE_RECOMMENDATION",
+              "name": "PROACTIVE_RECOMMENDATION"
             }
           ]
         }
@@ -15497,6 +15713,81 @@
           "smithy.api#readonly": {}
         }
       },
+      "com.amazonaws.qconnect#RetrieveError": {
+        "type": "structure",
+        "members": {
+          "associationId": {
+            "target": "com.amazonaws.qconnect#Uuid",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier of the assistant association whose knowledge base retrieval failed.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "code": {
+            "target": "com.amazonaws.qconnect#RetrieveErrorCode",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe error code that categorizes the retrieval failure for the assistant association.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "message": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA human-readable description of the retrieval failure for the assistant association.\u003c/p\u003e",
+              "smithy.api#length": {
+                "max": 1024
+              },
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eAn error returned for a single assistant association whose knowledge base retrieval failed during a \u003ccode\u003eRetrieve\u003c/code\u003e operation. The overall operation still succeeds and returns the results from the associations that were queried successfully.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.qconnect#RetrieveErrorCode": {
+        "type": "string",
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe error code that categorizes a per-association retrieval failure.\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eACCESS_DENIED\u003c/code\u003e \u2013 you do not have permission to retrieve from the knowledge base for the assistant association.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eRESOURCE_NOT_FOUND\u003c/code\u003e \u2013 the assistant association or its knowledge base could not be found.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eVALIDATION_ERROR\u003c/code\u003e \u2013 the retrieval request or the knowledge base configuration for the assistant association was not valid.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eTHROTTLED\u003c/code\u003e \u2013 the retrieval request for the assistant association was throttled.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eDEPENDENCY_FAILED\u003c/code\u003e \u2013 a dependency required to query the assistant association failed.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eINTERNAL_SERVER_ERROR\u003c/code\u003e \u2013 an internal error occurred while querying the assistant association.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e",
+          "smithy.api#enum": [
+            {
+              "value": "ACCESS_DENIED",
+              "name": "ACCESS_DENIED"
+            },
+            {
+              "value": "RESOURCE_NOT_FOUND",
+              "name": "RESOURCE_NOT_FOUND"
+            },
+            {
+              "value": "VALIDATION_ERROR",
+              "name": "VALIDATION_ERROR"
+            },
+            {
+              "value": "THROTTLED",
+              "name": "THROTTLED"
+            },
+            {
+              "value": "DEPENDENCY_FAILED",
+              "name": "DEPENDENCY_FAILED"
+            },
+            {
+              "value": "INTERNAL_SERVER_ERROR",
+              "name": "INTERNAL_SERVER_ERROR"
+            }
+          ]
+        }
+      },
+      "com.amazonaws.qconnect#RetrieveErrorList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.qconnect#RetrieveError"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "max": 5
+          }
+        }
+      },
       "com.amazonaws.qconnect#RetrieveRequest": {
         "type": "structure",
         "members": {
@@ -15530,6 +15821,12 @@
       "com.amazonaws.qconnect#RetrieveResponse": {
         "type": "structure",
         "members": {
+          "errors": {
+            "target": "com.amazonaws.qconnect#RetrieveErrorList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe per-association errors returned when one or more knowledge base associations fail during a \u003ccode\u003eRetrieve\u003c/code\u003e operation that spans multiple assistant associations. The overall operation still succeeds and returns the results from the associations that were queried successfully. This list contains one entry for each association that failed, up to a maximum of five.\u003c/p\u003e"
+            }
+          },
           "results": {
             "target": "com.amazonaws.qconnect#RetrieveResultList",
             "traits": {
@@ -15582,6 +15879,30 @@
         "type": "list",
         "member": {
           "target": "com.amazonaws.qconnect#RetrieveResult"
+        }
+      },
+      "com.amazonaws.qconnect#ReturnReason": {
+        "type": "string",
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe reason a sub-agent returned control to the calling agent.\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eCOMPLETE\u003c/code\u003e \u2013 the request was fulfilled.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eCOMPLETE_WITH_ERROR\u003c/code\u003e \u2013 the sub-agent attempted the request but could not fully complete it.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eESCALATE\u003c/code\u003e \u2013 the conversation should be transferred to a human agent.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eOUT_OF_DOMAIN\u003c/code\u003e \u2013 the request fell outside the sub-agent's domain of expertise.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e",
+          "smithy.api#enum": [
+            {
+              "value": "COMPLETE",
+              "name": "COMPLETE"
+            },
+            {
+              "value": "COMPLETE_WITH_ERROR",
+              "name": "COMPLETE_WITH_ERROR"
+            },
+            {
+              "value": "ESCALATE",
+              "name": "ESCALATE"
+            },
+            {
+              "value": "OUT_OF_DOMAIN",
+              "name": "OUT_OF_DOMAIN"
+            }
+          ]
         }
       },
       "com.amazonaws.qconnect#RuntimeSessionData": {
@@ -15908,7 +16229,7 @@
           "attributes": {
             "target": "com.amazonaws.qconnect#ContactAttributes",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe \u003ca href=\"https://docs.aws.amazon.com/connect/latest/adminguide/connect-attrib-list.html#user-defined-attributes\"\u003euser-defined Amazon Connect contact attributes\u003c/a\u003e to be resolved when search results are returned.\u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003eThe \u003ca href=\"https://docs.aws.amazon.com/connect/latest/adminguide/connect-attrib-list.html#user-defined-attributes\"\u003euser-defined Connect Customer contact attributes\u003c/a\u003e to be resolved when search results are returned.\u003c/p\u003e"
             }
           },
           "knowledgeBaseId": {
@@ -16301,7 +16622,7 @@
           "originRequestId": {
             "target": "com.amazonaws.qconnect#NonEmptyString",
             "traits": {
-              "smithy.api#documentation": "Request identifier from the origin system, used for end-to-end tracing across spans.",
+              "smithy.api#documentation": "\u003cp\u003eRequest identifier from the origin system, used for end-to-end tracing across spans.\u003c/p\u003e",
               "smithy.api#length": {
                 "min": 1,
                 "max": 256
@@ -16838,6 +17159,12 @@
               "smithy.api#documentation": "\u003cp\u003eAmazon Connect instance ARN\u003c/p\u003e"
             }
           },
+          "interactionMode": {
+            "target": "com.amazonaws.qconnect#InteractionMode",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eHow the orchestrator engaged the collaborator agent. Present on spans that invoke a collaborator agent.\u003c/p\u003e"
+            }
+          },
           "operationName": {
             "target": "com.amazonaws.qconnect#NonEmptyString",
             "traits": {
@@ -16910,6 +17237,12 @@
               "smithy.api#documentation": "\u003cp\u003eActual model used for response (usually matches requestModel)\u003c/p\u003e"
             }
           },
+          "returnReason": {
+            "target": "com.amazonaws.qconnect#ReturnReason",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eReason a sub-agent returned control to the calling agent. Present on return_to_agent spans.\u003c/p\u003e"
+            }
+          },
           "sessionName": {
             "target": "com.amazonaws.qconnect#NonEmptyString",
             "traits": {
@@ -16920,6 +17253,12 @@
             "target": "com.amazonaws.qconnect#SpanMessageValueList",
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eSystem prompt instructions\u003c/p\u003e"
+            }
+          },
+          "targetAgentId": {
+            "target": "com.amazonaws.qconnect#NonEmptyString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIdentifier of the collaborator agent being invoked. For first-party collaborators this is the Amazon Connect AI agent ID; for third-party collaborators this is the external application ID.\u003c/p\u003e"
             }
           },
           "temperature": {
@@ -19106,7 +19445,7 @@
           "channels": {
             "target": "com.amazonaws.qconnect#Channels",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe Amazon Connect contact channels this quick response applies to. The supported contact channel types include \u003ccode\u003eChat\u003c/code\u003e.\u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003eThe Connect Customer contact channels this quick response applies to. The supported contact channel types include \u003ccode\u003eChat\u003c/code\u003e.\u003c/p\u003e"
             }
           },
           "content": {
@@ -19233,7 +19572,7 @@
           }
         ],
         "traits": {
-          "smithy.api#documentation": "\u003cp\u003eUpdates a session. A session is a contextual container used for generating recommendations. Amazon Connect updates the existing Amazon Q in Connect session for each contact on which Amazon Q in Connect is enabled.\u003c/p\u003e",
+          "smithy.api#documentation": "\u003cp\u003eUpdates a session. A session is a contextual container used for generating recommendations. Connect Customer updates the existing Amazon Q in Connect session for each contact on which Amazon Q in Connect is enabled.\u003c/p\u003e",
           "smithy.api#http": {
             "uri": "/assistants/{assistantId}/sessions/{sessionId}",
             "method": "POST"
@@ -19865,7 +20204,7 @@
           },
           "aws.protocols#restJson1": {},
           "smithy.api#cors": {},
-          "smithy.api#documentation": "\u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ca href=\"https://docs.aws.amazon.com/connect/latest/APIReference/API_Operations_Amazon_Q_Connect.html\"\u003eAmazon Q actions\u003c/a\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ca href=\"https://docs.aws.amazon.com/connect/latest/APIReference/API_Types_Amazon_Q_Connect.html\"\u003eAmazon Q data types\u003c/a\u003e \u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e \u003cnote\u003e \u003cp\u003e \u003cb\u003ePowered by Amazon Bedrock\u003c/b\u003e: Amazon Web Services implements \u003ca href=\"https://docs.aws.amazon.com/bedrock/latest/userguide/abuse-detection.html\"\u003eautomated abuse detection\u003c/a\u003e. Because Amazon Q in Connect is built on Amazon Bedrock, users can take full advantage of the controls implemented in Amazon Bedrock to enforce safety, security, and the responsible use of artificial intelligence (AI).\u003c/p\u003e \u003c/note\u003e \u003cp\u003eAmazon Q in Connect is a generative AI customer service assistant. It is an LLM-enhanced evolution of Amazon Connect Wisdom that delivers real-time recommendations to help contact center agents resolve customer issues quickly and accurately.\u003c/p\u003e \u003cp\u003eAmazon Q in Connect automatically detects customer intent during calls and chats using conversational analytics and natural language understanding (NLU). It then provides agents with immediate, real-time generative responses and suggested actions, and links to relevant documents and articles. Agents can also query Amazon Q in Connect directly using natural language or keywords to answer customer requests.\u003c/p\u003e \u003cp\u003eUse the Amazon Q in Connect APIs to create an assistant and a knowledge base, for example, or manage content by uploading custom files.\u003c/p\u003e \u003cp\u003eFor more information, see \u003ca href=\"https://docs.aws.amazon.com/connect/latest/adminguide/amazon-q-connect.html\"\u003eUse Amazon Q in Connect for generative AI powered agent assistance in real-time\u003c/a\u003e in the \u003ci\u003eAmazon Connect Administrator Guide\u003c/i\u003e.\u003c/p\u003e",
+          "smithy.api#documentation": "\u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ca href=\"https://docs.aws.amazon.com/connect/latest/APIReference/API_Operations_Amazon_Q_Connect.html\"\u003eAmazon Q actions\u003c/a\u003e \u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ca href=\"https://docs.aws.amazon.com/connect/latest/APIReference/API_Types_Amazon_Q_Connect.html\"\u003eAmazon Q data types\u003c/a\u003e \u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e \u003cnote\u003e \u003cp\u003e \u003cb\u003ePowered by Amazon Bedrock\u003c/b\u003e: Amazon Web Services implements \u003ca href=\"https://docs.aws.amazon.com/bedrock/latest/userguide/abuse-detection.html\"\u003eautomated abuse detection\u003c/a\u003e. Because Amazon Q in Connect is built on Amazon Bedrock, users can take full advantage of the controls implemented in Amazon Bedrock to enforce safety, security, and the responsible use of artificial intelligence (AI).\u003c/p\u003e \u003c/note\u003e \u003cp\u003eAmazon Q in Connect is a generative AI customer service assistant. It is an LLM-enhanced evolution of Connect Customer Wisdom that delivers real-time recommendations to help contact center agents resolve customer issues quickly and accurately.\u003c/p\u003e \u003cp\u003eAmazon Q in Connect automatically detects customer intent during calls and chats using conversational analytics and natural language understanding (NLU). It then provides agents with immediate, real-time generative responses and suggested actions, and links to relevant documents and articles. Agents can also query Amazon Q in Connect directly using natural language or keywords to answer customer requests.\u003c/p\u003e \u003cp\u003eUse the Amazon Q in Connect APIs to create an assistant and a knowledge base, for example, or manage content by uploading custom files.\u003c/p\u003e \u003cp\u003eFor more information, see \u003ca href=\"https://docs.aws.amazon.com/connect/latest/adminguide/amazon-q-connect.html\"\u003eUse Amazon Q in Connect for generative AI powered agent assistance in real-time\u003c/a\u003e in the \u003ci\u003eConnect Customer Administrator Guide\u003c/i\u003e.\u003c/p\u003e",
           "smithy.api#title": "Amazon Q Connect",
           "smithy.rules#endpointBdd": {
             "version": "1.1",

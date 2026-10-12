@@ -4547,6 +4547,12 @@
               "smithy.api#documentation": "\u003cp\u003eThe number of CPU units used by the task. This parameter determines the CPU allocation for each task in the Express service. The default value for an Express service is 256 (.25 vCPU).\u003c/p\u003e"
             }
           },
+          "cpuArchitecture": {
+            "target": "com.amazonaws.ecs#ExpressCpuArchitecture",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe CPU architecture that the task runs on. If you don't specify a value, the default is \u003ccode\u003eX86_64\u003c/code\u003e.\u003c/p\u003e \u003cp\u003eValid values:\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eX86_64\u003c/code\u003e - The x86 64-bit architecture.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eARM64\u003c/code\u003e - The 64-bit ARM architecture.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e \u003cp\u003eEnsure that the container image you specify supports the architecture you choose. The operating system family for an Express service is always \u003ccode\u003eLINUX\u003c/code\u003e.\u003c/p\u003e \u003cp\u003eYou can't specify \u003ccode\u003ecpuArchitecture\u003c/code\u003e together with \u003ccode\u003etaskDefinitionArn\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
           "executionRoleArn": {
             "target": "com.amazonaws.ecs#String",
             "traits": {
@@ -4605,7 +4611,7 @@
           "taskDefinitionArn": {
             "target": "com.amazonaws.ecs#String",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of a task definition to use to create the Express Gateway service. This allows you to manage your own task definition, giving you more control over the service configuration such as adding sidecar containers.\u003c/p\u003e \u003cp\u003eThe task definition must have a container named \u003ccode\u003eMain\u003c/code\u003e with a single TCP port mapping that includes a container port and port name. The task definition must also have \u003ccode\u003eFARGATE\u003c/code\u003e compatibility.\u003c/p\u003e \u003cp\u003eIf you provide a task definition ARN, you cannot also specify \u003ccode\u003eprimaryContainer\u003c/code\u003e, \u003ccode\u003eexecutionRoleArn\u003c/code\u003e, \u003ccode\u003etaskRoleArn\u003c/code\u003e, \u003ccode\u003ecpu\u003c/code\u003e, or \u003ccode\u003ememory\u003c/code\u003e.\u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of a task definition to use to create the Express Gateway service. This allows you to manage your own task definition, giving you more control over the service configuration such as adding sidecar containers.\u003c/p\u003e \u003cp\u003eThe task definition must have a container named \u003ccode\u003eMain\u003c/code\u003e with a single TCP port mapping that includes a container port and port name. The task definition must also have \u003ccode\u003eFARGATE\u003c/code\u003e compatibility.\u003c/p\u003e \u003cp\u003eIf you provide a task definition ARN, you cannot also specify \u003ccode\u003eprimaryContainer\u003c/code\u003e, \u003ccode\u003eexecutionRoleArn\u003c/code\u003e, \u003ccode\u003etaskRoleArn\u003c/code\u003e, \u003ccode\u003ecpu\u003c/code\u003e, \u003ccode\u003ememory\u003c/code\u003e, or \u003ccode\u003ecpuArchitecture\u003c/code\u003e.\u003c/p\u003e"
             }
           },
           "taskRoleArn": {
@@ -11889,6 +11895,23 @@
           "smithy.api#output": {}
         }
       },
+      "com.amazonaws.ecs#ExpressCpuArchitecture": {
+        "type": "enum",
+        "members": {
+          "ARM64": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ARM64"
+            }
+          },
+          "X86_64": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "X86_64"
+            }
+          }
+        }
+      },
       "com.amazonaws.ecs#ExpressGatewayContainer": {
         "type": "structure",
         "members": {
@@ -12015,6 +12038,12 @@
             "target": "com.amazonaws.ecs#String",
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe CPU allocation for tasks in this service revision.\u003c/p\u003e"
+            }
+          },
+          "cpuArchitecture": {
+            "target": "com.amazonaws.ecs#ExpressCpuArchitecture",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe CPU architecture that the task runs on.\u003c/p\u003e \u003cp\u003eValid values:\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eX86_64\u003c/code\u003e - The x86 64-bit architecture.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eARM64\u003c/code\u003e - The 64-bit ARM architecture.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e \u003cp\u003eDifferent service revisions can report different architectures. This value isn't returned when the service uses a customer-provided task definition that doesn't specify a CPU architecture.\u003c/p\u003e"
             }
           },
           "createdAt": {
@@ -18186,6 +18215,12 @@
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe resolved load balancer configuration for the service revision. This includes information about which target groups serve traffic and which listener rules direct traffic to them.\u003c/p\u003e"
             }
+          },
+          "vpcLatticeConfigurations": {
+            "target": "com.amazonaws.ecs#ServiceRevisionVpcLatticeConfigurations",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe resolved VPC Lattice configuration for the service revision. This includes information about which target groups serve traffic and which listener rules direct traffic to them.\u003c/p\u003e"
+            }
           }
         },
         "traits": {
@@ -20285,6 +20320,32 @@
         },
         "traits": {
           "smithy.api#documentation": "\u003cp\u003eThe information about the number of requested, pending, and running tasks for a service revision.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.ecs#ServiceRevisionVpcLatticeConfiguration": {
+        "type": "structure",
+        "members": {
+          "productionListenerRule": {
+            "target": "com.amazonaws.ecs#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the production listener rule or listener that directs traffic to the target group associated with the service revision.\u003c/p\u003e"
+            }
+          },
+          "targetGroupArn": {
+            "target": "com.amazonaws.ecs#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the target group associated with the service revision.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe resolved VPC Lattice configuration for a service revision. This includes information about which target groups serve traffic and which listener rules direct traffic to them.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.ecs#ServiceRevisionVpcLatticeConfigurations": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.ecs#ServiceRevisionVpcLatticeConfiguration"
         }
       },
       "com.amazonaws.ecs#ServiceRevisions": {
@@ -24185,6 +24246,12 @@
               "smithy.api#documentation": "\u003cp\u003eThe number of CPU units used by the task.\u003c/p\u003e"
             }
           },
+          "cpuArchitecture": {
+            "target": "com.amazonaws.ecs#ExpressCpuArchitecture",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe CPU architecture that the task runs on. If you don't specify a value, the service keeps its current architecture.\u003c/p\u003e \u003cp\u003eValid values:\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eX86_64\u003c/code\u003e - The x86 64-bit architecture.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eARM64\u003c/code\u003e - The 64-bit ARM architecture.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e \u003cp\u003eChanging the architecture starts a new deployment that replaces the running tasks. Ensure that the container image you specify supports the architecture you choose. The operating system family for an Express service is always \u003ccode\u003eLINUX\u003c/code\u003e.\u003c/p\u003e \u003cp\u003eYou can't specify \u003ccode\u003ecpuArchitecture\u003c/code\u003e together with \u003ccode\u003etaskDefinitionArn\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
           "executionRoleArn": {
             "target": "com.amazonaws.ecs#String",
             "traits": {
@@ -24231,7 +24298,7 @@
           "taskDefinitionArn": {
             "target": "com.amazonaws.ecs#String",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of a task definition to use to update the Express Gateway service. This allows you to manage your own task definition, giving you more control over the service configuration such as adding sidecar containers.\u003c/p\u003e \u003cp\u003eThe task definition must have a container named \u003ccode\u003eMain\u003c/code\u003e with a single TCP port mapping that includes a container port and port name. The task definition must also have \u003ccode\u003eFARGATE\u003c/code\u003e compatibility.\u003c/p\u003e \u003cp\u003eIf you provide a task definition ARN, you cannot also specify \u003ccode\u003eprimaryContainer\u003c/code\u003e, \u003ccode\u003eexecutionRoleArn\u003c/code\u003e, \u003ccode\u003etaskRoleArn\u003c/code\u003e, \u003ccode\u003ecpu\u003c/code\u003e, or \u003ccode\u003ememory\u003c/code\u003e.\u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of a task definition to use to update the Express Gateway service. This allows you to manage your own task definition, giving you more control over the service configuration such as adding sidecar containers.\u003c/p\u003e \u003cp\u003eThe task definition must have a container named \u003ccode\u003eMain\u003c/code\u003e with a single TCP port mapping that includes a container port and port name. The task definition must also have \u003ccode\u003eFARGATE\u003c/code\u003e compatibility.\u003c/p\u003e \u003cp\u003eIf you provide a task definition ARN, you cannot also specify \u003ccode\u003eprimaryContainer\u003c/code\u003e, \u003ccode\u003eexecutionRoleArn\u003c/code\u003e, \u003ccode\u003etaskRoleArn\u003c/code\u003e, \u003ccode\u003ecpu\u003c/code\u003e, \u003ccode\u003ememory\u003c/code\u003e, or \u003ccode\u003ecpuArchitecture\u003c/code\u003e.\u003c/p\u003e"
             }
           },
           "taskRoleArn": {
@@ -25286,9 +25353,38 @@
           "target": "com.amazonaws.ecs#Volume"
         }
       },
+      "com.amazonaws.ecs#VpcLatticeAdvancedConfiguration": {
+        "type": "structure",
+        "members": {
+          "alternateTargetGroupArn": {
+            "target": "com.amazonaws.ecs#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the alternate target group associated with the VPC Lattice Configuration for Amazon ECS blue/green deployments.\u003c/p\u003e"
+            }
+          },
+          "productionListenerRule": {
+            "target": "com.amazonaws.ecs#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) that identifies the production listener rule or listener for routing production traffic.\u003c/p\u003e"
+            }
+          },
+          "testListenerRule": {
+            "target": "com.amazonaws.ecs#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) that identifies the test listener rule or listener for routing test traffic.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe advanced settings for VPC Lattice used in blue/green deployments. Specify the alternate target group and listener rules required for traffic shifting during blue/green deployments. For more information, see \u003ca href=\"https://docs.aws.amazon.com/AmazonECS/latest/developerguide/blue-green-deployment-implementation.html\"\u003eRequired resources for Amazon ECS blue/green deployments\u003c/a\u003e in the \u003ci\u003eAmazon Elastic Container Service Developer Guide\u003c/i\u003e.\u003c/p\u003e"
+        }
+      },
       "com.amazonaws.ecs#VpcLatticeConfiguration": {
         "type": "structure",
         "members": {
+          "advancedConfiguration": {
+            "target": "com.amazonaws.ecs#VpcLatticeAdvancedConfiguration"
+          },
           "portName": {
             "target": "com.amazonaws.ecs#String",
             "traits": {
