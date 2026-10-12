@@ -22829,6 +22829,96 @@
           "target": "com.amazonaws.securityhub#BooleanFilter"
         }
       },
+      "com.amazonaws.securityhub#CancelExportJobV2": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.securityhub#CancelExportJobV2Request"
+        },
+        "output": {
+          "target": "com.amazonaws.securityhub#CancelExportJobV2Response"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.securityhub#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.securityhub#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.securityhub#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.securityhub#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.securityhub#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.securityhub#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eCancels a findings export job that is in progress. Security Hub transitions a running job to the \u003ccode\u003eCANCELLED\u003c/code\u003e state and returns the \u003ccode\u003eExportJobId\u003c/code\u003e and its new \u003ccode\u003eStatus\u003c/code\u003e. Canceling a job that is already in the \u003ccode\u003eCANCELLED\u003c/code\u003e state succeeds and returns the same result, so you can safely retry a cancel request.\u003c/p\u003e\n         \u003cp\u003eYou can't cancel an export job that has already reached a terminal \u003ccode\u003eSUCCEEDED\u003c/code\u003e or \u003ccode\u003eFAILED\u003c/code\u003e state; in that case, this operation returns a \u003ccode\u003eConflictException\u003c/code\u003e. If no export job matches the \u003ccode\u003eExportJobId\u003c/code\u003e that you provide, this operation returns a \u003ccode\u003eResourceNotFoundException\u003c/code\u003e.\u003c/p\u003e\n         \u003cp\u003eThe \u003ccode\u003eStatus\u003c/code\u003e value returned by this operation reflects the cancellation immediately, even though the job can take a short time to stop completely.\u003c/p\u003e",
+          "smithy.api#examples": [
+            {
+              "title": "Example \u2013 Canceling a running export job",
+              "documentation": "The following example cancels an export job that is in progress. Security Hub transitions the job to the CANCELLED state and returns its new status.",
+              "input": {
+                "ExportJobId": "a1b2c3d4e5f6"
+              },
+              "output": {
+                "ExportJobId": "a1b2c3d4e5f6",
+                "Status": "CANCELLED"
+              }
+            }
+          ],
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/exportjobsv2/{ExportJobId}/cancel",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.securityhub#CancelExportJobV2Request": {
+        "type": "structure",
+        "members": {
+          "ExportJobId": {
+            "target": "com.amazonaws.securityhub#ExportJobId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the export job to cancel. This is the value returned by \u003ccode\u003eStartExportJobV2\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.securityhub#CancelExportJobV2Response": {
+        "type": "structure",
+        "members": {
+          "ExportJobId": {
+            "target": "com.amazonaws.securityhub#ExportJobId",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the export job.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Status": {
+            "target": "com.amazonaws.securityhub#ExportStatus",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe state of the export job after the cancel request.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
       "com.amazonaws.securityhub#CategoryList": {
         "type": "list",
         "member": {
@@ -28204,6 +28294,375 @@
           "smithy.api#documentation": "\u003cp\u003e\n            The options for customizing a security control parameter that is a list of enums.\n        \u003c/p\u003e"
         }
       },
+      "com.amazonaws.securityhub#ExportDataType": {
+        "type": "enum",
+        "members": {
+          "FINDINGS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "FINDINGS"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe category of data that an export job produces. Currently, the only supported value is \u003ccode\u003eFINDINGS\u003c/code\u003e.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.securityhub#ExportDestination": {
+        "type": "union",
+        "members": {
+          "S3": {
+            "target": "com.amazonaws.securityhub#S3ExportDestination",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Simple Storage Service (Amazon S3) bucket and Amazon Web Services Key Management Service (Amazon Web Services KMS) key that Security Hub uses to write the export.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eSpecifies where Security Hub writes the export output. This is a union: you must specify exactly one member. Currently, the only supported member is \u003ccode\u003eS3\u003c/code\u003e.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.securityhub#ExportFailureCode": {
+        "type": "enum",
+        "members": {
+          "ACCESS_DENIED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ACCESS_DENIED"
+            }
+          },
+          "INTERNAL_ERROR": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "INTERNAL_ERROR"
+            }
+          },
+          "RESOURCE_NOT_FOUND": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "RESOURCE_NOT_FOUND"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eClassifies why a terminal-state export job failed. Present only when \u003ccode\u003eStatus\u003c/code\u003e is \u003ccode\u003eFAILED\u003c/code\u003e. Valid values are as follows:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eACCESS_DENIED\u003c/code\u003e \u2013 Security Hub couldn't read a required resource or write to the destination. Verify the bucket policy and key policy.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eRESOURCE_NOT_FOUND\u003c/code\u003e \u2013 A referenced destination bucket or Amazon Web Services KMS key no longer exists.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eINTERNAL_ERROR\u003c/code\u003e \u2013 An unclassified service-side error occurred. Retry the export, and if the failure persists, contact Amazon Web Services Support.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e"
+        }
+      },
+      "com.amazonaws.securityhub#ExportJobId": {
+        "type": "string",
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe unique identifier of an export job. Security Hub generates this value when you call \u003ccode\u003eStartExportJobV2\u003c/code\u003e. It consists of 1\u201364 lowercase alphanumeric characters.\u003c/p\u003e",
+          "smithy.api#length": {
+            "min": 1,
+            "max": 64
+          },
+          "smithy.api#pattern": "^[a-z0-9]+$"
+        }
+      },
+      "com.amazonaws.securityhub#ExportMaxResults": {
+        "type": "integer",
+        "traits": {
+          "smithy.api#range": {
+            "min": 1,
+            "max": 20
+          }
+        }
+      },
+      "com.amazonaws.securityhub#ExportName": {
+        "type": "string",
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA user-provided name for an export job. The value can be 1\u2013256 characters. Alphanumeric characters, spaces, and the following ASCII characters are permitted: \u003ccode\u003e. _ , : ( ) / + -\u003c/code\u003e.\u003c/p\u003e",
+          "smithy.api#length": {
+            "min": 1,
+            "max": 256
+          }
+        }
+      },
+      "com.amazonaws.securityhub#ExportOutput": {
+        "type": "union",
+        "members": {
+          "Findings": {
+            "target": "com.amazonaws.securityhub#FindingsOutput",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eConfigures an export of Security Hub findings, including the output format and any filters or selected fields.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eSpecifies what data to export and how to format it. This is a union: you must specify exactly one member. Currently, the only supported member is \u003ccode\u003eFindings\u003c/code\u003e.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.securityhub#ExportOutputSummary": {
+        "type": "union",
+        "members": {
+          "Findings": {
+            "target": "com.amazonaws.securityhub#FindingsOutputSummary",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe output configuration summary for a findings export.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA summary of the output configuration for an export job. The populated member corresponds to the data type that was exported.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.securityhub#ExportScopes": {
+        "type": "structure",
+        "members": {
+          "AwsOrganizations": {
+            "target": "com.amazonaws.securityhub#AwsOrganizationScopeList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of Organizations scopes to include in the export. Each entry in the list specifies an organization or organizational unit to include for the delegated administrator's account. If the list specifies multiple entries, the entries are combined using OR logic.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eDefines the data boundary for a findings export. Scopes determine which organizational units or organizations to retrieve data from.\u003c/p\u003e\n         \u003cp\u003eOnly a delegated administrator can use this structure. If a delegated administrator omits it, the export covers the entire organization; any other caller exports only findings from its own account.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.securityhub#ExportStatus": {
+        "type": "enum",
+        "members": {
+          "CANCELLED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "CANCELLED"
+            }
+          },
+          "FAILED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "FAILED"
+            }
+          },
+          "RUNNING": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "RUNNING"
+            }
+          },
+          "SUCCEEDED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "SUCCEEDED"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe state of an export job. Valid values are as follows:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eRUNNING\u003c/code\u003e \u2013 The job is queued or in progress.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eSUCCEEDED\u003c/code\u003e \u2013 The job completed and the output is available in the destination bucket.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eFAILED\u003c/code\u003e \u2013 The job didn't complete. See \u003ccode\u003eFailureCode\u003c/code\u003e and \u003ccode\u003eFailureMessage\u003c/code\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eCANCELLED\u003c/code\u003e \u2013 The job was canceled with \u003ccode\u003eCancelExportJobV2\u003c/code\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e"
+        }
+      },
+      "com.amazonaws.securityhub#ExportSummary": {
+        "type": "structure",
+        "members": {
+          "DataType": {
+            "target": "com.amazonaws.securityhub#ExportDataType",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe category of data that the export job produces.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Destination": {
+            "target": "com.amazonaws.securityhub#ExportDestination",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe destination that the export job writes to.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "EndedAt": {
+            "target": "com.amazonaws.securityhub#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe time when the export job reached a terminal state. Absent while the job is \u003ccode\u003eRUNNING\u003c/code\u003e.\u003c/p\u003e\n         \u003cp\u003eFor more information about the validation and formatting of timestamp fields in Security Hub, see \u003ca href=\"https://docs.aws.amazon.com/securityhub/1.0/APIReference/Welcome.html#timestamps\"\u003eTimestamps\u003c/a\u003e.\u003c/p\u003e"
+            }
+          },
+          "ExportJobId": {
+            "target": "com.amazonaws.securityhub#ExportJobId",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the export job.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "FailureCode": {
+            "target": "com.amazonaws.securityhub#ExportFailureCode",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA code that classifies why the export job failed. Present only when \u003ccode\u003eStatus\u003c/code\u003e is \u003ccode\u003eFAILED\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "FailureMessage": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA human-readable message about why the export job failed. Present only when \u003ccode\u003eStatus\u003c/code\u003e is \u003ccode\u003eFAILED\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "Name": {
+            "target": "com.amazonaws.securityhub#ExportName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe user-provided name of the export job, if one was specified.\u003c/p\u003e"
+            }
+          },
+          "OutputConfiguration": {
+            "target": "com.amazonaws.securityhub#ExportOutputSummary",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe output configuration of the export job. For findings exports, this reports the output format. Present only for findings exports; absent for other data types.\u003c/p\u003e"
+            }
+          },
+          "Scopes": {
+            "target": "com.amazonaws.securityhub#ExportScopes",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe organization scopes that the export job was started with, echoed verbatim. Absent if the caller didn't supply \u003ccode\u003eScopes\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "StartedAt": {
+            "target": "com.amazonaws.securityhub#Timestamp",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe time when the export job was created.\u003c/p\u003e\n         \u003cp\u003eFor more information about the validation and formatting of timestamp fields in Security Hub, see \u003ca href=\"https://docs.aws.amazon.com/securityhub/1.0/APIReference/Welcome.html#timestamps\"\u003eTimestamps\u003c/a\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Status": {
+            "target": "com.amazonaws.securityhub#ExportStatus",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe current state of the export job.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA summary of an export job, as returned by \u003ccode\u003eListExportJobsV2\u003c/code\u003e.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.securityhub#ExportSummaryList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.securityhub#ExportSummary"
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA list of export job summaries.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.securityhub#ExposureFinding": {
+        "type": "structure",
+        "members": {
+          "Impact": {
+            "target": "com.amazonaws.securityhub#ExposureImpact",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe impact resolving a remediation target has on the exposure finding.\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eReduces\u003c/code\u003e specifies that resolving the remediation target lowers the severity of the exposure finding, but does not resolve it.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eResolves\u003c/code\u003e specifies that resolving the remediation target resolves the exposure finding.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eUnchanged\u003c/code\u003e specifies that resolving the remediation target does not change the severity of the exposure finding.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "MetadataUid": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier (ID) of the Security Hub exposure finding, found under the\n         \u003ccode\u003emetadata.uid\u003c/code\u003e field of the finding.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "PreviousSeverity": {
+            "target": "com.amazonaws.securityhub#ExposureSeverity",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe severity of the exposure finding before the remediation target is resolved.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "ProjectedSeverity": {
+            "target": "com.amazonaws.securityhub#ExposureSeverity",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe severity of the exposure finding after the remediation target is resolved.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Title": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe title of the exposure finding.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eProvides details about an exposure finding and the effect the specific remediation target has on it.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.securityhub#ExposureFindingItemsList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.securityhub#ExposureFinding"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 1000
+          }
+        }
+      },
+      "com.amazonaws.securityhub#ExposureImpact": {
+        "type": "enum",
+        "members": {
+          "REDUCES": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Reduces"
+            }
+          },
+          "RESOLVES": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Resolves"
+            }
+          },
+          "UNCHANGED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Unchanged"
+            }
+          }
+        }
+      },
+      "com.amazonaws.securityhub#ExposureSeverity": {
+        "type": "enum",
+        "members": {
+          "CRITICAL": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Critical"
+            }
+          },
+          "HIGH": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "High"
+            }
+          },
+          "INFORMATIONAL": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Informational"
+            }
+          },
+          "LOW": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Low"
+            }
+          },
+          "MEDIUM": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Medium"
+            }
+          }
+        }
+      },
       "com.amazonaws.securityhub#ExternalIntegrationConfiguration": {
         "type": "structure",
         "members": {
@@ -28545,6 +29004,745 @@
           "smithy.api#documentation": "\u003cp\u003eDefines the data boundary for a findings query. Scopes determine which organizational units or organizations to retrieve data from.\u003c/p\u003e"
         }
       },
+      "com.amazonaws.securityhub#FindingsExportFormat": {
+        "type": "enum",
+        "members": {
+          "CSV": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "CSV"
+            }
+          },
+          "OCSF_JSON": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "OCSF_JSON"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe output format of an export. \u003ccode\u003eCSV\u003c/code\u003e produces comma-separated rows. \u003ccode\u003eOCSF_JSON\u003c/code\u003e produces newline-delimited JSON records in the Open Cybersecurity Schema Framework (OCSF) format.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.securityhub#FindingsOutput": {
+        "type": "structure",
+        "members": {
+          "Filters": {
+            "target": "com.amazonaws.securityhub#OcsfFindingFilters",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn optional set of OCSF finding filters that restrict which findings are exported. The filter structure is the same as the one used by \u003ccode\u003eGetFindingsV2\u003c/code\u003e. If you omit this member, Security Hub exports all findings available to the caller. When echoed by \u003ccode\u003eGetExportJobV2\u003c/code\u003e, relative date ranges are returned unresolved.\u003c/p\u003e"
+            }
+          },
+          "Format": {
+            "target": "com.amazonaws.securityhub#FindingsExportFormat",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe output format of the export. \u003ccode\u003eCSV\u003c/code\u003e produces comma-separated rows that are suitable for spreadsheets and analysis tools. \u003ccode\u003eOCSF_JSON\u003c/code\u003e produces newline-delimited JSON records in the Open Cybersecurity Schema Framework (OCSF) format used elsewhere in Security Hub.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "SelectedFields": {
+            "target": "com.amazonaws.securityhub#FindingsSelectedFieldList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe OCSF finding fields to include in the export, specified as OCSF field paths (for example, \u003ccode\u003efinding_info.title\u003c/code\u003e or \u003ccode\u003eseverity\u003c/code\u003e). You can specify from 1 to 50 fields.\u003c/p\u003e\n         \u003cp\u003eWhether this parameter is required depends on the value of \u003ccode\u003eFormat\u003c/code\u003e:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eCSV\u003c/code\u003e \u2013 Required. The field paths that you specify become the columns of the output, in the order that you provide them. If you omit this parameter, the request returns a \u003ccode\u003eValidationException\u003c/code\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eOCSF_JSON\u003c/code\u003e \u2013 Not supported. This format includes each finding in full, so field selection doesn't apply. If you specify this parameter, the request returns a \u003ccode\u003eValidationException\u003c/code\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe configuration for a findings export: the output format, an optional set of filters, and the fields to include.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.securityhub#FindingsOutputSummary": {
+        "type": "structure",
+        "members": {
+          "Format": {
+            "target": "com.amazonaws.securityhub#FindingsExportFormat",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe output format of the export. \u003ccode\u003eCSV\u003c/code\u003e produces comma-separated rows that are suitable for spreadsheets and analysis tools. \u003ccode\u003eOCSF_JSON\u003c/code\u003e produces newline-delimited JSON records in the Open Cybersecurity Schema Framework (OCSF) format used elsewhere in Security Hub.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA summary of the output configuration for a findings export, returned by \u003ccode\u003eListExportJobsV2\u003c/code\u003e. Unlike the configuration returned by \u003ccode\u003eGetExportJobV2\u003c/code\u003e, it reports only the output format.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.securityhub#FindingsSelectableField": {
+        "type": "enum",
+        "members": {
+          "ACTIVITY_ID": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "activity_id"
+            }
+          },
+          "ACTIVITY_NAME": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "activity_name"
+            }
+          },
+          "CLASS_NAME": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "class_name"
+            }
+          },
+          "CLOUD_ACCOUNT_NAME": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "cloud.account.name"
+            }
+          },
+          "CLOUD_ACCOUNT_UID": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "cloud.account.uid"
+            }
+          },
+          "CLOUD_PROVIDER": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "cloud.provider"
+            }
+          },
+          "CLOUD_REGION": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "cloud.region"
+            }
+          },
+          "COMMENT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "comment"
+            }
+          },
+          "COMPLIANCE_ASSESSMENTS_CATEGORY": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "compliance.assessments.category"
+            }
+          },
+          "COMPLIANCE_ASSESSMENTS_MEETS_CRITERIA": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "compliance.assessments.meets_criteria"
+            }
+          },
+          "COMPLIANCE_ASSESSMENTS_NAME": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "compliance.assessments.name"
+            }
+          },
+          "COMPLIANCE_CONTROL": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "compliance.control"
+            }
+          },
+          "COMPLIANCE_CONTROL_PARAMETERS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "compliance.control_parameters"
+            }
+          },
+          "COMPLIANCE_STANDARDS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "compliance.standards"
+            }
+          },
+          "COMPLIANCE_STATUS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "compliance.status"
+            }
+          },
+          "COMPLIANCE_STATUS_ID": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "compliance.status_id"
+            }
+          },
+          "CONFIDENCE_SCORE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "confidence_score"
+            }
+          },
+          "DATABUCKET_ENCRYPTION_DETAILS_ALGORITHM": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "databucket.encryption_details.algorithm"
+            }
+          },
+          "DATABUCKET_ENCRYPTION_DETAILS_KEY_UID": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "databucket.encryption_details.key_uid"
+            }
+          },
+          "DATABUCKET_FILE_DATA_CLASSIFICATIONS_CLASSIFIER_DETAILS_TYPE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "databucket.file.data_classifications.classifier_details.type"
+            }
+          },
+          "DATABUCKET_TAGS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "databucket.tags"
+            }
+          },
+          "EVIDENCES_ACTOR_USER_ACCOUNT_UID": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "evidences.actor.user.account.uid"
+            }
+          },
+          "EVIDENCES_API_OPERATION": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "evidences.api.operation"
+            }
+          },
+          "EVIDENCES_API_RESPONSE_CODE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "evidences.api.response.code"
+            }
+          },
+          "EVIDENCES_API_RESPONSE_ERROR_MESSAGE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "evidences.api.response.error_message"
+            }
+          },
+          "EVIDENCES_API_SERVICE_NAME": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "evidences.api.service.name"
+            }
+          },
+          "EVIDENCES_CONNECTION_INFO_DIRECTION": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "evidences.connection_info.direction"
+            }
+          },
+          "EVIDENCES_CONNECTION_INFO_PROTOCOL_NAME": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "evidences.connection_info.protocol_name"
+            }
+          },
+          "EVIDENCES_DST_ENDPOINT_AUTONOMOUS_SYSTEM_NAME": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "evidences.dst_endpoint.autonomous_system.name"
+            }
+          },
+          "EVIDENCES_DST_ENDPOINT_AUTONOMOUS_SYSTEM_NUMBER": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "evidences.dst_endpoint.autonomous_system.number"
+            }
+          },
+          "EVIDENCES_DST_ENDPOINT_IP": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "evidences.dst_endpoint.ip"
+            }
+          },
+          "EVIDENCES_DST_ENDPOINT_LOCATION_CITY": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "evidences.dst_endpoint.location.city"
+            }
+          },
+          "EVIDENCES_DST_ENDPOINT_LOCATION_COUNTRY": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "evidences.dst_endpoint.location.country"
+            }
+          },
+          "EVIDENCES_DST_ENDPOINT_PORT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "evidences.dst_endpoint.port"
+            }
+          },
+          "EVIDENCES_SRC_ENDPOINT_AUTONOMOUS_SYSTEM_NAME": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "evidences.src_endpoint.autonomous_system.name"
+            }
+          },
+          "EVIDENCES_SRC_ENDPOINT_AUTONOMOUS_SYSTEM_NUMBER": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "evidences.src_endpoint.autonomous_system.number"
+            }
+          },
+          "EVIDENCES_SRC_ENDPOINT_HOSTNAME": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "evidences.src_endpoint.hostname"
+            }
+          },
+          "EVIDENCES_SRC_ENDPOINT_IP": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "evidences.src_endpoint.ip"
+            }
+          },
+          "EVIDENCES_SRC_ENDPOINT_LOCATION_CITY": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "evidences.src_endpoint.location.city"
+            }
+          },
+          "EVIDENCES_SRC_ENDPOINT_LOCATION_COUNTRY": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "evidences.src_endpoint.location.country"
+            }
+          },
+          "EVIDENCES_SRC_ENDPOINT_PORT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "evidences.src_endpoint.port"
+            }
+          },
+          "FINDING_INFO_ANALYTIC_NAME": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "finding_info.analytic.name"
+            }
+          },
+          "FINDING_INFO_CREATED_TIME_DT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "finding_info.created_time_dt"
+            }
+          },
+          "FINDING_INFO_DESC": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "finding_info.desc"
+            }
+          },
+          "FINDING_INFO_FIRST_SEEN_TIME_DT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "finding_info.first_seen_time_dt"
+            }
+          },
+          "FINDING_INFO_LAST_SEEN_TIME_DT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "finding_info.last_seen_time_dt"
+            }
+          },
+          "FINDING_INFO_MODIFIED_TIME_DT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "finding_info.modified_time_dt"
+            }
+          },
+          "FINDING_INFO_RELATED_EVENTS_COUNT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "finding_info.related_events_count"
+            }
+          },
+          "FINDING_INFO_RELATED_EVENTS_PRODUCT_UID": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "finding_info.related_events.product.uid"
+            }
+          },
+          "FINDING_INFO_RELATED_EVENTS_TITLE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "finding_info.related_events.title"
+            }
+          },
+          "FINDING_INFO_RELATED_EVENTS_TRAITS_CATEGORY": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "finding_info.related_events.traits.category"
+            }
+          },
+          "FINDING_INFO_RELATED_EVENTS_UID": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "finding_info.related_events.uid"
+            }
+          },
+          "FINDING_INFO_SRC_URL": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "finding_info.src_url"
+            }
+          },
+          "FINDING_INFO_TAGS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "finding_info.tags"
+            }
+          },
+          "FINDING_INFO_TITLE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "finding_info.title"
+            }
+          },
+          "FINDING_INFO_TYPES": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "finding_info.types"
+            }
+          },
+          "FINDING_INFO_UID": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "finding_info.uid"
+            }
+          },
+          "MALWARE_NAME": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "malware.name"
+            }
+          },
+          "MALWARE_SCAN_INFO_UID": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "malware_scan_info.uid"
+            }
+          },
+          "MALWARE_SEVERITY": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "malware.severity"
+            }
+          },
+          "METADATA_PRODUCT_FEATURE_UID": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "metadata.product.feature.uid"
+            }
+          },
+          "METADATA_PRODUCT_NAME": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "metadata.product.name"
+            }
+          },
+          "METADATA_PRODUCT_UID": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "metadata.product.uid"
+            }
+          },
+          "METADATA_PRODUCT_VENDOR_NAME": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "metadata.product.vendor_name"
+            }
+          },
+          "METADATA_UID": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "metadata.uid"
+            }
+          },
+          "REMEDIATION_DESC": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "remediation.desc"
+            }
+          },
+          "REMEDIATION_REFERENCES": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "remediation.references"
+            }
+          },
+          "RESOURCES_CLOUD_FUNCTION_LAYERS_UID_ALT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "resources.cloud_function.layers.uid_alt"
+            }
+          },
+          "RESOURCES_CLOUD_FUNCTION_RUNTIME": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "resources.cloud_function.runtime"
+            }
+          },
+          "RESOURCES_CLOUD_FUNCTION_USER_UID": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "resources.cloud_function.user.uid"
+            }
+          },
+          "RESOURCES_CLOUD_PARTITION": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "resources.cloud_partition"
+            }
+          },
+          "RESOURCES_DEVICE_ENCRYPTION_DETAILS_KEY_UID": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "resources.device.encryption_details.key_uid"
+            }
+          },
+          "RESOURCES_DEVICE_IMAGE_UID": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "resources.device.image.uid"
+            }
+          },
+          "RESOURCES_IMAGE_ARCHITECTURE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "resources.image.architecture"
+            }
+          },
+          "RESOURCES_IMAGE_CREATED_TIME_DT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "resources.image.created_time_dt"
+            }
+          },
+          "RESOURCES_IMAGE_IN_USE_COUNT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "resources.image.in_use_count"
+            }
+          },
+          "RESOURCES_IMAGE_LAST_USED_TIME_DT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "resources.image.last_used_time_dt"
+            }
+          },
+          "RESOURCES_IMAGE_REGISTRY_UID": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "resources.image.registry_uid"
+            }
+          },
+          "RESOURCES_IMAGE_REPOSITORY_NAME": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "resources.image.repository_name"
+            }
+          },
+          "RESOURCES_IMAGE_UID": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "resources.image.uid"
+            }
+          },
+          "RESOURCES_MODIFIED_TIME_DT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "resources.modified_time_dt"
+            }
+          },
+          "RESOURCES_NAME": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "resources.name"
+            }
+          },
+          "RESOURCES_OWNER_ACCOUNT_NAME": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "resources.owner.account.name"
+            }
+          },
+          "RESOURCES_OWNER_ACCOUNT_UID": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "resources.owner.account.uid"
+            }
+          },
+          "RESOURCES_OWNER_ORG_UID": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "resources.owner.org.uid"
+            }
+          },
+          "RESOURCES_PROVIDER": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "resources.provider"
+            }
+          },
+          "RESOURCES_REGION": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "resources.region"
+            }
+          },
+          "RESOURCES_SUBNET_INFO_UID": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "resources.subnet_info.uid"
+            }
+          },
+          "RESOURCES_TAGS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "resources.tags"
+            }
+          },
+          "RESOURCES_TYPE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "resources.type"
+            }
+          },
+          "RESOURCES_UID": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "resources.uid"
+            }
+          },
+          "RESOURCES_VPC_UID": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "resources.vpc_uid"
+            }
+          },
+          "SEVERITY": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "severity"
+            }
+          },
+          "SEVERITY_ID": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "severity_id"
+            }
+          },
+          "STATUS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "status"
+            }
+          },
+          "STATUS_ID": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "status_id"
+            }
+          },
+          "VENDOR_ATTRIBUTES_SEVERITY": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "vendor_attributes.severity"
+            }
+          },
+          "VENDOR_ATTRIBUTES_SEVERITY_ID": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "vendor_attributes.severity_id"
+            }
+          },
+          "VULNERABILITIES_AFFECTED_CODE_FILE_PATH": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "vulnerabilities.affected_code.file.path"
+            }
+          },
+          "VULNERABILITIES_AFFECTED_PACKAGES_NAME": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "vulnerabilities.affected_packages.name"
+            }
+          },
+          "VULNERABILITIES_CVE_CVSS_BASE_SCORE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "vulnerabilities.cve.cvss.base_score"
+            }
+          },
+          "VULNERABILITIES_CVE_CVSS_VENDOR_NAME": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "vulnerabilities.cve.cvss.vendor_name"
+            }
+          },
+          "VULNERABILITIES_CVE_CVSS_VERSION": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "vulnerabilities.cve.cvss.version"
+            }
+          },
+          "VULNERABILITIES_CVE_EPSS_SCORE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "vulnerabilities.cve.epss.score"
+            }
+          },
+          "VULNERABILITIES_CVE_UID": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "vulnerabilities.cve.uid"
+            }
+          },
+          "VULNERABILITIES_FIX_COVERAGE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "vulnerabilities.fix_coverage"
+            }
+          },
+          "VULNERABILITIES_IS_EXPLOIT_AVAILABLE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "vulnerabilities.is_exploit_available"
+            }
+          },
+          "VULNERABILITIES_IS_FIX_AVAILABLE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "vulnerabilities.is_fix_available"
+            }
+          },
+          "VULNERABILITIES_RELATED_VULNERABILITIES": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "vulnerabilities.related_vulnerabilities"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eAn OCSF finding field path that can be included in \u003ccode\u003eFindingsOutput.SelectedFields\u003c/code\u003e, for example \u003ccode\u003efinding_info.title\u003c/code\u003e, \u003ccode\u003eseverity\u003c/code\u003e, or \u003ccode\u003ecloud.account.uid\u003c/code\u003e. Each value corresponds to a field in the OCSF finding schema.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.securityhub#FindingsSelectedFieldList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.securityhub#FindingsSelectableField"
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA list of the OCSF finding fields to include in an export.\u003c/p\u003e",
+          "smithy.api#length": {
+            "min": 1,
+            "max": 50
+          }
+        }
+      },
       "com.amazonaws.securityhub#FindingsTrendsCompositeFilter": {
         "type": "structure",
         "members": {
@@ -28868,7 +30066,7 @@
             "target": "com.amazonaws.securityhub#FreeTrialStatusValue",
             "traits": {
               "smithy.api#clientOptional": {},
-              "smithy.api#documentation": "\u003cp\u003eWhether the free trial period is currently active. Valid values:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eACTIVE\u003c/code\u003e specifies that the free trial period is ongoing.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eINACTIVE\u003c/code\u003e specifies that the free trial period has ended, or that it never started.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e\n         \u003cp\u003eTo determine whether a trial has expired, compare \u003ccode\u003eExpiresAt\u003c/code\u003e to the current time.\u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003eSpecifies whether the free trial period is currently active. Valid values:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eACTIVE\u003c/code\u003e specifies that the free trial period is ongoing.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eINACTIVE\u003c/code\u003e specifies that the free trial period has ended, or that it never started.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e\n         \u003cp\u003eTo determine whether a trial has expired, compare \u003ccode\u003eExpiresAt\u003c/code\u003e to the current time.\u003c/p\u003e",
               "smithy.api#required": {}
             }
           }
@@ -29980,6 +31178,255 @@
             "target": "com.amazonaws.securityhub#StandardsSubscriptions",
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe list of \u003ccode\u003eStandardsSubscriptions\u003c/code\u003e objects that include information about\n         the enabled standards.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.securityhub#GetExportJobV2": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.securityhub#GetExportJobV2Request"
+        },
+        "output": {
+          "target": "com.amazonaws.securityhub#GetExportJobV2Response"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.securityhub#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.securityhub#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.securityhub#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.securityhub#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.securityhub#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eReturns the details of a single findings export job, including its current \u003ccode\u003eStatus\u003c/code\u003e, the \u003ccode\u003eDestination\u003c/code\u003e it writes to, the \u003ccode\u003eOutputConfiguration\u003c/code\u003e it was started with, and its \u003ccode\u003eStartedAt\u003c/code\u003e and \u003ccode\u003eEndedAt\u003c/code\u003e timestamps. Use this operation to poll an export job that you started with \u003ccode\u003eStartExportJobV2\u003c/code\u003e until it reaches a terminal state (\u003ccode\u003eSUCCEEDED\u003c/code\u003e, \u003ccode\u003eFAILED\u003c/code\u003e, or \u003ccode\u003eCANCELLED\u003c/code\u003e).\u003c/p\u003e\n         \u003cp\u003eIf the job failed, the response includes a \u003ccode\u003eFailureCode\u003c/code\u003e and \u003ccode\u003eFailureMessage\u003c/code\u003e that describe the reason. Input values such as \u003ccode\u003eScopes\u003c/code\u003e and \u003ccode\u003eFilters\u003c/code\u003e are echoed back as they were submitted, with relative date ranges returned unresolved. If no export job matches the \u003ccode\u003eExportJobId\u003c/code\u003e that you provide, this operation returns a \u003ccode\u003eResourceNotFoundException\u003c/code\u003e.\u003c/p\u003e",
+          "smithy.api#examples": [
+            {
+              "title": "Example \u2013 Getting the details of a failed export job",
+              "documentation": "The following example retrieves an export job that failed because Security Hub couldn't write to the destination. The FailureCode and FailureMessage explain the cause.",
+              "input": {
+                "ExportJobId": "f6e5d4c3b2a1"
+              },
+              "output": {
+                "ExportJobId": "f6e5d4c3b2a1",
+                "Status": "FAILED",
+                "DataType": "FINDINGS",
+                "OutputConfiguration": {
+                  "Findings": {
+                    "Format": "OCSF_JSON",
+                    "Filters": {
+                      "CompositeOperator": "AND",
+                      "CompositeFilters": [
+                        {
+                          "Operator": "AND",
+                          "DateFilters": [
+                            {
+                              "FieldName": "finding_info.last_seen_time_dt",
+                              "Filter": {
+                                "DateRange": {
+                                  "Value": 30,
+                                  "Unit": "DAYS",
+                                  "Comparison": "WITHIN"
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                },
+                "Scopes": {
+                  "AwsOrganizations": [
+                    {
+                      "OrganizationalUnitId": "ou-1234-a1b2c3d4"
+                    }
+                  ]
+                },
+                "Destination": {
+                  "S3": {
+                    "BucketArn": "arn:aws:s3:::amzn-s3-demo-bucket",
+                    "KmsKeyArn": "arn:aws:kms:aa-example-1:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab"
+                  }
+                },
+                "FailureCode": "ACCESS_DENIED",
+                "FailureMessage": "Security Hub could not write to the destination bucket. Verify the bucket policy and KMS key policy.",
+                "StartedAt": "2026-03-27T18:04:11Z",
+                "EndedAt": "2026-03-27T18:05:03Z"
+              }
+            },
+            {
+              "title": "Example \u2013 Getting the details of a completed export job",
+              "documentation": "The following example retrieves an export job that has finished successfully. The output is available in the destination bucket.",
+              "input": {
+                "ExportJobId": "a1b2c3d4e5f6"
+              },
+              "output": {
+                "ExportJobId": "a1b2c3d4e5f6",
+                "Name": "quarterly-critical-findings",
+                "Status": "SUCCEEDED",
+                "DataType": "FINDINGS",
+                "OutputConfiguration": {
+                  "Findings": {
+                    "Format": "CSV",
+                    "SelectedFields": [
+                      "finding_info.title",
+                      "severity",
+                      "status",
+                      "cloud.account.uid",
+                      "resources.uid"
+                    ],
+                    "Filters": {
+                      "CompositeOperator": "AND",
+                      "CompositeFilters": [
+                        {
+                          "Operator": "AND",
+                          "StringFilters": [
+                            {
+                              "FieldName": "severity",
+                              "Filter": {
+                                "Value": "Critical",
+                                "Comparison": "EQUALS"
+                              }
+                            },
+                            {
+                              "FieldName": "status",
+                              "Filter": {
+                                "Value": "New",
+                                "Comparison": "EQUALS"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                },
+                "Destination": {
+                  "S3": {
+                    "BucketArn": "arn:aws:s3:::amzn-s3-demo-bucket",
+                    "KmsKeyArn": "arn:aws:kms:aa-example-1:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab",
+                    "ObjectPrefix": "security-hub-exports/2026-Q1"
+                  }
+                },
+                "StartedAt": "2026-03-27T18:04:11Z",
+                "EndedAt": "2026-03-27T18:09:52Z"
+              }
+            }
+          ],
+          "smithy.api#http": {
+            "method": "GET",
+            "uri": "/exportjobsv2/{ExportJobId}",
+            "code": 200
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.securityhub#GetExportJobV2Request": {
+        "type": "structure",
+        "members": {
+          "ExportJobId": {
+            "target": "com.amazonaws.securityhub#ExportJobId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the export job to retrieve. This is the value returned by \u003ccode\u003eStartExportJobV2\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.securityhub#GetExportJobV2Response": {
+        "type": "structure",
+        "members": {
+          "DataType": {
+            "target": "com.amazonaws.securityhub#ExportDataType",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe category of data that the export job produces.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Destination": {
+            "target": "com.amazonaws.securityhub#ExportDestination",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe destination that the export job writes to.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "EndedAt": {
+            "target": "com.amazonaws.securityhub#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe time when the export job reached a terminal state (\u003ccode\u003eSUCCEEDED\u003c/code\u003e, \u003ccode\u003eFAILED\u003c/code\u003e, or \u003ccode\u003eCANCELLED\u003c/code\u003e). This parameter is absent while the job is \u003ccode\u003eRUNNING\u003c/code\u003e.\u003c/p\u003e\n         \u003cp\u003eFor more information about the validation and formatting of timestamp fields in Security Hub, see \u003ca href=\"https://docs.aws.amazon.com/securityhub/1.0/APIReference/Welcome.html#timestamps\"\u003eTimestamps\u003c/a\u003e.\u003c/p\u003e"
+            }
+          },
+          "ExportJobId": {
+            "target": "com.amazonaws.securityhub#ExportJobId",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the export job.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "FailureCode": {
+            "target": "com.amazonaws.securityhub#ExportFailureCode",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA code that classifies why the export job failed. Present only when \u003ccode\u003eStatus\u003c/code\u003e is \u003ccode\u003eFAILED\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "FailureMessage": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA human-readable message that provides more detail about why the export job failed. Present only when \u003ccode\u003eStatus\u003c/code\u003e is \u003ccode\u003eFAILED\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "Name": {
+            "target": "com.amazonaws.securityhub#ExportName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe user-provided name of the export job, if one was specified when the job was started.\u003c/p\u003e"
+            }
+          },
+          "OutputConfiguration": {
+            "target": "com.amazonaws.securityhub#ExportOutput",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe output configuration that the export job was started with, including the format and any filters or selected fields.\u003c/p\u003e"
+            }
+          },
+          "Scopes": {
+            "target": "com.amazonaws.securityhub#ExportScopes",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe organization scopes that the export job was started with, echoed verbatim. This parameter is absent if the caller didn't supply \u003ccode\u003eScopes\u003c/code\u003e. It contains only the organization or organizational unit (OU) identifiers that the caller submitted; it never contains resolved member-account identifiers.\u003c/p\u003e"
+            }
+          },
+          "StartedAt": {
+            "target": "com.amazonaws.securityhub#Timestamp",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe time when the export job was created.\u003c/p\u003e\n         \u003cp\u003eFor more information about the validation and formatting of timestamp fields in Security Hub, see \u003ca href=\"https://docs.aws.amazon.com/securityhub/1.0/APIReference/Welcome.html#timestamps\"\u003eTimestamps\u003c/a\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Status": {
+            "target": "com.amazonaws.securityhub#ExportStatus",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe current state of the export job.\u003c/p\u003e",
+              "smithy.api#required": {}
             }
           }
         },
@@ -31202,6 +32649,118 @@
           "smithy.api#output": {}
         }
       },
+      "com.amazonaws.securityhub#GetRemediationsV2": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.securityhub#GetRemediationsV2Request"
+        },
+        "output": {
+          "target": "com.amazonaws.securityhub#GetRemediationsV2Response"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.securityhub#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.securityhub#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.securityhub#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.securityhub#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.securityhub#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eRetrieves remediation targets for the account, or for all member accounts if the caller is\n         the delegated administrator. Results are sorted by priority, highest first, and are paginated.\n         Use \u003ccode\u003eTargetUid\u003c/code\u003e or \u003ccode\u003eMetadataUid\u003c/code\u003e to scope the request to a single target\n         or finding.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/GetRemediationsV2",
+            "code": 200
+          },
+          "smithy.api#paginated": {
+            "inputToken": "NextToken",
+            "outputToken": "NextToken",
+            "items": "Items",
+            "pageSize": "MaxResults"
+          }
+        }
+      },
+      "com.amazonaws.securityhub#GetRemediationsV2Request": {
+        "type": "structure",
+        "members": {
+          "Filters": {
+            "target": "com.amazonaws.securityhub#RemediationFilters",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eFilters remediation targets based on a set of criteria. You can't use \u003ccode\u003eFilters\u003c/code\u003e\n         together with \u003ccode\u003eTargetUid\u003c/code\u003e or \u003ccode\u003eMetadataUid\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "GuidanceFormat": {
+            "target": "com.amazonaws.securityhub#GuidanceFormat",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe format of the remediation guidance examples to return. Valid values are \u003ccode\u003eAll\u003c/code\u003e,\n         \u003ccode\u003eAwsCli\u003c/code\u003e, \u003ccode\u003eCli\u003c/code\u003e, \u003ccode\u003ePython\u003c/code\u003e, \u003ccode\u003eTerraform\u003c/code\u003e,\n         \u003ccode\u003eCdk\u003c/code\u003e, \u003ccode\u003eCloudFormation\u003c/code\u003e, \u003ccode\u003eIaC\u003c/code\u003e, and \u003ccode\u003eTemplate\u003c/code\u003e.\n         If you don't specify a value, all formats are returned. Applies only when\n         \u003ccode\u003eShowGuidance\u003c/code\u003e is \u003ccode\u003etrue\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "MaxResults": {
+            "target": "com.amazonaws.securityhub#MaxResults",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of results to return. Valid range is 1-100. If you don't specify a value,\n         the operation returns up to 25 results.\u003c/p\u003e"
+            }
+          },
+          "MetadataUid": {
+            "target": "com.amazonaws.securityhub#RemediationStringUid",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier (ID) of the Security Hub exposure finding, found under the\n         \u003ccode\u003emetadata.uid\u003c/code\u003e field of the finding. Returns the remediation targets associated with\n         that finding. You can't use \u003ccode\u003eMetadataUid\u003c/code\u003e together with \u003ccode\u003eTargetUid\u003c/code\u003e or\n         \u003ccode\u003eFilters\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "NextToken": {
+            "target": "com.amazonaws.securityhub#NextToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe token used to paginate the remediations target list returned.\n         On your first call to \u003ccode\u003eGetRemediationsV2\u003c/code\u003e, omit this parameter or set it\n         to \u003ccode\u003eNULL\u003c/code\u003e. For subsequent calls, use the \u003ccode\u003eNextToken\u003c/code\u003e value returned in\n         the previous response to retrieve the next page of results.\u003c/p\u003e"
+            }
+          },
+          "ShowGuidance": {
+            "target": "com.amazonaws.securityhub#Boolean",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies whether to show remediation target guidance.\u003c/p\u003e"
+            }
+          },
+          "TargetUid": {
+            "target": "com.amazonaws.securityhub#RemediationStringUid",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier (ID) of an existing remediation target to return. Returns the single\n         matching target. You can't use \u003ccode\u003eTargetUid\u003c/code\u003e together with \u003ccode\u003eMetadataUid\u003c/code\u003e\n         or \u003ccode\u003eFilters\u003c/code\u003e.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.securityhub#GetRemediationsV2Response": {
+        "type": "structure",
+        "members": {
+          "Items": {
+            "target": "com.amazonaws.securityhub#RemediationV2ItemList",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eAn array of remediation targets returned by the operation.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "NextToken": {
+            "target": "com.amazonaws.securityhub#NextToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe pagination token to use to request the next page of results.\n         Otherwise, this parameter is null.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
       "com.amazonaws.securityhub#GetResourcesStatisticsV2": {
         "type": "operation",
         "input": {
@@ -31903,6 +33462,65 @@
         "type": "list",
         "member": {
           "target": "com.amazonaws.securityhub#GroupByValue"
+        }
+      },
+      "com.amazonaws.securityhub#GuidanceFormat": {
+        "type": "enum",
+        "members": {
+          "ALL": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "All"
+            }
+          },
+          "AWS_CLI": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "AwsCli"
+            }
+          },
+          "CDK": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Cdk"
+            }
+          },
+          "CLI": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Cli"
+            }
+          },
+          "CLOUDFORMATION": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "CloudFormation"
+            }
+          },
+          "IAC": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "IaC"
+            }
+          },
+          "PYTHON": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Python"
+            }
+          },
+          "TEMPLATE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Template"
+            }
+          },
+          "TERRAFORM": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Terraform"
+            }
+          }
         }
       },
       "com.amazonaws.securityhub#HealthCheck": {
@@ -32694,6 +34312,42 @@
         },
         "traits": {
           "smithy.api#documentation": "\u003cp\u003eThe parameters used to modify an existing Jira Cloud integration.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.securityhub#KbArticle": {
+        "type": "structure",
+        "members": {
+          "Title": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe title of the \u003ccode\u003eKbArticle\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Url": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe URL of the \u003ccode\u003eKbArticle\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA knowledge base article that provides additional guidance related to the remediation target.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.securityhub#KbArticleList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.securityhub#KbArticle"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 10
+          }
         }
       },
       "com.amazonaws.securityhub#KeywordFilter": {
@@ -33532,6 +35186,260 @@
             "target": "com.amazonaws.securityhub#ProductSubscriptionArnList",
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe list of ARNs for the resources that represent your subscriptions to products. \u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.securityhub#ListExportJobsV2": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.securityhub#ListExportJobsV2Request"
+        },
+        "output": {
+          "target": "com.amazonaws.securityhub#ListExportJobsV2Response"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.securityhub#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.securityhub#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.securityhub#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.securityhub#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eReturns the findings export jobs in your account as a paginated list of \u003ccode\u003eExportSummary\u003c/code\u003e objects. You can filter the results by job \u003ccode\u003eStatus\u003c/code\u003e or \u003ccode\u003eDataType\u003c/code\u003e.\u003c/p\u003e\n         \u003cp\u003eTo page through the results, use the \u003ccode\u003eMaxResults\u003c/code\u003e and \u003ccode\u003eNextToken\u003c/code\u003e parameters. If the response includes a \u003ccode\u003eNextToken\u003c/code\u003e value, pass it in a subsequent request to retrieve the next page of results.\u003c/p\u003e\n         \u003cp\u003eEach \u003ccode\u003eExportSummary\u003c/code\u003e reports the output \u003ccode\u003eFormat\u003c/code\u003e of the job but not its full \u003ccode\u003eOutputConfiguration\u003c/code\u003e. To retrieve the filters and selected fields that a job was started with, call \u003ccode\u003eGetExportJobV2\u003c/code\u003e.\u003c/p\u003e",
+          "smithy.api#examples": [
+            {
+              "title": "Example \u2013 Listing successful findings export jobs",
+              "documentation": "The following example lists the findings export jobs in the account that have succeeded, returning up to 10 results per page.",
+              "input": {
+                "Status": "SUCCEEDED",
+                "DataType": "FINDINGS",
+                "MaxResults": 10
+              },
+              "output": {
+                "Items": [
+                  {
+                    "ExportJobId": "a1b2c3d4e5f6",
+                    "Name": "quarterly-critical-findings",
+                    "Status": "SUCCEEDED",
+                    "DataType": "FINDINGS",
+                    "OutputConfiguration": {
+                      "Findings": {
+                        "Format": "CSV"
+                      }
+                    },
+                    "Destination": {
+                      "S3": {
+                        "BucketArn": "arn:aws:s3:::amzn-s3-demo-bucket",
+                        "KmsKeyArn": "arn:aws:kms:aa-example-1:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab",
+                        "ObjectPrefix": "security-hub-exports/2026-Q1"
+                      }
+                    },
+                    "StartedAt": "2026-03-27T18:04:11Z",
+                    "EndedAt": "2026-03-27T18:09:52Z"
+                  }
+                ],
+                "NextToken": "U2VjdXJpdHlIdWJFeGFtcGxlUGFnaW5hdGlvblRva2Vu"
+              }
+            }
+          ],
+          "smithy.api#http": {
+            "method": "GET",
+            "uri": "/exportjobsv2",
+            "code": 200
+          },
+          "smithy.api#paginated": {
+            "inputToken": "NextToken",
+            "outputToken": "NextToken",
+            "items": "Items",
+            "pageSize": "MaxResults"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.securityhub#ListExportJobsV2Request": {
+        "type": "structure",
+        "members": {
+          "DataType": {
+            "target": "com.amazonaws.securityhub#ExportDataType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eFilters the results to export jobs that produce the specified data type.\u003c/p\u003e",
+              "smithy.api#httpQuery": "DataType"
+            }
+          },
+          "MaxResults": {
+            "target": "com.amazonaws.securityhub#ExportMaxResults",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of results to return in a single call. Valid range is 1\u201320.\u003c/p\u003e",
+              "smithy.api#httpQuery": "MaxResults"
+            }
+          },
+          "NextToken": {
+            "target": "com.amazonaws.securityhub#NextToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe token required for pagination.\n         On your first call, set the value of this parameter to \u003ccode\u003eNULL\u003c/code\u003e.\n         For subsequent calls, to continue listing data, set the value of this parameter to the value returned in the previous response.\u003c/p\u003e",
+              "smithy.api#httpQuery": "NextToken"
+            }
+          },
+          "Status": {
+            "target": "com.amazonaws.securityhub#ExportStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eFilters the results to export jobs that have the specified status.\u003c/p\u003e",
+              "smithy.api#httpQuery": "Status"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.securityhub#ListExportJobsV2Response": {
+        "type": "structure",
+        "members": {
+          "Items": {
+            "target": "com.amazonaws.securityhub#ExportSummaryList",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe export jobs that match the request, as \u003ccode\u003eExportSummary\u003c/code\u003e objects.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "NextToken": {
+            "target": "com.amazonaws.securityhub#NextToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe pagination token to use to request the next page of results. Otherwise, this parameter is null.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.securityhub#ListExposuresByRemediationV2": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.securityhub#ListExposuresByRemediationV2Request"
+        },
+        "output": {
+          "target": "com.amazonaws.securityhub#ListExposuresByRemediationV2Response"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.securityhub#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.securityhub#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.securityhub#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.securityhub#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.securityhub#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eRetrieves the exposure findings tied to a specific remediation target. Results are sorted by\n         previous severity, highest first, and are paginated.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/ListExposuresByRemediationV2",
+            "code": 200
+          },
+          "smithy.api#paginated": {
+            "inputToken": "NextToken",
+            "outputToken": "NextToken",
+            "items": "Items",
+            "pageSize": "MaxResults"
+          }
+        }
+      },
+      "com.amazonaws.securityhub#ListExposuresByRemediationV2Request": {
+        "type": "structure",
+        "members": {
+          "MaxResults": {
+            "target": "com.amazonaws.securityhub#MaxResults",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of results to return. Valid range is 1-100. If you don't specify a value,\n         the operation returns up to 25 results.\u003c/p\u003e"
+            }
+          },
+          "NextToken": {
+            "target": "com.amazonaws.securityhub#NextToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe token used to paginate the exposures list returned.\n         On your first call to \u003ccode\u003eListExposuresByRemediationV2\u003c/code\u003e, omit this parameter or set it\n         to \u003ccode\u003eNULL\u003c/code\u003e. For subsequent calls, use the \u003ccode\u003eNextToken\u003c/code\u003e value returned in\n         the previous response to retrieve the next page of results.\u003c/p\u003e"
+            }
+          },
+          "TargetUid": {
+            "target": "com.amazonaws.securityhub#RemediationStringUid",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier (ID) of an existing remediation target to list exposure findings for.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.securityhub#ListExposuresByRemediationV2Response": {
+        "type": "structure",
+        "members": {
+          "Items": {
+            "target": "com.amazonaws.securityhub#ExposureFindingItemsList",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eAn array of exposure findings returned by the operation.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "NextToken": {
+            "target": "com.amazonaws.securityhub#NextToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe pagination token to use to request the next page of results.\n         Otherwise, this parameter is null.\u003c/p\u003e"
+            }
+          },
+          "Resource": {
+            "target": "com.amazonaws.securityhub#RemediationResource",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eProvides comprehensive details about a resource.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "TargetUid": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier (ID) of the remediation target that the exposure findings are associated with.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "TotalCount": {
+            "target": "com.amazonaws.securityhub#Integer",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe total count of exposure findings associated with the remediation target.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Trait": {
+            "target": "com.amazonaws.securityhub#RemediationTrait",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe specific trait associated with the remediation target.\u003c/p\u003e",
+              "smithy.api#required": {}
             }
           }
         },
@@ -37204,6 +39112,862 @@
           "smithy.api#documentation": "\u003cp\u003eDetails about the remediation steps for a finding.\u003c/p\u003e"
         }
       },
+      "com.amazonaws.securityhub#RemediationCompositeFilter": {
+        "type": "structure",
+        "members": {
+          "StringFilters": {
+            "target": "com.amazonaws.securityhub#RemediationStringFilterList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eEnables filtering based on string field values.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eEnables the creation of criteria for remediation targets.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.securityhub#RemediationCompositeFilterList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.securityhub#RemediationCompositeFilter"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 1
+          }
+        }
+      },
+      "com.amazonaws.securityhub#RemediationFilters": {
+        "type": "structure",
+        "members": {
+          "CompositeFilters": {
+            "target": "com.amazonaws.securityhub#RemediationCompositeFilterList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA collection of complex filtering conditions that can be applied to remediation target data.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eContains the criteria used to filter remediation targets, such as resource type, priority,\n         or status.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.securityhub#RemediationGuidance": {
+        "type": "structure",
+        "members": {
+          "Context": {
+            "target": "com.amazonaws.securityhub#RemediationGuidanceContext",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe context behind the remediation target's existence and guidance.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Examples": {
+            "target": "com.amazonaws.securityhub#RemediationGuidanceExamples",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eProvided remediation guidance examples in different formats that can be run for remediating the target.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Metadata": {
+            "target": "com.amazonaws.securityhub#RemediationGuidanceMetadata",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe metadata of the remediation guidance.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Pattern": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe remediation pattern of the remediation target.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Specification": {
+            "target": "com.amazonaws.securityhub#RemediationGuidanceSpecification",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe specification of the remediation target guidance. This outlines required resource parameters\n         and permissions, remediation steps, and the end state.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "TargetTypeName": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe name of the remediation target type.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Version": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe guidance version.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA remediation guidebook outlining guidance in resolving the remediation target.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.securityhub#RemediationGuidanceContext": {
+        "type": "structure",
+        "members": {
+          "AffectedScope": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe scope of the resources affected by the resolution of the remediation target.\u003c/p\u003e"
+            }
+          },
+          "Prerequisites": {
+            "target": "com.amazonaws.securityhub#RemediationStringList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn array of prerequisite steps in resolving the remediation target.\u003c/p\u003e"
+            }
+          },
+          "ProblemStatement": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eExplains the cause which directly created the remediation target.\u003c/p\u003e"
+            }
+          },
+          "RiskAssessment": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn assessment of the existing risk the remediation target creates.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe context behind the remediation target's existence and guidance.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.securityhub#RemediationGuidanceExamples": {
+        "type": "structure",
+        "members": {
+          "AwsCli": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn CLI snippet version of the example.\u003c/p\u003e"
+            }
+          },
+          "Cdk": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA CDK snippet version of the example.\u003c/p\u003e"
+            }
+          },
+          "Cli": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA CLI snippet version of the example.\u003c/p\u003e"
+            }
+          },
+          "CloudFormation": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA CloudFormation snippet version of the example.\u003c/p\u003e"
+            }
+          },
+          "IaC": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn IaC snippet version of the example.\u003c/p\u003e"
+            }
+          },
+          "Python": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA Python snippet version of the example.\u003c/p\u003e"
+            }
+          },
+          "Template": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA Template snippet version of the example.\u003c/p\u003e"
+            }
+          },
+          "Terraform": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA Terraform snippet version of the example.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eProvided remediation guidance examples in different formats that can be run for remediating the target.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.securityhub#RemediationGuidanceMetadata": {
+        "type": "structure",
+        "members": {
+          "AutomationLevel": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe extent to which the guidance can be automated, for example \u003ccode\u003eFull\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "ExposureType": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe exposure type of the related exposure findings.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "FixEffect": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eWhen the fix takes effect, for example \u003ccode\u003eImmediate\u003c/code\u003e or \u003ccode\u003eDeferred\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "GeneratedAt": {
+            "target": "com.amazonaws.securityhub#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eTimestamp of when the guidance was generated.\u003c/p\u003e\n         \u003cp\u003eFor more information about the validation and formatting of timestamp fields in Security Hub CSPM, see \u003ca href=\"https://docs.aws.amazon.com/securityhub/1.0/APIReference/Welcome.html#timestamps\"\u003eTimestamps\u003c/a\u003e.\u003c/p\u003e"
+            }
+          },
+          "HumanReviewRequired": {
+            "target": "com.amazonaws.securityhub#Boolean",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies whether human review is required.\u003c/p\u003e"
+            }
+          },
+          "ResourceType": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe resource type of the remediation target.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Reversibility": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe extent to which changes made in accordance with the guidance can be reversed, for example \u003ccode\u003eFully reversible\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "RiskLevel": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe risk when implementing the guidance provided.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "TraitTitles": {
+            "target": "com.amazonaws.securityhub#RemediationStringList",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe titles of traits this guidance applies to.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "VerificationStatus": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eVerification status of the guidance.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe metadata of the remediation guidance.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.securityhub#RemediationGuidanceSpecification": {
+        "type": "structure",
+        "members": {
+          "ExpectedEndState": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe expected end state of the associated resources after completion of the steps.\u003c/p\u003e"
+            }
+          },
+          "Parameters": {
+            "target": "com.amazonaws.securityhub#RemediationParameterList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn array of the parameters used in running the steps provided.\u003c/p\u003e"
+            }
+          },
+          "RequiredPermissions": {
+            "target": "com.amazonaws.securityhub#RemediationStringList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn array of required permissions to run the steps.\u003c/p\u003e"
+            }
+          },
+          "Steps": {
+            "target": "com.amazonaws.securityhub#RemediationStepList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn array of ordered steps for resolving the remediation targets.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe specification of the remediation target guidance. This outlines required resource parameters\n         and permissions, remediation steps, and the end state.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.securityhub#RemediationOutcome": {
+        "type": "structure",
+        "members": {
+          "ResolvedFindingsCount": {
+            "target": "com.amazonaws.securityhub#Integer",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe number of associated exposure findings that are resolved by remediating the target.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "SeverityReductionFindingsCount": {
+            "target": "com.amazonaws.securityhub#Integer",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe number of associated exposure findings whose severity is reduced by remediating the target.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "SeverityUnchangedCount": {
+            "target": "com.amazonaws.securityhub#Integer",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe number of associated exposure findings whose severity is unchanged by remediating the target.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe outcome from resolving the remediation target.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.securityhub#RemediationParameter": {
+        "type": "structure",
+        "members": {
+          "Description": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eA description of the parameter.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Name": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe name of the parameter.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Required": {
+            "target": "com.amazonaws.securityhub#Boolean",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies whether the parameter is required for running the guidance steps.\u003c/p\u003e"
+            }
+          },
+          "Type": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe type of the parameter.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA parameter used in running the guidance steps.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.securityhub#RemediationParameterList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.securityhub#RemediationParameter"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 50
+          }
+        }
+      },
+      "com.amazonaws.securityhub#RemediationPriority": {
+        "type": "enum",
+        "members": {
+          "CRITICAL": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Critical"
+            }
+          },
+          "HIGH": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "High"
+            }
+          },
+          "LOW": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Low"
+            }
+          },
+          "MEDIUM": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Medium"
+            }
+          }
+        }
+      },
+      "com.amazonaws.securityhub#RemediationResource": {
+        "type": "structure",
+        "members": {
+          "AccountId": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Web Services account that recorded the resource data in Security Hub.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "CloudProvider": {
+            "target": "com.amazonaws.securityhub#CloudProviderName",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe cloud provider where the resource exists.\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eAWS\u003c/code\u003e specifies that the resource exists in Amazon Web Services.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eAzure\u003c/code\u003e specifies that the resource exists in Microsoft Azure.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Id": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier for a resource.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Name": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the resource.\u003c/p\u003e"
+            }
+          },
+          "Region": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Web Services Region in which Security Hub recorded the resource data.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "ResourceGuid": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe global identifier used to identify a resource.\u003c/p\u003e"
+            }
+          },
+          "ResourceOwnerAccountId": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier of the cloud account that owns the resource. For Amazon Web Services resources, this is the Amazon Web Services account ID. For Azure resources, this is the Azure subscription ID.\u003c/p\u003e"
+            }
+          },
+          "ResourceOwnerOrgId": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier of the cloud organization that owns the resource. For Amazon Web Services resources, this is the Organizations ID. For Azure resources, this is the Azure tenant ID.\u003c/p\u003e"
+            }
+          },
+          "ResourceRegion": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe native cloud region where the resource is located. For Amazon Web Services, this is an Amazon Web Services Region (for example, \u003ccode\u003eus-east-1\u003c/code\u003e). For Azure resources, this is the Azure region (for example, \u003ccode\u003ewestus2\u003c/code\u003e). This field is always included.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Type": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe type of the resource.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eProvides comprehensive details about a resource.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.securityhub#RemediationStatus": {
+        "type": "enum",
+        "members": {
+          "NEW": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "New"
+            }
+          },
+          "RESOLVED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Resolved"
+            }
+          },
+          "UPDATED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Updated"
+            }
+          }
+        }
+      },
+      "com.amazonaws.securityhub#RemediationStep": {
+        "type": "structure",
+        "members": {
+          "Action": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe action to be taken for this step.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Description": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eA description of what the step does.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Inverse": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe inverse of the step, to be used if the step needs to be rolled back.\u003c/p\u003e"
+            }
+          },
+          "Logic": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe logic behind the existence of this step.\u003c/p\u003e"
+            }
+          },
+          "Phase": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe phase of the remediation plan that this step belongs to (for example, \u003ccode\u003eFIX\u003c/code\u003e).\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Service": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eWhich service this step is performed in.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "VerifyAfter": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe action to take after the step to verify its success.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA step in the remediation guidance.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.securityhub#RemediationStepList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.securityhub#RemediationStep"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 50
+          }
+        }
+      },
+      "com.amazonaws.securityhub#RemediationStringField": {
+        "type": "enum",
+        "members": {
+          "PRIORITY": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Priority"
+            }
+          },
+          "RESOURCE_CLOUD_PROVIDER": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Resource.CloudProvider"
+            }
+          },
+          "RESOURCE_ID": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Resource.Id"
+            }
+          },
+          "RESOURCE_OWNER_ACCOUNT_ID": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Resource.ResourceOwnerAccountId"
+            }
+          },
+          "RESOURCE_TYPE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Resource.Type"
+            }
+          },
+          "STATUS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "Status"
+            }
+          }
+        }
+      },
+      "com.amazonaws.securityhub#RemediationStringFilter": {
+        "type": "structure",
+        "members": {
+          "FieldName": {
+            "target": "com.amazonaws.securityhub#RemediationStringField",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe name of the filter field. Valid values are \u003ccode\u003eResource.Type\u003c/code\u003e, \u003ccode\u003ePriority\u003c/code\u003e, \u003ccode\u003eStatus\u003c/code\u003e, \u003ccode\u003eResource.Id\u003c/code\u003e, \u003ccode\u003eResource.ResourceOwnerAccountId\u003c/code\u003e, and \u003ccode\u003eResource.CloudProvider\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Filter": {
+            "target": "com.amazonaws.securityhub#RemediationStringFilterCondition",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe string filter definition.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA string filter for filtering remediation targets.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.securityhub#RemediationStringFilterCondition": {
+        "type": "structure",
+        "members": {
+          "Value": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe value the string filter is comparing against.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe condition to apply to the string filter.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.securityhub#RemediationStringFilterList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.securityhub#RemediationStringFilter"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 2
+          }
+        }
+      },
+      "com.amazonaws.securityhub#RemediationStringList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.securityhub#NonEmptyString"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 50
+          }
+        }
+      },
+      "com.amazonaws.securityhub#RemediationStringUid": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 2048
+          }
+        }
+      },
+      "com.amazonaws.securityhub#RemediationSummaryDetail": {
+        "type": "structure",
+        "members": {
+          "Action": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eA summarized action to take for the remediation target.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Description": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA description of the remediation target.\u003c/p\u003e"
+            }
+          },
+          "IsImmediate": {
+            "target": "com.amazonaws.securityhub#Boolean",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eSpecifies whether the effect of this target is immediate.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "KbArticles": {
+            "target": "com.amazonaws.securityhub#KbArticleList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn array of \u003ccode\u003eKbArticle\u003c/code\u003e objects.\u003c/p\u003e"
+            }
+          },
+          "PostRemediationSteps": {
+            "target": "com.amazonaws.securityhub#RemediationStringList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn array of steps to be taken after remediation.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA summary of the remediation target.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.securityhub#RemediationTrait": {
+        "type": "structure",
+        "members": {
+          "Title": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe trait title.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Type": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe trait type.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe trait associated with the remediation target.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.securityhub#RemediationV2Item": {
+        "type": "structure",
+        "members": {
+          "Guidance": {
+            "target": "com.amazonaws.securityhub#RemediationGuidance",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe remediation target's guidance. Returned only when \u003ccode\u003eShowGuidance\u003c/code\u003e is\n         \u003ccode\u003etrue\u003c/code\u003e in the request.\u003c/p\u003e"
+            }
+          },
+          "Outcome": {
+            "target": "com.amazonaws.securityhub#RemediationOutcome",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe outcome of the remediation target's resolution.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Priority": {
+            "target": "com.amazonaws.securityhub#RemediationPriority",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe remediation target's priority. Valid values are \u003ccode\u003eCritical\u003c/code\u003e, \u003ccode\u003eHigh\u003c/code\u003e, \u003ccode\u003eMedium\u003c/code\u003e, and \u003ccode\u003eLow\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "RemediationSummary": {
+            "target": "com.amazonaws.securityhub#RemediationSummaryDetail",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eA summary of the remediation target.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Resource": {
+            "target": "com.amazonaws.securityhub#RemediationResource",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe remediation target's associated resource.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Status": {
+            "target": "com.amazonaws.securityhub#RemediationStatus",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe current status of the remediation target.\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eNew\u003c/code\u003e specifies that the remediation target was newly identified.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eUpdated\u003c/code\u003e specifies that the remediation target changed after it was identified.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eResolved\u003c/code\u003e specifies that the remediation target is no longer present.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "TargetUid": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier (ID) of the remediation target.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Trait": {
+            "target": "com.amazonaws.securityhub#RemediationTrait",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe trait associated with the remediation target.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "UpdatedAt": {
+            "target": "com.amazonaws.securityhub#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe remediation target's last updated timestamp.\u003c/p\u003e\n         \u003cp\u003eFor more information about the validation and formatting of timestamp fields in Security Hub CSPM, see \u003ca href=\"https://docs.aws.amazon.com/securityhub/1.0/APIReference/Welcome.html#timestamps\"\u003eTimestamps\u003c/a\u003e.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA remediation target.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.securityhub#RemediationV2ItemList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.securityhub#RemediationV2Item"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 100
+          }
+        }
+      },
       "com.amazonaws.securityhub#Resource": {
         "type": "structure",
         "members": {
@@ -39864,6 +42628,46 @@
           }
         }
       },
+      "com.amazonaws.securityhub#S3ExportDestination": {
+        "type": "structure",
+        "members": {
+          "BucketArn": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the Amazon S3 bucket that Security Hub writes the export to. You must own the bucket, and its bucket policy must grant the Security Hub service principal (\u003ccode\u003eexportv2.securityhub.amazonaws.com\u003c/code\u003e) permission to write objects. For the required bucket policy, see the Examples section of \u003ccode\u003eStartExportJobV2\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "KmsKeyArn": {
+            "target": "com.amazonaws.securityhub#NonEmptyString",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe ARN of the Amazon Web Services KMS key that Security Hub uses to encrypt the export objects with server-side encryption. The key policy must allow the Security Hub service principal (\u003ccode\u003eexportv2.securityhub.amazonaws.com\u003c/code\u003e) to use the key through Amazon S3. For the required key policy, see the Examples section of \u003ccode\u003eStartExportJobV2\u003c/code\u003e.\u003c/p\u003e\n         \u003cp\u003eThe key must meet all of the following requirements:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003eIt must be a symmetric key with a key usage of \u003ccode\u003eENCRYPT_DECRYPT\u003c/code\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eIt must be a single-Region key. Multi-Region keys, whose key IDs begin with \u003ccode\u003emrk-\u003c/code\u003e, are rejected.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eYou must specify the full key ARN. Key IDs and aliases are rejected.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eThe key must be in the same Amazon Web Services account as the export job.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eThe key must be in the same Amazon Web Services Region as the export job.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eThe key must be in the \u003ccode\u003eaws\u003c/code\u003e, \u003ccode\u003eaws-cn\u003c/code\u003e, or \u003ccode\u003eaws-us-gov\u003c/code\u003e partition.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "ObjectPrefix": {
+            "target": "com.amazonaws.securityhub#S3ObjectPrefix",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn optional key prefix that Security Hub prepends to the Amazon S3 object keys of the export output. Use a prefix to organize exports within the bucket. The value can be up to 512 characters.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe Amazon S3 destination for an export, including the bucket, the Amazon Web Services KMS key used for encryption, and an optional object key prefix.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.securityhub#S3ObjectPrefix": {
+        "type": "string",
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA key prefix that Security Hub prepends to the Amazon S3 object keys of an export. The value can be up to 512 characters.\u003c/p\u003e",
+          "smithy.api#length": {
+            "min": 0,
+            "max": 512
+          }
+        }
+      },
       "com.amazonaws.securityhub#ScopeType": {
         "type": "enum",
         "members": {
@@ -40235,6 +43039,9 @@
             "target": "com.amazonaws.securityhub#BatchUpdateStandardsControlAssociations"
           },
           {
+            "target": "com.amazonaws.securityhub#CancelExportJobV2"
+          },
+          {
             "target": "com.amazonaws.securityhub#CreateActionTarget"
           },
           {
@@ -40391,6 +43198,9 @@
             "target": "com.amazonaws.securityhub#GetEnabledStandards"
           },
           {
+            "target": "com.amazonaws.securityhub#GetExportJobV2"
+          },
+          {
             "target": "com.amazonaws.securityhub#GetFindingAggregator"
           },
           {
@@ -40425,6 +43235,9 @@
           },
           {
             "target": "com.amazonaws.securityhub#GetRecommendedPolicyV2"
+          },
+          {
+            "target": "com.amazonaws.securityhub#GetRemediationsV2"
           },
           {
             "target": "com.amazonaws.securityhub#GetResourcesStatisticsV2"
@@ -40466,6 +43279,12 @@
             "target": "com.amazonaws.securityhub#ListEnabledProductsForImport"
           },
           {
+            "target": "com.amazonaws.securityhub#ListExportJobsV2"
+          },
+          {
+            "target": "com.amazonaws.securityhub#ListExposuresByRemediationV2"
+          },
+          {
             "target": "com.amazonaws.securityhub#ListFindingAggregators"
           },
           {
@@ -40497,6 +43316,9 @@
           },
           {
             "target": "com.amazonaws.securityhub#StartConfigurationPolicyDisassociation"
+          },
+          {
+            "target": "com.amazonaws.securityhub#StartExportJobV2"
           },
           {
             "target": "com.amazonaws.securityhub#TagResource"
@@ -43143,6 +45965,211 @@
           "smithy.api#output": {}
         }
       },
+      "com.amazonaws.securityhub#StartExportJobV2": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.securityhub#StartExportJobV2Request"
+        },
+        "output": {
+          "target": "com.amazonaws.securityhub#StartExportJobV2Response"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.securityhub#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.securityhub#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.securityhub#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.securityhub#OrganizationalUnitNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.securityhub#OrganizationNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.securityhub#ServiceQuotaExceededException"
+          },
+          {
+            "target": "com.amazonaws.securityhub#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.securityhub#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eStarts an ad hoc export job that writes Security Hub findings to an Amazon Simple Storage Service (Amazon S3) bucket that you own. Because the export runs asynchronously, this operation returns only the \u003ccode\u003eExportJobId\u003c/code\u003e of the new job; it doesn't wait for the export to finish. Use \u003ccode\u003eGetExportJobV2\u003c/code\u003e to poll the job, and \u003ccode\u003eListExportJobsV2\u003c/code\u003e to view the export jobs in your account.\u003c/p\u003e\n         \u003cp\u003eSecurity Hub allows only one export job in the \u003ccode\u003eRUNNING\u003c/code\u003e state per account at a time. If an export job is already running, this operation returns a \u003ccode\u003eServiceQuotaExceededException\u003c/code\u003e. Wait for the running job to finish, or cancel it with \u003ccode\u003eCancelExportJobV2\u003c/code\u003e, before you start a new one.\u003c/p\u003e\n         \u003cp\u003eSpecify the destination bucket and Amazon Web Services Key Management Service (Amazon Web Services KMS) key in the \u003ccode\u003eDestination\u003c/code\u003e parameter, and the output format (\u003ccode\u003eCSV\u003c/code\u003e or \u003ccode\u003eOCSF_JSON\u003c/code\u003e), optional filters, and field selection in the \u003ccode\u003eOutputConfiguration\u003c/code\u003e parameter. Before you call this operation, you must grant Security Hub permission to write to your bucket and use your Amazon Web Services KMS key by adding the bucket policy and key policy statements shown in the Examples section.\u003c/p\u003e\n         \u003cp\u003eTwo identities use your Amazon Web Services KMS key, and each needs its own permission. Security Hub uses the key when it writes the export objects to your bucket. The IAM principal that calls \u003ccode\u003eStartExportJobV2\u003c/code\u003e must also have \u003ccode\u003ekms:GenerateDataKey\u003c/code\u003e and \u003ccode\u003ekms:Decrypt\u003c/code\u003e permissions on the key. The Examples section shows both grants.\u003c/p\u003e\n         \u003cp\u003eA delegated administrator can use the optional \u003ccode\u003eScopes\u003c/code\u003e parameter to export findings for specific organizations or organizational units (OUs).\u003c/p\u003e\n         \u003cp\u003eTo make the request idempotent, provide a \u003ccode\u003eClientToken\u003c/code\u003e. If you retry a \u003ccode\u003eStartExportJobV2\u003c/code\u003e request with the same \u003ccode\u003eClientToken\u003c/code\u003e and the same request parameters, Security Hub returns the \u003ccode\u003eExportJobId\u003c/code\u003e of the original job instead of starting a new one. If you reuse a \u003ccode\u003eClientToken\u003c/code\u003e with different request parameters, this operation returns a \u003ccode\u003eConflictException\u003c/code\u003e.\u003c/p\u003e",
+          "smithy.api#examples": [
+            {
+              "title": "Example \u2013 Starting a CSV export of critical findings",
+              "documentation": "The following example starts an export that writes selected fields of new, critical findings to an Amazon S3 bucket in CSV format.",
+              "input": {
+                "Name": "quarterly-critical-findings",
+                "Destination": {
+                  "S3": {
+                    "BucketArn": "arn:aws:s3:::amzn-s3-demo-bucket",
+                    "KmsKeyArn": "arn:aws:kms:aa-example-1:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab",
+                    "ObjectPrefix": "security-hub-exports/2026-Q1"
+                  }
+                },
+                "OutputConfiguration": {
+                  "Findings": {
+                    "Format": "CSV",
+                    "SelectedFields": [
+                      "finding_info.title",
+                      "severity",
+                      "status",
+                      "cloud.account.uid",
+                      "resources.uid"
+                    ],
+                    "Filters": {
+                      "CompositeOperator": "AND",
+                      "CompositeFilters": [
+                        {
+                          "Operator": "AND",
+                          "StringFilters": [
+                            {
+                              "FieldName": "severity",
+                              "Filter": {
+                                "Value": "Critical",
+                                "Comparison": "EQUALS"
+                              }
+                            },
+                            {
+                              "FieldName": "status",
+                              "Filter": {
+                                "Value": "New",
+                                "Comparison": "EQUALS"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                },
+                "ClientToken": "b3d1f9a2-1c4e-4b9a-9f2e-EXAMPLE11111"
+              },
+              "output": {
+                "ExportJobId": "a1b2c3d4e5f6"
+              }
+            },
+            {
+              "title": "Example \u2013 Starting an OCSF JSON export scoped to an organizational unit",
+              "documentation": "The following example, run by a delegated administrator, starts an export of the last 30 days of findings for a specific organizational unit (OU) in OCSF JSON format.",
+              "input": {
+                "Destination": {
+                  "S3": {
+                    "BucketArn": "arn:aws:s3:::amzn-s3-demo-bucket",
+                    "KmsKeyArn": "arn:aws:kms:aa-example-1:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab"
+                  }
+                },
+                "OutputConfiguration": {
+                  "Findings": {
+                    "Format": "OCSF_JSON",
+                    "Filters": {
+                      "CompositeOperator": "AND",
+                      "CompositeFilters": [
+                        {
+                          "Operator": "AND",
+                          "DateFilters": [
+                            {
+                              "FieldName": "finding_info.last_seen_time_dt",
+                              "Filter": {
+                                "DateRange": {
+                                  "Value": 30,
+                                  "Unit": "DAYS",
+                                  "Comparison": "WITHIN"
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                },
+                "Scopes": {
+                  "AwsOrganizations": [
+                    {
+                      "OrganizationalUnitId": "ou-1234-a1b2c3d4"
+                    }
+                  ]
+                }
+              },
+              "output": {
+                "ExportJobId": "f6e5d4c3b2a1"
+              }
+            }
+          ],
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/exportjobsv2",
+            "code": 202
+          }
+        }
+      },
+      "com.amazonaws.securityhub#StartExportJobV2Request": {
+        "type": "structure",
+        "members": {
+          "ClientToken": {
+            "target": "com.amazonaws.securityhub#ClientToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA unique identifier used to ensure idempotency.\u003c/p\u003e",
+              "smithy.api#idempotencyToken": {}
+            }
+          },
+          "Destination": {
+            "target": "com.amazonaws.securityhub#ExportDestination",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe destination that Security Hub writes the export to. You must specify exactly one destination type. Currently, the only supported type is Amazon S3.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Name": {
+            "target": "com.amazonaws.securityhub#ExportName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn optional, user-provided name for the export job that helps you identify it in \u003ccode\u003eListExportJobsV2\u003c/code\u003e results. The value can be 1\u2013256 characters. Alphanumeric characters, spaces, and the following ASCII characters are permitted: \u003ccode\u003e. _ , : ( ) / + -\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "OutputConfiguration": {
+            "target": "com.amazonaws.securityhub#ExportOutput",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eSpecifies what data to export and how to format it. You must specify exactly one output type. Currently, the only supported type is \u003ccode\u003eFindings\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "Scopes": {
+            "target": "com.amazonaws.securityhub#ExportScopes",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eLimits the export to findings from specific organizational units (OUs) or from the delegated administrator's organization. Only the delegated administrator account can use this parameter; other accounts that specify it receive an \u003ccode\u003eAccessDeniedException\u003c/code\u003e.\u003c/p\u003e\n         \u003cp\u003eThis parameter is optional. If you omit it, the delegated administrator exports findings from all accounts across the entire organization, and other accounts export only their own findings.\u003c/p\u003e\n         \u003cp\u003eYou can specify up to 10 entries in \u003ccode\u003eScopes.AwsOrganizations\u003c/code\u003e. If you specify multiple entries, Security Hub combines them using OR logic.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.securityhub#StartExportJobV2Response": {
+        "type": "structure",
+        "members": {
+          "ExportJobId": {
+            "target": "com.amazonaws.securityhub#ExportJobId",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the export job that Security Hub started. Use this value with \u003ccode\u003eGetExportJobV2\u003c/code\u003e or \u003ccode\u003eCancelExportJobV2\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
       "com.amazonaws.securityhub#StatelessCustomActionDefinition": {
         "type": "structure",
         "members": {
@@ -43280,7 +46307,7 @@
           "Comparison": {
             "target": "com.amazonaws.securityhub#StringFilterComparison",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe condition to apply to a string value when filtering Security Hub CSPM findings.\u003c/p\u003e\n         \u003cp\u003eTo search for values that have the filter value, use one of the following comparison operators:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003eTo search for values that include the filter value, use \u003ccode\u003eCONTAINS\u003c/code\u003e. For example, the\n               filter \u003ccode\u003eTitle CONTAINS CloudFront\u003c/code\u003e matches findings that have a \u003ccode\u003eTitle\u003c/code\u003e that\n               includes the string CloudFront.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eTo search for values that exactly match the filter value, use \u003ccode\u003eEQUALS\u003c/code\u003e. For example,\n               the filter \u003ccode\u003eAwsAccountId EQUALS 123456789012\u003c/code\u003e only matches findings that have an account ID of\n               \u003ccode\u003e123456789012\u003c/code\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eTo search for values that start with the filter value, use \u003ccode\u003ePREFIX\u003c/code\u003e. For example, the\n               filter \u003ccode\u003eResourceRegion PREFIX us\u003c/code\u003e matches findings that have a \u003ccode\u003eResourceRegion\u003c/code\u003e that starts\n               with \u003ccode\u003eus\u003c/code\u003e. A \u003ccode\u003eResourceRegion\u003c/code\u003e that starts with a different value, such as \u003ccode\u003eaf\u003c/code\u003e,\n               \u003ccode\u003eap\u003c/code\u003e, or \u003ccode\u003eca\u003c/code\u003e, doesn't match.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e\n         \u003cp\u003e\n            \u003ccode\u003eCONTAINS\u003c/code\u003e, \u003ccode\u003eEQUALS\u003c/code\u003e, and \u003ccode\u003ePREFIX\u003c/code\u003e filters on the same field are joined by\n           \u003ccode\u003eOR\u003c/code\u003e. A finding matches if it matches any one of those filters. For example, the filters \u003ccode\u003eTitle CONTAINS CloudFront OR\n               Title CONTAINS CloudWatch\u003c/code\u003e match a finding that includes either \u003ccode\u003eCloudFront\u003c/code\u003e,\n           \u003ccode\u003eCloudWatch\u003c/code\u003e, or both strings in the title.\u003c/p\u003e\n         \u003cp\u003eTo search for values that don\u2019t have the filter value, use one of the following comparison operators:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003eTo search for values that exclude the filter value, use \u003ccode\u003eNOT_CONTAINS\u003c/code\u003e. For example, the\n               filter \u003ccode\u003eTitle NOT_CONTAINS CloudFront\u003c/code\u003e matches findings that have a \u003ccode\u003eTitle\u003c/code\u003e that\n               excludes the string CloudFront.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eTo search for values other than the filter value, use \u003ccode\u003eNOT_EQUALS\u003c/code\u003e. For\n               example, the filter \u003ccode\u003eAwsAccountId NOT_EQUALS 123456789012\u003c/code\u003e only matches findings that have an account\n               ID other than \u003ccode\u003e123456789012\u003c/code\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eTo search for values that don't start with the filter value, use \u003ccode\u003ePREFIX_NOT_EQUALS\u003c/code\u003e. For\n               example, the filter \u003ccode\u003eResourceRegion PREFIX_NOT_EQUALS us\u003c/code\u003e matches findings with a\n               \u003ccode\u003eResourceRegion\u003c/code\u003e that starts with a value other than \u003ccode\u003eus\u003c/code\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e\n         \u003cp\u003e\n            \u003ccode\u003eNOT_CONTAINS\u003c/code\u003e, \u003ccode\u003eNOT_EQUALS\u003c/code\u003e, and \u003ccode\u003ePREFIX_NOT_EQUALS\u003c/code\u003e filters on the same field\n           are joined by \u003ccode\u003eAND\u003c/code\u003e. A finding matches only if it matches all of those filters. For example, the filters \u003ccode\u003eTitle NOT_CONTAINS CloudFront AND\n               Title NOT_CONTAINS CloudWatch\u003c/code\u003e match a finding that excludes both \u003ccode\u003eCloudFront\u003c/code\u003e and\n           \u003ccode\u003eCloudWatch\u003c/code\u003e in the title.\u003c/p\u003e\n         \u003cp\u003eYou can\u2019t have both a \u003ccode\u003eCONTAINS\u003c/code\u003e filter and a \u003ccode\u003eNOT_CONTAINS\u003c/code\u003e filter on the same field. Similarly,\n            you can't provide both an \u003ccode\u003eEQUALS\u003c/code\u003e filter and a \u003ccode\u003eNOT_EQUALS\u003c/code\u003e or\n           \u003ccode\u003ePREFIX_NOT_EQUALS\u003c/code\u003e filter on the same field. Combining filters in this way returns an error. \u003ccode\u003eCONTAINS\u003c/code\u003e filters\n           can only be used with other \u003ccode\u003eCONTAINS\u003c/code\u003e filters. \u003ccode\u003eNOT_CONTAINS\u003c/code\u003e filters can only be used with\n           other \u003ccode\u003eNOT_CONTAINS\u003c/code\u003e filters. \u003c/p\u003e\n         \u003cp\u003eYou can combine \u003ccode\u003ePREFIX\u003c/code\u003e filters with \u003ccode\u003eNOT_EQUALS\u003c/code\u003e or \u003ccode\u003ePREFIX_NOT_EQUALS\u003c/code\u003e filters for the same field.\n           Security Hub CSPM first processes the \u003ccode\u003ePREFIX\u003c/code\u003e filters, and then the \u003ccode\u003eNOT_EQUALS\u003c/code\u003e or \u003ccode\u003ePREFIX_NOT_EQUALS\u003c/code\u003e filters.\u003c/p\u003e\n         \u003cp\u003eFor example, for the following filters, Security Hub CSPM first identifies findings that have resource types\n           that start with either \u003ccode\u003eAwsIam\u003c/code\u003e or \u003ccode\u003eAwsEc2\u003c/code\u003e. It then excludes findings that have a resource\n           type of \u003ccode\u003eAwsIamPolicy\u003c/code\u003e and findings that have a resource type of \u003ccode\u003eAwsEc2NetworkInterface\u003c/code\u003e.\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eResourceType PREFIX AwsIam\u003c/code\u003e\n               \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eResourceType PREFIX AwsEc2\u003c/code\u003e\n               \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eResourceType NOT_EQUALS AwsIamPolicy\u003c/code\u003e\n               \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eResourceType NOT_EQUALS AwsEc2NetworkInterface\u003c/code\u003e\n               \u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e\n         \u003cp\u003eThe \u003ccode\u003eCONTAINS\u003c/code\u003e operator works with automation rules V1 and V2.\n          The \u003ccode\u003eNOT_CONTAINS\u003c/code\u003e operator works only with automation rules V1.\n          The \u003ccode\u003eCONTAINS_WORD\u003c/code\u003e operator works only in the \u003ccode\u003eGetFindingsV2\u003c/code\u003e, \u003ccode\u003eGetFindingStatisticsV2\u003c/code\u003e, \u003ccode\u003eGetResourcesV2\u003c/code\u003e, and \u003ccode\u003eGetResourcesStatisticsV2\u003c/code\u003e APIs.\n          For more information, see \u003ca href=\"https://docs.aws.amazon.com/securityhub/latest/userguide/automation-rules.html\"\u003eAutomation rules\u003c/a\u003e in the \u003ci\u003eSecurity Hub CSPM User Guide\u003c/i\u003e.\u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003eThe condition to apply to a string value when filtering Security Hub CSPM findings.\u003c/p\u003e\n         \u003cp\u003eTo search for values that have the filter value, use one of the following comparison operators:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003eTo search for values that include the filter value, use \u003ccode\u003eCONTAINS\u003c/code\u003e. For example, the\n               filter \u003ccode\u003eTitle CONTAINS CloudFront\u003c/code\u003e matches findings that have a \u003ccode\u003eTitle\u003c/code\u003e that\n               includes the string \u003ccode\u003eCloudFront\u003c/code\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eTo search for values that contain a word matching the filter value, regardless of case, use \u003ccode\u003eCONTAINS_WORD\u003c/code\u003e. For example,\n               the filter \u003ccode\u003eTitle CONTAINS_WORD lambda\u003c/code\u003e matches a finding whose \u003ccode\u003eTitle\u003c/code\u003e is \u003ccode\u003eGuardDuty Lambda Protection\u003c/code\u003e, because\n               the \u003ccode\u003eTitle\u003c/code\u003e contains the word Lambda. Including special characters in the filter value might produce unexpected search results.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eTo search for values that exactly match the filter value, use \u003ccode\u003eEQUALS\u003c/code\u003e. For example,\n               the filter \u003ccode\u003eAwsAccountId EQUALS 123456789012\u003c/code\u003e only matches findings that have an account ID of\n               \u003ccode\u003e123456789012\u003c/code\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eTo search for values that start with the filter value, use \u003ccode\u003ePREFIX\u003c/code\u003e. For example, the\n               filter \u003ccode\u003eResourceRegion PREFIX us\u003c/code\u003e matches findings that have a \u003ccode\u003eResourceRegion\u003c/code\u003e that starts\n               with \u003ccode\u003eus\u003c/code\u003e. A \u003ccode\u003eResourceRegion\u003c/code\u003e that starts with a different value, such as \u003ccode\u003eaf\u003c/code\u003e,\n               \u003ccode\u003eap\u003c/code\u003e, or \u003ccode\u003eca\u003c/code\u003e, doesn't match.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e\n         \u003cp\u003e\n            \u003ccode\u003eCONTAINS\u003c/code\u003e, \u003ccode\u003eEQUALS\u003c/code\u003e, and \u003ccode\u003ePREFIX\u003c/code\u003e filters on the same field are joined by\n           \u003ccode\u003eOR\u003c/code\u003e. A finding matches if it matches any one of those filters. For example, the filters \u003ccode\u003eTitle CONTAINS CloudFront OR\n               Title CONTAINS CloudWatch\u003c/code\u003e match a finding that includes either \u003ccode\u003eCloudFront\u003c/code\u003e,\n           \u003ccode\u003eCloudWatch\u003c/code\u003e, or both strings in the title.\u003c/p\u003e\n         \u003cp\u003eTo search for values that don\u2019t have the filter value, use one of the following comparison operators:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003eTo search for values that exclude the filter value, use \u003ccode\u003eNOT_CONTAINS\u003c/code\u003e. For example, the\n               filter \u003ccode\u003eTitle NOT_CONTAINS CloudFront\u003c/code\u003e matches findings that have a \u003ccode\u003eTitle\u003c/code\u003e that\n               excludes the string CloudFront.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eTo search for values other than the filter value, use \u003ccode\u003eNOT_EQUALS\u003c/code\u003e. For\n               example, the filter \u003ccode\u003eAwsAccountId NOT_EQUALS 123456789012\u003c/code\u003e only matches findings that have an account\n               ID other than \u003ccode\u003e123456789012\u003c/code\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003eTo search for values that don't start with the filter value, use \u003ccode\u003ePREFIX_NOT_EQUALS\u003c/code\u003e. For\n               example, the filter \u003ccode\u003eResourceRegion PREFIX_NOT_EQUALS us\u003c/code\u003e matches findings with a\n               \u003ccode\u003eResourceRegion\u003c/code\u003e that starts with a value other than \u003ccode\u003eus\u003c/code\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e\n         \u003cp\u003e\n            \u003ccode\u003eNOT_CONTAINS\u003c/code\u003e, \u003ccode\u003eNOT_EQUALS\u003c/code\u003e, and \u003ccode\u003ePREFIX_NOT_EQUALS\u003c/code\u003e filters on the same field\n           are joined by \u003ccode\u003eAND\u003c/code\u003e. A finding matches only if it matches all of those filters. For example, the filters \u003ccode\u003eTitle NOT_CONTAINS CloudFront AND\n               Title NOT_CONTAINS CloudWatch\u003c/code\u003e match a finding that excludes both \u003ccode\u003eCloudFront\u003c/code\u003e and\n           \u003ccode\u003eCloudWatch\u003c/code\u003e in the title.\u003c/p\u003e\n         \u003cp\u003eYou can\u2019t have both a \u003ccode\u003eCONTAINS\u003c/code\u003e filter and a \u003ccode\u003eNOT_CONTAINS\u003c/code\u003e filter on the same field. Similarly,\n            you can't provide both an \u003ccode\u003eEQUALS\u003c/code\u003e filter and a \u003ccode\u003eNOT_EQUALS\u003c/code\u003e or\n           \u003ccode\u003ePREFIX_NOT_EQUALS\u003c/code\u003e filter on the same field. Combining filters in this way returns an error. \u003ccode\u003eCONTAINS\u003c/code\u003e filters\n           can only be used with other \u003ccode\u003eCONTAINS\u003c/code\u003e filters. \u003ccode\u003eNOT_CONTAINS\u003c/code\u003e filters can only be used with\n           other \u003ccode\u003eNOT_CONTAINS\u003c/code\u003e filters. \u003c/p\u003e\n         \u003cp\u003eYou can combine \u003ccode\u003ePREFIX\u003c/code\u003e filters with \u003ccode\u003eNOT_EQUALS\u003c/code\u003e or \u003ccode\u003ePREFIX_NOT_EQUALS\u003c/code\u003e filters for the same field.\n           Security Hub CSPM first processes the \u003ccode\u003ePREFIX\u003c/code\u003e filters, and then the \u003ccode\u003eNOT_EQUALS\u003c/code\u003e or \u003ccode\u003ePREFIX_NOT_EQUALS\u003c/code\u003e filters.\u003c/p\u003e\n         \u003cp\u003eFor example, for the following filters, Security Hub CSPM first identifies findings that have resource types\n           that start with either \u003ccode\u003eAwsIam\u003c/code\u003e or \u003ccode\u003eAwsEc2\u003c/code\u003e. It then excludes findings that have a resource\n           type of \u003ccode\u003eAwsIamPolicy\u003c/code\u003e and findings that have a resource type of \u003ccode\u003eAwsEc2NetworkInterface\u003c/code\u003e.\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eResourceType PREFIX AwsIam\u003c/code\u003e\n               \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eResourceType PREFIX AwsEc2\u003c/code\u003e\n               \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eResourceType NOT_EQUALS AwsIamPolicy\u003c/code\u003e\n               \u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eResourceType NOT_EQUALS AwsEc2NetworkInterface\u003c/code\u003e\n               \u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e\n         \u003cp\u003eThe \u003ccode\u003eCONTAINS\u003c/code\u003e operator works with automation rules V1 and V2.\n          The \u003ccode\u003eNOT_CONTAINS\u003c/code\u003e operator works only with automation rules V1.\n          The \u003ccode\u003eCONTAINS_WORD\u003c/code\u003e operator works only in the \u003ccode\u003eGetFindingsV2\u003c/code\u003e, \u003ccode\u003eGetFindingStatisticsV2\u003c/code\u003e, \u003ccode\u003eGetResourcesV2\u003c/code\u003e, and \u003ccode\u003eGetResourcesStatisticsV2\u003c/code\u003e APIs.\n          For more information, see \u003ca href=\"https://docs.aws.amazon.com/securityhub/latest/userguide/automation-rules.html\"\u003eAutomation rules\u003c/a\u003e in the \u003ci\u003eSecurity Hub CSPM User Guide\u003c/i\u003e.\u003c/p\u003e"
             }
           },
           "Value": {

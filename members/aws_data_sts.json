@@ -110,7 +110,7 @@
             "aws.auth#sigv4",
             "aws.auth#sigv4a"
           ],
-          "smithy.api#documentation": "\u003cfullname\u003eSecurity Token Service\u003c/fullname\u003e\n         \u003cp\u003eSecurity Token Service (STS) enables you to request temporary, limited-privilege \n      credentials for users. This guide provides descriptions of the STS API. For \n      more information about using this service, see \u003ca href=\"https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp.html\"\u003eTemporary Security Credentials\u003c/a\u003e.\u003c/p\u003e",
+          "smithy.api#documentation": "\u003cfullname\u003eSecurity Token Service\u003c/fullname\u003e\n         \u003cp\u003eAmazon Web Services provides Security Token Service (STS) as a web service that enables you to request temporary,\n         limited-privilege credentials for users. This guide describes the STS API. For more\n         information, see \u003ca href=\"https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp.html\"\u003eTemporary Security Credentials\u003c/a\u003e\n         in the \u003ci\u003eIAM User Guide\u003c/i\u003e.\u003c/p\u003e\n         \u003cnote\u003e\n            \u003cp\u003eAs an alternative to using the API, you can use one of the Amazon Web Services SDKs, which consist of\n            libraries and sample code for various programming languages and platforms such as Java,\n            Ruby, .NET, iOS, Android, and others. The SDKs provide a convenient way to create\n            programmatic access to STS. For example, the SDKs can cryptographically sign requests,\n            manage errors, and retry requests automatically. For information about the Amazon Web Services SDKs, see\n               \u003ca href=\"http://aws.amazon.com/tools/\"\u003eTools to Build on Amazon Web Services\u003c/a\u003e.\u003c/p\u003e\n         \u003c/note\u003e\n         \u003cp\u003eFor information about setting up signatures and authorization through the API, see \u003ca href=\"https://docs.aws.amazon.com/general/latest/gr/signing_aws_api_requests.html\"\u003eSigning Amazon Web Services\n            API Requests\u003c/a\u003e in the \u003ci\u003eAmazon Web Services General Reference\u003c/i\u003e. For general information\n         about the Query API, see \u003ca href=\"https://docs.aws.amazon.com/IAM/latest/UserGuide/IAM_UsingQueryAPI.html\"\u003eMaking Query Requests\u003c/a\u003e in the\n            \u003ci\u003eIAM User Guide\u003c/i\u003e. For information about using security tokens with\n         other Amazon Web Services products, see \u003ca href=\"https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_aws-services-that-work-with-iam.html\"\u003eAmazon Web Services Services\n            That Work with IAM\u003c/a\u003e in the \u003ci\u003eIAM User Guide\u003c/i\u003e.\u003c/p\u003e\n         \u003cp\u003eFor information about STS endpoints, see \u003ca href=\"https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_region-endpoints.html\"\u003eSTS Regions and\n            endpoints\u003c/a\u003e in the \u003ci\u003eIAM User Guide\u003c/i\u003e. For information about\n         logging STS API calls, see \u003ca href=\"https://docs.aws.amazon.com/IAM/latest/UserGuide/cloudtrail-integration.html\"\u003eLogging IAM and STS API calls\n            with CloudTrail\u003c/a\u003e in the \u003ci\u003eIAM User Guide\u003c/i\u003e.\u003c/p\u003e",
           "smithy.api#title": "AWS Security Token Service",
           "smithy.api#xmlNamespace": {
             "uri": "https://sts.amazonaws.com/doc/2011-06-15/"
@@ -2732,6 +2732,9 @@
               "smithy.api#documentation": "\u003cp\u003eA unique identifier that might be required when you assume a role in another account. If\n         the administrator of the account to which the role belongs provided you with an external\n         ID, then provide that value in the \u003ccode\u003eExternalId\u003c/code\u003e parameter. This value can be any\n         string, such as a passphrase or account number. A cross-account role is usually set up to\n         trust everyone in an account. Therefore, the administrator of the trusting account might\n         send an external ID to the administrator of the trusted account. That way, only someone\n         with the ID can assume the role, rather than everyone in the account. For more information\n         about the external ID, see \u003ca href=\"https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-user_externalid.html\"\u003eHow to Use an External ID\n            When Granting Access to Your Amazon Web Services Resources to a Third Party\u003c/a\u003e in the\n            \u003ci\u003eIAM User Guide\u003c/i\u003e.\u003c/p\u003e\n         \u003cp\u003eThe regex used to validate this parameter is a string of \n    characters consisting of upper- and lower-case alphanumeric characters with no spaces. \n    You can also include underscores or any of the following characters: +=,.@:\\/-\u003c/p\u003e"
             }
           },
+          "MinimumSessionTokenSize": {
+            "target": "com.amazonaws.sts#minimumSessionTokenSizeType"
+          },
           "Policy": {
             "target": "com.amazonaws.sts#unrestrictedSessionPolicyDocumentType",
             "traits": {
@@ -2817,8 +2820,18 @@
           "PackedPolicySize": {
             "target": "com.amazonaws.sts#nonNegativeIntegerType",
             "traits": {
+              "smithy.api#deprecated": {
+                "since": "2026-06-17",
+                "message": "Deprecated. Replaced by SessionTokenUtilization."
+              },
               "smithy.api#documentation": "\u003cp\u003eA percentage value that indicates the packed size of the session policies and session \n      tags combined passed in the request. The request fails if the packed size is greater than 100 percent, \n      which means the policies and tags exceeded the allowed space.\u003c/p\u003e"
             }
+          },
+          "SessionTokenSize": {
+            "target": "com.amazonaws.sts#sessionTokenSizeType"
+          },
+          "SessionTokenUtilization": {
+            "target": "com.amazonaws.sts#sessionTokenUtilizationType"
           },
           "SourceIdentity": {
             "target": "com.amazonaws.sts#sourceIdentityType",
@@ -2905,6 +2918,9 @@
               "smithy.api#documentation": "\u003cp\u003eThe duration, in seconds, of the role session. Your role session lasts for the duration\n         that you specify for the \u003ccode\u003eDurationSeconds\u003c/code\u003e parameter, or until the time\n         specified in the SAML authentication response's \u003ccode\u003eSessionNotOnOrAfter\u003c/code\u003e value,\n         whichever is shorter. You can provide a \u003ccode\u003eDurationSeconds\u003c/code\u003e value from 900 seconds\n         (15 minutes) up to the maximum session duration setting for the role. This setting can have\n         a value from 1 hour to 12 hours. If you specify a value higher than this setting, the\n         operation fails. For example, if you specify a session duration of 12 hours, but your\n         administrator set the maximum session duration to 6 hours, your operation fails. To learn\n         how to view the maximum value for your role, see \u003ca href=\"https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use.html#id_roles_use_view-role-max-session\"\u003eView the\n            Maximum Session Duration Setting for a Role\u003c/a\u003e in the\n            \u003ci\u003eIAM User Guide\u003c/i\u003e.\u003c/p\u003e\n         \u003cp\u003eBy default, the value is set to \u003ccode\u003e3600\u003c/code\u003e seconds. \u003c/p\u003e\n         \u003cnote\u003e\n            \u003cp\u003eThe \u003ccode\u003eDurationSeconds\u003c/code\u003e parameter is separate from the duration of a console\n            session that you might request using the returned credentials. The request to the\n            federation endpoint for a console sign-in token takes a \u003ccode\u003eSessionDuration\u003c/code\u003e\n            parameter that specifies the maximum length of the console session. For more\n            information, see \u003ca href=\"https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_enable-console-custom-url.html\"\u003eCreating a URL\n               that Enables Federated Users to Access the Amazon Web Services Management Console\u003c/a\u003e in the\n               \u003ci\u003eIAM User Guide\u003c/i\u003e.\u003c/p\u003e\n         \u003c/note\u003e"
             }
           },
+          "MinimumSessionTokenSize": {
+            "target": "com.amazonaws.sts#minimumSessionTokenSizeType"
+          },
           "Policy": {
             "target": "com.amazonaws.sts#sessionPolicyDocumentType",
             "traits": {
@@ -2979,8 +2995,18 @@
           "PackedPolicySize": {
             "target": "com.amazonaws.sts#nonNegativeIntegerType",
             "traits": {
+              "smithy.api#deprecated": {
+                "since": "2026-06-17",
+                "message": "Deprecated. Replaced by SessionTokenUtilization."
+              },
               "smithy.api#documentation": "\u003cp\u003eA percentage value that indicates the packed size of the session policies and session \n      tags combined passed in the request. The request fails if the packed size is greater than 100 percent, \n      which means the policies and tags exceeded the allowed space.\u003c/p\u003e"
             }
+          },
+          "SessionTokenSize": {
+            "target": "com.amazonaws.sts#sessionTokenSizeType"
+          },
+          "SessionTokenUtilization": {
+            "target": "com.amazonaws.sts#sessionTokenUtilizationType"
           },
           "SourceIdentity": {
             "target": "com.amazonaws.sts#sourceIdentityType",
@@ -3082,6 +3108,9 @@
               "smithy.api#documentation": "\u003cp\u003eThe duration, in seconds, of the role session. The value can range from 900 seconds (15\n         minutes) up to the maximum session duration setting for the role. This setting can have a\n         value from 1 hour to 12 hours. If you specify a value higher than this setting, the\n         operation fails. For example, if you specify a session duration of 12 hours, but your\n         administrator set the maximum session duration to 6 hours, your operation fails. To learn\n         how to view the maximum value for your role, see \u003ca href=\"https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use.html#id_roles_use_view-role-max-session\"\u003eView the\n            Maximum Session Duration Setting for a Role\u003c/a\u003e in the\n            \u003ci\u003eIAM User Guide\u003c/i\u003e.\u003c/p\u003e\n         \u003cp\u003eBy default, the value is set to \u003ccode\u003e3600\u003c/code\u003e seconds. \u003c/p\u003e\n         \u003cnote\u003e\n            \u003cp\u003eThe \u003ccode\u003eDurationSeconds\u003c/code\u003e parameter is separate from the duration of a console\n            session that you might request using the returned credentials. The request to the\n            federation endpoint for a console sign-in token takes a \u003ccode\u003eSessionDuration\u003c/code\u003e\n            parameter that specifies the maximum length of the console session. For more\n            information, see \u003ca href=\"https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_enable-console-custom-url.html\"\u003eCreating a URL\n               that Enables Federated Users to Access the Amazon Web Services Management Console\u003c/a\u003e in the\n               \u003ci\u003eIAM User Guide\u003c/i\u003e.\u003c/p\u003e\n         \u003c/note\u003e"
             }
           },
+          "MinimumSessionTokenSize": {
+            "target": "com.amazonaws.sts#minimumSessionTokenSizeType"
+          },
           "Policy": {
             "target": "com.amazonaws.sts#sessionPolicyDocumentType",
             "traits": {
@@ -3150,6 +3179,10 @@
           "PackedPolicySize": {
             "target": "com.amazonaws.sts#nonNegativeIntegerType",
             "traits": {
+              "smithy.api#deprecated": {
+                "since": "2026-06-17",
+                "message": "Deprecated. Replaced by SessionTokenUtilization."
+              },
               "smithy.api#documentation": "\u003cp\u003eA percentage value that indicates the packed size of the session policies and session \n      tags combined passed in the request. The request fails if the packed size is greater than 100 percent, \n      which means the policies and tags exceeded the allowed space.\u003c/p\u003e"
             }
           },
@@ -3158,6 +3191,12 @@
             "traits": {
               "smithy.api#documentation": "\u003cp\u003e The issuing authority of the web identity token presented. For OpenID Connect ID\n         tokens, this contains the value of the \u003ccode\u003eiss\u003c/code\u003e field. For OAuth 2.0 access tokens,\n         this contains the value of the \u003ccode\u003eProviderId\u003c/code\u003e parameter that was passed in the\n            \u003ccode\u003eAssumeRoleWithWebIdentity\u003c/code\u003e request.\u003c/p\u003e"
             }
+          },
+          "SessionTokenSize": {
+            "target": "com.amazonaws.sts#sessionTokenSizeType"
+          },
+          "SessionTokenUtilization": {
+            "target": "com.amazonaws.sts#sessionTokenUtilizationType"
           },
           "SourceIdentity": {
             "target": "com.amazonaws.sts#sourceIdentityType",
@@ -3228,6 +3267,9 @@
               "smithy.api#documentation": "\u003cp\u003eThe duration, in seconds, of the privileged session. The value can range from 0 seconds\n         up to the maximum session duration of 900 seconds (15 minutes). If you specify a value\n         higher than this setting, the operation fails.\u003c/p\u003e\n         \u003cp\u003eBy default, the value is set to \u003ccode\u003e900\u003c/code\u003e seconds.\u003c/p\u003e"
             }
           },
+          "MinimumSessionTokenSize": {
+            "target": "com.amazonaws.sts#minimumSessionTokenSizeType"
+          },
           "TargetPrincipal": {
             "target": "com.amazonaws.sts#TargetPrincipalType",
             "traits": {
@@ -3255,6 +3297,12 @@
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe temporary security credentials, which include an access key ID, a secret access key,\n         and a security token.\u003c/p\u003e\n         \u003cnote\u003e\n            \u003cp\u003eThe size of the security token that STS API operations return is not fixed. We\n        strongly recommend that you make no assumptions about the maximum size.\u003c/p\u003e\n         \u003c/note\u003e"
             }
+          },
+          "SessionTokenSize": {
+            "target": "com.amazonaws.sts#sessionTokenSizeType"
+          },
+          "SessionTokenUtilization": {
+            "target": "com.amazonaws.sts#sessionTokenUtilizationType"
           },
           "SourceIdentity": {
             "target": "com.amazonaws.sts#sourceIdentityType",
@@ -3611,6 +3659,10 @@
           "PackedPolicySize": {
             "target": "com.amazonaws.sts#nonNegativeIntegerType",
             "traits": {
+              "smithy.api#deprecated": {
+                "since": "2026-06-17",
+                "message": "Deprecated. This field is not populated for GetDelegatedAccessToken."
+              },
               "smithy.api#documentation": "\u003cp\u003eThe percentage of the maximum policy size that is used by the session policy. The policy\n         size is calculated as the sum of all the session policies and permission boundaries\n         attached to the session. If the packed size exceeds 100%, the request fails.\u003c/p\u003e"
             }
           }
@@ -3685,6 +3737,9 @@
               "smithy.api#documentation": "\u003cp\u003eThe duration, in seconds, that the session should last. Acceptable durations for\n         federation sessions range from 900 seconds (15 minutes) to 129,600 seconds (36 hours), with\n         43,200 seconds (12 hours) as the default. Sessions obtained using root user\n         credentials are restricted to a maximum of 3,600 seconds (one hour). If the specified\n         duration is longer than one hour, the session obtained by using root user\n         credentials defaults to one hour.\u003c/p\u003e"
             }
           },
+          "MinimumSessionTokenSize": {
+            "target": "com.amazonaws.sts#minimumSessionTokenSizeType"
+          },
           "Name": {
             "target": "com.amazonaws.sts#userNameType",
             "traits": {
@@ -3733,8 +3788,18 @@
           "PackedPolicySize": {
             "target": "com.amazonaws.sts#nonNegativeIntegerType",
             "traits": {
+              "smithy.api#deprecated": {
+                "since": "2026-06-17",
+                "message": "Deprecated. Replaced by SessionTokenUtilization."
+              },
               "smithy.api#documentation": "\u003cp\u003eA percentage value that indicates the packed size of the session policies and session \n      tags combined passed in the request. The request fails if the packed size is greater than 100 percent, \n      which means the policies and tags exceeded the allowed space.\u003c/p\u003e"
             }
+          },
+          "SessionTokenSize": {
+            "target": "com.amazonaws.sts#sessionTokenSizeType"
+          },
+          "SessionTokenUtilization": {
+            "target": "com.amazonaws.sts#sessionTokenUtilizationType"
           }
         },
         "traits": {
@@ -3787,6 +3852,9 @@
               "smithy.api#documentation": "\u003cp\u003eThe duration, in seconds, that the credentials should remain valid. Acceptable durations\n         for IAM user sessions range from 900 seconds (15 minutes) to 129,600 seconds\n         (36 hours), with 43,200 seconds (12 hours) as the default. Sessions for Amazon Web Services account\n         owners are restricted to a maximum of 3,600 seconds (one hour). If the duration is longer\n         than one hour, the session for Amazon Web Services account owners defaults to one hour.\u003c/p\u003e"
             }
           },
+          "MinimumSessionTokenSize": {
+            "target": "com.amazonaws.sts#minimumSessionTokenSizeType"
+          },
           "SerialNumber": {
             "target": "com.amazonaws.sts#serialNumberType",
             "traits": {
@@ -3812,6 +3880,12 @@
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe temporary security credentials, which include an access key ID, a secret access key,\n         and a security (or session) token.\u003c/p\u003e\n         \u003cnote\u003e\n            \u003cp\u003eThe size of the security token that STS API operations return is not fixed. We\n        strongly recommend that you make no assumptions about the maximum size.\u003c/p\u003e\n         \u003c/note\u003e"
             }
+          },
+          "SessionTokenSize": {
+            "target": "com.amazonaws.sts#sessionTokenSizeType"
+          },
+          "SessionTokenUtilization": {
+            "target": "com.amazonaws.sts#sessionTokenUtilizationType"
           }
         },
         "traits": {
@@ -3839,7 +3913,7 @@
           }
         ],
         "traits": {
-          "smithy.api#documentation": "\u003cp\u003eReturns a signed JSON Web Token (JWT) that represents the calling Amazon Web Services identity. \n         The returned JWT can be used to authenticate with external services that support OIDC discovery. \n         The token is signed by Amazon Web Services STS and can be publicly verified using the verification keys published at the issuer's JWKS endpoint.\u003c/p\u003e"
+          "smithy.api#documentation": "\u003cp\u003eReturns a signed JSON Web Token (JWT) that represents the calling Amazon Web Services identity. \n         The returned JWT can be used to authenticate with external services that support OIDC discovery. \n         The token is signed by Amazon Web Services STS and can be publicly verified using the verification keys published at the issuer's JWKS endpoint.\u003c/p\u003e\n         \u003cnote\u003e\n            \u003cp\u003eThe \u003ccode\u003eGetWebIdentityToken\u003c/code\u003e API is not available on the STS Global endpoint.\u003c/p\u003e\n         \u003c/note\u003e"
         }
       },
       "com.amazonaws.sts#GetWebIdentityTokenRequest": {
@@ -4315,6 +4389,16 @@
       "com.amazonaws.sts#malformedPolicyDocumentMessage": {
         "type": "string"
       },
+      "com.amazonaws.sts#minimumSessionTokenSizeType": {
+        "type": "integer",
+        "traits": {
+          "smithy.api#documentation": "The minimum size, in bytes, of the session token that STS issues for the request. STS increases\n    the session token to at least this size, regardless of its actual content. The value must not\n    exceed 4,096 bytes. When set to 0 or not specified, the session token size is unchanged.",
+          "smithy.api#range": {
+            "min": 0,
+            "max": 4096
+          }
+        }
+      },
       "com.amazonaws.sts#nonNegativeIntegerType": {
         "type": "integer",
         "traits": {
@@ -4372,6 +4456,24 @@
             "max": 2048
           },
           "smithy.api#pattern": "^[\\u0009\\u000A\\u000D\\u0020-\\u00FF]+$"
+        }
+      },
+      "com.amazonaws.sts#sessionTokenSizeType": {
+        "type": "integer",
+        "traits": {
+          "smithy.api#documentation": "The size, in bytes, of the session token returned in the Credentials for this response.",
+          "smithy.api#range": {
+            "min": 0
+          }
+        }
+      },
+      "com.amazonaws.sts#sessionTokenUtilizationType": {
+        "type": "integer",
+        "traits": {
+          "smithy.api#documentation": "The percentage (0-100) of the maximum allowed session token size that the returned session\n    token consumes.",
+          "smithy.api#range": {
+            "min": 0
+          }
         }
       },
       "com.amazonaws.sts#sourceIdentityType": {

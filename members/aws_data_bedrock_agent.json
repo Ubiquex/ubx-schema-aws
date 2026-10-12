@@ -1563,10 +1563,22 @@
         "version": "2023-06-05",
         "operations": [
           {
+            "target": "com.amazonaws.bedrockagent#CreateVpcConfiguration"
+          },
+          {
             "target": "com.amazonaws.bedrockagent#DeleteResourcePolicy"
           },
           {
+            "target": "com.amazonaws.bedrockagent#DeleteVpcConfiguration"
+          },
+          {
             "target": "com.amazonaws.bedrockagent#GetResourcePolicy"
+          },
+          {
+            "target": "com.amazonaws.bedrockagent#GetVpcConfiguration"
+          },
+          {
+            "target": "com.amazonaws.bedrockagent#ListVpcConfigurations"
           },
           {
             "target": "com.amazonaws.bedrockagent#PutResourcePolicy"
@@ -1640,7 +1652,7 @@
             ],
             "maxAge": 86400
           },
-          "smithy.api#documentation": "\u003cp\u003eDescribes the API operations for creating and managing Amazon Bedrock agents.\u003c/p\u003e",
+          "smithy.api#documentation": "\u003cnote\u003e \u003cp\u003eAmazon Bedrock Agents (now Amazon Bedrock Agents Classic) is no longer open to new customers. For capabilities similar to Bedrock Agents Classic, explore Amazon Bedrock AgentCore. Existing customers can continue to use the service as normal. For more information, see \u003ca href=\"https://docs.aws.amazon.com/bedrock/latest/userguide/agents-classic-maintenance-mode.html\"\u003eAmazon Bedrock Agents Classic availability change\u003c/a\u003e.\u003c/p\u003e \u003c/note\u003e \u003cp\u003eDescribes the API operations for creating and managing Amazon Bedrock agents.\u003c/p\u003e",
           "smithy.api#title": "Agents for Amazon Bedrock",
           "smithy.rules#endpointBdd": {
             "version": "1.1",
@@ -2714,7 +2726,7 @@
           "audioExtractionStatus": {
             "target": "com.amazonaws.bedrockagent#EnabledOrDisabledState",
             "traits": {
-              "smithy.api#documentation": "Whether audio extraction is enabled or disabled.",
+              "smithy.api#documentation": "\u003cp\u003eWhether audio extraction is enabled or disabled.\u003c/p\u003e",
               "smithy.api#required": {}
             }
           }
@@ -2810,7 +2822,11 @@
           "audio": {
             "target": "com.amazonaws.bedrockagent#AudioConfigurations",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eConfiguration settings for processing audio content in multimodal knowledge bases.\u003c/p\u003e"
+              "smithy.api#deprecated": {
+                "message": "Use Managed Knowledge Base's modelConfiguration field. https://docs.aws.amazon.com/bedrock/latest/userguide/kb-build-managed.html",
+                "since": "2026-09-01"
+              },
+              "smithy.api#documentation": "\u003cp\u003eConfiguration settings for processing audio content in multimodal knowledge bases.\u003c/p\u003e \u003cimportant\u003e \u003cp\u003eThis field is deprecated. Use \u003ccode\u003emodelConfiguration\u003c/code\u003e instead.\u003c/p\u003e \u003c/important\u003e"
             }
           },
           "dimensions": {
@@ -2825,10 +2841,20 @@
               "smithy.api#documentation": "\u003cp\u003eThe data type for the vectors when using a model to convert text into vector embeddings. The model must support the specified data type for vector embeddings. Floating-point (float32) is the default data type, and is supported by most models for vector embeddings. See \u003ca href=\"https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base-supported.html\"\u003eSupported embeddings models\u003c/a\u003e for information on the available models and their vector data types.\u003c/p\u003e"
             }
           },
+          "modelConfiguration": {
+            "target": "smithy.api#Document",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eModel-specific configuration for the embedding model, provided as a JSON object. Use this field to specify settings that apply to the embedding model that you selected, such as how audio and video files are divided into segments.\u003c/p\u003e \u003cp\u003eThe fields that this object accepts depend on the embedding model. For the settings that each model accepts, see the documentation for that model.\u003c/p\u003e \u003cp\u003eFor an example of a \u003ca href=\"https://docs.aws.amazon.com/bedrock/latest/APIReference/API_agent_CreateKnowledgeBase.html\"\u003eCreateKnowledgeBase\u003c/a\u003e request that uses this field to configure a multimodal embedding model, see the \u003ca href=\"https://docs.aws.amazon.com/bedrock/latest/APIReference/API_agent_CreateKnowledgeBase.html#API_agent_CreateKnowledgeBase_Examples\"\u003eExamples\u003c/a\u003e section of \u003ca href=\"https://docs.aws.amazon.com/bedrock/latest/APIReference/API_agent_CreateKnowledgeBase.html\"\u003eCreateKnowledgeBase\u003c/a\u003e.\u003c/p\u003e"
+            }
+          },
           "video": {
             "target": "com.amazonaws.bedrockagent#VideoConfigurations",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eConfiguration settings for processing video content in multimodal knowledge bases.\u003c/p\u003e"
+              "smithy.api#deprecated": {
+                "message": "Use Managed Knowledge Base's modelConfiguration field. https://docs.aws.amazon.com/bedrock/latest/userguide/kb-build-managed.html",
+                "since": "2026-09-01"
+              },
+              "smithy.api#documentation": "\u003cp\u003eConfiguration settings for processing video content in multimodal knowledge bases.\u003c/p\u003e \u003cimportant\u003e \u003cp\u003eThis field is deprecated. Use \u003ccode\u003emodelConfiguration\u003c/code\u003e instead.\u003c/p\u003e \u003c/important\u003e"
             }
           }
         },
@@ -3403,7 +3429,7 @@
           }
         ],
         "traits": {
-          "smithy.api#documentation": "\u003cp\u003eCreates an agent that orchestrates interactions between foundation models, data sources, software applications, user conversations, and APIs to carry out tasks to help customers.\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003eSpecify the following fields for security purposes.\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eagentResourceRoleArn\u003c/code\u003e \u2013 The Amazon Resource Name (ARN) of the role with permissions to invoke API operations on an agent.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e(Optional) \u003ccode\u003ecustomerEncryptionKeyArn\u003c/code\u003e \u2013 The Amazon Resource Name (ARN) of a KMS key to encrypt the creation of the agent.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e(Optional) \u003ccode\u003eidleSessionTTLinSeconds\u003c/code\u003e \u2013 Specify the number of seconds for which the agent should maintain session information. After this time expires, the subsequent \u003ccode\u003eInvokeAgent\u003c/code\u003e request begins a new session.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003eTo enable your agent to retain conversational context across multiple sessions, include a \u003ccode\u003ememoryConfiguration\u003c/code\u003e object. For more information, see \u003ca href=\"https://docs.aws.amazon.com/bedrock/latest/userguide/agents-configure-memory.html\"\u003eConfigure memory\u003c/a\u003e.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003eTo override the default prompt behavior for agent orchestration and to use advanced prompts, include a \u003ccode\u003epromptOverrideConfiguration\u003c/code\u003e object. For more information, see \u003ca href=\"https://docs.aws.amazon.com/bedrock/latest/userguide/advanced-prompts.html\"\u003eAdvanced prompts\u003c/a\u003e.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003eIf your agent fails to be created, the response returns a list of \u003ccode\u003efailureReasons\u003c/code\u003e alongside a list of \u003ccode\u003erecommendedActions\u003c/code\u003e for you to troubleshoot.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003eThe agent instructions will not be honored if your agent has only one knowledge base, uses default prompts, has no action group, and user input is disabled.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e",
+          "smithy.api#documentation": "\u003cnote\u003e \u003cp\u003eAmazon Bedrock Agents (now Amazon Bedrock Agents Classic) is no longer open to new customers. For capabilities similar to Bedrock Agents Classic, explore Amazon Bedrock AgentCore. Existing customers can continue to use the service as normal. For more information, see \u003ca href=\"https://docs.aws.amazon.com/bedrock/latest/userguide/agents-classic-maintenance-mode.html\"\u003eAmazon Bedrock Agents Classic availability change\u003c/a\u003e.\u003c/p\u003e \u003c/note\u003e \u003cp\u003eCreates an agent that orchestrates interactions between foundation models, data sources, software applications, user conversations, and APIs to carry out tasks to help customers.\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003eSpecify the following fields for security purposes.\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eagentResourceRoleArn\u003c/code\u003e \u2013 The Amazon Resource Name (ARN) of the role with permissions to invoke API operations on an agent.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e(Optional) \u003ccode\u003ecustomerEncryptionKeyArn\u003c/code\u003e \u2013 The Amazon Resource Name (ARN) of a KMS key to encrypt the creation of the agent.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e(Optional) \u003ccode\u003eidleSessionTTLinSeconds\u003c/code\u003e \u2013 Specify the number of seconds for which the agent should maintain session information. After this time expires, the subsequent \u003ccode\u003eInvokeAgent\u003c/code\u003e request begins a new session.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003eTo enable your agent to retain conversational context across multiple sessions, include a \u003ccode\u003ememoryConfiguration\u003c/code\u003e object. For more information, see \u003ca href=\"https://docs.aws.amazon.com/bedrock/latest/userguide/agents-configure-memory.html\"\u003eConfigure memory\u003c/a\u003e.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003eTo override the default prompt behavior for agent orchestration and to use advanced prompts, include a \u003ccode\u003epromptOverrideConfiguration\u003c/code\u003e object. For more information, see \u003ca href=\"https://docs.aws.amazon.com/bedrock/latest/userguide/advanced-prompts.html\"\u003eAdvanced prompts\u003c/a\u003e.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003eIf your agent fails to be created, the response returns a list of \u003ccode\u003efailureReasons\u003c/code\u003e alongside a list of \u003ccode\u003erecommendedActions\u003c/code\u003e for you to troubleshoot.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003eThe agent instructions will not be honored if your agent has only one knowledge base, uses default prompts, has no action group, and user input is disabled.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e",
           "smithy.api#http": {
             "code": 202,
             "method": "PUT",
@@ -4814,6 +4840,161 @@
             "target": "com.amazonaws.bedrockagent#Version",
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe version of the prompt that was created. Versions are numbered incrementally, starting from 1.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.bedrockagent#CreateVpcConfiguration": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.bedrockagent#CreateVpcConfigurationRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.bedrockagent#CreateVpcConfigurationResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.bedrockagent#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.bedrockagent#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.bedrockagent#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.bedrockagent#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.bedrockagent#ServiceQuotaExceededException"
+          },
+          {
+            "target": "com.amazonaws.bedrockagent#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.bedrockagent#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eCreates a VPC configuration that lets a knowledge base connect to a resource in your private VPC. This operation is asynchronous: it returns a \u003ccode\u003evpcConfigurationId\u003c/code\u003e with status \u003ccode\u003eCREATING\u003c/code\u003e. Poll \u003ccode\u003eGetVpcConfiguration\u003c/code\u003e until the status becomes \u003ccode\u003eCREATED\u003c/code\u003e or \u003ccode\u003eCREATE_FAILED\u003c/code\u003e.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 202,
+            "method": "POST",
+            "uri": "/knowledgebases/{knowledgeBaseId}/vpcconfigurations/"
+          },
+          "smithy.api#idempotent": {},
+          "smithy.api#tags": [
+            "console"
+          ]
+        }
+      },
+      "com.amazonaws.bedrockagent#CreateVpcConfigurationRequest": {
+        "type": "structure",
+        "members": {
+          "clientToken": {
+            "target": "com.amazonaws.bedrockagent#ClientToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA unique, case-sensitive identifier to ensure that the operation completes no more than one time. If this token matches a previous request, the service ignores the request but does not return an error.\u003c/p\u003e",
+              "smithy.api#idempotencyToken": {}
+            }
+          },
+          "description": {
+            "target": "com.amazonaws.bedrockagent#VpcConfigurationDescription",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn optional description of the VPC configuration. If you don't specify a description, the VPC configuration has no description.\u003c/p\u003e"
+            }
+          },
+          "hostHeader": {
+            "target": "com.amazonaws.bedrockagent#HostHeader",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn optional HTTP \u003ccode\u003eHost\u003c/code\u003e header value to send when invoking the resource. Set this only if your resource (or an upstream router or ingress) routes by the \u003ccode\u003eHost\u003c/code\u003e header and that host differs from the target. This setting is independent of \u003ccode\u003etlsServerName\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "knowledgeBaseId": {
+            "target": "com.amazonaws.bedrockagent#Id",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the knowledge base to associate this VPC configuration with.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "name": {
+            "target": "com.amazonaws.bedrockagent#VpcConfigurationName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn optional human-readable name for the VPC configuration. If you don't specify a name, the VPC configuration has no name.\u003c/p\u003e"
+            }
+          },
+          "port": {
+            "target": "com.amazonaws.bedrockagent#Port",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe port on which to reach the resource.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "protocol": {
+            "target": "com.amazonaws.bedrockagent#VpcProtocol",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe protocol used to connect to the resource. Specify \u003ccode\u003eHTTP\u003c/code\u003e for plaintext or \u003ccode\u003eHTTPS\u003c/code\u003e for TLS. When you specify \u003ccode\u003eHTTPS\u003c/code\u003e, you must also provide \u003ccode\u003etlsServerName\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "resolutionMode": {
+            "target": "com.amazonaws.bedrockagent#VpcResolutionMode",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eControls how a domain-name \u003ccode\u003eresourceTarget\u003c/code\u003e is resolved. This applies only when the target is a domain name; it has no effect for IP-address targets, which have no name to resolve. In all cases the resolved address must be reachable from inside your VPC. Valid values:\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eIN_VPC\u003c/code\u003e (default, recommended) \u2013 The target domain name is resolved privately, using the DNS resolvers of the VPC, such as private Route 53 hosted zones or on-premises DNS reachable from the VPC. Use this for targets that are private to your VPC, such as internal load balancers, private hosted-zone names, or on-premises hosts.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003ePUBLIC\u003c/code\u003e \u2013 The target domain name is resolved against public DNS resolvers. Select this only when the target's domain name must be resolved through public DNS and the resulting address is still reachable from the VPC, an uncommon split-horizon configuration. If you are unsure, use \u003ccode\u003eIN_VPC\u003c/code\u003e.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "resourceTarget": {
+            "target": "com.amazonaws.bedrockagent#ResourceTarget",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe private IPv4 address or DNS name of the resource you want the knowledge base to reach. The target must be privately reachable from inside your VPC, such as an internal load balancer or a private IP. The following are not supported:\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003eInternet-facing endpoints\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003eLoopback addresses\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003eLink-local addresses\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003eWildcard addresses\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003eMulticast addresses\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003eIPv6 literals\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "subnetIds": {
+            "target": "com.amazonaws.bedrockagent#SubnetIdList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe subnets, in the VPC identified by \u003ccode\u003evpcId\u003c/code\u003e, that the knowledge base uses to connect to the resource.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "tlsServerName": {
+            "target": "com.amazonaws.bedrockagent#TlsServerName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe expected TLS server name. The service matches this value against the Subject Alternative Names on your resource's TLS certificate during invocation. This field is required when \u003ccode\u003eprotocol\u003c/code\u003e is \u003ccode\u003eHTTPS\u003c/code\u003e. Set it to a hostname on your certificate, such as \u003ccode\u003eapp.internal.example.com\u003c/code\u003e. You can use a single leftmost wildcard, such as \u003ccode\u003e*.example.com\u003c/code\u003e. The value must be a hostname without a port.\u003c/p\u003e"
+            }
+          },
+          "vpcId": {
+            "target": "com.amazonaws.bedrockagent#VpcId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier of the VPC that the knowledge base connects through to reach the resource.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.bedrockagent#CreateVpcConfigurationResponse": {
+        "type": "structure",
+        "members": {
+          "status": {
+            "target": "com.amazonaws.bedrockagent#VpcConfigurationStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe current status of the VPC configuration. Immediately after creation this is \u003ccode\u003eCREATING\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "vpcConfigurationId": {
+            "target": "com.amazonaws.bedrockagent#VpcConfigurationId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the VPC configuration that was created.\u003c/p\u003e",
               "smithy.api#required": {}
             }
           }
@@ -6506,6 +6687,93 @@
             "target": "com.amazonaws.bedrockagent#RevisionId",
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe revision identifier after the resource policy was deleted.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.bedrockagent#DeleteVpcConfiguration": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.bedrockagent#DeleteVpcConfigurationRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.bedrockagent#DeleteVpcConfigurationResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.bedrockagent#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.bedrockagent#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.bedrockagent#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.bedrockagent#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.bedrockagent#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.bedrockagent#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eDeletes a VPC configuration. This operation is asynchronous: it returns status \u003ccode\u003eDELETING\u003c/code\u003e. Poll \u003ccode\u003eGetVpcConfiguration\u003c/code\u003e until it returns a \u003ccode\u003eResourceNotFoundException\u003c/code\u003e, indicating the configuration is deleted. Delete requests are idempotent and safe to retry.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 202,
+            "method": "DELETE",
+            "uri": "/knowledgebases/{knowledgeBaseId}/vpcconfigurations/{vpcConfigurationId}"
+          },
+          "smithy.api#idempotent": {},
+          "smithy.api#tags": [
+            "console"
+          ]
+        }
+      },
+      "com.amazonaws.bedrockagent#DeleteVpcConfigurationRequest": {
+        "type": "structure",
+        "members": {
+          "knowledgeBaseId": {
+            "target": "com.amazonaws.bedrockagent#Id",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the knowledge base that owns the VPC configuration.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "vpcConfigurationId": {
+            "target": "com.amazonaws.bedrockagent#VpcConfigurationId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the VPC configuration to delete.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.bedrockagent#DeleteVpcConfigurationResponse": {
+        "type": "structure",
+        "members": {
+          "status": {
+            "target": "com.amazonaws.bedrockagent#VpcConfigurationStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe current status of the VPC configuration. Immediately after a delete request this is \u003ccode\u003eDELETING\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "vpcConfigurationId": {
+            "target": "com.amazonaws.bedrockagent#VpcConfigurationId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the VPC configuration being deleted.\u003c/p\u003e",
+              "smithy.api#required": {}
             }
           }
         },
@@ -10302,6 +10570,83 @@
           "smithy.api#output": {}
         }
       },
+      "com.amazonaws.bedrockagent#GetVpcConfiguration": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.bedrockagent#GetVpcConfigurationRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.bedrockagent#GetVpcConfigurationResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.bedrockagent#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.bedrockagent#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.bedrockagent#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.bedrockagent#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.bedrockagent#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eReturns the details and current status of a single VPC configuration. Use this operation to poll for the outcome of an asynchronous create or delete.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "GET",
+            "uri": "/knowledgebases/{knowledgeBaseId}/vpcconfigurations/{vpcConfigurationId}"
+          },
+          "smithy.api#readonly": {},
+          "smithy.api#tags": [
+            "console"
+          ]
+        }
+      },
+      "com.amazonaws.bedrockagent#GetVpcConfigurationRequest": {
+        "type": "structure",
+        "members": {
+          "knowledgeBaseId": {
+            "target": "com.amazonaws.bedrockagent#Id",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the knowledge base that owns the VPC configuration.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "vpcConfigurationId": {
+            "target": "com.amazonaws.bedrockagent#VpcConfigurationId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the VPC configuration to retrieve.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.bedrockagent#GetVpcConfigurationResponse": {
+        "type": "structure",
+        "members": {
+          "vpcConfiguration": {
+            "target": "com.amazonaws.bedrockagent#VpcConfiguration",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe VPC configuration, including its connection settings, resolution mode, and current lifecycle status.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
       "com.amazonaws.bedrockagent#GraphArn": {
         "type": "string",
         "traits": {
@@ -10405,6 +10750,16 @@
           }
         }
       },
+      "com.amazonaws.bedrockagent#HostHeader": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 255
+          },
+          "smithy.api#pattern": "^[A-Za-z0-9._:\\[\\]-]{1,255}$"
+        }
+      },
       "com.amazonaws.bedrockagent#HttpsUrl": {
         "type": "string",
         "traits": {
@@ -10423,7 +10778,7 @@
           "imageExtractionStatus": {
             "target": "com.amazonaws.bedrockagent#EnabledOrDisabledState",
             "traits": {
-              "smithy.api#documentation": "Whether image extraction is enabled or disabled.",
+              "smithy.api#documentation": "\u003cp\u003eWhether image extraction is enabled or disabled.\u003c/p\u003e",
               "smithy.api#required": {}
             }
           }
@@ -10712,6 +11067,12 @@
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe status of the data ingestion job.\u003c/p\u003e",
               "smithy.api#required": {}
+            }
+          },
+          "textReadyAt": {
+            "target": "com.amazonaws.bedrockagent#DateTimestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe time at which all text content in the data ingestion job finished extraction and became available to query.\u003c/p\u003e \u003cp\u003eThis time isn't returned until text extraction is complete for all the documents in the job.\u003c/p\u003e"
             }
           },
           "updatedAt": {
@@ -11028,6 +11389,12 @@
               "smithy.api#required": {}
             }
           },
+          "textReadyAt": {
+            "target": "com.amazonaws.bedrockagent#DateTimestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe time at which all text content in the data ingestion job finished extraction and became available to query.\u003c/p\u003e \u003cp\u003eThis time isn't returned until text extraction is complete for all the documents in the job.\u003c/p\u003e"
+            }
+          },
           "updatedAt": {
             "target": "com.amazonaws.bedrockagent#DateTimestamp",
             "traits": {
@@ -11341,7 +11708,10 @@
             }
           },
           "managedKnowledgeBaseConfiguration": {
-            "target": "com.amazonaws.bedrockagent#ManagedKnowledgeBaseConfiguration"
+            "target": "com.amazonaws.bedrockagent#ManagedKnowledgeBaseConfiguration",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eContains configuration details for a knowledge base that uses a vector store fully managed by Amazon Bedrock. Specify this object when the knowledge base type is MANAGED.\u003c/p\u003e"
+            }
           },
           "sqlKnowledgeBaseConfiguration": {
             "target": "com.amazonaws.bedrockagent#SqlKnowledgeBaseConfiguration",
@@ -13298,6 +13668,112 @@
           "smithy.api#output": {}
         }
       },
+      "com.amazonaws.bedrockagent#ListVpcConfigurations": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.bedrockagent#ListVpcConfigurationsRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.bedrockagent#ListVpcConfigurationsResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.bedrockagent#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.bedrockagent#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.bedrockagent#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.bedrockagent#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.bedrockagent#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eReturns a paginated list of the VPC configurations for a knowledge base. You can optionally filter by status. Use the \u003ccode\u003enextToken\u003c/code\u003e parameter to retrieve additional results.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "GET",
+            "uri": "/knowledgebases/{knowledgeBaseId}/vpcconfigurations/"
+          },
+          "smithy.api#paginated": {
+            "inputToken": "nextToken",
+            "outputToken": "nextToken",
+            "pageSize": "maxResults",
+            "items": "items"
+          },
+          "smithy.api#readonly": {},
+          "smithy.api#tags": [
+            "console"
+          ]
+        }
+      },
+      "com.amazonaws.bedrockagent#ListVpcConfigurationsRequest": {
+        "type": "structure",
+        "members": {
+          "knowledgeBaseId": {
+            "target": "com.amazonaws.bedrockagent#Id",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the knowledge base whose VPC configurations you want to list.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "maxResults": {
+            "target": "com.amazonaws.bedrockagent#MaxResults",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of results to return in the response. If more results are available, the response returns a \u003ccode\u003enextToken\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#httpQuery": "maxResults",
+              "smithy.api#range": {
+                "min": 1,
+                "max": 100
+              }
+            }
+          },
+          "nextToken": {
+            "target": "com.amazonaws.bedrockagent#NextToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA pagination token to retrieve the next page of results, returned in a previous response when more results are available.\u003c/p\u003e",
+              "smithy.api#httpQuery": "nextToken"
+            }
+          },
+          "statusFilter": {
+            "target": "com.amazonaws.bedrockagent#VpcConfigurationStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe status to filter the results by. Only VPC configurations with the specified status are returned.\u003c/p\u003e",
+              "smithy.api#httpQuery": "status"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.bedrockagent#ListVpcConfigurationsResponse": {
+        "type": "structure",
+        "members": {
+          "items": {
+            "target": "com.amazonaws.bedrockagent#VpcConfigurationSummaryList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of VPC configuration summaries.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "nextToken": {
+            "target": "com.amazonaws.bedrockagent#NextToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA pagination token to retrieve the next page of results, present when the total number of results exceeds the maximum number of results.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
       "com.amazonaws.bedrockagent#LoopControllerFlowNodeConfiguration": {
         "type": "structure",
         "members": {
@@ -13442,13 +13918,28 @@
             }
           },
           "embeddingModelConfiguration": {
-            "target": "com.amazonaws.bedrockagent#EmbeddingModelConfiguration"
+            "target": "com.amazonaws.bedrockagent#EmbeddingModelConfiguration",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe configuration details for the embeddings model. Not required when choosing the MANAGED embeddingModelType.\u003c/p\u003e"
+            }
           },
           "embeddingModelType": {
-            "target": "com.amazonaws.bedrockagent#EmbeddingModelType"
+            "target": "com.amazonaws.bedrockagent#EmbeddingModelType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eChoose CUSTOM to provide your own Bedrock embedding model ARN. Choose MANAGED to use a service-managed embedding model.\u003c/p\u003e"
+            }
           },
           "serverSideEncryptionConfiguration": {
-            "target": "com.amazonaws.bedrockagent#ServerSideEncryptionConfiguration"
+            "target": "com.amazonaws.bedrockagent#ServerSideEncryptionConfiguration",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eContains the configuration for server-side encryption for your managed knowledge base.\u003c/p\u003e"
+            }
+          },
+          "supplementalDataStorageConfiguration": {
+            "target": "com.amazonaws.bedrockagent#SupplementalDataStorageConfiguration",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eUse this object to specify the Amazon S3 location that the knowledge base uses to process and ingest multimodal content. This field is required when you use a native multimodal embedding model.\u003c/p\u003e"
+            }
           }
         },
         "traits": {
@@ -14521,7 +15012,7 @@
           "parsingStrategy": {
             "target": "com.amazonaws.bedrockagent#ParsingStrategy",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe parsing strategy for the data source. Only \u003ccode\u003eSMART_PARSING\u003c/code\u003e can be selected for managed knowledge bases. For more information, see \u003ca href=\"https://docs.aws.amazon.com/bedrock/latest/userguide/kb-managed-customize-ingestion.html\"\u003eCustomize ingestion for managed knowledge bases\u003c/a\u003e.\u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003eThe parsing strategy for the data source.\u003c/p\u003e \u003cp\u003eFor managed knowledge bases, the strategy that you can select depends on the embedding model that your knowledge base uses:\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003eIf your knowledge base uses a native multimodal embedding model, specify \u003ccode\u003eMULTI_MODAL_EMBEDDINGS\u003c/code\u003e. With this strategy, files are sent directly to the embedding model instead of being parsed into text. This is the only strategy that is supported for these knowledge bases.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003eOtherwise, specify \u003ccode\u003eSMART_PARSING\u003c/code\u003e.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e \u003cp\u003eFor more information, see \u003ca href=\"https://docs.aws.amazon.com/bedrock/latest/userguide/kb-managed-customize-ingestion.html\"\u003eCustomize ingestion for managed knowledge bases\u003c/a\u003e.\u003c/p\u003e",
               "smithy.api#required": {}
             }
           }
@@ -14578,6 +15069,12 @@
             "target": "smithy.api#Unit",
             "traits": {
               "smithy.api#enumValue": "BEDROCK_FOUNDATION_MODEL"
+            }
+          },
+          "MULTI_MODAL_EMBEDDINGS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "MULTI_MODAL_EMBEDDINGS"
             }
           },
           "SMART_PARSING": {
@@ -14754,6 +15251,15 @@
             "max": 2048
           },
           "smithy.api#pattern": "^.*$"
+        }
+      },
+      "com.amazonaws.bedrockagent#Port": {
+        "type": "integer",
+        "traits": {
+          "smithy.api#range": {
+            "min": 1,
+            "max": 65535
+          }
         }
       },
       "com.amazonaws.bedrockagent#PrepareAgent": {
@@ -16458,6 +16964,15 @@
           "smithy.api#pattern": "^[\\u0009\\u000A\\u000D\\u0020-\\u00FF]+$"
         }
       },
+      "com.amazonaws.bedrockagent#ResourceTarget": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 255
+          }
+        }
+      },
       "com.amazonaws.bedrockagent#RetrievalFlowNodeConfiguration": {
         "type": "structure",
         "members": {
@@ -17424,6 +17939,28 @@
           "smithy.api#sensitive": {}
         }
       },
+      "com.amazonaws.bedrockagent#SubnetId": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 64
+          },
+          "smithy.api#pattern": "^subnet-[a-zA-Z0-9]+$"
+        }
+      },
+      "com.amazonaws.bedrockagent#SubnetIdList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.bedrockagent#SubnetId"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 6
+          }
+        }
+      },
       "com.amazonaws.bedrockagent#SupplementalDataStorageConfiguration": {
         "type": "structure",
         "members": {
@@ -17752,6 +18289,16 @@
           "smithy.api#httpError": 429
         }
       },
+      "com.amazonaws.bedrockagent#TlsServerName": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 253
+          },
+          "smithy.api#pattern": "^(\\*\\.)?([A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?\\.)*[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?$"
+        }
+      },
       "com.amazonaws.bedrockagent#Tool": {
         "type": "union",
         "members": {
@@ -17873,7 +18420,7 @@
           "strict": {
             "target": "smithy.api#Boolean",
             "traits": {
-              "smithy.api#documentation": "Whether to enforce strict JSON schema adherence for the tool input"
+              "smithy.api#documentation": "\u003cp\u003eWhether the tool schema is strictly enforced.\u003c/p\u003e"
             }
           }
         },
@@ -19959,7 +20506,7 @@
           "videoExtractionStatus": {
             "target": "com.amazonaws.bedrockagent#EnabledOrDisabledState",
             "traits": {
-              "smithy.api#documentation": "Whether video extraction is enabled or disabled.",
+              "smithy.api#documentation": "\u003cp\u003eWhether video extraction is enabled or disabled.\u003c/p\u003e",
               "smithy.api#required": {}
             }
           }
@@ -19985,6 +20532,341 @@
         },
         "traits": {
           "smithy.api#documentation": "\u003cp\u003eConfiguration for segmenting video content during multimodal knowledge base ingestion. Determines how video files are divided into chunks for processing.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.bedrockagent#VpcConfiguration": {
+        "type": "structure",
+        "members": {
+          "createdAt": {
+            "target": "com.amazonaws.bedrockagent#DateTimestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe time at which the VPC configuration was created.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "description": {
+            "target": "com.amazonaws.bedrockagent#VpcConfigurationDescription",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe description of the VPC configuration, if provided.\u003c/p\u003e"
+            }
+          },
+          "hostHeader": {
+            "target": "com.amazonaws.bedrockagent#HostHeader",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe HTTP \u003ccode\u003eHost\u003c/code\u003e header value sent when invoking the resource, if configured.\u003c/p\u003e"
+            }
+          },
+          "name": {
+            "target": "com.amazonaws.bedrockagent#VpcConfigurationName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe human-readable name of the VPC configuration, if provided.\u003c/p\u003e"
+            }
+          },
+          "port": {
+            "target": "com.amazonaws.bedrockagent#Port",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe port on which the resource is reached.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "protocol": {
+            "target": "com.amazonaws.bedrockagent#VpcProtocol",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe protocol used to connect to the resource.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "resolutionMode": {
+            "target": "com.amazonaws.bedrockagent#VpcResolutionMode",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies how the resource target is resolved.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "resourceTarget": {
+            "target": "com.amazonaws.bedrockagent#ResourceTarget",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe private IPv4 address or DNS name of the resource.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "status": {
+            "target": "com.amazonaws.bedrockagent#VpcConfigurationStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe current lifecycle status of the VPC configuration.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "statusMessage": {
+            "target": "com.amazonaws.bedrockagent#VpcConfigurationStatusMessage",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAdditional detail about the current status, such as the cause of a \u003ccode\u003eCREATE_FAILED\u003c/code\u003e or \u003ccode\u003eDELETE_FAILED\u003c/code\u003e status.\u003c/p\u003e"
+            }
+          },
+          "subnetIds": {
+            "target": "com.amazonaws.bedrockagent#SubnetIdList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe subnets that the knowledge base uses to connect to the resource.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "tlsServerName": {
+            "target": "com.amazonaws.bedrockagent#TlsServerName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe expected TLS server name that the service matches against the Subject Alternative Names on the resource's TLS certificate. Present when \u003ccode\u003eprotocol\u003c/code\u003e is \u003ccode\u003eHTTPS\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "updatedAt": {
+            "target": "com.amazonaws.bedrockagent#DateTimestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe time at which the VPC configuration was last updated.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "vpcConfigurationId": {
+            "target": "com.amazonaws.bedrockagent#VpcConfigurationId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the VPC configuration.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "vpcId": {
+            "target": "com.amazonaws.bedrockagent#VpcId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier of the VPC that the knowledge base connects through to reach the resource.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eContains the details of a VPC configuration, including its connection settings, resolution mode, and current lifecycle status.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.bedrockagent#VpcConfigurationDescription": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 512
+          },
+          "smithy.api#pattern": "^[^\\p{C}]*$"
+        }
+      },
+      "com.amazonaws.bedrockagent#VpcConfigurationId": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 32,
+            "max": 32
+          },
+          "smithy.api#pattern": "^[a-z0-9](?:[a-z0-9-]{30}[a-z0-9])$"
+        }
+      },
+      "com.amazonaws.bedrockagent#VpcConfigurationName": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 128
+          },
+          "smithy.api#pattern": "^[a-zA-Z0-9]([a-zA-Z0-9 _-]*[a-zA-Z0-9])?$"
+        }
+      },
+      "com.amazonaws.bedrockagent#VpcConfigurationStatus": {
+        "type": "enum",
+        "members": {
+          "CREATED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "CREATED"
+            }
+          },
+          "CREATE_FAILED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "CREATE_FAILED"
+            }
+          },
+          "CREATING": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "CREATING"
+            }
+          },
+          "DELETE_FAILED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "DELETE_FAILED"
+            }
+          },
+          "DELETING": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "DELETING"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe lifecycle status of a VPC configuration. Valid values:\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eCREATING\u003c/code\u003e \u2013 The configuration is being created.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eCREATED\u003c/code\u003e \u2013 The configuration is ready to use.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eDELETING\u003c/code\u003e \u2013 The configuration is being deleted.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eCREATE_FAILED\u003c/code\u003e \u2013 Creation failed. See \u003ccode\u003estatusMessage\u003c/code\u003e for the cause.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eDELETE_FAILED\u003c/code\u003e \u2013 Deletion failed. See \u003ccode\u003estatusMessage\u003c/code\u003e for the cause.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e"
+        }
+      },
+      "com.amazonaws.bedrockagent#VpcConfigurationStatusMessage": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 2048
+          }
+        }
+      },
+      "com.amazonaws.bedrockagent#VpcConfigurationSummary": {
+        "type": "structure",
+        "members": {
+          "createdAt": {
+            "target": "com.amazonaws.bedrockagent#DateTimestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe time at which the VPC configuration was created.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "description": {
+            "target": "com.amazonaws.bedrockagent#VpcConfigurationDescription",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe description of the VPC configuration, if provided.\u003c/p\u003e"
+            }
+          },
+          "hostHeader": {
+            "target": "com.amazonaws.bedrockagent#HostHeader",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe HTTP \u003ccode\u003eHost\u003c/code\u003e header value sent when invoking the resource, if configured.\u003c/p\u003e"
+            }
+          },
+          "name": {
+            "target": "com.amazonaws.bedrockagent#VpcConfigurationName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe human-readable name of the VPC configuration, if provided.\u003c/p\u003e"
+            }
+          },
+          "port": {
+            "target": "com.amazonaws.bedrockagent#Port",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe port on which the resource is reached.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "protocol": {
+            "target": "com.amazonaws.bedrockagent#VpcProtocol",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe protocol used to connect to the resource.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "resolutionMode": {
+            "target": "com.amazonaws.bedrockagent#VpcResolutionMode",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies how the resource target is resolved.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "resourceTarget": {
+            "target": "com.amazonaws.bedrockagent#ResourceTarget",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe private IPv4 address or DNS name of the resource.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "status": {
+            "target": "com.amazonaws.bedrockagent#VpcConfigurationStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe current lifecycle status of the VPC configuration.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "statusMessage": {
+            "target": "com.amazonaws.bedrockagent#VpcConfigurationStatusMessage",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAdditional detail about the current status, such as the cause of a failure.\u003c/p\u003e"
+            }
+          },
+          "tlsServerName": {
+            "target": "com.amazonaws.bedrockagent#TlsServerName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe expected TLS server name that the service matches against the Subject Alternative Names on the resource's TLS certificate. Present when \u003ccode\u003eprotocol\u003c/code\u003e is \u003ccode\u003eHTTPS\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "vpcConfigurationId": {
+            "target": "com.amazonaws.bedrockagent#VpcConfigurationId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the VPC configuration.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "vpcId": {
+            "target": "com.amazonaws.bedrockagent#VpcId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier of the VPC that the knowledge base connects through to reach the resource.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA summary of a VPC configuration returned by \u003ccode\u003eListVpcConfigurations\u003c/code\u003e.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.bedrockagent#VpcConfigurationSummaryList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.bedrockagent#VpcConfigurationSummary"
+        }
+      },
+      "com.amazonaws.bedrockagent#VpcId": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 64
+          },
+          "smithy.api#pattern": "^vpc-[a-zA-Z0-9]+$"
+        }
+      },
+      "com.amazonaws.bedrockagent#VpcProtocol": {
+        "type": "enum",
+        "members": {
+          "HTTP": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "HTTP"
+            }
+          },
+          "HTTPS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "HTTPS"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe protocol used to connect to the resource. Valid values:\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eHTTP\u003c/code\u003e \u2013 Connect over plaintext HTTP.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eHTTPS\u003c/code\u003e \u2013 Connect over TLS.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e"
+        }
+      },
+      "com.amazonaws.bedrockagent#VpcResolutionMode": {
+        "type": "enum",
+        "members": {
+          "IN_VPC": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "IN_VPC"
+            }
+          },
+          "PUBLIC": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "PUBLIC"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eControls how a domain-name resource target is resolved. This applies only when the target is a domain name; it has no effect for IP-address targets. In all cases the resolved address must be reachable from inside the VPC. Valid values:\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eIN_VPC\u003c/code\u003e (default, recommended) \u2013 The target domain name is resolved privately, using the DNS resolvers of the VPC.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003ePUBLIC\u003c/code\u003e \u2013 The target domain name is resolved against public DNS resolvers, for the uncommon case where the name must resolve through public DNS but the resulting address remains reachable from the VPC.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e"
         }
       },
       "com.amazonaws.bedrockagent#WebCrawlerConfiguration": {

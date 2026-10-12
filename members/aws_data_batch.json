@@ -61,6 +61,9 @@
             "target": "com.amazonaws.batch#CancelJob"
           },
           {
+            "target": "com.amazonaws.batch#CancelJobs"
+          },
+          {
             "target": "com.amazonaws.batch#CreateComputeEnvironment"
           },
           {
@@ -166,7 +169,13 @@
             "target": "com.amazonaws.batch#TerminateJob"
           },
           {
+            "target": "com.amazonaws.batch#TerminateJobs"
+          },
+          {
             "target": "com.amazonaws.batch#TerminateServiceJob"
+          },
+          {
+            "target": "com.amazonaws.batch#TerminateServiceJobs"
           },
           {
             "target": "com.amazonaws.batch#UntagResource"
@@ -1912,7 +1921,7 @@
           }
         ],
         "traits": {
-          "smithy.api#documentation": "\u003cp\u003eCancels a job in an Batch job queue. Jobs that are in a \u003ccode\u003eSUBMITTED\u003c/code\u003e, \u003ccode\u003ePENDING\u003c/code\u003e, or \u003ccode\u003eRUNNABLE\u003c/code\u003e state are cancelled and the job status is updated to \u003ccode\u003eFAILED\u003c/code\u003e.\u003c/p\u003e\n         \u003cnote\u003e\n            \u003cp\u003eA \u003ccode\u003ePENDING\u003c/code\u003e job is canceled after all dependency jobs are completed.\n        Therefore, it may take longer than expected to cancel a job in \u003ccode\u003ePENDING\u003c/code\u003e\n        status.\u003c/p\u003e\n            \u003cp\u003eWhen you try to cancel an array parent job in \u003ccode\u003ePENDING\u003c/code\u003e, Batch attempts to\n        cancel all child jobs. The array parent job is canceled when all child jobs are\n        completed.\u003c/p\u003e\n         \u003c/note\u003e\n         \u003cp\u003eJobs that progressed to the \u003ccode\u003eSTARTING\u003c/code\u003e or\n        \u003ccode\u003eRUNNING\u003c/code\u003e state aren't canceled. However, the API operation still succeeds, even\n      if no job is canceled. These jobs must be terminated with the \u003ca\u003eTerminateJob\u003c/a\u003e\n      operation.\u003c/p\u003e",
+          "smithy.api#documentation": "\u003cp\u003eCancels a job in an Batch job queue. Jobs that are in a \u003ccode\u003eSUBMITTED\u003c/code\u003e, \u003ccode\u003ePENDING\u003c/code\u003e, or \u003ccode\u003eRUNNABLE\u003c/code\u003e state are cancelled and the job status is updated to \u003ccode\u003eFAILED\u003c/code\u003e.\u003c/p\u003e\n         \u003cnote\u003e\n            \u003cp\u003eA \u003ccode\u003ePENDING\u003c/code\u003e job is cancelled after all dependency jobs are completed.\n        Therefore, it might take longer than expected to cancel a job in \u003ccode\u003ePENDING\u003c/code\u003e\n        status.\u003c/p\u003e\n            \u003cp\u003eWhen you try to cancel an array parent job in \u003ccode\u003ePENDING\u003c/code\u003e, Batch attempts to\n        cancel all child jobs. The array parent job is cancelled when all child jobs are\n        completed.\u003c/p\u003e\n         \u003c/note\u003e\n         \u003cp\u003eJobs that progressed to the \u003ccode\u003eSTARTING\u003c/code\u003e or\n        \u003ccode\u003eRUNNING\u003c/code\u003e state aren't cancelled. However, the API operation still succeeds, even\n      if no job is cancelled. These jobs must be terminated with the \u003ca\u003eTerminateJob\u003c/a\u003e or\n        \u003ca\u003eTerminateJobs\u003c/a\u003e operation.\u003c/p\u003e",
           "smithy.api#examples": [
             {
               "title": "To cancel a job",
@@ -1946,7 +1955,7 @@
             "target": "com.amazonaws.batch#String",
             "traits": {
               "smithy.api#clientOptional": {},
-              "smithy.api#documentation": "\u003cp\u003eA message to attach to the job that explains the reason for canceling it. This message is\n      returned by future \u003ca\u003eDescribeJobs\u003c/a\u003e operations on the job. It is also\n      recorded in the Batch activity logs.\u003c/p\u003e\n         \u003cp\u003eThis parameter has as limit of 1024 characters.\u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003eA message to attach to the job that explains the reason for cancelling it. This message is\n      returned by future \u003ca\u003eDescribeJobs\u003c/a\u003e operations on the job. It is also\n      recorded in the Batch activity logs.\u003c/p\u003e\n         \u003cp\u003eThis parameter has a limit of 1024 characters.\u003c/p\u003e",
               "smithy.api#required": {}
             }
           }
@@ -1959,6 +1968,144 @@
       "com.amazonaws.batch#CancelJobResponse": {
         "type": "structure",
         "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.batch#CancelJobs": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.batch#CancelJobsRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.batch#CancelJobsResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.batch#ClientException"
+          },
+          {
+            "target": "com.amazonaws.batch#ServerException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eCancels up to 50 jobs in an Batch job queue. This is a bulk version of \u003ca\u003eCancelJob\u003c/a\u003e. Jobs that are in a\n        \u003ccode\u003eSUBMITTED\u003c/code\u003e, \u003ccode\u003ePENDING\u003c/code\u003e, or \u003ccode\u003eRUNNABLE\u003c/code\u003e state are cancelled\n      and the job status is updated to \u003ccode\u003eFAILED\u003c/code\u003e.\u003c/p\u003e\n         \u003cnote\u003e\n            \u003cp\u003eA \u003ccode\u003ePENDING\u003c/code\u003e job is cancelled after all dependency jobs are completed.\n        Therefore, it might take longer than expected to cancel a job in \u003ccode\u003ePENDING\u003c/code\u003e\n        status.\u003c/p\u003e\n            \u003cp\u003eWhen you try to cancel an array parent job in \u003ccode\u003ePENDING\u003c/code\u003e, Batch attempts to\n        cancel all child jobs. The array parent job is cancelled when all child jobs are\n        completed.\u003c/p\u003e\n         \u003c/note\u003e\n         \u003cp\u003eJobs that progressed to the \u003ccode\u003eSTARTING\u003c/code\u003e or \u003ccode\u003eRUNNING\u003c/code\u003e state aren't\n      cancelled. These jobs must be terminated with the \u003ca\u003eTerminateJob\u003c/a\u003e or\n        \u003ca\u003eTerminateJobs\u003c/a\u003e operation.\u003c/p\u003e\n         \u003cp\u003eBatch reports the result for each job individually in the response. Jobs that\n      were processed successfully are reported in the \u003ccode\u003esuccessful\u003c/code\u003e list. Jobs that\n      encountered errors are reported in the \u003ccode\u003eerrors\u003c/code\u003e list. The response returns an\n      HTTP status code of \u003ccode\u003e200\u003c/code\u003e even when some jobs encountered errors, so check the\n      \u003ccode\u003eerrors\u003c/code\u003e list. Jobs that can't be found are treated as successfully\n      processed.\u003c/p\u003e\n         \u003cimportant\u003e\n            \u003cp\u003eThis operation requires \u003ccode\u003ebatch:CancelJob\u003c/code\u003e permission for each job in the\n        request. There is no separate \u003ccode\u003ebatch:CancelJobs\u003c/code\u003e IAM action. If a caller's IAM\n        policy grants \u003ccode\u003ebatch:CancelJob\u003c/code\u003e, they can use both the singular\n        \u003ca\u003eCancelJob\u003c/a\u003e and bulk \u003ccode\u003eCancelJobs\u003c/code\u003e operations.\u003c/p\u003e\n         \u003c/important\u003e",
+          "smithy.api#examples": [
+            {
+              "title": "To cancel multiple jobs",
+              "documentation": "This example cancels the jobs with the specified job IDs.",
+              "input": {
+                "jobs": [
+                  "1d828f65-7a4d-42e8-996d-3b900ed59dc4",
+                  "b3d0f26e-6d3a-4a5b-9c2e-7f4a1b2c3d4e"
+                ],
+                "reason": "Cancelling jobs."
+              },
+              "output": {
+                "successful": [
+                  "1d828f65-7a4d-42e8-996d-3b900ed59dc4"
+                ],
+                "errors": [
+                  {
+                    "job": "b3d0f26e-6d3a-4a5b-9c2e-7f4a1b2c3d4e",
+                    "code": "ServerException",
+                    "message": "Failed to read job state. Please retry this job."
+                  }
+                ]
+              }
+            }
+          ],
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/v1/canceljobs",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.batch#CancelJobsErrorDetail": {
+        "type": "structure",
+        "members": {
+          "code": {
+            "target": "com.amazonaws.batch#String",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eAn error code that identifies the reason the job couldn't be cancelled. Valid values are:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eValidationException\u003c/code\u003e \u2013 A job identifier in the request is malformed or isn't valid.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eClientException\u003c/code\u003e \u2013 The request failed because of a client error.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eThrottlingException\u003c/code\u003e \u2013 The request was throttled. Retry the request.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eServerException\u003c/code\u003e \u2013 An internal error occurred. Retry the request.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eAccessDenied\u003c/code\u003e \u2013 The caller isn't authorized to perform the action on the specified job.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "job": {
+            "target": "com.amazonaws.batch#String",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe Batch job ID of the job that couldn't be cancelled.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "message": {
+            "target": "com.amazonaws.batch#String",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eA message that describes the reason the job couldn't be cancelled.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eAn object that contains the details of a job that couldn't be cancelled by a\n        \u003ccode\u003eCancelJobs\u003c/code\u003e operation.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.batch#CancelJobsErrorDetailList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.batch#CancelJobsErrorDetail"
+        }
+      },
+      "com.amazonaws.batch#CancelJobsRequest": {
+        "type": "structure",
+        "members": {
+          "jobs": {
+            "target": "com.amazonaws.batch#StringList",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eAn array of up to 50 Batch job IDs of the jobs to cancel.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "reason": {
+            "target": "com.amazonaws.batch#String",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eA message to attach to the job that explains the reason for cancelling it. This message is\n      returned by future \u003ca\u003eDescribeJobs\u003c/a\u003e operations on the job. It is also\n      recorded in the Batch activity logs.\u003c/p\u003e\n         \u003cp\u003eThis parameter has a limit of 1024 characters.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eSpecifies the jobs to cancel and the reason for the cancellation.\u003c/p\u003e",
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.batch#CancelJobsResponse": {
+        "type": "structure",
+        "members": {
+          "errors": {
+            "target": "com.amazonaws.batch#CancelJobsErrorDetailList",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eA list of \u003ccode\u003eCancelJobsErrorDetail\u003c/code\u003e items, one for each job that couldn't be\n      cancelled. Each item includes the job ID along with a code and message that describe why the\n      job wasn't cancelled.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "successful": {
+            "target": "com.amazonaws.batch#StringList",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eA list of the job IDs whose cancellation request was accepted.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe result of a \u003ccode\u003eCancelJobs\u003c/code\u003e request, including the jobs whose cancellation\n      request was accepted and the errors for jobs that couldn't be cancelled.\u003c/p\u003e",
           "smithy.api#output": {}
         }
       },
@@ -3239,7 +3386,7 @@
           "eksConfiguration": {
             "target": "com.amazonaws.batch#EksConfiguration",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe details for the Amazon EKS cluster that supports the compute environment.\u003c/p\u003e\n         \u003cnote\u003e\n            \u003cp\u003eTo create a compute environment that uses EKS resources, the caller must have\n        permissions to call \u003ccode\u003eeks:DescribeCluster\u003c/code\u003e.\u003c/p\u003e\n         \u003c/note\u003e"
+              "smithy.api#documentation": "\u003cp\u003eThe details for the Amazon EKS cluster that supports the compute environment.\u003c/p\u003e\n         \u003cnote\u003e\n            \u003cp\u003eTo create a compute environment that uses EKS resources, the caller must have\n        permissions to call \u003ccode\u003eeks:DescribeCluster\u003c/code\u003e. Additional Amazon EKS permissions are\n        required for Batch to manage an access entry on the cluster; see \u003ca href=\"https://docs.aws.amazon.com/batch/latest/userguide/eks-access-entries.html\"\u003eAmazon EKS access entry\n        authentication\u003c/a\u003e in the \u003ci\u003eBatch User Guide\u003c/i\u003e.\u003c/p\u003e\n         \u003c/note\u003e"
             }
           },
           "serviceRole": {
@@ -5728,6 +5875,74 @@
           "smithy.api#documentation": "\u003cp\u003eThe properties for a task definition that describes the container and volume definitions of\n   an Amazon ECS task. You can specify which Docker images to use, the required resources, and other\n   configurations related to launching the task definition through an Amazon ECS service or task.\u003c/p\u003e"
         }
       },
+      "com.amazonaws.batch#EksAccessEntry": {
+        "type": "structure",
+        "members": {
+          "desiredState": {
+            "target": "com.amazonaws.batch#EksAccessEntryDesiredState",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe desired access entry state for the compute environment. Valid values:\u003c/p\u003e\n         \u003cdl\u003e\n            \u003cdt\u003eENABLED\u003c/dt\u003e\n            \u003cdd\u003e\n               \u003cp\u003eBatch manages an access entry on the cluster for the compute environment.\u003c/p\u003e\n            \u003c/dd\u003e\n            \u003cdt\u003eDISABLED\u003c/dt\u003e\n            \u003cdd\u003e\n               \u003cp\u003eBatch deletes the Batch-managed access entry for the cluster. This value is rejected if the cluster's\n       \u003ccode\u003eauthenticationMode\u003c/code\u003e is \u003ccode\u003eAPI\u003c/code\u003e, because such a cluster doesn't support\n      the \u003ccode\u003eaws-auth\u003c/code\u003e ConfigMap.\u003c/p\u003e\n            \u003c/dd\u003e\n            \u003cdt\u003eINHERIT_FROM_CLUSTER\u003c/dt\u003e\n            \u003cdd\u003e\n               \u003cp\u003eBatch defers to the cluster's current access entry \u003ccode\u003estatus\u003c/code\u003e. On a cluster whose\n      authentication mode is \u003ccode\u003eAPI\u003c/code\u003e, Batch creates and manages an access entry. On a\n      cluster whose authentication mode is \u003ccode\u003eAPI_AND_CONFIG_MAP\u003c/code\u003e or\n       \u003ccode\u003eCONFIG_MAP\u003c/code\u003e, Batch neither adds nor removes an access entry.\u003c/p\u003e\n            \u003c/dd\u003e\n         \u003c/dl\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "status": {
+            "target": "com.amazonaws.batch#EksAccessEntryStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe observed state of the access entry on the cluster. \u003ccode\u003eACTIVE\u003c/code\u003e means that an\n   access entry for the compute environment exists on the cluster and takes\n   precedence over the \u003ccode\u003eaws-auth\u003c/code\u003e ConfigMap. \u003ccode\u003eINACTIVE\u003c/code\u003e means that no\n   Batch-managed access entry is present. This is a read-only field returned by\n    \u003ccode\u003eDescribeComputeEnvironments\u003c/code\u003e.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eConfigures whether Batch manages an Amazon EKS access entry on the cluster for the compute\n   environment. For information on how the fields interact with the cluster's\n    \u003ccode\u003eauthenticationMode\u003c/code\u003e and with other compute environments that share the cluster,\n   see \u003ca href=\"https://docs.aws.amazon.com/batch/latest/userguide/eks-access-entries.html\"\u003eAmazon EKS access entry\n    authentication\u003c/a\u003e in the \u003ci\u003eBatch User Guide\u003c/i\u003e.\u003c/p\u003e\n         \u003cnote\u003e\n            \u003cp\u003eSetting \u003ccode\u003edesiredState=ENABLED\u003c/code\u003e on a single compute environment does not guarantee that Batch creates an access\n    entry, and setting \u003ccode\u003edesiredState=DISABLED\u003c/code\u003e on a single compute environment does not guarantee that Batch deletes\n    one. Batch compares the \u003ccode\u003edesiredState\u003c/code\u003e across all compute environments that\n    target the same cluster. The Batch-managed access entry is created only when all compute environments have\n     \u003ccode\u003edesiredState=ENABLED\u003c/code\u003e, and deleted only when all have\n     \u003ccode\u003edesiredState=DISABLED\u003c/code\u003e. If you have multiple compute environments on the same\n    cluster, set \u003ccode\u003edesiredState\u003c/code\u003e consistently across all of them to avoid uncertainty.\n    For more information, see \u003ca href=\"https://docs.aws.amazon.com/batch/latest/userguide/eks-access-entries.html#eks-access-entries-reconciliation\"\u003eReconciling\n     desiredState across compute environments\u003c/a\u003e in the\n     \u003ci\u003eBatch User Guide\u003c/i\u003e.\u003c/p\u003e\n         \u003c/note\u003e"
+        }
+      },
+      "com.amazonaws.batch#EksAccessEntryDesiredState": {
+        "type": "enum",
+        "members": {
+          "DISABLED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "DISABLED"
+            }
+          },
+          "ENABLED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ENABLED"
+            }
+          },
+          "INHERIT_FROM_CLUSTER": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "INHERIT_FROM_CLUSTER"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe desired state for the Batch-managed Amazon EKS access entry on a compute environment.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.batch#EksAccessEntryStatus": {
+        "type": "enum",
+        "members": {
+          "ACTIVE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "ACTIVE"
+            }
+          },
+          "INACTIVE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "INACTIVE"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe observed state of the Batch-managed Amazon EKS access entry on a compute environment.\u003c/p\u003e"
+        }
+      },
       "com.amazonaws.batch#EksAnnotationsMap": {
         "type": "map",
         "key": {
@@ -5846,6 +6061,12 @@
       "com.amazonaws.batch#EksConfiguration": {
         "type": "structure",
         "members": {
+          "accessEntry": {
+            "target": "com.amazonaws.batch#EksAccessEntry",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Batch-managed Amazon EKS access entry for the compute environment. Set\n    \u003ccode\u003edesiredState\u003c/code\u003e to declare whether Batch manages an access entry on the cluster. In\n   a \u003ccode\u003eDescribeComputeEnvironments\u003c/code\u003e response, \u003ccode\u003edesiredState\u003c/code\u003e is the value that\n   Batch recorded for the compute environment and \u003ccode\u003estatus\u003c/code\u003e is the observed state of\n   the access entry on the cluster. To change the access entry on an existing compute environment,\n   use \u003ca href=\"https://docs.aws.amazon.com/batch/latest/APIReference/API_EksConfigurationUpdate.html#Batch-Type-EksConfigurationUpdate-accessEntry\"\u003e\n               \u003ccode\u003eEksConfigurationUpdate.accessEntry\u003c/code\u003e\n            \u003c/a\u003e.\u003c/p\u003e\n         \u003cp\u003eWhether the entry is provisioned on the cluster depends on the cluster's\n    \u003ccode\u003eauthenticationMode\u003c/code\u003e and the \u003ccode\u003edesiredState\u003c/code\u003e recorded for each Batch compute\n   environment targeting the cluster. For more information,\n   see \u003ca href=\"https://docs.aws.amazon.com/batch/latest/userguide/eks-access-entries.html\"\u003eAmazon EKS access entry\n    authentication\u003c/a\u003e in the \u003ci\u003eBatch User Guide\u003c/i\u003e.\u003c/p\u003e\n         \u003cp\u003eIf you don't specify this field, Batch doesn't record a \u003ccode\u003edesiredState\u003c/code\u003e for the\n   compute environment and \u003ccode\u003eDescribeComputeEnvironments\u003c/code\u003e doesn't return one. For the\n   purpose of provisioning the access entry, Batch behaves as it does for\n    \u003ccode\u003eINHERIT_FROM_CLUSTER\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
           "eksClusterArn": {
             "target": "com.amazonaws.batch#String",
             "traits": {
@@ -5865,6 +6086,20 @@
         },
         "traits": {
           "smithy.api#documentation": "\u003cp\u003eConfiguration for the Amazon EKS cluster that supports the Batch compute environment. The\n   cluster must exist before the compute environment can be created.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.batch#EksConfigurationUpdate": {
+        "type": "structure",
+        "members": {
+          "accessEntry": {
+            "target": "com.amazonaws.batch#EksAccessEntry",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe updated access entry configuration for the compute environment. Set\n    \u003ccode\u003edesiredState\u003c/code\u003e to declare whether Batch will manage an access entry on the cluster.\n   For the accepted values, see \u003ca href=\"https://docs.aws.amazon.com/batch/latest/APIReference/API_EksAccessEntry.html\"\u003e\n               \u003ccode\u003eEksAccessEntry\u003c/code\u003e\n            \u003c/a\u003e.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eAn object that represents the attributes of an Batch compute environment's Amazon EKS\n   configuration that can be updated. Currently \u003ccode\u003eaccessEntry\u003c/code\u003e is the only attribute that you can\n   change after the compute environment is created. For more information, see \u003ca href=\"https://docs.aws.amazon.com/batch/latest/userguide/eks-access-entries.html\"\u003eAmazon EKS access entry\n    authentication\u003c/a\u003e in the \u003ci\u003eBatch User Guide\u003c/i\u003e.\u003c/p\u003e"
         }
       },
       "com.amazonaws.batch#EksContainer": {
@@ -7501,7 +7736,7 @@
           "isCancelled": {
             "target": "com.amazonaws.batch#Boolean",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eIndicates whether the job is canceled.\u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003eIndicates whether the job is cancelled.\u003c/p\u003e"
             }
           },
           "isTerminated": {
@@ -7933,6 +8168,18 @@
             "target": "com.amazonaws.batch#Long",
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe Unix timestamp (in milliseconds) for when the job was created. For non-array jobs and\n   parent array jobs, this is when the job entered the \u003ccode\u003eSUBMITTED\u003c/code\u003e state (at the time\n    \u003ca href=\"https://docs.aws.amazon.com/batch/latest/APIReference/API_SubmitJob.html\"\u003eSubmitJob\u003c/a\u003e\n   was called). For array child jobs, this is when the child job was spawned by its parent and\n   entered the \u003ccode\u003ePENDING\u003c/code\u003e state.\u003c/p\u003e"
+            }
+          },
+          "isCancelled": {
+            "target": "com.amazonaws.batch#Boolean",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIndicates whether a cancellation request has been accepted for the job. This field is only present when the value is \u003ccode\u003etrue\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "isTerminated": {
+            "target": "com.amazonaws.batch#Boolean",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIndicates whether a termination request has been accepted for the job. This field is only present when the value is \u003ccode\u003etrue\u003c/code\u003e.\u003c/p\u003e"
             }
           },
           "jobArn": {
@@ -11064,6 +11311,12 @@
               "smithy.api#documentation": "\u003cp\u003eThe Unix timestamp (in milliseconds) for when the service job was created.\u003c/p\u003e"
             }
           },
+          "isTerminated": {
+            "target": "com.amazonaws.batch#Boolean",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIndicates whether a termination request has been accepted for the service job. This field is only present when the value is \u003ccode\u003etrue\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
           "jobArn": {
             "target": "com.amazonaws.batch#String",
             "traits": {
@@ -11994,7 +12247,7 @@
           "resourceRequirements": {
             "target": "com.amazonaws.batch#ResourceRequirements",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe type and amount of a resource to assign to a container. The only supported resource is a\n   GPU.\u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003eThe type and amount of a resource to assign to a container. The supported resources include\n   \u003ccode\u003eGPU\u003c/code\u003e, \u003ccode\u003eMEMORY\u003c/code\u003e, and \u003ccode\u003eVCPU\u003c/code\u003e.\u003c/p\u003e"
             }
           },
           "secrets": {
@@ -12097,7 +12350,7 @@
             "target": "com.amazonaws.batch#String",
             "traits": {
               "smithy.api#clientOptional": {},
-              "smithy.api#documentation": "\u003cp\u003eA message to attach to the job that explains the reason for canceling it. This message is\n      returned by future \u003ca\u003eDescribeJobs\u003c/a\u003e operations on the job. It is also\n      recorded in the Batch activity logs.\u003c/p\u003e\n         \u003cp\u003eThis parameter has as limit of 1024 characters.\u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003eA message to attach to the job that explains the reason for terminating it. This message is\n      returned by future \u003ca\u003eDescribeJobs\u003c/a\u003e operations on the job. It is also\n      recorded in the Batch activity logs.\u003c/p\u003e\n         \u003cp\u003eThis parameter has a limit of 1024 characters.\u003c/p\u003e",
               "smithy.api#required": {}
             }
           }
@@ -12110,6 +12363,144 @@
       "com.amazonaws.batch#TerminateJobResponse": {
         "type": "structure",
         "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.batch#TerminateJobs": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.batch#TerminateJobsRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.batch#TerminateJobsResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.batch#ClientException"
+          },
+          {
+            "target": "com.amazonaws.batch#ServerException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eTerminates up to 50 jobs in a job queue. This is a bulk version of \u003ca\u003eTerminateJob\u003c/a\u003e. Jobs that are in the \u003ccode\u003eSTARTING\u003c/code\u003e or\n        \u003ccode\u003eRUNNING\u003c/code\u003e state are terminated, which causes them to transition to\n        \u003ccode\u003eFAILED\u003c/code\u003e. Jobs that have not progressed to the \u003ccode\u003eSTARTING\u003c/code\u003e state are\n      cancelled.\u003c/p\u003e\n         \u003cp\u003eBatch reports the result for each job individually in the response. Jobs that\n      were processed successfully are reported in the \u003ccode\u003esuccessful\u003c/code\u003e list. Jobs that\n      encountered errors are reported in the \u003ccode\u003eerrors\u003c/code\u003e list. The response returns an\n      HTTP status code of \u003ccode\u003e200\u003c/code\u003e even when some jobs encountered errors, so check the\n      \u003ccode\u003eerrors\u003c/code\u003e list. Jobs that can't be found are treated as successfully\n      processed.\u003c/p\u003e\n         \u003cimportant\u003e\n            \u003cp\u003eThis operation requires \u003ccode\u003ebatch:TerminateJob\u003c/code\u003e permission for each job in the\n        request. There is no separate \u003ccode\u003ebatch:TerminateJobs\u003c/code\u003e IAM action. If a caller's IAM\n        policy grants \u003ccode\u003ebatch:TerminateJob\u003c/code\u003e, they can use both the singular\n        \u003ca\u003eTerminateJob\u003c/a\u003e and bulk \u003ccode\u003eTerminateJobs\u003c/code\u003e operations.\u003c/p\u003e\n         \u003c/important\u003e",
+          "smithy.api#examples": [
+            {
+              "title": "To terminate multiple jobs",
+              "documentation": "This example terminates the jobs with the specified job IDs.",
+              "input": {
+                "jobs": [
+                  "61e743ed-35e4-48da-b2de-5c8333821c84",
+                  "b3d0f26e-6d3a-4a5b-9c2e-7f4a1b2c3d4e"
+                ],
+                "reason": "Terminating jobs."
+              },
+              "output": {
+                "successful": [
+                  "61e743ed-35e4-48da-b2de-5c8333821c84"
+                ],
+                "errors": [
+                  {
+                    "job": "b3d0f26e-6d3a-4a5b-9c2e-7f4a1b2c3d4e",
+                    "code": "ServerException",
+                    "message": "Failed to read job state. Please retry this job."
+                  }
+                ]
+              }
+            }
+          ],
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/v1/terminatejobs",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.batch#TerminateJobsErrorDetail": {
+        "type": "structure",
+        "members": {
+          "code": {
+            "target": "com.amazonaws.batch#String",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eAn error code that identifies the reason the job couldn't be terminated. Valid values are:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eValidationException\u003c/code\u003e \u2013 A job identifier in the request is malformed or isn't valid.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eClientException\u003c/code\u003e \u2013 The request failed because of a client error.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eThrottlingException\u003c/code\u003e \u2013 The request was throttled. Retry the request.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eServerException\u003c/code\u003e \u2013 An internal error occurred. Retry the request.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eAccessDenied\u003c/code\u003e \u2013 The caller isn't authorized to perform the action on the specified job.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "job": {
+            "target": "com.amazonaws.batch#String",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe Batch job ID of the job that couldn't be terminated.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "message": {
+            "target": "com.amazonaws.batch#String",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eA message that describes the reason the job couldn't be terminated.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eAn object that contains the details of a job that couldn't be terminated by a\n        \u003ccode\u003eTerminateJobs\u003c/code\u003e operation.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.batch#TerminateJobsErrorDetailList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.batch#TerminateJobsErrorDetail"
+        }
+      },
+      "com.amazonaws.batch#TerminateJobsRequest": {
+        "type": "structure",
+        "members": {
+          "jobs": {
+            "target": "com.amazonaws.batch#StringList",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eAn array of up to 50 Batch job IDs of the jobs to terminate.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "reason": {
+            "target": "com.amazonaws.batch#String",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eA message to attach to the job that explains the reason for terminating it. This message is\n      returned by future \u003ca\u003eDescribeJobs\u003c/a\u003e operations on the job. It is also\n      recorded in the Batch activity logs.\u003c/p\u003e\n         \u003cp\u003eThis parameter has a limit of 1024 characters.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eSpecifies the jobs to terminate and the reason for the termination.\u003c/p\u003e",
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.batch#TerminateJobsResponse": {
+        "type": "structure",
+        "members": {
+          "errors": {
+            "target": "com.amazonaws.batch#TerminateJobsErrorDetailList",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eA list of \u003ccode\u003eTerminateJobsErrorDetail\u003c/code\u003e items, one for each job that couldn't be\n      terminated. Each item includes the job ID along with a code and message that describe why the\n      job wasn't terminated.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "successful": {
+            "target": "com.amazonaws.batch#StringList",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eA list of the job IDs whose termination request was accepted.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe result of a \u003ccode\u003eTerminateJobs\u003c/code\u003e request, including the jobs whose termination\n      request was accepted and the errors for jobs that couldn't be terminated.\u003c/p\u003e",
           "smithy.api#output": {}
         }
       },
@@ -12153,7 +12544,7 @@
             "target": "com.amazonaws.batch#String",
             "traits": {
               "smithy.api#clientOptional": {},
-              "smithy.api#documentation": "\u003cp\u003eA message to attach to the service job that explains the reason for canceling it. This message is returned by \u003ccode\u003eDescribeServiceJob\u003c/code\u003e operations on the service job.\u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003eA message to attach to the service job that explains the reason for terminating it. This message is returned by \u003ccode\u003eDescribeServiceJob\u003c/code\u003e operations on the service job.\u003c/p\u003e",
               "smithy.api#required": {}
             }
           }
@@ -12165,6 +12556,144 @@
       "com.amazonaws.batch#TerminateServiceJobResponse": {
         "type": "structure",
         "traits": {
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.batch#TerminateServiceJobs": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.batch#TerminateServiceJobsRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.batch#TerminateServiceJobsResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.batch#ClientException"
+          },
+          {
+            "target": "com.amazonaws.batch#ServerException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eTerminates up to 50 service jobs in a job queue. This is a bulk version of \u003ca\u003eTerminateServiceJob\u003c/a\u003e.\u003c/p\u003e\n         \u003cp\u003eBatch reports the result for each service job individually in the response. Service jobs that were processed successfully are reported in the \u003ccode\u003esuccessful\u003c/code\u003e list. Service jobs that encountered errors are reported in the \u003ccode\u003eerrors\u003c/code\u003e list. The response returns an HTTP status code of \u003ccode\u003e200\u003c/code\u003e even when some service jobs encountered errors, so check the \u003ccode\u003eerrors\u003c/code\u003e list. Service jobs that can't be found are treated as successfully processed.\u003c/p\u003e\n         \u003cimportant\u003e\n            \u003cp\u003eThis operation requires \u003ccode\u003ebatch:TerminateServiceJob\u003c/code\u003e permission for each service job in the\n            request. There is no separate \u003ccode\u003ebatch:TerminateServiceJobs\u003c/code\u003e IAM action. If a caller's IAM\n            policy grants \u003ccode\u003ebatch:TerminateServiceJob\u003c/code\u003e, they can use both the singular\n            \u003ccode\u003eTerminateServiceJob\u003c/code\u003e and bulk \u003ccode\u003eTerminateServiceJobs\u003c/code\u003e operations.\u003c/p\u003e\n         \u003c/important\u003e",
+          "smithy.api#examples": [
+            {
+              "title": "To terminate multiple service jobs",
+              "documentation": "This example terminates the specified service jobs with a reason.",
+              "input": {
+                "jobs": [
+                  "a4d6c728-8ee8-4c65-8e2a-9a5e8f4b7c3d",
+                  "b3d0f26e-6d3a-4a5b-9c2e-7f4a1b2c3d4e"
+                ],
+                "reason": "Job terminated by user request"
+              },
+              "output": {
+                "successful": [
+                  "a4d6c728-8ee8-4c65-8e2a-9a5e8f4b7c3d"
+                ],
+                "errors": [
+                  {
+                    "job": "b3d0f26e-6d3a-4a5b-9c2e-7f4a1b2c3d4e",
+                    "code": "ServerException",
+                    "message": "Failed to read job state. Please retry this job."
+                  }
+                ]
+              }
+            }
+          ],
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/v1/terminateservicejobs",
+            "code": 200
+          }
+        }
+      },
+      "com.amazonaws.batch#TerminateServiceJobsErrorDetail": {
+        "type": "structure",
+        "members": {
+          "code": {
+            "target": "com.amazonaws.batch#String",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eAn error code that identifies the reason the service job couldn't be terminated. Valid values are:\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eValidationException\u003c/code\u003e \u2013 A service job identifier in the request is malformed or isn't valid.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eClientException\u003c/code\u003e \u2013 The request failed because of a client error.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eThrottlingException\u003c/code\u003e \u2013 The request was throttled. Retry the request.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eServerException\u003c/code\u003e \u2013 An internal error occurred. Retry the request.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eAccessDenied\u003c/code\u003e \u2013 The caller isn't authorized to perform the action on the specified service job.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "job": {
+            "target": "com.amazonaws.batch#String",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe service job ID of the service job that couldn't be terminated.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "message": {
+            "target": "com.amazonaws.batch#String",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eA message that describes the reason the service job couldn't be terminated.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eAn object that contains the details of a service job that couldn't be terminated by a \u003ccode\u003eTerminateServiceJobs\u003c/code\u003e operation.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.batch#TerminateServiceJobsErrorDetailList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.batch#TerminateServiceJobsErrorDetail"
+        }
+      },
+      "com.amazonaws.batch#TerminateServiceJobsRequest": {
+        "type": "structure",
+        "members": {
+          "jobs": {
+            "target": "com.amazonaws.batch#StringList",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eAn array of up to 50 service job IDs of the service jobs to terminate.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "reason": {
+            "target": "com.amazonaws.batch#String",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eA message to attach to the service job that explains the reason for terminating it. This message is returned by \u003ccode\u003eDescribeServiceJob\u003c/code\u003e operations on the service job.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eSpecifies the service jobs to terminate and the reason for the termination.\u003c/p\u003e",
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.batch#TerminateServiceJobsResponse": {
+        "type": "structure",
+        "members": {
+          "errors": {
+            "target": "com.amazonaws.batch#TerminateServiceJobsErrorDetailList",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eA list of \u003ccode\u003eTerminateServiceJobsErrorDetail\u003c/code\u003e items, one for each service job that couldn't be terminated. Each item includes the service job ID along with a code and message that describe why the service job wasn't terminated.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "successful": {
+            "target": "com.amazonaws.batch#StringList",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eA list of the service job IDs whose termination request was accepted.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe result of a \u003ccode\u003eTerminateServiceJobs\u003c/code\u003e request, including the service jobs whose termination request was accepted and the errors for service jobs that couldn't be terminated.\u003c/p\u003e",
           "smithy.api#output": {}
         }
       },
@@ -12378,6 +12907,12 @@
             "target": "com.amazonaws.batch#EcsSettings",
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe Amazon ECS settings for the compute environment. These settings control CloudWatch\n      Container Insights collection for the compute environment.\u003c/p\u003e"
+            }
+          },
+          "eksConfiguration": {
+            "target": "com.amazonaws.batch#EksConfigurationUpdate",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eUpdates the Amazon EKS configuration for the compute environment. Only specify this\n      parameter if the compute environment's \u003ccode\u003econtainerOrchestrationType\u003c/code\u003e is\n      \u003ccode\u003eEKS\u003c/code\u003e. Currently, the \u003ccode\u003eaccessEntry\u003c/code\u003e setting is the only Amazon EKS configuration that\n      you can change after the compute environment is created. For more information, see \u003ca href=\"https://docs.aws.amazon.com/batch/latest/userguide/eks-access-entries.html\"\u003eAmazon EKS access entry\n      authentication\u003c/a\u003e in the \u003ci\u003eBatch User Guide\u003c/i\u003e.\u003c/p\u003e"
             }
           },
           "serviceRole": {

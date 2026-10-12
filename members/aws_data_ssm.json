@@ -3262,7 +3262,7 @@
       "com.amazonaws.ssm#AssociationVersion": {
         "type": "string",
         "traits": {
-          "smithy.api#pattern": "^([$]LATEST)|([1-9][0-9]*)$"
+          "smithy.api#pattern": "^(([$]LATEST)|([1-9][0-9]*))$"
         }
       },
       "com.amazonaws.ssm#AssociationVersionInfo": {
@@ -6362,7 +6362,7 @@
             "min": 1,
             "max": 100
           },
-          "smithy.api#pattern": "^[A-Za-z0-9_\\-]\\w+|Custom:[a-zA-Z0-9_\\-]\\w+$"
+          "smithy.api#pattern": "^([A-Za-z0-9_\\-]\\w+|Custom:[a-zA-Z0-9_\\-]\\w+)$"
         }
       },
       "com.amazonaws.ssm#ComplianceUploadType": {
@@ -8504,12 +8504,18 @@
           }
         ],
         "traits": {
-          "smithy.api#documentation": "\u003cp\u003eDeletes a Systems Manager resource policy. A resource policy helps you to define the IAM entity (for example, an Amazon Web Services account) that can manage your Systems Manager resources. The following\n   resources support Systems Manager resource policies.\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eOpsItemGroup\u003c/code\u003e - The resource policy for \u003ccode\u003eOpsItemGroup\u003c/code\u003e enables\n     Amazon Web Services accounts to view and interact with OpsCenter operational work items (OpsItems).\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eParameter\u003c/code\u003e - The resource policy is used to share a parameter with other\n     accounts using Resource Access Manager (RAM). For more information about\n     cross-account sharing of parameters, see \u003ca href=\"https://docs.aws.amazon.com/systems-manager/latest/userguide/parameter-store-shared-parameters.html\"\u003eWorking with\n      shared parameters\u003c/a\u003e in the \u003ci\u003eAmazon Web Services Systems Manager User Guide\u003c/i\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e"
+          "smithy.api#documentation": "\u003cp\u003eDeletes a Systems Manager resource policy. A resource policy helps you to define the IAM entity (for example, an Amazon Web Services account) that can manage your Systems Manager resources. The following\n   resources support Systems Manager resource policies.\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eOpsItemGroup\u003c/code\u003e - The resource policy for \u003ccode\u003eOpsItemGroup\u003c/code\u003e enables\n     Amazon Web Services accounts to view and interact with OpsCenter operational work items (OpsItems).\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eParameter\u003c/code\u003e - The resource policy is used to share a parameter with other\n     accounts using Resource Access Manager (RAM). For more information about\n     cross-account sharing of parameters, see \u003ca href=\"https://docs.aws.amazon.com/systems-manager/latest/userguide/parameter-store-shared-parameters.html\"\u003eWorking with\n      shared parameters\u003c/a\u003e in the \u003ci\u003eAmazon Web Services Systems Manager User Guide\u003c/i\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eDocument\u003c/code\u003e \u2013 Shares the document using Resource Access Manager (RAM). For more information about sharing documents, see \u003ca href=\"https://docs.aws.amazon.com/systems-manager/latest/userguide/documents-ssm-sharing.html\"\u003eSharing\n      Systems Manager documents\u003c/a\u003e in the \u003ci\u003eAmazon Web Services Systems Manager User Guide\u003c/i\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e"
         }
       },
       "com.amazonaws.ssm#DeleteResourcePolicyRequest": {
         "type": "structure",
         "members": {
+          "DeletionMode": {
+            "target": "com.amazonaws.ssm#DeletionMode",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies the intended outcome of the operation. Applies only to the \u003ccode\u003eDocument\u003c/code\u003e\n   resource type. The operation ignores this parameter for other resource types. Optional. Defaults\n   to \u003ccode\u003eRemoveSharing\u003c/code\u003e.\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eRemoveSharing\u003c/code\u003e \u2013 Deletes the resource policy and removes sharing of the\n     document.\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eRollbackMigration\u003c/code\u003e \u2013 Reverts the document to Custom sharing, preserving\n     existing consumer access, instead of removing the policy.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e"
+            }
+          },
           "PolicyHash": {
             "target": "com.amazonaws.ssm#PolicyHash",
             "traits": {
@@ -8540,6 +8546,23 @@
         "type": "structure",
         "traits": {
           "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.ssm#DeletionMode": {
+        "type": "enum",
+        "members": {
+          "RemoveSharing": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "RemoveSharing"
+            }
+          },
+          "RollbackMigration": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "RollbackMigration"
+            }
+          }
         }
       },
       "com.amazonaws.ssm#DeliveryTimedOutCount": {
@@ -12871,7 +12894,7 @@
             "min": 6,
             "max": 68
           },
-          "smithy.api#pattern": "^(ou-[a-z0-9]{4,32}-[a-z0-9]{8,32})|(\\d{12})$"
+          "smithy.api#pattern": "^((ou-[a-z0-9]{4,32}-[a-z0-9]{8,32})|(\\d{12}))$"
         }
       },
       "com.amazonaws.ssm#ExcludeAccounts": {
@@ -25258,7 +25281,7 @@
             "min": 1,
             "max": 132
           },
-          "smithy.api#pattern": "^tag:.+|Name|Type|KeyId|Path|Label|Tier|DataType$"
+          "smithy.api#pattern": "^(tag:.+|Name|Type|KeyId|Path|Label|Tier|DataType)$"
         }
       },
       "com.amazonaws.ssm#ParameterStringFilterList": {
@@ -27201,7 +27224,7 @@
           }
         ],
         "traits": {
-          "smithy.api#documentation": "\u003cp\u003eCreates or updates a Systems Manager resource policy. A resource policy helps you to define the\n    IAM entity (for example, an Amazon Web Services account) that can manage your Systems Manager resources.\n   The following resources support Systems Manager resource policies.\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eOpsItemGroup\u003c/code\u003e - The resource policy for \u003ccode\u003eOpsItemGroup\u003c/code\u003e enables\n     Amazon Web Services accounts to view and interact with OpsCenter operational work items (OpsItems).\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eParameter\u003c/code\u003e - The resource policy is used to share a parameter with other\n     accounts using Resource Access Manager (RAM). \u003c/p\u003e\n               \u003cp\u003eTo share a parameter, it must be in the advanced parameter tier. For information about\n     parameter tiers, see \u003ca href=\"https://docs.aws.amazon.com/systems-manager/latest/userguide/parameter-store-advanced-parameters.html\"\u003eManaging\n      parameter tiers\u003c/a\u003e. For information about changing an existing standard parameter to an\n     advanced parameter, see \u003ca href=\"https://docs.aws.amazon.com/systems-manager/latest/userguide/parameter-store-advanced-parameters.html#parameter-store-advanced-parameters-enabling\"\u003eChanging a standard parameter to an advanced parameter\u003c/a\u003e.\u003c/p\u003e\n               \u003cp\u003eTo share a \u003ccode\u003eSecureString\u003c/code\u003e parameter, it must be encrypted with a customer managed key, and you must share the key separately through Key Management Service. Amazon Web Services managed keys cannot be shared. Parameters encrypted with the default Amazon Web Services managed key can be updated to use a customer managed key instead. For KMS key definitions, see \u003ca href=\"https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html\"\u003eKMS concepts\u003c/a\u003e in the\n       \u003ci\u003eKey Management Service Developer Guide\u003c/i\u003e.\u003c/p\u003e\n               \u003cimportant\u003e\n                  \u003cp\u003eWhile you can share a parameter using the Systems Manager \u003ccode\u003ePutResourcePolicy\u003c/code\u003e operation,\n      we recommend using Resource Access Manager (RAM) instead. This is because using\n       \u003ccode\u003ePutResourcePolicy\u003c/code\u003e requires the extra step of promoting the parameter to a\n      standard RAM Resource Share using the RAM\n      \u003ca href=\"https://docs.aws.amazon.com/ram/latest/APIReference/API_PromoteResourceShareCreatedFromPolicy.html\"\u003ePromoteResourceShareCreatedFromPolicy\u003c/a\u003e API operation. Otherwise, the parameter won't\n      be returned by the Systems Manager \u003ca href=\"https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_DescribeParameters.html\"\u003eDescribeParameters\u003c/a\u003e API operation using the \u003ccode\u003e--shared\u003c/code\u003e option.\u003c/p\u003e\n                  \u003cp\u003eFor more information, see \u003ca href=\"https://docs.aws.amazon.com/systems-manager/latest/userguide/parameter-store-shared-parameters.html#share\"\u003eSharing a\n       parameter\u003c/a\u003e in the \u003ci\u003eAmazon Web Services Systems Manager User Guide\u003c/i\u003e\n                  \u003c/p\u003e\n               \u003c/important\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e"
+          "smithy.api#documentation": "\u003cp\u003eCreates or updates a Systems Manager resource policy. A resource policy helps you to define the\n    IAM entity (for example, an Amazon Web Services account) that can manage your Systems Manager resources.\n   The following resources support Systems Manager resource policies.\u003c/p\u003e\n         \u003cul\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eOpsItemGroup\u003c/code\u003e - The resource policy for \u003ccode\u003eOpsItemGroup\u003c/code\u003e enables\n     Amazon Web Services accounts to view and interact with OpsCenter operational work items (OpsItems).\u003c/p\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eParameter\u003c/code\u003e - The resource policy is used to share a parameter with other\n     accounts using Resource Access Manager (RAM). \u003c/p\u003e\n               \u003cp\u003eTo share a parameter, it must be in the advanced parameter tier. For information about\n     parameter tiers, see \u003ca href=\"https://docs.aws.amazon.com/systems-manager/latest/userguide/parameter-store-advanced-parameters.html\"\u003eManaging\n      parameter tiers\u003c/a\u003e. For information about changing an existing standard parameter to an\n     advanced parameter, see \u003ca href=\"https://docs.aws.amazon.com/systems-manager/latest/userguide/parameter-store-advanced-parameters.html#parameter-store-advanced-parameters-enabling\"\u003eChanging a standard parameter to an advanced parameter\u003c/a\u003e.\u003c/p\u003e\n               \u003cp\u003eTo share a \u003ccode\u003eSecureString\u003c/code\u003e parameter, it must be encrypted with a customer managed key, and you must share the key separately through Key Management Service. Amazon Web Services managed keys cannot be shared. Parameters encrypted with the default Amazon Web Services managed key can be updated to use a customer managed key instead. For KMS key definitions, see \u003ca href=\"https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html\"\u003eKMS concepts\u003c/a\u003e in the\n       \u003ci\u003eKey Management Service Developer Guide\u003c/i\u003e.\u003c/p\u003e\n               \u003cimportant\u003e\n                  \u003cp\u003eWhile you can share a parameter using the Systems Manager \u003ccode\u003ePutResourcePolicy\u003c/code\u003e operation,\n      we recommend using Resource Access Manager (RAM) instead. This is because using\n       \u003ccode\u003ePutResourcePolicy\u003c/code\u003e requires the extra step of promoting the parameter to a\n      standard RAM Resource Share using the RAM\n      \u003ca href=\"https://docs.aws.amazon.com/ram/latest/APIReference/API_PromoteResourceShareCreatedFromPolicy.html\"\u003ePromoteResourceShareCreatedFromPolicy\u003c/a\u003e API operation. Otherwise, the parameter won't\n      be returned by the Systems Manager \u003ca href=\"https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_DescribeParameters.html\"\u003eDescribeParameters\u003c/a\u003e API operation using the \u003ccode\u003e--shared\u003c/code\u003e option.\u003c/p\u003e\n                  \u003cp\u003eFor more information, see \u003ca href=\"https://docs.aws.amazon.com/systems-manager/latest/userguide/parameter-store-shared-parameters.html#share\"\u003eSharing a\n       parameter\u003c/a\u003e in the \u003ci\u003eAmazon Web Services Systems Manager User Guide\u003c/i\u003e\n                  \u003c/p\u003e\n               \u003c/important\u003e\n            \u003c/li\u003e\n            \u003cli\u003e\n               \u003cp\u003e\n                  \u003ccode\u003eDocument\u003c/code\u003e \u2013 Shares the document using Resource Access Manager (RAM). For more information about sharing documents, see \u003ca href=\"https://docs.aws.amazon.com/systems-manager/latest/userguide/documents-ssm-sharing.html\"\u003eSharing\n      Systems Manager documents\u003c/a\u003e in the \u003ci\u003eAmazon Web Services Systems Manager User Guide\u003c/i\u003e.\u003c/p\u003e\n            \u003c/li\u003e\n         \u003c/ul\u003e\n         \u003cimportant\u003e\n            \u003cp\u003eWhile you can share a document using the Systems Manager \u003ccode\u003ePutResourcePolicy\u003c/code\u003e operation, we\n    recommend using Resource Access Manager (RAM) instead. Using\n     \u003ccode\u003ePutResourcePolicy\u003c/code\u003e requires an extra step. You must promote the document to a\n    standard RAM Resource Share using the RAM \u003ca href=\"https://docs.aws.amazon.com/ram/latest/APIReference/API_PromoteResourceShareCreatedFromPolicy.html\"\u003ePromoteResourceShareCreatedFromPolicy\u003c/a\u003e API operation. Otherwise, the Systems Manager \u003ca href=\"https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_ListDocuments.html\"\u003eListDocuments\u003c/a\u003e API operation won't return the document when filtering for shared\n    documents. The Amazon Web Services Config \u003ca href=\"https://docs.aws.amazon.com/config/latest/APIReference/API_PutRemediationConfigurations.html\"\u003ePutRemediationConfigurations\u003c/a\u003e API operation also can't use the document.\u003c/p\u003e\n         \u003c/important\u003e"
         }
       },
       "com.amazonaws.ssm#PutResourcePolicyRequest": {
@@ -32220,7 +32243,7 @@
           "DocumentFormat": {
             "target": "com.amazonaws.ssm#DocumentFormat",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eSpecify the document format for the new document version. Systems Manager supports JSON and YAML\n   documents. JSON is the default format.\u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003eSpecify the document format for the new document version. The document format can be JSON,\n   YAML, or TEXT. JSON is the default format.\u003c/p\u003e"
             }
           },
           "DocumentVersion": {

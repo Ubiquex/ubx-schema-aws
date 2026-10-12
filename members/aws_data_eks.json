@@ -1809,6 +1809,68 @@
           }
         }
       },
+      "com.amazonaws.eks#AckConfigRequest": {
+        "type": "structure",
+        "members": {
+          "disabledServices": {
+            "target": "com.amazonaws.eks#AckDisabledServicesList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA list of ACK service names whose controllers are turned off for this capability, for example \u003ccode\u003es3\u003c/code\u003e, \u003ccode\u003eec2\u003c/code\u003e, and \u003ccode\u003eiam\u003c/code\u003e. Resources of a disabled service aren't reconciled until you re-enable the service. To keep all services enabled, omit this field or specify an empty list. An unrecognized service name is accepted and stored but turns nothing off, and \u003ccode\u003eDescribeCapability\u003c/code\u003e returns the list exactly as you supplied it. For more information, see \u003ca href=\"https://docs.aws.amazon.com/eks/latest/userguide/create-ack-capability.html#ack-configuration-options\"\u003eACK capability configuration options\u003c/a\u003e in the \u003ci\u003eAmazon EKS User Guide\u003c/i\u003e.\u003c/p\u003e"
+            }
+          },
+          "enableCrossNamespace": {
+            "target": "com.amazonaws.eks#BoxedBoolean",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies whether ACK controllers resolve resource references to resources in a different Kubernetes namespace. Set this value to \u003ccode\u003etrue\u003c/code\u003e to allow references to resolve to resources in another namespace. If you don't specify this value, or you omit the \u003ccode\u003eack\u003c/code\u003e configuration entirely, the capability is created with this value set to \u003ccode\u003efalse\u003c/code\u003e and references must remain within the same namespace.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eConfiguration settings for an ACK (Amazon Web Services Controllers for Kubernetes) capability. This includes whether controllers can resolve cross-namespace resource references and which ACK service controllers are disabled.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.eks#AckConfigResponse": {
+        "type": "structure",
+        "members": {
+          "disabledServices": {
+            "target": "com.amazonaws.eks#AckDisabledServicesList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe list of ACK service names whose controllers are turned off for this capability. Existing custom resource definitions remain installed, and resources of a disabled service aren't reconciled until the service is re-enabled.\u003c/p\u003e"
+            }
+          },
+          "enableCrossNamespace": {
+            "target": "com.amazonaws.eks#BoxedBoolean",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eIndicates whether ACK controllers resolve resource references to resources in a different Kubernetes namespace. This value reflects the setting that's in effect, and is \u003ccode\u003efalse\u003c/code\u003e if you never specified a value. Capabilities that were using cross-namespace references before this setting became available have this value set to \u003ccode\u003etrue\u003c/code\u003e, so their behavior is unchanged.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe response object containing configuration details for an ACK (Amazon Web Services Controllers for Kubernetes) capability.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.eks#AckDisabledServicesList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.eks#AckServiceName"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 0,
+            "max": 200
+          }
+        }
+      },
+      "com.amazonaws.eks#AckServiceName": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 63
+          },
+          "smithy.api#pattern": "^[a-z][a-z0-9]*$"
+        }
+      },
       "com.amazonaws.eks#ActivateCertificateAuthority": {
         "type": "operation",
         "input": {
@@ -2488,6 +2550,12 @@
               "smithy.api#required": {}
             }
           },
+          "endpointPrefix": {
+            "target": "com.amazonaws.eks#ArgoCdEndpointPrefix",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn optional prefix used to construct the hostname of the Argo CD server endpoint. If not specified, Amazon EKS automatically generates the endpoint. This value can't be changed after the capability is created.\u003c/p\u003e"
+            }
+          },
           "namespace": {
             "target": "com.amazonaws.eks#String",
             "traits": {
@@ -2520,6 +2588,12 @@
               "smithy.api#documentation": "\u003cp\u003eThe IAM Identity CenterIAM; Identity Center integration configuration.\u003c/p\u003e"
             }
           },
+          "endpointPrefix": {
+            "target": "com.amazonaws.eks#ArgoCdEndpointPrefix",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe prefix that was configured for the hostname of the Argo CD server endpoint when the capability was created.\u003c/p\u003e"
+            }
+          },
           "namespace": {
             "target": "com.amazonaws.eks#String",
             "traits": {
@@ -2547,6 +2621,16 @@
         },
         "traits": {
           "smithy.api#documentation": "\u003cp\u003eThe response object containing Argo CD configuration details, including the server URL that you use to access the Argo CD web interface and API.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.eks#ArgoCdEndpointPrefix": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 50
+          },
+          "smithy.api#pattern": "^[a-z0-9]([a-z0-9-]*[a-z0-9])?$"
         }
       },
       "com.amazonaws.eks#ArgoCdNetworkAccessConfigRequest": {
@@ -3237,6 +3321,12 @@
       "com.amazonaws.eks#CapabilityConfigurationRequest": {
         "type": "structure",
         "members": {
+          "ack": {
+            "target": "com.amazonaws.eks#AckConfigRequest",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eConfiguration settings specific to ACK (Amazon Web Services Controllers for Kubernetes) capabilities. This field is only used when creating or updating an ACK capability.\u003c/p\u003e"
+            }
+          },
           "argoCd": {
             "target": "com.amazonaws.eks#ArgoCdConfigRequest",
             "traits": {
@@ -3251,6 +3341,12 @@
       "com.amazonaws.eks#CapabilityConfigurationResponse": {
         "type": "structure",
         "members": {
+          "ack": {
+            "target": "com.amazonaws.eks#AckConfigResponse",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eConfiguration settings for an ACK (Amazon Web Services Controllers for Kubernetes) capability, including the cross-namespace reference setting and the list of disabled services.\u003c/p\u003e"
+            }
+          },
           "argoCd": {
             "target": "com.amazonaws.eks#ArgoCdConfigResponse",
             "traits": {
@@ -13910,6 +14006,26 @@
           "smithy.api#output": {}
         }
       },
+      "com.amazonaws.eks#UpdateAckConfig": {
+        "type": "structure",
+        "members": {
+          "disabledServices": {
+            "target": "com.amazonaws.eks#AckDisabledServicesList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn updated list of ACK service names whose controllers are turned off for this capability. This list replaces the previous list instead of merging with it, so specify the complete set of services that you want turned off. If you omit this field, the previous list is unchanged. To turn all services back on, specify an empty list.\u003c/p\u003e"
+            }
+          },
+          "enableCrossNamespace": {
+            "target": "com.amazonaws.eks#BoxedBoolean",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies whether ACK controllers resolve resource references to resources in a different Kubernetes namespace. Set this value to \u003ccode\u003efalse\u003c/code\u003e to require references to remain within the same namespace, or \u003ccode\u003etrue\u003c/code\u003e to allow cross-namespace references. If you omit this field, the current value is unchanged.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eConfiguration updates for an ACK (Amazon Web Services Controllers for Kubernetes) capability. You only need to specify the fields that you want to update.\u003c/p\u003e"
+        }
+      },
       "com.amazonaws.eks#UpdateAddon": {
         "type": "operation",
         "input": {
@@ -14076,6 +14192,12 @@
       "com.amazonaws.eks#UpdateCapabilityConfiguration": {
         "type": "structure",
         "members": {
+          "ack": {
+            "target": "com.amazonaws.eks#UpdateAckConfig",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eConfiguration updates specific to ACK (Amazon Web Services Controllers for Kubernetes) capabilities.\u003c/p\u003e"
+            }
+          },
           "argoCd": {
             "target": "com.amazonaws.eks#UpdateArgoCdConfig",
             "traits": {
@@ -14798,6 +14920,18 @@
             "target": "smithy.api#Unit",
             "traits": {
               "smithy.api#enumValue": "DesiredSize"
+            }
+          },
+          "DISABLED_SERVICES": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "DisabledServices"
+            }
+          },
+          "ENABLE_CROSS_NAMESPACE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "EnableCrossNamespace"
             }
           },
           "ENCRYPTION_CONFIG": {

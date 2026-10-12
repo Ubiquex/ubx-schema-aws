@@ -553,6 +553,12 @@
               "smithy.api#enumValue": "CREATING"
             }
           },
+          "DELETE_FAILED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "DELETE_FAILED"
+            }
+          },
           "DELETING": {
             "target": "smithy.api#Unit",
             "traits": {
@@ -610,6 +616,12 @@
             "target": "smithy.api#Unit",
             "traits": {
               "smithy.api#enumValue": "CREATING"
+            }
+          },
+          "DELETE_FAILED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "DELETE_FAILED"
             }
           },
           "DELETING": {
@@ -3144,6 +3156,44 @@
           "smithy.api#documentation": "\u003cp\u003eA certificate to install in the browser or code interpreter.\u003c/p\u003e"
         }
       },
+      "com.amazonaws.bedrockagentcorecontrol#CertificateBucketOwnerAccountId": {
+        "type": "string",
+        "traits": {
+          "smithy.api#pattern": "^[0-9]{12}$"
+        }
+      },
+      "com.amazonaws.bedrockagentcorecontrol#CertificateConfiguration": {
+        "type": "union",
+        "members": {
+          "s3": {
+            "target": "com.amazonaws.bedrockagentcorecontrol#S3CertificateConfiguration",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon S3 location of the PEM-encoded private CA certificate.\u003c/p\u003e"
+            }
+          },
+          "secretsManager": {
+            "target": "com.amazonaws.bedrockagentcorecontrol#SecretsManagerCertificateConfiguration",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Web Services Secrets Manager location of the PEM-encoded private CA certificate.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA reference to a private certificate authority (CA) certificate that the gateway uses to verify TLS connections to the target endpoint. Use this when the target presents a certificate issued by a private CA that is not trusted by default. Specify exactly one certificate source. The configuration is a reference only and never contains the certificate content.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.bedrockagentcorecontrol#CertificateConfigurationList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.bedrockagentcorecontrol#CertificateConfiguration"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 1
+          }
+        }
+      },
       "com.amazonaws.bedrockagentcorecontrol#CertificateLocation": {
         "type": "union",
         "members": {
@@ -3156,6 +3206,18 @@
         },
         "traits": {
           "smithy.api#documentation": "\u003cp\u003eThe location from which to retrieve a certificate.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.bedrockagentcorecontrol#CertificateS3Uri": {
+        "type": "string",
+        "traits": {
+          "smithy.api#pattern": "^s3://.{1,2043}$"
+        }
+      },
+      "com.amazonaws.bedrockagentcorecontrol#CertificateSecretArn": {
+        "type": "string",
+        "traits": {
+          "smithy.api#pattern": "^arn:aws(-[^:]+)?:secretsmanager:[a-z0-9-]+:[0-9]{12}:secret:.+$"
         }
       },
       "com.amazonaws.bedrockagentcorecontrol#Certificates": {
@@ -3722,6 +3784,50 @@
           "smithy.api#documentation": "\u003cp\u003eCoinbase CDP configuration output with secret ARNs.\u003c/p\u003e"
         }
       },
+      "com.amazonaws.bedrockagentcorecontrol#CoinbaseCdpRotationTargets": {
+        "type": "structure",
+        "members": {
+          "secrets": {
+            "target": "com.amazonaws.bedrockagentcorecontrol#CoinbaseCdpSecrets",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe secrets to rotate. Specify at least one value. Each secret that you specify is rotated independently.\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eAPI_KEY\u003c/code\u003e - The API key that the payment connector uses to call Coinbase CDP. Rotate it as routine maintenance, or if you suspect that it is compromised.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eWALLET_SECRET\u003c/code\u003e - The wallet secret that signs transactions. Rotate it only if it is lost or compromised. Coinbase CDP allows one wallet secret per project, so it is replaced in place and signing can be briefly interrupted.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eSpecifies the service-managed Coinbase CDP secrets to rotate.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.bedrockagentcorecontrol#CoinbaseCdpSecret": {
+        "type": "enum",
+        "members": {
+          "API_KEY": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "API_KEY"
+            }
+          },
+          "WALLET_SECRET": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "WALLET_SECRET"
+            }
+          }
+        }
+      },
+      "com.amazonaws.bedrockagentcorecontrol#CoinbaseCdpSecrets": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.bedrockagentcorecontrol#CoinbaseCdpSecret"
+        },
+        "traits": {
+          "smithy.api#length": {
+            "min": 1
+          },
+          "smithy.api#uniqueItems": {}
+        }
+      },
       "com.amazonaws.bedrockagentcorecontrol#ComponentConfiguration": {
         "type": "structure",
         "members": {
@@ -3875,6 +3981,9 @@
       "com.amazonaws.bedrockagentcorecontrol#ConfigurationBundleArn": {
         "type": "string",
         "traits": {
+          "aws.api#arnReference": {
+            "type": "AWS::BedrockAgentCore::ConfigurationBundle"
+          },
           "smithy.api#pattern": "^arn:aws[a-zA-Z-]*:bedrock-agentcore:[a-z0-9-]+:[0-9]{12}:configuration-bundle/[a-zA-Z][a-zA-Z0-9-_]{0,99}-[a-zA-Z0-9]{10}$"
         }
       },
@@ -4851,6 +4960,12 @@
             "target": "com.amazonaws.bedrockagentcorecontrol#NetworkConfiguration",
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe network configuration for the AgentCore Runtime.\u003c/p\u003e"
+            }
+          },
+          "platformVersion": {
+            "target": "com.amazonaws.bedrockagentcorecontrol#PlatformVersion",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe version of the runtime platform to use for the AgentCore Runtime.\u003c/p\u003e"
             }
           },
           "protocolConfiguration": {
@@ -6912,6 +7027,12 @@
       "com.amazonaws.bedrockagentcorecontrol#CreateGatewayTargetRequest": {
         "type": "structure",
         "members": {
+          "certificateConfigurations": {
+            "target": "com.amazonaws.bedrockagentcorecontrol#CertificateConfigurationList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe private certificate authority (CA) configurations for the gateway target. Use this to have the gateway trust a private CA when it establishes TLS connections to the target endpoint. Provide each certificate by reference to an Amazon S3 object or an Amazon Web Services Secrets Manager secret. You can specify only one certificate authority configuration in this list.\u003c/p\u003e"
+            }
+          },
           "clientToken": {
             "target": "com.amazonaws.bedrockagentcorecontrol#ClientToken",
             "traits": {
@@ -6976,6 +7097,12 @@
             "target": "com.amazonaws.bedrockagentcorecontrol#AuthorizationData",
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eOAuth2 authorization data for the created gateway target. This data is returned when a target is configured with a credential provider with authorization code grant type and requires user federation.\u003c/p\u003e"
+            }
+          },
+          "certificateConfigurations": {
+            "target": "com.amazonaws.bedrockagentcorecontrol#CertificateConfigurationList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe private certificate authority (CA) configurations for the gateway target.\u003c/p\u003e"
             }
           },
           "createdAt": {
@@ -7272,6 +7399,12 @@
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe name of the harness. Must start with a letter and contain only alphanumeric characters and underscores.\u003c/p\u003e",
               "smithy.api#required": {}
+            }
+          },
+          "hooks": {
+            "target": "com.amazonaws.bedrockagentcorecontrol#HarnessHooks",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe lifecycle hooks to run at defined points in the agent loop.\u003c/p\u003e"
             }
           },
           "maxIterations": {
@@ -9219,6 +9352,20 @@
           }
         }
       },
+      "com.amazonaws.bedrockagentcorecontrol#CredentialRotationConfig": {
+        "type": "union",
+        "members": {
+          "coinbaseCDP": {
+            "target": "com.amazonaws.bedrockagentcorecontrol#CoinbaseCdpRotationTargets",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe credentials to rotate for a Coinbase CDP payment connector.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eSpecifies the service-managed credentials to rotate. Provide the member that matches the payment connector's \u003ccode\u003etype\u003c/code\u003e.\u003c/p\u003e"
+        }
+      },
       "com.amazonaws.bedrockagentcorecontrol#CredentialsProviderConfiguration": {
         "type": "union",
         "members": {
@@ -9818,6 +9965,9 @@
       "com.amazonaws.bedrockagentcorecontrol#DatasetArn": {
         "type": "string",
         "traits": {
+          "aws.api#arnReference": {
+            "type": "AWS::BedrockAgentCore::Dataset"
+          },
           "smithy.api#pattern": "^arn:aws(-[a-z]+)*:bedrock-agentcore:[a-z0-9-]+:[0-9]{12}:dataset/[a-zA-Z0-9_-]{1,110}$"
         }
       },
@@ -10833,6 +10983,14 @@
       "com.amazonaws.bedrockagentcorecontrol#DeleteConfigurationBundleResponse": {
         "type": "structure",
         "members": {
+          "bundleArn": {
+            "target": "com.amazonaws.bedrockagentcorecontrol#ConfigurationBundleArn",
+            "traits": {
+              "smithy.api#clientOptional": {},
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the deleted configuration bundle.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
           "bundleId": {
             "target": "com.amazonaws.bedrockagentcorecontrol#ConfigurationBundleId",
             "traits": {
@@ -14569,7 +14727,7 @@
             "min": 1,
             "max": 170
           },
-          "smithy.api#pattern": "^arn:aws:bedrock-agentcore:[a-z0-9-]+:[0-9]{12}:policy-engine\\/[a-zA-Z][a-zA-Z0-9-_]{0,99}-[a-zA-Z0-9_]{10}$"
+          "smithy.api#pattern": "^arn:aws(-[^:]+)?:bedrock-agentcore:[a-z0-9-]+:[0-9]{12}:policy-engine\\/[a-zA-Z][a-zA-Z0-9-_]{0,99}-[a-zA-Z0-9_]{10}$"
         }
       },
       "com.amazonaws.bedrockagentcorecontrol#GatewayPolicyEngineConfiguration": {
@@ -15116,6 +15274,12 @@
               "smithy.api#documentation": "\u003cp\u003eOAuth2 authorization data for the gateway target. This data is returned when a target is configured with a credential provider with authorization code grant type and requires user federation.\u003c/p\u003e"
             }
           },
+          "certificateConfigurations": {
+            "target": "com.amazonaws.bedrockagentcorecontrol#CertificateConfigurationList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe private certificate authority (CA) configurations for the gateway target.\u003c/p\u003e"
+            }
+          },
           "createdAt": {
             "target": "com.amazonaws.bedrockagentcorecontrol#DateTimestamp",
             "traits": {
@@ -15555,6 +15719,12 @@
             "target": "com.amazonaws.bedrockagentcorecontrol#NetworkConfiguration",
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe network configuration for the AgentCore Runtime.\u003c/p\u003e"
+            }
+          },
+          "platformVersion": {
+            "target": "com.amazonaws.bedrockagentcorecontrol#PlatformVersion",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe version of the runtime platform used by the AgentCore Runtime.\u003c/p\u003e"
             }
           },
           "protocolConfiguration": {
@@ -17507,6 +17677,12 @@
               "smithy.api#documentation": "\u003cp\u003eOAuth2 authorization data for the gateway target. This data is returned when a target is configured with a credential provider with authorization code grant type and requires user federation.\u003c/p\u003e"
             }
           },
+          "certificateConfigurations": {
+            "target": "com.amazonaws.bedrockagentcorecontrol#CertificateConfigurationList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe private certificate authority (CA) configurations for the gateway target.\u003c/p\u003e"
+            }
+          },
           "createdAt": {
             "target": "com.amazonaws.bedrockagentcorecontrol#DateTimestamp",
             "traits": {
@@ -18260,6 +18436,12 @@
               "smithy.api#required": {}
             }
           },
+          "credentialsUpdatedAt": {
+            "target": "com.amazonaws.bedrockagentcorecontrol#DateTimestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe timestamp when the payment connector's current service-managed credentials took effect. It is first set when the credentials are provisioned and is updated by each rotation. This field is present only for payment connectors with a \u003ccode\u003eprovisionMode\u003c/code\u003e of \u003ccode\u003eQUICK_CREATE\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
           "description": {
             "target": "com.amazonaws.bedrockagentcorecontrol#PaymentsDescription",
             "traits": {
@@ -18285,6 +18467,12 @@
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the payment connector.\u003c/p\u003e",
               "smithy.api#required": {}
+            }
+          },
+          "provisionMode": {
+            "target": "com.amazonaws.bedrockagentcorecontrol#PaymentConnectorProvisionMode",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies how the payment connector was provisioned. Payment connectors that were created before this field was available return \u003ccode\u003eMANUAL\u003c/code\u003e.\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eMANUAL\u003c/code\u003e - You provided the credential provider configurations, so you own the credentials. Rotate them with the payment provider, then call \u003ccode\u003eUpdatePaymentCredentialProvider\u003c/code\u003e.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eQUICK_CREATE\u003c/code\u003e - AgentCore provisioned the credential provider for you, so the credentials are service-managed. You can rotate them with \u003ccode\u003eRotatePaymentConnectorCredentials\u003c/code\u003e.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e"
             }
           },
           "status": {
@@ -20294,6 +20482,12 @@
               "smithy.api#documentation": "\u003cp\u003eThe version of the harness. Incremented on every successful UpdateHarness.\u003c/p\u003e"
             }
           },
+          "hooks": {
+            "target": "com.amazonaws.bedrockagentcorecontrol#HarnessHooks",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe lifecycle hooks configured for the harness.\u003c/p\u003e"
+            }
+          },
           "maxIterations": {
             "target": "smithy.api#Integer",
             "traits": {
@@ -20370,6 +20564,50 @@
         },
         "traits": {
           "smithy.api#documentation": "\u003cp\u003eRepresentation of a harness.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.bedrockagentcorecontrol#HarnessAfterInvocationHook": {
+        "type": "structure",
+        "members": {
+          "name": {
+            "target": "com.amazonaws.bedrockagentcorecontrol#HarnessHookName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the hook.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "target": {
+            "target": "com.amazonaws.bedrockagentcorecontrol#HarnessHookTarget",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe target that receives the hook event.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe configuration for a hook that runs after an invocation completes.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.bedrockagentcorecontrol#HarnessAfterToolCallHook": {
+        "type": "structure",
+        "members": {
+          "name": {
+            "target": "com.amazonaws.bedrockagentcorecontrol#HarnessHookName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the hook.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "target": {
+            "target": "com.amazonaws.bedrockagentcorecontrol#HarnessHookTarget",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe target that receives the hook event.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe configuration for a hook that runs after a tool call completes.\u003c/p\u003e"
         }
       },
       "com.amazonaws.bedrockagentcorecontrol#HarnessAgentCoreBrowserConfig": {
@@ -20665,6 +20903,50 @@
           "smithy.api#documentation": "\u003cp\u003eConfiguration for an Amazon Bedrock model provider.\u003c/p\u003e"
         }
       },
+      "com.amazonaws.bedrockagentcorecontrol#HarnessBeforeInvocationHook": {
+        "type": "structure",
+        "members": {
+          "name": {
+            "target": "com.amazonaws.bedrockagentcorecontrol#HarnessHookName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the hook.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "target": {
+            "target": "com.amazonaws.bedrockagentcorecontrol#HarnessHookTarget",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe target that receives the hook event.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe configuration for a hook that runs before an invocation begins.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.bedrockagentcorecontrol#HarnessBeforeToolCallHook": {
+        "type": "structure",
+        "members": {
+          "name": {
+            "target": "com.amazonaws.bedrockagentcorecontrol#HarnessHookName",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the hook.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "target": {
+            "target": "com.amazonaws.bedrockagentcorecontrol#HarnessHookTarget",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe target that receives the hook event.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe configuration for a hook that runs before the agent calls a tool.\u003c/p\u003e"
+        }
+      },
       "com.amazonaws.bedrockagentcorecontrol#HarnessBrowserArn": {
         "type": "string",
         "traits": {
@@ -20899,6 +21181,17 @@
           "smithy.api#documentation": "\u003cp\u003eThe environment provider request configuration.\u003c/p\u003e"
         }
       },
+      "com.amazonaws.bedrockagentcorecontrol#HarnessEventBridgeBusArn": {
+        "type": "string",
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe ARN of an Amazon EventBridge event bus.\u003c/p\u003e",
+          "smithy.api#length": {
+            "min": 20,
+            "max": 2048
+          },
+          "smithy.api#pattern": "^arn:aws(-[^:]+)?:events:[a-z0-9-]+:[0-9]{12}:event-bus/.+$"
+        }
+      },
       "com.amazonaws.bedrockagentcorecontrol#HarnessGatewayOutboundAuth": {
         "type": "union",
         "members": {
@@ -20977,6 +21270,173 @@
           "smithy.api#documentation": "\u003cp\u003eConfiguration for a Google Gemini model provider. Requires an API key stored in AgentCore Identity.\u003c/p\u003e"
         }
       },
+      "com.amazonaws.bedrockagentcorecontrol#HarnessHook": {
+        "type": "union",
+        "members": {
+          "afterInvocation": {
+            "target": "com.amazonaws.bedrockagentcorecontrol#HarnessAfterInvocationHook",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA hook that runs after an invocation completes.\u003c/p\u003e"
+            }
+          },
+          "afterToolCall": {
+            "target": "com.amazonaws.bedrockagentcorecontrol#HarnessAfterToolCallHook",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA hook that runs after a tool call completes.\u003c/p\u003e"
+            }
+          },
+          "beforeInvocation": {
+            "target": "com.amazonaws.bedrockagentcorecontrol#HarnessBeforeInvocationHook",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA hook that runs before an invocation begins.\u003c/p\u003e"
+            }
+          },
+          "beforeToolCall": {
+            "target": "com.amazonaws.bedrockagentcorecontrol#HarnessBeforeToolCallHook",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA hook that runs before the agent calls a tool.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA lifecycle hook configuration. Specify one hook type.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.bedrockagentcorecontrol#HarnessHookEventBridgeTarget": {
+        "type": "structure",
+        "members": {
+          "arn": {
+            "target": "com.amazonaws.bedrockagentcorecontrol#HarnessEventBridgeBusArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ARN of the Amazon EventBridge event bus to send hook events to.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe configuration for an Amazon EventBridge hook target.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.bedrockagentcorecontrol#HarnessHookFailureMode": {
+        "type": "enum",
+        "members": {
+          "ALLOW": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies that the current action continues when the hook target fails.\u003c/p\u003e",
+              "smithy.api#enumValue": "allow"
+            }
+          },
+          "DENY": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies that the service denies the current action when the hook target fails.\u003c/p\u003e",
+              "smithy.api#enumValue": "deny"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe behavior when a synchronous hook target fails.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.bedrockagentcorecontrol#HarnessHookLambdaTarget": {
+        "type": "structure",
+        "members": {
+          "arn": {
+            "target": "com.amazonaws.bedrockagentcorecontrol#HarnessLambdaFunctionArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ARN of the Lambda function to invoke.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "failureMode": {
+            "target": "com.amazonaws.bedrockagentcorecontrol#HarnessHookFailureMode",
+            "traits": {
+              "smithy.api#default": "deny",
+              "smithy.api#documentation": "\u003cp\u003eThe behavior when the Lambda function times out, returns an error, or returns an invalid response. The default is \u003ccode\u003eDENY\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "timeoutSeconds": {
+            "target": "smithy.api#Integer",
+            "traits": {
+              "smithy.api#default": 60,
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of seconds to wait for the Lambda function response. The default is 60 seconds.\u003c/p\u003e",
+              "smithy.api#range": {
+                "min": 1,
+                "max": 900
+              }
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe configuration for an AWS Lambda hook target.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.bedrockagentcorecontrol#HarnessHookName": {
+        "type": "string",
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe name of a lifecycle hook.\u003c/p\u003e",
+          "smithy.api#length": {
+            "min": 1,
+            "max": 64
+          },
+          "smithy.api#pattern": "^[a-zA-Z0-9_-]+$"
+        }
+      },
+      "com.amazonaws.bedrockagentcorecontrol#HarnessHookSnsTarget": {
+        "type": "structure",
+        "members": {
+          "arn": {
+            "target": "com.amazonaws.bedrockagentcorecontrol#HarnessSnsTopicArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ARN of the Amazon SNS topic to publish hook events to.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe configuration for an Amazon SNS hook target.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.bedrockagentcorecontrol#HarnessHookTarget": {
+        "type": "union",
+        "members": {
+          "eventBridge": {
+            "target": "com.amazonaws.bedrockagentcorecontrol#HarnessHookEventBridgeTarget",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn Amazon EventBridge hook target that sends the hook event without waiting for a response.\u003c/p\u003e"
+            }
+          },
+          "lambda": {
+            "target": "com.amazonaws.bedrockagentcorecontrol#HarnessHookLambdaTarget",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA Lambda hook target that invokes an AWS Lambda function synchronously and waits for its response.\u003c/p\u003e"
+            }
+          },
+          "sns": {
+            "target": "com.amazonaws.bedrockagentcorecontrol#HarnessHookSnsTarget",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eAn Amazon SNS hook target that publishes the hook event without waiting for a response.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe target that receives lifecycle hook events. Specify one target type.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.bedrockagentcorecontrol#HarnessHooks": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.bedrockagentcorecontrol#HarnessHook"
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe lifecycle hooks configured to run at defined points in the agent loop.\u003c/p\u003e",
+          "smithy.api#length": {
+            "max": 20
+          },
+          "smithy.api#uniqueItems": {}
+        }
+      },
       "com.amazonaws.bedrockagentcorecontrol#HarnessId": {
         "type": "string",
         "traits": {
@@ -21013,6 +21473,17 @@
             "max": 4096
           },
           "smithy.api#sensitive": {}
+        }
+      },
+      "com.amazonaws.bedrockagentcorecontrol#HarnessLambdaFunctionArn": {
+        "type": "string",
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe ARN of an AWS Lambda function.\u003c/p\u003e",
+          "smithy.api#length": {
+            "min": 20,
+            "max": 2048
+          },
+          "smithy.api#pattern": "^arn:aws(-[^:]+)?:lambda:[a-z0-9-]+:[0-9]{12}:function:.+$"
         }
       },
       "com.amazonaws.bedrockagentcorecontrol#HarnessLiteLlmApiBase": {
@@ -21218,6 +21689,16 @@
           "smithy.api#pattern": "^[a-zA-Z][a-zA-Z0-9_]{0,39}$"
         }
       },
+      "com.amazonaws.bedrockagentcorecontrol#HarnessOpenAiApiBase": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 16383
+          },
+          "smithy.api#sensitive": {}
+        }
+      },
       "com.amazonaws.bedrockagentcorecontrol#HarnessOpenAiApiFormat": {
         "type": "enum",
         "members": {
@@ -21244,6 +21725,12 @@
             "target": "smithy.api#Document",
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eProvider-specific parameters passed through to the model provider unchanged.\u003c/p\u003e"
+            }
+          },
+          "apiBase": {
+            "target": "com.amazonaws.bedrockagentcorecontrol#HarnessOpenAiApiBase",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eOptional custom endpoint URL for an OpenAI-compatible endpoint.\u003c/p\u003e"
             }
           },
           "apiFormat": {
@@ -21499,6 +21986,17 @@
         },
         "traits": {
           "smithy.api#documentation": "\u003cp\u003eConfiguration for sliding window truncation strategy.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.bedrockagentcorecontrol#HarnessSnsTopicArn": {
+        "type": "string",
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe ARN of an Amazon SNS topic.\u003c/p\u003e",
+          "smithy.api#length": {
+            "min": 20,
+            "max": 2048
+          },
+          "smithy.api#pattern": "^arn:aws(-[^:]+)?:sns:[a-z0-9-]+:[0-9]{12}:.+$"
         }
       },
       "com.amazonaws.bedrockagentcorecontrol#HarnessStatus": {
@@ -26964,6 +27462,12 @@
       "com.amazonaws.bedrockagentcorecontrol#MCPGatewayConfiguration": {
         "type": "structure",
         "members": {
+          "disableMcpListToolsPagination": {
+            "target": "smithy.api#Boolean",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies whether pagination is disabled for the Model Context Protocol (MCP) \u003ccode\u003etools/list\u003c/code\u003e operation. When set to \u003ccode\u003etrue\u003c/code\u003e, the gateway returns the complete list of tools in a single response without a pagination cursor. When set to \u003ccode\u003efalse\u003c/code\u003e or omitted, the gateway returns tools in paginated responses.\u003c/p\u003e"
+            }
+          },
           "instructions": {
             "target": "com.amazonaws.bedrockagentcorecontrol#McpInstructions",
             "traits": {
@@ -27255,7 +27759,7 @@
           "mcpToolSchema": {
             "target": "com.amazonaws.bedrockagentcorecontrol#McpToolSchemaConfiguration",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe tool schema configuration for the MCP server target. Supported only when the credential provider is configured with an authorization code grant type. Dynamic tool discovery/synchronization will be disabled when target is configured with mcpToolSchema.\u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003eA static tool list for the MCP server target. It is supported for all credential providers. Dynamic tool discovery/synchronization will be disabled when a target is configured with mcpToolSchema.\u003c/p\u003e"
             }
           },
           "resourcePriority": {
@@ -29459,7 +29963,12 @@
         }
       },
       "com.amazonaws.bedrockagentcorecontrol#PaymentConnectorResource": {
-        "type": "resource"
+        "type": "resource",
+        "operations": [
+          {
+            "target": "com.amazonaws.bedrockagentcorecontrol#RotatePaymentConnectorCredentials"
+          }
+        ]
       },
       "com.amazonaws.bedrockagentcorecontrol#PaymentConnectorStatus": {
         "type": "enum",
@@ -29566,6 +30075,12 @@
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the payment connector.\u003c/p\u003e",
               "smithy.api#required": {}
+            }
+          },
+          "provisionMode": {
+            "target": "com.amazonaws.bedrockagentcorecontrol#PaymentConnectorProvisionMode",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies how the payment connector was provisioned. Payment connectors that were created before this field was available return \u003ccode\u003eMANUAL\u003c/code\u003e.\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eMANUAL\u003c/code\u003e - You provided the credential provider configurations, so you own the credentials.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eQUICK_CREATE\u003c/code\u003e - AgentCore provisioned the credential provider for you, so the credentials are service-managed and you can rotate them with \u003ccode\u003eRotatePaymentConnectorCredentials\u003c/code\u003e.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e"
             }
           },
           "status": {
@@ -29984,6 +30499,16 @@
         },
         "traits": {
           "smithy.api#documentation": "\u003cp\u003eThe permissions configuration for a capacity provider. This specifies the IAM role that AgentCore uses to manage the Amazon EC2 instances for the capacity provider on your behalf.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.bedrockagentcorecontrol#PlatformVersion": {
+        "type": "string",
+        "traits": {
+          "smithy.api#length": {
+            "min": 1,
+            "max": 128
+          },
+          "smithy.api#pattern": "^[^\\s]+$"
         }
       },
       "com.amazonaws.bedrockagentcorecontrol#Policies": {
@@ -32102,6 +32627,118 @@
           "smithy.api#documentation": "\u003cp\u003eThe configuration for the root volume of a capacity provider instance. Specify the amount of free space to guarantee on the root volume. The device name and delete-on-termination settings are fixed and cannot be changed.\u003c/p\u003e"
         }
       },
+      "com.amazonaws.bedrockagentcorecontrol#RotatePaymentConnectorCredentials": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.bedrockagentcorecontrol#RotatePaymentConnectorCredentialsRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.bedrockagentcorecontrol#RotatePaymentConnectorCredentialsResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.bedrockagentcorecontrol#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.bedrockagentcorecontrol#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.bedrockagentcorecontrol#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.bedrockagentcorecontrol#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.bedrockagentcorecontrol#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.bedrockagentcorecontrol#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eReplaces the service-managed credentials of a payment connector with newly issued credentials.\u003c/p\u003e \u003cp\u003eUse this operation only for payment connectors with a \u003ccode\u003eprovisionMode\u003c/code\u003e of \u003ccode\u003eQUICK_CREATE\u003c/code\u003e. For payment connectors with a \u003ccode\u003eprovisionMode\u003c/code\u003e of \u003ccode\u003eMANUAL\u003c/code\u003e, call \u003ccode\u003eUpdatePaymentCredentialProvider\u003c/code\u003e instead after rotating credentials with the payment provider directly.\u003c/p\u003e \u003cp\u003eThe rotation finishes before the response is returned, and only one rotation runs at a time for a given payment connector. When it succeeds, the new credential is in effect and the payment connector stays in the \u003ccode\u003eREADY\u003c/code\u003e state. When it fails, an error is returned, the payment connector and its existing credential are left unchanged, and you can retry the request.\u003c/p\u003e \u003cp\u003eRotation replaces the credential on the connector's credential provider, so every payment connector that uses that provider is affected. Replace any copy of the previous credential that you use outside AgentCore.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 202,
+            "method": "POST",
+            "uri": "/payments/managers/{paymentManagerId}/connectors/{paymentConnectorId}/rotate-credentials"
+          },
+          "smithy.api#idempotent": {}
+        }
+      },
+      "com.amazonaws.bedrockagentcorecontrol#RotatePaymentConnectorCredentialsRequest": {
+        "type": "structure",
+        "members": {
+          "clientToken": {
+            "target": "com.amazonaws.bedrockagentcorecontrol#ClientToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA unique, case-sensitive identifier to ensure that the API request completes no more than one time. If you don't specify this field, a value is randomly generated for you. If this token matches a previous request, the service ignores the request, but doesn't return an error. For more information, see \u003ca href=\"https://docs.aws.amazon.com/AWSEC2/latest/APIReference/Run_Instance_Idempotency.html\"\u003eEnsuring idempotency\u003c/a\u003e.\u003c/p\u003e",
+              "smithy.api#idempotencyToken": {}
+            }
+          },
+          "credentialsToRotate": {
+            "target": "com.amazonaws.bedrockagentcorecontrol#CredentialRotationConfig",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe credentials to rotate. Specify the member that matches the payment connector's \u003ccode\u003etype\u003c/code\u003e. Each credential that you select is rotated independently.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "paymentConnectorId": {
+            "target": "com.amazonaws.bedrockagentcorecontrol#PaymentConnectorId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the payment connector whose credentials you want to rotate.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          },
+          "paymentManagerId": {
+            "target": "com.amazonaws.bedrockagentcorecontrol#PaymentManagerId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the parent payment manager.\u003c/p\u003e",
+              "smithy.api#httpLabel": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.bedrockagentcorecontrol#RotatePaymentConnectorCredentialsResponse": {
+        "type": "structure",
+        "members": {
+          "lastUpdatedAt": {
+            "target": "com.amazonaws.bedrockagentcorecontrol#DateTimestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe timestamp when the payment connector was last updated, which is when the rotation completed.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "paymentConnectorId": {
+            "target": "com.amazonaws.bedrockagentcorecontrol#PaymentConnectorId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the payment connector.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "paymentManagerId": {
+            "target": "com.amazonaws.bedrockagentcorecontrol#PaymentManagerId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the parent payment manager.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "status": {
+            "target": "com.amazonaws.bedrockagentcorecontrol#PaymentConnectorStatus",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe current status of the payment connector, which is \u003ccode\u003eREADY\u003c/code\u003e after a successful rotation.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
       "com.amazonaws.bedrockagentcorecontrol#RouteToTargetAction": {
         "type": "union",
         "members": {
@@ -32229,6 +32866,27 @@
         "type": "string",
         "traits": {
           "smithy.api#pattern": "^s3://.{1,2043}$"
+        }
+      },
+      "com.amazonaws.bedrockagentcorecontrol#S3CertificateConfiguration": {
+        "type": "structure",
+        "members": {
+          "bucketOwnerAccountId": {
+            "target": "com.amazonaws.bedrockagentcorecontrol#CertificateBucketOwnerAccountId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe account ID of the Amazon S3 bucket owner. This ID is used for cross-account access to the bucket.\u003c/p\u003e"
+            }
+          },
+          "uri": {
+            "target": "com.amazonaws.bedrockagentcorecontrol#CertificateS3Uri",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe URI of the Amazon S3 object that contains the PEM-encoded certificate.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA reference to a PEM-encoded private CA certificate stored as an Amazon S3 object.\u003c/p\u003e"
         }
       },
       "com.amazonaws.bedrockagentcorecontrol#S3Configuration": {
@@ -32686,6 +33344,21 @@
               "smithy.api#enumValue": "MANAGED"
             }
           }
+        }
+      },
+      "com.amazonaws.bedrockagentcorecontrol#SecretsManagerCertificateConfiguration": {
+        "type": "structure",
+        "members": {
+          "secretArn": {
+            "target": "com.amazonaws.bedrockagentcorecontrol#CertificateSecretArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the Amazon Web Services Secrets Manager secret that contains the PEM-encoded certificate.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA reference to a PEM-encoded private CA certificate stored in an Amazon Web Services Secrets Manager secret.\u003c/p\u003e"
         }
       },
       "com.amazonaws.bedrockagentcorecontrol#SecretsManagerLocation": {
@@ -35687,6 +36360,12 @@
               "smithy.api#documentation": "\u003cp\u003eThe updated network configuration for the AgentCore Runtime.\u003c/p\u003e"
             }
           },
+          "platformVersion": {
+            "target": "com.amazonaws.bedrockagentcorecontrol#PlatformVersion",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe updated version of the runtime platform to use for the AgentCore Runtime.\u003c/p\u003e"
+            }
+          },
           "protocolConfiguration": {
             "target": "com.amazonaws.bedrockagentcorecontrol#ProtocolConfiguration"
           },
@@ -36100,7 +36779,8 @@
               "smithy.api#length": {
                 "min": 1,
                 "max": 500
-              }
+              },
+              "smithy.api#required": {}
             }
           },
           "components": {
@@ -37307,6 +37987,12 @@
       "com.amazonaws.bedrockagentcorecontrol#UpdateGatewayTargetRequest": {
         "type": "structure",
         "members": {
+          "certificateConfigurations": {
+            "target": "com.amazonaws.bedrockagentcorecontrol#CertificateConfigurationList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe private certificate authority (CA) configurations for the gateway target. Use this to have the gateway trust a private CA when it establishes TLS connections to the target endpoint. Provide each certificate by reference to an Amazon S3 object or an Amazon Web Services Secrets Manager secret. You can specify only one certificate authority configuration in this list. To remove a previously configured certificate authority, omit this field on update.\u003c/p\u003e"
+            }
+          },
           "credentialProviderConfigurations": {
             "target": "com.amazonaws.bedrockagentcorecontrol#CredentialProviderConfigurations",
             "traits": {
@@ -37371,6 +38057,12 @@
             "target": "com.amazonaws.bedrockagentcorecontrol#AuthorizationData",
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eOAuth2 authorization data for the updated gateway target. This data is returned when a target is configured with a credential provider with authorization code grant type and requires user federation.\u003c/p\u003e"
+            }
+          },
+          "certificateConfigurations": {
+            "target": "com.amazonaws.bedrockagentcorecontrol#CertificateConfigurationList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe private certificate authority (CA) configurations for the gateway target.\u003c/p\u003e"
             }
           },
           "createdAt": {
@@ -37495,6 +38187,9 @@
           },
           {
             "target": "com.amazonaws.bedrockagentcorecontrol#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.bedrockagentcorecontrol#ServiceQuotaExceededException"
           },
           {
             "target": "com.amazonaws.bedrockagentcorecontrol#ThrottlingException"
@@ -37661,6 +38356,12 @@
               "smithy.api#documentation": "\u003cp\u003eThe ID of the harness to update.\u003c/p\u003e",
               "smithy.api#httpLabel": {},
               "smithy.api#required": {}
+            }
+          },
+          "hooks": {
+            "target": "com.amazonaws.bedrockagentcorecontrol#HarnessHooks",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe lifecycle hooks to run at defined points in the agent loop. If specified, this replaces all existing hooks. If not specified, the existing hooks are retained.\u003c/p\u003e"
             }
           },
           "maxIterations": {

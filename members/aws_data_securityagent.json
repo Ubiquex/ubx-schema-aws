@@ -165,6 +165,45 @@
           "target": "com.amazonaws.securityagent#Actor"
         }
       },
+      "com.amazonaws.securityagent#ActorMessage": {
+        "type": "structure",
+        "members": {
+          "body": {
+            "target": "com.amazonaws.securityagent#SensitiveMessageBody",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe plain-text body of the message, containing the MFA code or verification link.\u003c/p\u003e"
+            }
+          },
+          "receivedAt": {
+            "target": "smithy.api#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe time the message was received.\u003c/p\u003e",
+              "smithy.api#timestampFormat": "date-time"
+            }
+          },
+          "sender": {
+            "target": "com.amazonaws.securityagent#SensitiveMessageSender",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe address the message was sent from.\u003c/p\u003e"
+            }
+          },
+          "subject": {
+            "target": "com.amazonaws.securityagent#SensitiveMessageSubject",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe subject line of the message.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA message received at an actor's server-generated email MFA address.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.securityagent#ActorMessageList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.securityagent#ActorMessage"
+        }
+      },
       "com.amazonaws.securityagent#AddArtifact": {
         "type": "operation",
         "input": {
@@ -734,6 +773,136 @@
         },
         "traits": {
           "smithy.api#documentation": "\u003cp\u003eType of authentication provider.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.securityagent#AzureDevOpsIntegrationInput": {
+        "type": "structure",
+        "members": {
+          "code": {
+            "target": "com.amazonaws.securityagent#AuthCode",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe OAuth 2.0 authorization code returned to your redirect URL after the connection is authorized.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "organizationName": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the Azure DevOps organization to connect, for example \u003ccode\u003emy-org\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "state": {
+            "target": "com.amazonaws.securityagent#CsrfState",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe CSRF state value returned by \u003ccode\u003eInitiateProviderRegistration\u003c/code\u003e and echoed back on the authorization redirect.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eConnection details for an Azure DevOps integration.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.securityagent#AzureDevOpsOrganization": {
+        "type": "string",
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eAn Azure DevOps organization name.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.securityagent#AzureDevOpsRepositoryMetadata": {
+        "type": "structure",
+        "members": {
+          "accessType": {
+            "target": "com.amazonaws.securityagent#AccessType"
+          },
+          "name": {
+            "target": "com.amazonaws.securityagent#ProviderResourceName",
+            "traits": {
+              "smithy.api#required": {}
+            }
+          },
+          "organization": {
+            "target": "com.amazonaws.securityagent#AzureDevOpsOrganization",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the Azure DevOps organization that owns the repository.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "project": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the Azure DevOps project that contains the repository.\u003c/p\u003e"
+            }
+          },
+          "projectId": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe GUID of the Azure DevOps project that contains the repository.\u003c/p\u003e"
+            }
+          },
+          "providerResourceId": {
+            "target": "com.amazonaws.securityagent#ProviderResourceId",
+            "traits": {
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eMetadata for an integrated Azure DevOps repository.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.securityagent#AzureDevOpsRepositoryResource": {
+        "type": "structure",
+        "members": {
+          "name": {
+            "target": "com.amazonaws.securityagent#ProviderResourceName",
+            "traits": {
+              "smithy.api#required": {}
+            }
+          },
+          "organization": {
+            "target": "com.amazonaws.securityagent#AzureDevOpsOrganization",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the Azure DevOps organization that owns the repository.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "project": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the Azure DevOps project that contains the repository.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eAn Azure DevOps repository integrated as a resource.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.securityagent#AzureDevOpsResourceCapabilities": {
+        "type": "structure",
+        "members": {
+          "leaveComments": {
+            "target": "smithy.api#Boolean",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eWhether to post code review comments on pull requests.\u003c/p\u003e"
+            }
+          },
+          "remediateCode": {
+            "target": "smithy.api#Boolean",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eWhether to create pull requests with automated fixes.\u003c/p\u003e"
+            }
+          },
+          "triggerFilterGroups": {
+            "target": "com.amazonaws.securityagent#TriggerFilterGroups",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe filter groups that control which pull request events start an automatic code review when \u003ccode\u003eleaveComments\u003c/code\u003e is enabled. A review starts when any group matches. If you omit this, a review starts on \u003ccode\u003ePULL_REQUEST_READY_FOR_REVIEW\u003c/code\u003e events.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eCapabilities for an integrated Azure DevOps repository.\u003c/p\u003e"
         }
       },
       "com.amazonaws.securityagent#BatchCreateSecurityRequirementResult": {
@@ -2270,6 +2439,35 @@
           "smithy.api#output": {}
         }
       },
+      "com.amazonaws.securityagent#BitbucketDataCenterIntegrationInput": {
+        "type": "structure",
+        "members": {
+          "code": {
+            "target": "com.amazonaws.securityagent#AuthCode",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe OAuth 2.0 authorization code returned to your redirect URL after the connection is authorized.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "state": {
+            "target": "com.amazonaws.securityagent#CsrfState",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe CSRF state value returned by \u003ccode\u003eInitiateProviderRegistration\u003c/code\u003e and echoed back on the authorization redirect.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "targetUrl": {
+            "target": "com.amazonaws.securityagent#TargetUrl",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe HTTPS URL of your Bitbucket Data Center instance, for example \u003ccode\u003ehttps://bitbucket.example.com\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eConnection details for a self-managed Bitbucket Data Center integration.\u003c/p\u003e"
+        }
+      },
       "com.amazonaws.securityagent#BitbucketInstallationId": {
         "type": "string",
         "traits": {
@@ -2377,6 +2575,12 @@
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eWhether to create pull requests with automated fixes.\u003c/p\u003e"
             }
+          },
+          "triggerFilterGroups": {
+            "target": "com.amazonaws.securityagent#TriggerFilterGroups",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe filter groups that control which pull request events start an automatic code review when \u003ccode\u003eleaveComments\u003c/code\u003e is enabled. A review starts when any group matches. If you omit this, a review starts on \u003ccode\u003ePULL_REQUEST_READY_FOR_REVIEW\u003c/code\u003e events.\u003c/p\u003e"
+            }
           }
         },
         "traits": {
@@ -2459,6 +2663,20 @@
           "smithy.api#sensitive": {}
         }
       },
+      "com.amazonaws.securityagent#CiCdConfiguration": {
+        "type": "structure",
+        "members": {
+          "enabled": {
+            "target": "smithy.api#Boolean",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eWhether CI/CD pentesting is enabled for this pentest.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe configuration that enables a pentest to run as part of a CI/CD pipeline, scoped to the code changes in each pipeline run.\u003c/p\u003e"
+        }
+      },
       "com.amazonaws.securityagent#CleanUpStrategy": {
         "type": "enum",
         "members": {
@@ -2479,6 +2697,19 @@
         },
         "traits": {
           "smithy.api#documentation": "\u003cp\u003eStrategy for handling resources created during a pentest.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.securityagent#ClientId": {
+        "type": "string",
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA client ID for an OAuth application registered on a self-managed provider instance.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.securityagent#ClientSecret": {
+        "type": "string",
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA client secret for an OAuth application registered on a self-managed provider instance.\u003c/p\u003e",
+          "smithy.api#sensitive": {}
         }
       },
       "com.amazonaws.securityagent#CloudWatchLog": {
@@ -2699,6 +2930,18 @@
               "smithy.api#documentation": "\u003cp\u003eThe maximum number of billable task hours allowed for jobs started from this code review. If a job reaches the configured limit, it is gracefully stopped. If not set, jobs run to completion with no budget cap.\u003c/p\u003e"
             }
           },
+          "reportDestination": {
+            "target": "com.amazonaws.securityagent#ReportDestination",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe destination for publishing scan reports to an integrated document provider.\u003c/p\u003e"
+            }
+          },
+          "reportFilters": {
+            "target": "com.amazonaws.securityagent#ReportFilters",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe report-generation filters applied when the report is exported.\u003c/p\u003e"
+            }
+          },
           "serviceRole": {
             "target": "com.amazonaws.securityagent#ServiceRole",
             "traits": {
@@ -2807,6 +3050,12 @@
             "target": "smithy.api#String",
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eAn overview of the code review job results.\u003c/p\u003e"
+            }
+          },
+          "reportDestination": {
+            "target": "com.amazonaws.securityagent#ReportDestination",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe destination for publishing scan reports to an integrated document provider.\u003c/p\u003e"
             }
           },
           "serviceRole": {
@@ -3211,6 +3460,18 @@
         },
         "traits": {
           "smithy.api#documentation": "\u003cp\u003eFinding confidence level.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.securityagent#ConfidenceLevelFilterList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.securityagent#ConfidenceLevel"
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA list of confidence levels for a report filter.\u003c/p\u003e",
+          "smithy.api#length": {
+            "max": 50
+          }
         }
       },
       "com.amazonaws.securityagent#ConflictException": {
@@ -3679,6 +3940,18 @@
               "smithy.api#documentation": "\u003cp\u003eThe maximum number of billable task hours allowed for jobs started from this code review. Must be a positive number. If not set, jobs run to completion with no budget cap.\u003c/p\u003e"
             }
           },
+          "reportDestination": {
+            "target": "com.amazonaws.securityagent#ReportDestination",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe destination for publishing scan reports to an integrated document provider.\u003c/p\u003e"
+            }
+          },
+          "reportFilters": {
+            "target": "com.amazonaws.securityagent#ReportFilters",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe report-generation filters applied when the report is exported.\u003c/p\u003e"
+            }
+          },
           "serviceRole": {
             "target": "com.amazonaws.securityagent#ServiceRole",
             "traits": {
@@ -3749,6 +4022,18 @@
             "target": "smithy.api#Double",
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe maximum number of billable task hours configured for jobs started from this code review. Null if no budget cap is set.\u003c/p\u003e"
+            }
+          },
+          "reportDestination": {
+            "target": "com.amazonaws.securityagent#ReportDestination",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe destination for publishing scan reports to an integrated document provider.\u003c/p\u003e"
+            }
+          },
+          "reportFilters": {
+            "target": "com.amazonaws.securityagent#ReportFilters",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe report-generation filters applied when the report is exported.\u003c/p\u003e"
             }
           },
           "serviceRole": {
@@ -3855,7 +4140,7 @@
           "provider": {
             "target": "com.amazonaws.securityagent#Provider",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe integration provider. Currently, only GITHUB is supported.\u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003eThe integration provider.\u003c/p\u003e",
               "smithy.api#required": {}
             }
           },
@@ -3984,6 +4269,12 @@
               "smithy.api#documentation": "\u003cp\u003eThe assets to include in the pentest, such as endpoints, actors, documents, and source code.\u003c/p\u003e"
             }
           },
+          "cicdConfiguration": {
+            "target": "com.amazonaws.securityagent#CiCdConfiguration",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe CI/CD pentesting configuration to apply to the pentest.\u003c/p\u003e"
+            }
+          },
           "codeRemediationStrategy": {
             "target": "com.amazonaws.securityagent#CodeRemediationStrategy",
             "traits": {
@@ -4020,11 +4311,26 @@
               "smithy.api#documentation": "\u003cp\u003eThe network traffic configuration for the pentest, including custom headers and traffic rules.\u003c/p\u003e"
             }
           },
+          "reportDestination": {
+            "target": "com.amazonaws.securityagent#ReportDestination",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe destination for publishing scan reports to an integrated document provider.\u003c/p\u003e"
+            }
+          },
+          "reportFilters": {
+            "target": "com.amazonaws.securityagent#ReportFilters",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe report-generation filters applied when the report is exported.\u003c/p\u003e"
+            }
+          },
           "serviceRole": {
             "target": "com.amazonaws.securityagent#ServiceRole",
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe IAM service role to use for the pentest.\u003c/p\u003e"
             }
+          },
+          "testScope": {
+            "target": "com.amazonaws.securityagent#TestScope"
           },
           "title": {
             "target": "smithy.api#String",
@@ -4060,6 +4366,12 @@
               "smithy.api#documentation": "\u003cp\u003eThe assets included in the pentest.\u003c/p\u003e"
             }
           },
+          "cicdConfiguration": {
+            "target": "com.amazonaws.securityagent#CiCdConfiguration",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe CI/CD pentesting configuration applied to the pentest.\u003c/p\u003e"
+            }
+          },
           "createdAt": {
             "target": "smithy.api#Timestamp",
             "traits": {
@@ -4085,11 +4397,26 @@
               "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the created pentest.\u003c/p\u003e"
             }
           },
+          "reportDestination": {
+            "target": "com.amazonaws.securityagent#ReportDestination",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe destination for publishing scan reports to an integrated document provider.\u003c/p\u003e"
+            }
+          },
+          "reportFilters": {
+            "target": "com.amazonaws.securityagent#ReportFilters",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe report-generation filters applied when the report is exported.\u003c/p\u003e"
+            }
+          },
           "serviceRole": {
             "target": "com.amazonaws.securityagent#ServiceRole",
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe IAM service role used for the pentest.\u003c/p\u003e"
             }
+          },
+          "testScope": {
+            "target": "com.amazonaws.securityagent#TestScope"
           },
           "title": {
             "target": "smithy.api#String",
@@ -4748,6 +5075,12 @@
             "target": "com.amazonaws.securityagent#CloudWatchLog",
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe CloudWatch Logs configuration for the threat model.\u003c/p\u003e"
+            }
+          },
+          "reportDestination": {
+            "target": "com.amazonaws.securityagent#ReportDestination",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe destination for publishing scan reports to an integrated document provider.\u003c/p\u003e"
             }
           },
           "scopeDocs": {
@@ -6070,6 +6403,12 @@
               "smithy.api#documentation": "\u003cp\u003eThe reasoning behind the finding, explaining why it was identified as a vulnerability.\u003c/p\u003e"
             }
           },
+          "remediationCode": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe suggested fix for the finding, describing the changes recommended to remediate the vulnerability, with example code or configuration.\u003c/p\u003e"
+            }
+          },
           "revalidationJobIds": {
             "target": "com.amazonaws.securityagent#StringList",
             "traits": {
@@ -6175,6 +6514,18 @@
         },
         "traits": {
           "smithy.api#documentation": "\u003cp\u003eFinding status.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.securityagent#FindingStatusFilterList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.securityagent#FindingStatus"
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA list of finding statuses for a report filter.\u003c/p\u003e",
+          "smithy.api#length": {
+            "max": 50
+          }
         }
       },
       "com.amazonaws.securityagent#FindingSummary": {
@@ -6564,6 +6915,12 @@
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe HTTPS URL of the customer self-hosted instance, such as a GitHub Enterprise Server or self-managed GitLab instance. This value is absent for SaaS integrations.\u003c/p\u003e"
             }
+          },
+          "webhookUrl": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe payload URL of the integration's webhook, once it has been created. The signing secret is never returned on a read.\u003c/p\u003e"
+            }
           }
         },
         "traits": {
@@ -6813,6 +7170,12 @@
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eIndicates whether the integration can create code remediation pull requests.\u003c/p\u003e"
             }
+          },
+          "triggerFilterGroups": {
+            "target": "com.amazonaws.securityagent#TriggerFilterGroups",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe filter groups that control which pull request events start an automatic code review when \u003ccode\u003eleaveComments\u003c/code\u003e is enabled. A review starts when any group matches. If you omit this, a review starts on \u003ccode\u003ePULL_REQUEST_READY_FOR_REVIEW\u003c/code\u003e events.\u003c/p\u003e"
+            }
           }
         },
         "traits": {
@@ -6923,6 +7286,12 @@
             "target": "smithy.api#Boolean",
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eWhether to create merge requests with automated fixes.\u003c/p\u003e"
+            }
+          },
+          "triggerFilterGroups": {
+            "target": "com.amazonaws.securityagent#TriggerFilterGroups",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe filter groups that control which merge request events start an automatic code review when \u003ccode\u003eleaveComments\u003c/code\u003e is enabled. A review starts when any group matches. If you omit this, a review starts on \u003ccode\u003ePULL_REQUEST_READY_FOR_REVIEW\u003c/code\u003e events.\u003c/p\u003e"
             }
           }
         },
@@ -7152,11 +7521,35 @@
       "com.amazonaws.securityagent#InitiateProviderRegistrationInput": {
         "type": "structure",
         "members": {
+          "clientId": {
+            "target": "com.amazonaws.securityagent#ClientId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe client ID of the OAuth application registered on your self-managed provider instance.\u003c/p\u003e"
+            }
+          },
+          "clientSecret": {
+            "target": "com.amazonaws.securityagent#ClientSecret",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe client secret of the OAuth application registered on your self-managed provider instance.\u003c/p\u003e"
+            }
+          },
+          "organizationName": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the organization to connect.\u003c/p\u003e"
+            }
+          },
           "provider": {
             "target": "com.amazonaws.securityagent#Provider",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe provider to initiate registration with. Currently, only GITHUB is supported.\u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003eThe provider to initiate registration with.\u003c/p\u003e",
               "smithy.api#required": {}
+            }
+          },
+          "targetUrl": {
+            "target": "com.amazonaws.securityagent#TargetUrl",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe HTTPS URL of a self-managed provider instance. Omit for SaaS providers.\u003c/p\u003e"
             }
           }
         },
@@ -7245,6 +7638,12 @@
       "com.amazonaws.securityagent#IntegratedResource": {
         "type": "union",
         "members": {
+          "azureDevOpsRepository": {
+            "target": "com.amazonaws.securityagent#AzureDevOpsRepositoryResource",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Azure DevOps repository resource information.\u003c/p\u003e"
+            }
+          },
           "bitbucketRepository": {
             "target": "com.amazonaws.securityagent#BitbucketRepositoryResource"
           },
@@ -7298,6 +7697,12 @@
       "com.amazonaws.securityagent#IntegratedResourceMetadata": {
         "type": "union",
         "members": {
+          "azureDevOpsRepository": {
+            "target": "com.amazonaws.securityagent#AzureDevOpsRepositoryMetadata",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Azure DevOps repository metadata.\u003c/p\u003e"
+            }
+          },
           "bitbucketRepository": {
             "target": "com.amazonaws.securityagent#BitbucketRepositoryMetadata"
           },
@@ -7436,6 +7841,12 @@
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe HTTPS URL of the customer self-hosted instance, such as a GitHub Enterprise Server or self-managed GitLab instance. This value is absent for SaaS integrations.\u003c/p\u003e"
             }
+          },
+          "webhookUrl": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe payload URL of the integration's webhook, once it has been created. The signing secret is never returned on a read.\u003c/p\u003e"
+            }
           }
         },
         "traits": {
@@ -7540,6 +7951,13 @@
       "com.amazonaws.securityagent#JobType": {
         "type": "enum",
         "members": {
+          "CICD": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA CI/CD pentest job that tests only the code changes in a single pipeline run, as determined by the scope changes supplied when the job is started.\u003c/p\u003e",
+              "smithy.api#enumValue": "CICD"
+            }
+          },
           "FULL": {
             "target": "smithy.api#Unit",
             "traits": {
@@ -7575,6 +7993,89 @@
         "type": "list",
         "member": {
           "target": "com.amazonaws.securityagent#LambdaFunctionArn"
+        }
+      },
+      "com.amazonaws.securityagent#ListActorMessages": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.securityagent#ListActorMessagesInput"
+        },
+        "output": {
+          "target": "com.amazonaws.securityagent#ListActorMessagesOutput"
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eReturns a paginated list of the email MFA messages received for an actor at its server-generated email address, most recent first.\u003c/p\u003e",
+          "smithy.api#http": {
+            "method": "POST",
+            "uri": "/ListActorMessages"
+          },
+          "smithy.api#paginated": {
+            "inputToken": "nextToken",
+            "outputToken": "nextToken",
+            "pageSize": "maxResults",
+            "items": "messages"
+          }
+        }
+      },
+      "com.amazonaws.securityagent#ListActorMessagesInput": {
+        "type": "structure",
+        "members": {
+          "actorIdentifier": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier of the actor whose messages to list. The identifier is case-insensitive.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "agentSpaceId": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the agent space that owns the pentest.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "maxResults": {
+            "target": "com.amazonaws.securityagent#MaxResults",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of results to return in a single call.\u003c/p\u003e"
+            }
+          },
+          "nextToken": {
+            "target": "com.amazonaws.securityagent#NextToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA token to use for paginating results that are returned in the response. Set the value of this parameter to null for the first request. For subsequent calls, use the nextToken value returned from the previous request.\u003c/p\u003e"
+            }
+          },
+          "pentestId": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the pentest that the actor belongs to.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.securityagent#ListActorMessagesOutput": {
+        "type": "structure",
+        "members": {
+          "messages": {
+            "target": "com.amazonaws.securityagent#ActorMessageList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe list of messages received for the actor, most recent first.\u003c/p\u003e"
+            }
+          },
+          "nextToken": {
+            "target": "com.amazonaws.securityagent#NextToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA token to use for paginating results that are returned in the response. Set the value of this parameter to null for the first request. For subsequent calls, use the nextToken value returned from the previous request.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
         }
       },
       "com.amazonaws.securityagent#ListAgentSpaces": {
@@ -8635,6 +9136,12 @@
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the agent space.\u003c/p\u003e",
               "smithy.api#required": {}
+            }
+          },
+          "jobType": {
+            "target": "com.amazonaws.securityagent#JobType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eFilters the returned pentest jobs to only those of the specified job type.\u003c/p\u003e"
             }
           },
           "maxResults": {
@@ -9803,6 +10310,12 @@
               "smithy.api#required": {}
             }
           },
+          "cicdConfiguration": {
+            "target": "com.amazonaws.securityagent#CiCdConfiguration",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe CI/CD pentesting configuration for this pentest. Present when the pentest is set up to run from a CI/CD pipeline.\u003c/p\u003e"
+            }
+          },
           "cleanUpStrategy": {
             "target": "com.amazonaws.securityagent#CleanUpStrategy",
             "traits": {
@@ -9859,11 +10372,26 @@
               "smithy.api#required": {}
             }
           },
+          "reportDestination": {
+            "target": "com.amazonaws.securityagent#ReportDestination",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe destination for publishing scan reports to an integrated document provider.\u003c/p\u003e"
+            }
+          },
+          "reportFilters": {
+            "target": "com.amazonaws.securityagent#ReportFilters",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe report-generation filters applied when the report is exported.\u003c/p\u003e"
+            }
+          },
           "serviceRole": {
             "target": "com.amazonaws.securityagent#ServiceRole",
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe IAM service role used for the pentest.\u003c/p\u003e"
             }
+          },
+          "testScope": {
+            "target": "com.amazonaws.securityagent#TestScope"
           },
           "title": {
             "target": "smithy.api#String",
@@ -9910,6 +10438,9 @@
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe list of domains allowed during the pentest job.\u003c/p\u003e"
             }
+          },
+          "cicdConfiguration": {
+            "target": "com.amazonaws.securityagent#CiCdConfiguration"
           },
           "cleanUpStrategy": {
             "target": "com.amazonaws.securityagent#CleanUpStrategy",
@@ -9981,7 +10512,7 @@
           "jobType": {
             "target": "com.amazonaws.securityagent#JobType",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe type of the pentest job. Valid values are FULL and REVALIDATION.\u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003eThe type of the pentest job. Valid values are FULL, REVALIDATION, and CICD.\u003c/p\u003e"
             }
           },
           "logConfig": {
@@ -10020,6 +10551,30 @@
               "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the pentest job.\u003c/p\u003e"
             }
           },
+          "reportDestination": {
+            "target": "com.amazonaws.securityagent#ReportDestination",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe destination for publishing scan reports to an integrated document provider.\u003c/p\u003e"
+            }
+          },
+          "reportUrl": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe URL to view this pentest job's findings report in the console.\u003c/p\u003e"
+            }
+          },
+          "scopeChanges": {
+            "target": "com.amazonaws.securityagent#ScopeChangeList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe code changes that defined the scope of this CI/CD pentest job. Present only for jobs of type CICD.\u003c/p\u003e"
+            }
+          },
+          "scopeResult": {
+            "target": "com.amazonaws.securityagent#ScopeResult",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe scoping outcome for this CI/CD pentest job. Present only for jobs of type CICD.\u003c/p\u003e"
+            }
+          },
           "selectedFindingIds": {
             "target": "com.amazonaws.securityagent#StringList",
             "traits": {
@@ -10049,6 +10604,9 @@
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe list of steps in the pentest job execution.\u003c/p\u003e"
             }
+          },
+          "testScope": {
+            "target": "com.amazonaws.securityagent#TestScope"
           },
           "title": {
             "target": "smithy.api#String",
@@ -10102,6 +10660,12 @@
               "smithy.api#timestampFormat": "date-time"
             }
           },
+          "jobType": {
+            "target": "com.amazonaws.securityagent#JobType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe type of the pentest job. Valid values are FULL, REVALIDATION, and CICD.\u003c/p\u003e"
+            }
+          },
           "pentestId": {
             "target": "smithy.api#String",
             "traits": {
@@ -10114,6 +10678,12 @@
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the pentest job.\u003c/p\u003e",
               "smithy.api#required": {}
+            }
+          },
+          "reportUrl": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe URL to view this pentest job's findings report in the console.\u003c/p\u003e"
             }
           },
           "status": {
@@ -10440,6 +11010,12 @@
       "com.amazonaws.securityagent#Provider": {
         "type": "enum",
         "members": {
+          "AZURE_DEVOPS": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "AZURE_DEVOPS"
+            }
+          },
           "BITBUCKET": {
             "target": "smithy.api#Unit",
             "traits": {
@@ -10472,10 +11048,22 @@
       "com.amazonaws.securityagent#ProviderInput": {
         "type": "union",
         "members": {
+          "azureDevOps": {
+            "target": "com.amazonaws.securityagent#AzureDevOpsIntegrationInput",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Azure DevOps-specific input for creating an integration.\u003c/p\u003e"
+            }
+          },
           "bitbucket": {
             "target": "com.amazonaws.securityagent#BitbucketIntegrationInput",
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe configuration for a Bitbucket integration.\u003c/p\u003e"
+            }
+          },
+          "bitbucketDataCenter": {
+            "target": "com.amazonaws.securityagent#BitbucketDataCenterIntegrationInput",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Bitbucket Data Center-specific input for creating an integration.\u003c/p\u003e"
             }
           },
           "confluence": {
@@ -10504,6 +11092,12 @@
       "com.amazonaws.securityagent#ProviderResourceCapabilities": {
         "type": "union",
         "members": {
+          "azureDevOps": {
+            "target": "com.amazonaws.securityagent#AzureDevOpsResourceCapabilities",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Azure DevOps-specific resource capabilities.\u003c/p\u003e"
+            }
+          },
           "bitbucket": {
             "target": "com.amazonaws.securityagent#BitbucketResourceCapabilities"
           },
@@ -10588,6 +11182,84 @@
         },
         "traits": {
           "smithy.api#documentation": "\u003cp\u003eDestination for publishing scan reports to an integrated document provider.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.securityagent#ReportFilterList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.securityagent#ReportFilterValue"
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA bounded list of report-filter values for an open-ended filter dimension.\u003c/p\u003e",
+          "smithy.api#length": {
+            "max": 50
+          }
+        }
+      },
+      "com.amazonaws.securityagent#ReportFilterValue": {
+        "type": "string",
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA single report-filter value for one filter dimension.\u003c/p\u003e",
+          "smithy.api#length": {
+            "min": 1,
+            "max": 256
+          }
+        }
+      },
+      "com.amazonaws.securityagent#ReportFilters": {
+        "type": "structure",
+        "members": {
+          "annotationNotes": {
+            "target": "smithy.api#Boolean",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eWhether to include reviewer annotation notes under each finding.\u003c/p\u003e"
+            }
+          },
+          "complianceReport": {
+            "target": "smithy.api#Boolean",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eWhether to include the compliance-ready report additions.\u003c/p\u003e"
+            }
+          },
+          "confidenceLevels": {
+            "target": "com.amazonaws.securityagent#ConfidenceLevelFilterList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe confidence levels to include in the report.\u003c/p\u003e"
+            }
+          },
+          "findingTypes": {
+            "target": "com.amazonaws.securityagent#ReportFilterList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe finding types to include in the report.\u003c/p\u003e"
+            }
+          },
+          "riskLevels": {
+            "target": "com.amazonaws.securityagent#RiskLevelFilterList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe severity levels to include in the report.\u003c/p\u003e"
+            }
+          },
+          "riskTypes": {
+            "target": "com.amazonaws.securityagent#RiskTypeFilterList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe risk types to include in the report.\u003c/p\u003e"
+            }
+          },
+          "statuses": {
+            "target": "com.amazonaws.securityagent#FindingStatusFilterList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe finding statuses to include in the report.\u003c/p\u003e"
+            }
+          },
+          "taskStatuses": {
+            "target": "com.amazonaws.securityagent#TaskExecutionStatusFilterList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe task execution statuses to include in the report's task table.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe report-generation filters applied when a pentest or code review report is exported.\u003c/p\u003e"
         }
       },
       "com.amazonaws.securityagent#ResourceArn": {
@@ -10707,6 +11379,18 @@
         },
         "traits": {
           "smithy.api#documentation": "\u003cp\u003eRisk severity level.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.securityagent#RiskLevelFilterList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.securityagent#RiskLevel"
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA list of severity levels for a report filter.\u003c/p\u003e",
+          "smithy.api#length": {
+            "max": 50
+          }
         }
       },
       "com.amazonaws.securityagent#RiskType": {
@@ -10913,6 +11597,18 @@
           "smithy.api#documentation": "\u003cp\u003eType of security risk.\u003c/p\u003e"
         }
       },
+      "com.amazonaws.securityagent#RiskTypeFilterList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.securityagent#RiskType"
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA list of risk types for a report filter.\u003c/p\u003e",
+          "smithy.api#length": {
+            "max": 50
+          }
+        }
+      },
       "com.amazonaws.securityagent#RiskTypeList": {
         "type": "list",
         "member": {
@@ -10935,6 +11631,104 @@
         "type": "list",
         "member": {
           "target": "com.amazonaws.securityagent#S3BucketArn"
+        }
+      },
+      "com.amazonaws.securityagent#ScopeChange": {
+        "type": "structure",
+        "members": {
+          "baseCommitSha": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe commit SHA that the change is compared against. When omitted, the change is evaluated against the head commit alone.\u003c/p\u003e"
+            }
+          },
+          "headCommitSha": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe commit SHA at the tip of the change to be tested.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "integrationId": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier of the integration for the source-code provider that hosts the repository.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "providerResourceId": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe provider-specific identifier of the repository the change belongs to.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "triggerRunId": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe identifier of the CI/CD pipeline run that triggered this pentest job.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA code change in a CI/CD pipeline run that defines what a CI/CD pentest job tests. Each scope change identifies an integrated repository and the commit range for the change.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.securityagent#ScopeChangeList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.securityagent#ScopeChange"
+        }
+      },
+      "com.amazonaws.securityagent#ScopeDecision": {
+        "type": "enum",
+        "members": {
+          "IN_SCOPE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe code changes are in scope and are tested by the pentest job.\u003c/p\u003e",
+              "smithy.api#enumValue": "IN_SCOPE"
+            }
+          },
+          "SCOPED_OUT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe code changes are out of scope and are not tested. No pentest is run for the changes.\u003c/p\u003e",
+              "smithy.api#enumValue": "SCOPED_OUT"
+            }
+          },
+          "SCOPE_CONFLICT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe code changes could not be conclusively scoped because of a conflict in the scoping inputs.\u003c/p\u003e",
+              "smithy.api#enumValue": "SCOPE_CONFLICT"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe scoping decision for a CI/CD pentest job, indicating whether the supplied code changes are tested.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.securityagent#ScopeResult": {
+        "type": "structure",
+        "members": {
+          "decision": {
+            "target": "com.amazonaws.securityagent#ScopeDecision",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe scoping decision for the job's code changes.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "reason": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA human-readable explanation of the scoping decision.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe outcome of scoping a CI/CD pentest job's code changes, including the decision and the reason for it.\u003c/p\u003e"
         }
       },
       "com.amazonaws.securityagent#SecretArn": {
@@ -11042,6 +11836,9 @@
           },
           {
             "target": "com.amazonaws.securityagent#InitiateProviderRegistration"
+          },
+          {
+            "target": "com.amazonaws.securityagent#ListActorMessages"
           },
           {
             "target": "com.amazonaws.securityagent#ListArtifacts"
@@ -11868,6 +12665,24 @@
           "smithy.api#sensitive": {}
         }
       },
+      "com.amazonaws.securityagent#SensitiveMessageBody": {
+        "type": "string",
+        "traits": {
+          "smithy.api#sensitive": {}
+        }
+      },
+      "com.amazonaws.securityagent#SensitiveMessageSender": {
+        "type": "string",
+        "traits": {
+          "smithy.api#sensitive": {}
+        }
+      },
+      "com.amazonaws.securityagent#SensitiveMessageSubject": {
+        "type": "string",
+        "traits": {
+          "smithy.api#sensitive": {}
+        }
+      },
       "com.amazonaws.securityagent#ServiceManagedInput": {
         "type": "structure",
         "members": {
@@ -12193,7 +13008,7 @@
           "jobType": {
             "target": "com.amazonaws.securityagent#JobType",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe type of pentest job to start. Valid values are FULL and REVALIDATION. When set to REVALIDATION, the selectedFindingIds parameter is required.\u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003eThe type of pentest job to start. Valid values are FULL, REVALIDATION, and CICD. When set to REVALIDATION, the selectedFindingIds parameter is required. When set to CICD, the scopeChanges parameter defines the code changes to test.\u003c/p\u003e"
             }
           },
           "pentestId": {
@@ -12201,6 +13016,12 @@
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the pentest to start a job for.\u003c/p\u003e",
               "smithy.api#required": {}
+            }
+          },
+          "scopeChanges": {
+            "target": "com.amazonaws.securityagent#ScopeChangeList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe code changes that define the scope of a CI/CD pentest job. Provide this when starting a job with jobType CICD to test only the changes in the current pipeline run.\u003c/p\u003e"
             }
           },
           "selectedFindingIds": {
@@ -13081,6 +13902,18 @@
           "smithy.api#documentation": "\u003cp\u003eExecution status of a task.\u003c/p\u003e"
         }
       },
+      "com.amazonaws.securityagent#TaskExecutionStatusFilterList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.securityagent#TaskExecutionStatus"
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA list of task execution statuses for a report filter.\u003c/p\u003e",
+          "smithy.api#length": {
+            "max": 50
+          }
+        }
+      },
       "com.amazonaws.securityagent#TaskIdList": {
         "type": "list",
         "member": {
@@ -13168,6 +14001,43 @@
         "type": "list",
         "member": {
           "target": "com.amazonaws.securityagent#TaskSummary"
+        }
+      },
+      "com.amazonaws.securityagent#TestScope": {
+        "type": "structure",
+        "members": {
+          "type": {
+            "target": "com.amazonaws.securityagent#TestScopeType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe category of application under test.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe category of application a pentest targets.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.securityagent#TestScopeType": {
+        "type": "enum",
+        "members": {
+          "GENERATIVE_AI_APP": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA generative AI application.\u003c/p\u003e",
+              "smithy.api#enumValue": "GENERATIVE_AI_APP"
+            }
+          },
+          "WEB_APP": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA traditional web application.\u003c/p\u003e",
+              "smithy.api#enumValue": "WEB_APP"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe category of application a pentest targets.\u003c/p\u003e"
         }
       },
       "com.amazonaws.securityagent#Threat": {
@@ -13437,6 +14307,12 @@
               "smithy.api#documentation": "\u003cp\u003eThe CloudWatch Logs configuration for the threat model.\u003c/p\u003e"
             }
           },
+          "reportDestination": {
+            "target": "com.amazonaws.securityagent#ReportDestination",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe destination for publishing scan reports to an integrated document provider.\u003c/p\u003e"
+            }
+          },
           "scopeDocs": {
             "target": "com.amazonaws.securityagent#DocumentList",
             "traits": {
@@ -13530,6 +14406,12 @@
             "target": "com.amazonaws.securityagent#IntegratedRepositoryList",
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe list of integrated repositories used for threat modeling.\u003c/p\u003e"
+            }
+          },
+          "reportDestination": {
+            "target": "com.amazonaws.securityagent#ReportDestination",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe destination for publishing scan reports to an integrated document provider.\u003c/p\u003e"
             }
           },
           "scopeDocs": {
@@ -14054,13 +14936,198 @@
           "smithy.api#httpError": 429
         }
       },
+      "com.amazonaws.securityagent#TriggerEvent": {
+        "type": "enum",
+        "members": {
+          "PULL_REQUEST_DRAFT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA draft pull request is opened or updated.\u003c/p\u003e",
+              "smithy.api#enumValue": "PULL_REQUEST_DRAFT"
+            }
+          },
+          "PULL_REQUEST_LABEL_ADDED": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA label is added to a pull request. A filter group that selects this event must include a \u003ccode\u003eLABEL\u003c/code\u003e filter with the \u003ccode\u003eINCLUDE\u003c/code\u003e match mode, and a review starts only when the added label matches it.\u003c/p\u003e",
+              "smithy.api#enumValue": "PULL_REQUEST_LABEL_ADDED"
+            }
+          },
+          "PULL_REQUEST_READY_FOR_REVIEW": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA pull request that isn't a draft is opened, updated, or marked ready for review.\u003c/p\u003e",
+              "smithy.api#enumValue": "PULL_REQUEST_READY_FOR_REVIEW"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA pull request event that can start an automatic code review. For GitLab repositories, pull request refers to a merge request.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.securityagent#TriggerEventList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.securityagent#TriggerEvent"
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA list of pull request events that start an automatic code review.\u003c/p\u003e",
+          "smithy.api#length": {
+            "min": 1,
+            "max": 10
+          },
+          "smithy.api#uniqueItems": {}
+        }
+      },
+      "com.amazonaws.securityagent#TriggerFilter": {
+        "type": "structure",
+        "members": {
+          "matchMode": {
+            "target": "com.amazonaws.securityagent#TriggerFilterMatchMode",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eWhether the value must match the patterns. The default is \u003ccode\u003eINCLUDE\u003c/code\u003e.\u003c/p\u003e"
+            }
+          },
+          "patterns": {
+            "target": "com.amazonaws.securityagent#TriggerRegexPatternList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe regular expressions to match against the value.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "type": {
+            "target": "com.amazonaws.securityagent#TriggerFilterType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe pull request value to match.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA condition on a pull request value.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.securityagent#TriggerFilterGroup": {
+        "type": "structure",
+        "members": {
+          "events": {
+            "target": "com.amazonaws.securityagent#TriggerEventList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003ePasses when the pull request event is one of the listed events. If you omit this, the group matches \u003ccode\u003ePULL_REQUEST_READY_FOR_REVIEW\u003c/code\u003e and \u003ccode\u003ePULL_REQUEST_DRAFT\u003c/code\u003e events only.\u003c/p\u003e"
+            }
+          },
+          "filters": {
+            "target": "com.amazonaws.securityagent#TriggerFilterList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003ePasses when every filter passes. If you omit this, the group matches its events on any target branch and with any labels.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA set of conditions that start an automatic code review when they all pass. A filter group must include \u003ccode\u003eevents\u003c/code\u003e, \u003ccode\u003efilters\u003c/code\u003e, or both.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.securityagent#TriggerFilterGroups": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.securityagent#TriggerFilterGroup"
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA list of filter groups. An automatic code review starts when any group matches. The filters across all groups can contain at most 100 patterns in total.\u003c/p\u003e",
+          "smithy.api#length": {
+            "min": 1,
+            "max": 5
+          }
+        }
+      },
+      "com.amazonaws.securityagent#TriggerFilterList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.securityagent#TriggerFilter"
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA list of filters that must all pass.\u003c/p\u003e",
+          "smithy.api#length": {
+            "min": 1,
+            "max": 5
+          }
+        }
+      },
+      "com.amazonaws.securityagent#TriggerFilterMatchMode": {
+        "type": "enum",
+        "members": {
+          "EXCLUDE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe filter passes when no value fully matches any pattern.\u003c/p\u003e",
+              "smithy.api#enumValue": "EXCLUDE"
+            }
+          },
+          "INCLUDE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe filter passes when a value fully matches at least one pattern.\u003c/p\u003e",
+              "smithy.api#enumValue": "INCLUDE"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eWhether a filter's value must match its patterns.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.securityagent#TriggerFilterType": {
+        "type": "enum",
+        "members": {
+          "LABEL": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe labels on the pull request.\u003c/p\u003e",
+              "smithy.api#enumValue": "LABEL"
+            }
+          },
+          "TARGET_BRANCH": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the pull request's target branch, for example \u003ccode\u003emain\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#enumValue": "TARGET_BRANCH"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA pull request value that a filter matches.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.securityagent#TriggerRegexPattern": {
+        "type": "string",
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA regular expression in RE2 syntax that must match the entire value, for example \u003ccode\u003emain\u003c/code\u003e or \u003ccode\u003erelease/.*\u003c/code\u003e.\u003c/p\u003e",
+          "smithy.api#length": {
+            "min": 1,
+            "max": 256
+          },
+          "smithy.api#pattern": "^[^\\x00-\\x1F\\x7F-\\x9F]+$"
+        }
+      },
+      "com.amazonaws.securityagent#TriggerRegexPatternList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.securityagent#TriggerRegexPattern"
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA list of regular expressions.\u003c/p\u003e",
+          "smithy.api#length": {
+            "min": 1,
+            "max": 20
+          }
+        }
+      },
       "com.amazonaws.securityagent#TrustedCaCertificate": {
         "type": "structure",
         "members": {
           "source": {
             "target": "com.amazonaws.securityagent#CaCertificateSource",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe source that AWS Security Agent reads the certificate from.\u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003eThe source that Security Agent reads the certificate from.\u003c/p\u003e",
               "smithy.api#required": {}
             }
           }
@@ -14372,6 +15439,18 @@
               "smithy.api#documentation": "\u003cp\u003eThe updated maximum number of billable task hours allowed for jobs started from this code review.\u003c/p\u003e"
             }
           },
+          "reportDestination": {
+            "target": "com.amazonaws.securityagent#ReportDestination",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe destination for publishing scan reports to an integrated document provider.\u003c/p\u003e"
+            }
+          },
+          "reportFilters": {
+            "target": "com.amazonaws.securityagent#ReportFilters",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe report-generation filters applied when the report is exported.\u003c/p\u003e"
+            }
+          },
           "serviceRole": {
             "target": "com.amazonaws.securityagent#ServiceRole",
             "traits": {
@@ -14441,6 +15520,18 @@
             "target": "smithy.api#Double",
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe maximum number of billable task hours configured for jobs started from this code review. Null if no budget cap is set.\u003c/p\u003e"
+            }
+          },
+          "reportDestination": {
+            "target": "com.amazonaws.securityagent#ReportDestination",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe destination for publishing scan reports to an integrated document provider.\u003c/p\u003e"
+            }
+          },
+          "reportFilters": {
+            "target": "com.amazonaws.securityagent#ReportFilters",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe report-generation filters applied when the report is exported.\u003c/p\u003e"
             }
           },
           "serviceRole": {
@@ -14645,6 +15736,96 @@
           "smithy.api#output": {}
         }
       },
+      "com.amazonaws.securityagent#UpdateIntegration": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.securityagent#UpdateIntegrationInput"
+        },
+        "output": {
+          "target": "com.amazonaws.securityagent#UpdateIntegrationOutput"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.securityagent#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.securityagent#ConflictException"
+          },
+          {
+            "target": "com.amazonaws.securityagent#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.securityagent#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.securityagent#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.securityagent#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eCreates an integration's webhook, or rotates the HMAC signing secret of an existing one. The secret is returned only once, in this response, and cannot be retrieved again.\u003c/p\u003e",
+          "smithy.api#http": {
+            "code": 200,
+            "method": "POST",
+            "uri": "/UpdateIntegration"
+          }
+        }
+      },
+      "com.amazonaws.securityagent#UpdateIntegrationInput": {
+        "type": "structure",
+        "members": {
+          "integrationId": {
+            "target": "com.amazonaws.securityagent#IntegrationId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID of the integration whose webhook you want to create or rotate.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "webhookAction": {
+            "target": "com.amazonaws.securityagent#WebhookAction",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe action to perform on the integration's webhook.\u003c/p\u003e",
+              "smithy.api#notProperty": {},
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eInput for creating or rotating an integration's webhook.\u003c/p\u003e",
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.securityagent#UpdateIntegrationOutput": {
+        "type": "structure",
+        "members": {
+          "integrationId": {
+            "target": "com.amazonaws.securityagent#IntegrationId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ID of the integration.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "secret": {
+            "target": "com.amazonaws.securityagent#WebhookSecret",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe HMAC signing secret for the webhook. Returned only once, in this response; it is never returned again.\u003c/p\u003e",
+              "smithy.api#notProperty": {}
+            }
+          },
+          "webhookUrl": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe payload URL to configure on your provider instance. Returned when a webhook is created; unchanged by a rotate.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eOutput for the UpdateIntegration operation.\u003c/p\u003e",
+          "smithy.api#output": {}
+        }
+      },
       "com.amazonaws.securityagent#UpdatePentest": {
         "type": "operation",
         "input": {
@@ -14675,6 +15856,12 @@
             "target": "com.amazonaws.securityagent#Assets",
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe updated assets for the pentest.\u003c/p\u003e"
+            }
+          },
+          "cicdConfiguration": {
+            "target": "com.amazonaws.securityagent#CiCdConfiguration",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe updated CI/CD pentesting configuration to apply to the pentest.\u003c/p\u003e"
             }
           },
           "codeRemediationStrategy": {
@@ -14720,11 +15907,26 @@
               "smithy.api#required": {}
             }
           },
+          "reportDestination": {
+            "target": "com.amazonaws.securityagent#ReportDestination",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe destination for publishing scan reports to an integrated document provider.\u003c/p\u003e"
+            }
+          },
+          "reportFilters": {
+            "target": "com.amazonaws.securityagent#ReportFilters",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe report-generation filters applied when the report is exported.\u003c/p\u003e"
+            }
+          },
           "serviceRole": {
             "target": "com.amazonaws.securityagent#ServiceRole",
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe updated IAM service role for the pentest.\u003c/p\u003e"
             }
+          },
+          "testScope": {
+            "target": "com.amazonaws.securityagent#TestScope"
           },
           "title": {
             "target": "smithy.api#String",
@@ -14759,6 +15961,12 @@
               "smithy.api#documentation": "\u003cp\u003eThe assets included in the pentest.\u003c/p\u003e"
             }
           },
+          "cicdConfiguration": {
+            "target": "com.amazonaws.securityagent#CiCdConfiguration",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe CI/CD pentesting configuration applied to the pentest.\u003c/p\u003e"
+            }
+          },
           "createdAt": {
             "target": "smithy.api#Timestamp",
             "traits": {
@@ -14784,11 +15992,26 @@
               "smithy.api#documentation": "\u003cp\u003eThe unique identifier of the pentest.\u003c/p\u003e"
             }
           },
+          "reportDestination": {
+            "target": "com.amazonaws.securityagent#ReportDestination",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe destination for publishing scan reports to an integrated document provider.\u003c/p\u003e"
+            }
+          },
+          "reportFilters": {
+            "target": "com.amazonaws.securityagent#ReportFilters",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe report-generation filters applied when the report is exported.\u003c/p\u003e"
+            }
+          },
           "serviceRole": {
             "target": "com.amazonaws.securityagent#ServiceRole",
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe IAM service role used for the pentest.\u003c/p\u003e"
             }
+          },
+          "testScope": {
+            "target": "com.amazonaws.securityagent#TestScope"
           },
           "title": {
             "target": "smithy.api#String",
@@ -15361,6 +16584,12 @@
               "smithy.api#documentation": "\u003cp\u003eThe updated CloudWatch Logs configuration for the threat model.\u003c/p\u003e"
             }
           },
+          "reportDestination": {
+            "target": "com.amazonaws.securityagent#ReportDestination",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe destination for publishing scan reports to an integrated document provider.\u003c/p\u003e"
+            }
+          },
           "scopeDocs": {
             "target": "com.amazonaws.securityagent#DocumentList",
             "traits": {
@@ -15424,6 +16653,12 @@
             "target": "com.amazonaws.securityagent#CloudWatchLog",
             "traits": {
               "smithy.api#documentation": "\u003cp\u003eThe CloudWatch Logs configuration for the threat model.\u003c/p\u003e"
+            }
+          },
+          "reportDestination": {
+            "target": "com.amazonaws.securityagent#ReportDestination",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe destination for publishing scan reports to an integrated document provider.\u003c/p\u003e"
             }
           },
           "scopeDocs": {
@@ -15953,19 +17188,19 @@
           "securityGroupArns": {
             "target": "com.amazonaws.securityagent#SecurityGroupArns",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Names (ARNs) of the security groups for the VPC configuration.\u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Names (ARNs) or IDs of the security groups for the VPC configuration.\u003c/p\u003e"
             }
           },
           "subnetArns": {
             "target": "com.amazonaws.securityagent#SubnetArns",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Names (ARNs) of the subnets for the VPC configuration.\u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Names (ARNs) or IDs of the subnets for the VPC configuration.\u003c/p\u003e"
             }
           },
           "vpcArn": {
             "target": "com.amazonaws.securityagent#VpcArn",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) of the VPC.\u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003eThe Amazon Resource Name (ARN) or ID of the VPC.\u003c/p\u003e"
             }
           }
         },
@@ -15977,6 +17212,35 @@
         "type": "list",
         "member": {
           "target": "com.amazonaws.securityagent#VpcConfig"
+        }
+      },
+      "com.amazonaws.securityagent#WebhookAction": {
+        "type": "enum",
+        "members": {
+          "CREATE_IF_ABSENT": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eCreate the webhook if one does not already exist. Returns the payload URL and the signing secret.\u003c/p\u003e",
+              "smithy.api#enumValue": "CREATE_IF_ABSENT"
+            }
+          },
+          "ROTATE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eGenerate a new signing secret for the existing webhook, keeping the same payload URL. Returns the new secret.\u003c/p\u003e",
+              "smithy.api#enumValue": "ROTATE"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe action to perform on an integration's webhook.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.securityagent#WebhookSecret": {
+        "type": "string",
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eAn HMAC signing secret for a provider webhook.\u003c/p\u003e",
+          "smithy.api#sensitive": {}
         }
       }
     }

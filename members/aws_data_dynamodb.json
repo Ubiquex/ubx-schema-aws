@@ -4720,8 +4720,8 @@
                     "authSchemes": [
                       {
                         "signingRegion": "us-east-1",
-                        "name": "sigv4",
-                        "signingName": "dynamodb"
+                        "signingName": "dynamodb",
+                        "name": "sigv4"
                       }
                     ]
                   },
@@ -5312,8 +5312,8 @@
                                 "authSchemes": [
                                   {
                                     "signingRegion": "us-east-1",
-                                    "name": "sigv4",
-                                    "signingName": "dynamodb"
+                                    "signingName": "dynamodb",
+                                    "name": "sigv4"
                                   }
                                 ]
                               },
@@ -22394,6 +22394,12 @@
               "smithy.api#documentation": "\u003cp\u003eExport failure reason description.\u003c/p\u003e"
             }
           },
+          "FilterSpecification": {
+            "target": "com.amazonaws.dynamodb#FilterSpecification",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe filter criteria applied to the export. When present, only items that match the\n            specified key conditions and filter expressions are included in the export\n            output.\u003c/p\u003e"
+            }
+          },
           "IncrementalExportSpecification": {
             "target": "com.amazonaws.dynamodb#IncrementalExportSpecification",
             "traits": {
@@ -22618,6 +22624,12 @@
               "smithy.api#documentation": "\u003cp\u003eChoice of whether to execute as a full export or incremental export. Valid values are\n            FULL_EXPORT or INCREMENTAL_EXPORT. The default value is FULL_EXPORT. If\n            INCREMENTAL_EXPORT is provided, the IncrementalExportSpecification must also be\n            used.\u003c/p\u003e"
             }
           },
+          "FilterSpecification": {
+            "target": "com.amazonaws.dynamodb#FilterSpecification",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe criteria used to filter which items are included in the point-in-time export.\n            When you specify this parameter, only items that match the key conditions and filter\n            expressions are exported.\u003c/p\u003e"
+            }
+          },
           "IncrementalExportSpecification": {
             "target": "com.amazonaws.dynamodb#IncrementalExportSpecification",
             "traits": {
@@ -22781,6 +22793,44 @@
         },
         "value": {
           "target": "com.amazonaws.dynamodb#Condition"
+        }
+      },
+      "com.amazonaws.dynamodb#FilterSpecification": {
+        "type": "structure",
+        "members": {
+          "ExpressionAttributeNames": {
+            "target": "com.amazonaws.dynamodb#ExpressionAttributeNameMap",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eOne or more substitution tokens for attribute names in an expression. For more\n            information, see \u003ca href=\"https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.ExpressionAttributeNames.html\"\u003eExpression Attribute Names\u003c/a\u003e in the Amazon DynamoDB Developer Guide.\u003c/p\u003e"
+            }
+          },
+          "ExpressionAttributeValues": {
+            "target": "com.amazonaws.dynamodb#ExpressionAttributeValueMap",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eOne or more values that can be substituted in an expression. For more information,\n            see \u003ca href=\"https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.ExpressionAttributeValues.html\"\u003eExpression Attribute Values\u003c/a\u003e in the Amazon DynamoDB Developer Guide.\u003c/p\u003e"
+            }
+          },
+          "FilterExpression": {
+            "target": "com.amazonaws.dynamodb#ConditionExpression",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA condition that filters which items are included in the export. This parameter\n            uses the same syntax as \u003ccode\u003eFilterExpression\u003c/code\u003e in \u003ccode\u003eQuery\u003c/code\u003e and\n                \u003ccode\u003eScan\u003c/code\u003e. If you don't provide \u003ccode\u003eKeyConditionExpression\u003c/code\u003e, this\n            expression can also reference key attributes. If you don't specify this parameter,\n            all items are included in the export.\u003c/p\u003e"
+            }
+          },
+          "KeyConditionExpression": {
+            "target": "com.amazonaws.dynamodb#KeyExpression",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA condition expression that filters items by key values. The expression must test\n            equality on a single partition key value and can optionally compare a sort key value.\n            This parameter uses the same syntax as \u003ccode\u003eKeyConditionExpression\u003c/code\u003e in\n                \u003ccode\u003eQuery\u003c/code\u003e. When you provide this parameter, \u003ccode\u003eFilterExpression\u003c/code\u003e\n            can only reference non-key attributes. If you don't specify this parameter, all items\n            are eligible for export.\u003c/p\u003e"
+            }
+          },
+          "ProjectionExpression": {
+            "target": "com.amazonaws.dynamodb#ProjectionExpression",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe attributes you want to retrieve for items included in the export. Separate\n            attribute names in the expression with commas. If you don't specify this parameter,\n            all attributes are returned.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eContains the filter criteria used to limit which items are included in an export.\n            If you don't include this parameter, all items and attributes are exported.\u003c/p\u003e"
         }
       },
       "com.amazonaws.dynamodb#Get": {

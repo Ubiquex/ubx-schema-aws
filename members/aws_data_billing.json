@@ -66,6 +66,15 @@
             "target": "com.amazonaws.billing#ListBillingViews"
           },
           {
+            "target": "com.amazonaws.billing#ListBillingViewSegments"
+          },
+          {
+            "target": "com.amazonaws.billing#ListBusinessSupportAccountCharges"
+          },
+          {
+            "target": "com.amazonaws.billing#ListBusinessSupportSubscriptionHistory"
+          },
+          {
             "target": "com.amazonaws.billing#ListEnterpriseSupportLinkedAccountCharges"
           },
           {
@@ -1573,6 +1582,26 @@
           "smithy.api#output": {}
         }
       },
+      "com.amazonaws.billing#BillingDomain": {
+        "type": "enum",
+        "members": {
+          "BILLABLE": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "BILLABLE"
+            }
+          },
+          "PRO_FORMA": {
+            "target": "smithy.api#Unit",
+            "traits": {
+              "smithy.api#enumValue": "PRO_FORMA"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eThe billing domain for a billing view segment. The following values are valid:\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003ePRO_FORMA\u003c/code\u003e - Data shaped by Billing Conductor that doesn't reflect the final charges owed to Amazon Web Services.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eBILLABLE\u003c/code\u003e - Data that represents the final charges owed to Amazon Web Services.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e"
+        }
+      },
       "com.amazonaws.billing#BillingFeature": {
         "type": "enum",
         "members": {
@@ -2026,6 +2055,73 @@
           "smithy.api#sensitive": {}
         }
       },
+      "com.amazonaws.billing#BillingViewSegmentTimeRange": {
+        "type": "structure",
+        "members": {
+          "beginDateInclusive": {
+            "target": "smithy.api#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003e The inclusive start of the time range. This value can't be in the future. \u003c/p\u003e"
+            }
+          },
+          "endDateExclusive": {
+            "target": "smithy.api#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003e The exclusive end of the time range. This value must be after \u003ccode\u003ebeginDateInclusive\u003c/code\u003e. \u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003e Specifies a time range with an inclusive begin date and an exclusive end date. \u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.billing#BillingViewSegmentsList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.billing#BillingViewSegmentsListElement"
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003e A list of billing view segments. \u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.billing#BillingViewSegmentsListElement": {
+        "type": "structure",
+        "members": {
+          "billingGroupPrimaryAccountId": {
+            "target": "com.amazonaws.billing#AccountId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003e The billing group primary account ID. The response includes this field for billing group members. Compare this value to your own account ID to determine whether you are the primary account. \u003c/p\u003e"
+            }
+          },
+          "billingTransferAccountId": {
+            "target": "com.amazonaws.billing#AccountId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003e The billing transfer account ID. The response includes this field only when the caller is a billing transfer source account. The response omits this field for billing group billing views. \u003c/p\u003e"
+            }
+          },
+          "domain": {
+            "target": "com.amazonaws.billing#BillingDomain",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe billing domain for this segment. The following values are valid:\u003c/p\u003e \u003cul\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003ePRO_FORMA\u003c/code\u003e - Data shaped by Billing Conductor that doesn't reflect the final charges owed to Amazon Web Services.\u003c/p\u003e \u003c/li\u003e \u003cli\u003e \u003cp\u003e \u003ccode\u003eBILLABLE\u003c/code\u003e - Data that represents the final charges owed to Amazon Web Services.\u003c/p\u003e \u003c/li\u003e \u003c/ul\u003e"
+            }
+          },
+          "managementAccountId": {
+            "target": "com.amazonaws.billing#AccountId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003e The management account ID of the organization. The response includes this field for organization member accounts. \u003c/p\u003e"
+            }
+          },
+          "timeRange": {
+            "target": "com.amazonaws.billing#BillingViewSegmentTimeRange",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003e The time range during which this segment is effective. \u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003e A billing view segment. A segment represents a time range during which the billing domain and account relationships for a billing view remained unchanged. \u003c/p\u003e"
+        }
+      },
       "com.amazonaws.billing#BillingViewSourceViewsList": {
         "type": "list",
         "member": {
@@ -2182,6 +2278,273 @@
           "smithy.api#range": {
             "min": 2005,
             "max": 2120
+          }
+        }
+      },
+      "com.amazonaws.billing#BusinessSupportAccountCharge": {
+        "type": "structure",
+        "members": {
+          "accountId": {
+            "target": "com.amazonaws.billing#AccountId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe linked account ID.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "supportDiscount": {
+            "target": "com.amazonaws.billing#BusinessSupportDiscount",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe discount applied to the Business Support charge for this account, if any. This field is absent when no discount applies.\u003c/p\u003e"
+            }
+          },
+          "supportEligibleSpendByService": {
+            "target": "com.amazonaws.billing#BusinessSupportServiceSpendList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Support-eligible spend broken down by contributing service for this account.\u003c/p\u003e"
+            }
+          },
+          "supportPlanName": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Support plan name for this account. Valid values: \u003ccode\u003eAWSSupportBusiness\u003c/code\u003e (Business Support plan), \u003ccode\u003eAWSSupportDeveloper\u003c/code\u003e (Developer Support plan), \u003ccode\u003eAWSSupportEssential\u003c/code\u003e (Basic Support plan).\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "tierCharges": {
+            "target": "com.amazonaws.billing#BusinessSupportTierChargeList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe tier-level charges that make up the total Business Support charge for this account. Each tier represents a spend range with its own rate.\u003c/p\u003e"
+            }
+          },
+          "totalCharge": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe total Business Support charge amount for this account in the billing month.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "totalUsageBasis": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe total Support-eligible spend used as the basis for calculating the Business Support charge for this account.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eBusiness Support charges for a linked account.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.billing#BusinessSupportAccountChargeList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.billing#BusinessSupportAccountCharge"
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA list of Business Support account charges.\u003c/p\u003e",
+          "smithy.api#length": {
+            "max": 100
+          }
+        }
+      },
+      "com.amazonaws.billing#BusinessSupportBillingMonth": {
+        "type": "string",
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA billing month in YYYY-MM format. Supports the current month (estimated charges) and past months (finalized charges).\u003c/p\u003e",
+          "smithy.api#pattern": "^\\d{4}-(0[1-9]|1[0-2])$"
+        }
+      },
+      "com.amazonaws.billing#BusinessSupportDiscount": {
+        "type": "structure",
+        "members": {
+          "discountAmount": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe discount amount applied to the Business Support charge. This value is negative, representing a reduction in the charge.\u003c/p\u003e"
+            }
+          },
+          "discountPercentage": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe discount percentage applied to the Business Support charge, expressed as a decimal (for example, \u003ccode\u003e0.12\u003c/code\u003e for a 12% discount).\u003c/p\u003e"
+            }
+          },
+          "discountSource": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe source or program through which the discount was applied.\u003c/p\u003e"
+            }
+          },
+          "discountType": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe type of discount applied. Valid values: \u003ccode\u003eDistributor_Discount\u003c/code\u003e (a discount applied through a distributor arrangement), \u003ccode\u003eSPP_Discount\u003c/code\u003e (a discount applied through the Solution Provider Program).\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA discount applied to a Business Support account charge, including the discount amount, percentage, type, and source.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.billing#BusinessSupportServiceSpend": {
+        "type": "structure",
+        "members": {
+          "chargeAmount": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Support-eligible spend amount for this service.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "contributingService": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the Amazon Web Services service contributing to the Support-eligible spend.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "currency": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe ISO 4217 currency code for the charge amount (for example, \u003ccode\u003eUSD\u003c/code\u003e).\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "description": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA human-readable description of the service spend entry.\u003c/p\u003e"
+            }
+          },
+          "itemType": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe type of the line item. Valid values: \u003ccode\u003eUsage\u003c/code\u003e.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA service-level spend entry contributing to Business Support eligible spend.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.billing#BusinessSupportServiceSpendList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.billing#BusinessSupportServiceSpend"
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA list of Business Support service spend entries.\u003c/p\u003e",
+          "smithy.api#length": {
+            "max": 50
+          }
+        }
+      },
+      "com.amazonaws.billing#BusinessSupportSubscriptionContract": {
+        "type": "structure",
+        "members": {
+          "accountId": {
+            "target": "com.amazonaws.billing#AccountId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe account ID associated with this subscription contract.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "contractEndDate": {
+            "target": "smithy.api#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe end date of the subscription contract.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "contractStartDate": {
+            "target": "smithy.api#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe start date of the subscription contract.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "planName": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe name of the Support plan for this subscription contract. Valid values: \u003ccode\u003eAWSSupportBusiness\u003c/code\u003e (Business Support plan), \u003ccode\u003eAWSSupportDeveloper\u003c/code\u003e (Developer Support plan), \u003ccode\u003eAWSSupportEssential\u003c/code\u003e (Basic Support plan).\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA Business Support subscription contract for an account.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.billing#BusinessSupportSubscriptionContractList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.billing#BusinessSupportSubscriptionContract"
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA list of Business Support subscription contracts.\u003c/p\u003e",
+          "smithy.api#length": {
+            "max": 1000
+          }
+        }
+      },
+      "com.amazonaws.billing#BusinessSupportTierCharge": {
+        "type": "structure",
+        "members": {
+          "chargePeriodEndDate": {
+            "target": "smithy.api#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe end date of the charge period for this tier charge.\u003c/p\u003e"
+            }
+          },
+          "chargePeriodStartDate": {
+            "target": "smithy.api#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe start date of the charge period for this tier charge.\u003c/p\u003e"
+            }
+          },
+          "tierCharge": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe Business Support charge amount calculated for this pricing tier.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "tierDescription": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eA human-readable description of the pricing tier, including the spend range and percentage rate applied.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "tierRate": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe percentage rate applied to Support-eligible spend within this pricing tier.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "usageSlice": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe amount of Support-eligible spend that falls within this pricing tier.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA tier-level charge within a Business Support pricing plan. Business Support uses tiered pricing where different percentage rates apply to different ranges of Support-eligible spend.\u003c/p\u003e"
+        }
+      },
+      "com.amazonaws.billing#BusinessSupportTierChargeList": {
+        "type": "list",
+        "member": {
+          "target": "com.amazonaws.billing#BusinessSupportTierCharge"
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eA list of Business Support tier charges.\u003c/p\u003e",
+          "smithy.api#length": {
+            "max": 20
           }
         }
       },
@@ -3456,7 +3819,7 @@
           "isEstimated": {
             "target": "smithy.api#Boolean",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eWhen true, the Support charge amount is estimated. When false, the Support charge amount is finalized.\u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003eSpecifies whether the Support charge amount is estimated. When false, the charge amount is finalized.\u003c/p\u003e",
               "smithy.api#required": {}
             }
           },
@@ -3863,6 +4226,140 @@
           }
         }
       },
+      "com.amazonaws.billing#ListBillingViewSegments": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.billing#ListBillingViewSegmentsRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.billing#ListBillingViewSegmentsResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.billing#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.billing#BillingViewHealthStatusException"
+          },
+          {
+            "target": "com.amazonaws.billing#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.billing#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.billing#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.billing#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eLists the segments of a billing view over a given time period. Each segment identifies the billing domain (\u003ccode\u003ePRO_FORMA\u003c/code\u003e or \u003ccode\u003eBILLABLE\u003c/code\u003e) and the account relationships that apply during its time range.\u003c/p\u003e \u003cp\u003eIf you don't provide an \u003ccode\u003earn\u003c/code\u003e, the response includes segments for the caller's \u003ccode\u003ePRIMARY\u003c/code\u003e billing view.\u003c/p\u003e \u003cp\u003eIf a mid-period change occurs, the response includes multiple segments, each with its own time range. The response omits hidden segments, so the segments it returns might not cover the entire requested time period.\u003c/p\u003e",
+          "smithy.api#examples": [
+            {
+              "title": "Invoke ListBillingViewSegments",
+              "input": {
+                "timeRange": {
+                  "beginDateInclusive": 1719792000,
+                  "endDateExclusive": 1722470400
+                }
+              },
+              "output": {
+                "items": [
+                  {
+                    "domain": "BILLABLE",
+                    "timeRange": {
+                      "beginDateInclusive": 1719792000,
+                      "endDateExclusive": 1722470400
+                    },
+                    "billingTransferAccountId": "111111111111",
+                    "managementAccountId": "222222222222",
+                    "billingGroupPrimaryAccountId": "333333333333"
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Error example for ListBillingViewSegments",
+              "input": {
+                "timeRange": {
+                  "beginDateInclusive": 1722470400,
+                  "endDateExclusive": 1719792000
+                }
+              },
+              "error": {
+                "shapeId": "com.amazonaws.billing#ValidationException",
+                "content": {
+                  "message": "Failed to list billing view segments for an invalid time range.",
+                  "reason": "other"
+                }
+              },
+              "allowConstraintErrors": true
+            }
+          ],
+          "smithy.api#paginated": {
+            "inputToken": "nextToken",
+            "outputToken": "nextToken",
+            "pageSize": "maxResults",
+            "items": "items"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.billing#ListBillingViewSegmentsRequest": {
+        "type": "structure",
+        "members": {
+          "arn": {
+            "target": "com.amazonaws.billing#BillingViewArn",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003e The Amazon Resource Name (ARN) that uniquely identifies the billing view to query. If you don't provide an ARN, the caller's \u003ccode\u003ePRIMARY\u003c/code\u003e billing view is used. The ARN must reference a primary billing view. Custom billing views aren't supported. \u003c/p\u003e"
+            }
+          },
+          "maxResults": {
+            "target": "com.amazonaws.billing#BillingViewsMaxResults",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003e The number of entries a paginated response contains. Valid values range from 1 to 100. The default is 100. \u003c/p\u003e"
+            }
+          },
+          "nextToken": {
+            "target": "com.amazonaws.billing#PageToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003e The pagination token that is used on subsequent calls to list billing view segments. \u003c/p\u003e"
+            }
+          },
+          "timeRange": {
+            "target": "com.amazonaws.billing#BillingViewSegmentTimeRange",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003e The billing period to query. If you don't provide a time range, the current billing period, which is the calendar month in UTC, is used. \u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.billing#ListBillingViewSegmentsResponse": {
+        "type": "structure",
+        "members": {
+          "items": {
+            "target": "com.amazonaws.billing#BillingViewSegmentsList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003e A list of billing view segments. Each segment covers a portion of the requested time period. The response omits hidden segments, so the segments it returns might not cover the entire requested time period. \u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "nextToken": {
+            "target": "com.amazonaws.billing#PageToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003e The pagination token that is used on subsequent calls to list billing view segments. \u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      },
       "com.amazonaws.billing#ListBillingViews": {
         "type": "operation",
         "input": {
@@ -4034,6 +4531,244 @@
           "smithy.api#output": {}
         }
       },
+      "com.amazonaws.billing#ListBusinessSupportAccountCharges": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.billing#ListBusinessSupportAccountChargesRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.billing#ListBusinessSupportAccountChargesResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.billing#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.billing#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.billing#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.billing#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.billing#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eReturns Business Support charges broken down at the linked account level for a given billing month.\u003c/p\u003e",
+          "smithy.api#paginated": {
+            "inputToken": "nextToken",
+            "outputToken": "nextToken",
+            "pageSize": "maxResults",
+            "items": "accountCharges"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.billing#ListBusinessSupportAccountChargesRequest": {
+        "type": "structure",
+        "members": {
+          "accountId": {
+            "target": "com.amazonaws.billing#AccountId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe linked account ID to filter results to a specific account. If you don't specify a value, the response includes charges for all linked accounts.\u003c/p\u003e"
+            }
+          },
+          "billingMonth": {
+            "target": "com.amazonaws.billing#BusinessSupportBillingMonth",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe billing month to retrieve Business Support charges for, in YYYY-MM format. You can request the current month (charges will be estimated) or a past month (charges will be finalized).\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "maxResults": {
+            "target": "smithy.api#Integer",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of results to return per page. Default is 100.\u003c/p\u003e",
+              "smithy.api#range": {
+                "min": 1,
+                "max": 100
+              }
+            }
+          },
+          "nextToken": {
+            "target": "com.amazonaws.billing#PageToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe pagination token for the next page of results.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eContains the billing month and optional filters used to retrieve Business Support charges broken down by linked account.\u003c/p\u003e",
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.billing#ListBusinessSupportAccountChargesResponse": {
+        "type": "structure",
+        "members": {
+          "accountCharges": {
+            "target": "com.amazonaws.billing#BusinessSupportAccountChargeList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe list of Business Support charges per linked account.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "accountCount": {
+            "target": "smithy.api#Integer",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe total number of linked accounts with Business Support charges in the billing month.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "billingMonth": {
+            "target": "com.amazonaws.billing#BusinessSupportBillingMonth",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe billing month for the returned charges, in YYYY-MM format.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "isEstimated": {
+            "target": "smithy.api#Boolean",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies whether the Support charge amount is estimated. When false, the charge amount is finalized.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "nextToken": {
+            "target": "com.amazonaws.billing#PageToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe pagination token for the next page of results.\u003c/p\u003e"
+            }
+          },
+          "totalSupportCharge": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe total Business Support charge amount for all accounts in the billing month.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          },
+          "totalSupportEligibleSpend": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe total Support-eligible spend from all accounts in the billing month. This includes eligible spend from usage of Amazon Web Services.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eContains the Business Support charges broken down by linked account for the specified billing month, along with account and spend totals.\u003c/p\u003e",
+          "smithy.api#output": {}
+        }
+      },
+      "com.amazonaws.billing#ListBusinessSupportSubscriptionHistory": {
+        "type": "operation",
+        "input": {
+          "target": "com.amazonaws.billing#ListBusinessSupportSubscriptionHistoryRequest"
+        },
+        "output": {
+          "target": "com.amazonaws.billing#ListBusinessSupportSubscriptionHistoryResponse"
+        },
+        "errors": [
+          {
+            "target": "com.amazonaws.billing#AccessDeniedException"
+          },
+          {
+            "target": "com.amazonaws.billing#InternalServerException"
+          },
+          {
+            "target": "com.amazonaws.billing#ResourceNotFoundException"
+          },
+          {
+            "target": "com.amazonaws.billing#ThrottlingException"
+          },
+          {
+            "target": "com.amazonaws.billing#ValidationException"
+          }
+        ],
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eReturns the history of Business Support subscription contracts across accounts.\u003c/p\u003e",
+          "smithy.api#paginated": {
+            "inputToken": "nextToken",
+            "outputToken": "nextToken",
+            "pageSize": "maxResults",
+            "items": "subscriptionContracts"
+          },
+          "smithy.api#readonly": {}
+        }
+      },
+      "com.amazonaws.billing#ListBusinessSupportSubscriptionHistoryRequest": {
+        "type": "structure",
+        "members": {
+          "accountId": {
+            "target": "com.amazonaws.billing#AccountId",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe account ID to filter results to a specific account. If you don't specify a value, the response includes subscription history for all accounts.\u003c/p\u003e"
+            }
+          },
+          "billingMonth": {
+            "target": "com.amazonaws.billing#BusinessSupportBillingMonth",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe billing month to retrieve subscription contracts for, in YYYY-MM format. If you don't specify a value, defaults to the current month.\u003c/p\u003e"
+            }
+          },
+          "endDate": {
+            "target": "smithy.api#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe end date to filter subscription contracts to.\u003c/p\u003e"
+            }
+          },
+          "maxResults": {
+            "target": "smithy.api#Integer",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of results to return per page. Default is 100.\u003c/p\u003e",
+              "smithy.api#range": {
+                "min": 1,
+                "max": 100
+              }
+            }
+          },
+          "nextToken": {
+            "target": "com.amazonaws.billing#PageToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe pagination token for the next page of results.\u003c/p\u003e"
+            }
+          },
+          "startDate": {
+            "target": "smithy.api#Timestamp",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe start date to filter subscription contracts from.\u003c/p\u003e"
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eContains the optional filters used to retrieve the history of Business Support subscription contracts across accounts.\u003c/p\u003e",
+          "smithy.api#input": {}
+        }
+      },
+      "com.amazonaws.billing#ListBusinessSupportSubscriptionHistoryResponse": {
+        "type": "structure",
+        "members": {
+          "nextToken": {
+            "target": "com.amazonaws.billing#PageToken",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe pagination token for the next page of results.\u003c/p\u003e"
+            }
+          },
+          "subscriptionContracts": {
+            "target": "com.amazonaws.billing#BusinessSupportSubscriptionContractList",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe list of Business Support subscription contracts.\u003c/p\u003e",
+              "smithy.api#required": {}
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#documentation": "\u003cp\u003eContains the list of Business Support subscription contracts that match the request filters.\u003c/p\u003e",
+          "smithy.api#output": {}
+        }
+      },
       "com.amazonaws.billing#ListEnterpriseSupportLinkedAccountCharges": {
         "type": "operation",
         "input": {
@@ -4076,7 +4811,7 @@
           "accountId": {
             "target": "com.amazonaws.billing#AccountId",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eAn optional linked account ID to filter results to a specific account.\u003c/p\u003e"
+              "smithy.api#documentation": "\u003cp\u003eThe linked account ID to filter results to a specific account. If you don't specify a value, the response includes charges for all linked accounts.\u003c/p\u003e"
             }
           },
           "billingMonth": {
@@ -4089,7 +4824,7 @@
           "maxResults": {
             "target": "smithy.api#Integer",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eThe maximum number of results to return per page.\u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003eThe maximum number of results to return per page. Default is 100.\u003c/p\u003e",
               "smithy.api#range": {
                 "min": 1,
                 "max": 100
@@ -4790,7 +5525,7 @@
         "traits": {
           "smithy.api#documentation": "\u003cp\u003eA list of service-level account usages.\u003c/p\u003e",
           "smithy.api#length": {
-            "max": 50
+            "max": 200
           }
         }
       },

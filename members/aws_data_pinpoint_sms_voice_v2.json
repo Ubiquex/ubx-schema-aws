@@ -511,6 +511,12 @@
       "com.amazonaws.pinpointsmsvoicev2#CarrierLookupRequest": {
         "type": "structure",
         "members": {
+          "EnableCleansing": {
+            "target": "smithy.api#Boolean",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eSpecifies whether the service cleanses the phone number that you provide. When set to \u003ccode\u003etrue\u003c/code\u003e, the service normalizes the phone number according to the destination country's national numbering plan and dialing rules. The service returns the cleansed number in E.164 format in the \u003ccode\u003eE164PhoneNumber\u003c/code\u003e field and returns the number that you provided in the \u003ccode\u003eOriginalPhoneNumber\u003c/code\u003e field.\u003c/p\u003e"
+            }
+          },
           "PhoneNumber": {
             "target": "com.amazonaws.pinpointsmsvoicev2#CarrierLookupInputPhoneNumberType",
             "traits": {
@@ -569,10 +575,16 @@
               "smithy.api#documentation": "\u003cp\u003eThe phone number's mobile network code, for mobile phone number types.\u003c/p\u003e"
             }
           },
+          "OriginalPhoneNumber": {
+            "target": "com.amazonaws.pinpointsmsvoicev2#CarrierLookupInputPhoneNumberType",
+            "traits": {
+              "smithy.api#documentation": "\u003cp\u003eThe phone number exactly as you supplied it in the request. This field is returned only when you set \u003ccode\u003eEnableCleansing\u003c/code\u003e to \u003ccode\u003etrue\u003c/code\u003e, the phone number was cleansed, and a normalized E.164 phone number was returned in the \u003ccode\u003eE164PhoneNumber\u003c/code\u003e field.\u003c/p\u003e"
+            }
+          },
           "PhoneNumberType": {
             "target": "com.amazonaws.pinpointsmsvoicev2#PhoneNumberType",
             "traits": {
-              "smithy.api#documentation": "\u003cp\u003eDescribes the type of phone number. Valid values are: MOBILE, LANDLINE, OTHER, and INVALID. Avoid sending SMS or voice messages to INVALID phone numbers, as these numbers are unlikely to belong to actual recipients.\u003c/p\u003e",
+              "smithy.api#documentation": "\u003cp\u003eDescribes the type of phone number. Valid values are: MOBILE, LANDLINE, VOIP, PREPAID, OTHER, and INVALID. Avoid sending SMS or voice messages to INVALID phone numbers, as these numbers are unlikely to belong to actual recipients.\u003c/p\u003e",
               "smithy.api#required": {}
             }
           }
@@ -8257,7 +8269,7 @@
           }
         ],
         "traits": {
-          "smithy.api#documentation": "Search available phone numbers from aggregator inventory, optionally filtered by pattern.\nIf NumberPreference is omitted, returns unfiltered available numbers.\nReturns empty list (not an exception) when no numbers match.\nResourceNotFoundException is thrown only for invalid RegistrationId (campaign not found).",
+          "smithy.api#documentation": "\u003cp\u003eRetrieves a list of phone numbers that are available to request, based on the country, capabilities, and number type that you specify. You can optionally provide a number preference to return only numbers that match a specific digit pattern.\u003c/p\u003e \u003cp\u003eIf no numbers match your search, this operation returns an empty list rather than an error. This operation currently supports only \u003ccode\u003eTEN_DLC\u003c/code\u003e number types in the \u003ccode\u003eUS\u003c/code\u003e.\u003c/p\u003e",
           "smithy.api#examples": [
             {
               "title": "ListAvailablePhoneNumbers",
@@ -8338,7 +8350,7 @@
           "NumberPreference": {
             "target": "com.amazonaws.pinpointsmsvoicev2#NumberPreferenceList",
             "traits": {
-              "smithy.api#documentation": "Optional. If omitted, returns unfiltered available numbers.\nMax 1 element for List API."
+              "smithy.api#documentation": "\u003cp\u003eAn optional selection preference used to return only phone numbers that match a specific digit pattern, such as numbers that start with, end with, or contain a particular sequence. You can specify at most one preference. Number preferences apply only to \u003ccode\u003eTEN_DLC\u003c/code\u003e numbers in the \u003ccode\u003eUS\u003c/code\u003e.\u003c/p\u003e"
             }
           },
           "NumberType": {
@@ -9810,7 +9822,7 @@
           }
         },
         "traits": {
-          "smithy.api#documentation": "A single number preference \u2014 specifies a pattern type and filter value."
+          "smithy.api#documentation": "\u003cp\u003eA single number preference that specifies how to match available phone numbers. Each preference pairs a match type with one or more filter values.\u003c/p\u003e"
         }
       },
       "com.amazonaws.pinpointsmsvoicev2#NumberPreferenceList": {
@@ -10373,6 +10385,14 @@
             {
               "value": "LANDLINE",
               "name": "LANDLINE"
+            },
+            {
+              "value": "VOIP",
+              "name": "VOIP"
+            },
+            {
+              "value": "PREPAID",
+              "name": "PREPAID"
             },
             {
               "value": "OTHER",
